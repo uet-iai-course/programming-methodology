@@ -12,8 +12,8 @@
 * Add **simple icons** to improve comprehension (minimal line icons):
   input (keyboard), output (screen/printer), decision (question mark), loop (circular arrow), variable/update (tag/box), warning/error (small bug or exclamation).
   Icons must be small, consistent, and not distract from the flow.
-* Add **step numbers** (Bước 1, Bước 2, …) if it helps reading order.
-* Add **branch labels** “Có/Không” (or “Đúng/Sai”) clearly on arrows.
+* If presented in the original diagram:  Add **step numbers** (Bước 1, Bước 2, …) if it helps reading order.
+* If presented in the original diagram: Add **branch labels** “Có/Không” (or “Đúng/Sai”) clearly on arrows.
 * If the original text is long, rewrite into **shorter Vietnamese** while keeping meaning.
 
 **Text rules (Vietnamese primary, English secondary):**
@@ -31,11 +31,13 @@
   - Data: Dữ liệu
   - Program: Chương trình
   - Operations: Các phép toán
+  - Runtime support (RTS): Hỗ trợ thực thi
 
 **Style guide (clean whiteboard hand-drawn):**
 
 * 16:9 canvas, generous margins for slides.
-* Off-white whiteboard/paper background with very subtle texture.
+* White background, no gridlines.
+* Hand-drawn style: simulate whiteboard marker look.
 * Marker-like strokes, slightly imperfect but neat; uniform thickness.
 * Shapes: rounded rectangles (process), diamonds (decision), consistent sizing.
 * Arrows: bold, clear arrowheads; tidy routing; avoid overlaps.
