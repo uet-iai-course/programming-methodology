@@ -29,8 +29,8 @@
         <section>
           <h2>Nội dung</h2>
           <ol>
-            <li>Khái niệm máy trừu tượng, thông dịch và biên dịch</li>
-            <li>Hiện thực ngôn ngữ lập trình</li>
+            <li>Khái niệm máy trừu tượng</li>
+            <li>Hiện thực hoá ngôn ngữ</li>
             <li>Hệ phân cấp máy trừu tượng</li>
           </ol>
         </section>
@@ -39,9 +39,8 @@
           <h2>Mục tiêu buổi học</h2>
           <ul>
             <li>Hiểu máy trừu tượng và chu trình thực thi lệnh</li>
-            <li>Phân biệt hiện thực thông dịch và biên dịch</li>
-            <li>Nắm bắt vai trò ngôn ngữ trung gian và hỗ trợ thời gian chạy</li>
-            <li>Nhận diện các tầng khi chạy chương trình Python</li>
+            <li>Phân biệt thông dịch và biên dịch</li>
+            <li>Nắm bắt vai trò của ngôn ngữ trung gian và trình hỗ trợ thực thi</li>
           </ul>
         </section>
 
@@ -51,9 +50,7 @@
         <section>
           <h1>
             <span class="text-light">1.</span><br />
-            máy trừu tượng,
-            <br>
-            trình thông dịch
+            Máy trừu tượng
           </h1>
         </section>
 
@@ -71,8 +68,7 @@
 
         <section>
           <h2>Cấu trúc máy trừu tượng</h2>
-          <img src="img/lec-01b/abstract-machine-structure.png" alt="Hình 1.1: Cấu trúc máy trừu tượng"
-            style="width: 100%" />
+          <img src="img/lec-01b/abstract-machine-structure.png" alt="Cấu trúc máy trừu tượng" style="width: 100%" />
         </section>
 
         <section>
@@ -87,15 +83,9 @@
         </section>
 
         <section>
-          <h2>Liên hệ Python</h2>
-          <img src="img/lec-01b/interpreter-python-relation.png" alt="Hình 1.2: Liên hệ trình thông dịch và Python"
-            style="width: 100%" />
-        </section>
-
-        <section>
           <h2>Chu trình thực thi lệnh</h2>
-          <img src="img/lec-01b/intepreter-execution-cycle.png"
-            alt="Hình 1.3: Chu trình thực thi lệnh của trình thông dịch" style="width: 100%" />
+          <img src="img/lec-01b/intepreter-execution-cycle.png" alt="Chu trình thực thi lệnh của trình thông dịch"
+            style="width: 100%" />
         </section>
 
         <section>
@@ -106,16 +96,6 @@
             <li>Khi chạy câu lệnh <span class="inline-code">s += i</span>, máy cần biết những thông tin gì trước khi
               thực hiện phép cộng?</li>
           </ol>
-        </section>
-
-        <section>
-          <h2>Khái niệm: Ngôn ngữ máy</h2>
-          <div class="question-box">
-            <div class="question-title">Định nghĩa</div>
-            Cho máy trừu tượng \(\mathscr{M}_{\mathscr{L}}\), ngôn ngữ \(\mathscr{L}\) là <span class="keyword">ngôn ngữ
-              máy</span> (machine language) của \(\mathscr{M}_{\mathscr{L}}\)
-            nếu \(\mathscr{L}\) được “hiểu” bởi trình thông dịch của \(\mathscr{M}_{\mathscr{L}}\).
-          </div>
         </section>
 
         <section>
@@ -131,8 +111,7 @@
 
         <section>
           <h2>Sơ đồ khối bộ xử lý và bộ nhớ</h2>
-          <img src="img/lec-01b/cpu-memory-block-diagram.png" alt="Hình 1.4: Sơ đồ khối bộ xử lý và bộ nhớ"
-            style="width: 100%" />
+          <img src="img/lec-01b/cpu-memory-block-diagram.png" alt="Sơ đồ khối bộ xử lý và bộ nhớ" style="width: 100%" />
         </section>
 
         <section>
@@ -216,7 +195,7 @@
 
         <section>
           <h2>Lấy lệnh – giải mã – thực thi</h2>
-          <h4>Góc nhìn phần cứng</h4>
+          <h4>Trong máy phần cứng</h4>
           <ol>
             <li><strong>Lấy lệnh</strong>: PC → MAR; đọc bộ nhớ; nạp lệnh vào IR.</li>
             <li><strong>Giải mã</strong>: khối điều khiển xác định thao tác và cách lấy toán hạng.</li>
@@ -227,9 +206,9 @@
         </section>
 
         <section>
-          <h2>minh họa: lệnh cộng</h2>
+          <h2>Minh họa: lệnh cộng</h2>
           <ul>
-            <li>Ví dụ ý tưởng: <strong>cộng</strong> hai giá trị rồi ghi kết quả.</li>
+            <li><strong>Cộng</strong> hai giá trị rồi ghi kết quả.</li>
             <li>Các bước điển hình:
               <ul>
                 <li>Khối điều khiển xác định đây là lệnh cộng.</li>
@@ -244,12 +223,12 @@
         <section>
           <h2>Liên hệ với trình thông dịch</h2>
           <img src="img/lec-01b/hardware-machine-relation.png"
-            alt="Hình 1.5: Liên hệ bốn nhóm chức năng của bộ thông dịch với phần cứng" style="width: 100%" />
+            alt="Liên hệ bốn nhóm chức năng của bộ thông dịch với phần cứng" style="width: 100%" />
         </section>
 
         <section>
           <h2>Tóm tắt</h2>
-          <h4>máy phần cứng</h4>
+          <h4>Máy phần cứng</h4>
           <ul>
             <li>Phần cứng là máy trừu tượng mức thấp; ngôn ngữ của máy là mã máy.</li>
             <li>Ở mức này đã có kho lưu trữ và cơ chế thực thi rõ ràng.</li>
@@ -263,26 +242,47 @@
         <section>
           <h1>
             <span class="text-light">2.</span><br />
-            Hiện thực ngôn ngữ lập trình
+            Hiện thực hoá ngôn ngữ
           </h1>
         </section>
 
         <section>
-          <h2>Khái niệm</h2>
+          <h2>Khái niệm: Ngôn ngữ máy</h2>
+          <div class="question-box">
+            <div class="question-title">Định nghĩa</div>
+            Cho máy trừu tượng \(\mathscr{M}_{\mathscr{L}}\), ngôn ngữ \(\mathscr{L}\) là <span class="keyword">ngôn ngữ
+              máy</span> (machine language) của \(\mathscr{M}_{\mathscr{L}}\)
+            nếu \(\mathscr{L}\) được “hiểu” bởi trình thông dịch của \(\mathscr{M}_{\mathscr{L}}\).
+          </div>
+          <p>
+            ⭐️ Ngôn ngữ bao gồm: tập cú pháp + ngữ nghĩa + tập thao tác.
+          </p>
+        </section>
+
+        <section>
+          <h2>Khái niệm: Hiện thực hoá ngôn ngữ</h2>
+          <div class="question-box">
+            <div class="question-title">Định nghĩa</div>
+            <span class="keyword">Hiện thực hoá ngôn ngữ \(\mathscr{L}\)</span> (implementation of language
+            \(\mathscr{L}\)) là quá trình xây dựng máy trừu tượng \(\mathscr{M}_{\mathscr{L}}\) sao cho
+            \(\mathscr{L}\) là ngôn ngữ máy của \(\mathscr{M}_{\mathscr{L}}\).
+          </div>
+        </section>
+
+        <section>
+          <h2>Tại sao cần hiện thực hoá ngôn ngữ?</h2>
           <ul>
-            <li><strong>Hiện thực ngôn ngữ \(\mathscr{L}\) (Implementation of language \(\mathscr{L}\)):</strong> xây
-              dựng một máy trừu tượng có ngôn ngữ máy là \(\mathscr{L}\).</li>
             <li>Trong thực tế thường có sẵn một máy chủ và ngôn ngữ của máy chủ</li>
-            <li>Vấn đề: làm sao để chương trình L chạy trên máy chủ?</li>
+            <li>Vấn đề: làm sao để chương trình \(\mathscr{L}\) chạy trên máy chủ?</li>
           </ul>
         </section>
 
         <section>
-          <h2>Ba cách hiện thực máy trừu tượng</h2>
+          <h2>Ba cách hiện thực hoá máy trừu tượng</h2>
           <ul>
-            <li><strong>Bằng phần cứng</strong>: nhanh, ít linh hoạt</li>
-            <li><strong>Bằng phần mềm</strong>: linh hoạt, chậm hơn</li>
-            <li><strong>Bằng phần sụn</strong>: trung gian</li>
+            <li><strong>Bằng phần cứng (hardware)</strong>: nhanh, ít linh hoạt</li>
+            <li><strong>Bằng phần mềm (software)</strong>: linh hoạt, chậm hơn</li>
+            <li><strong>Bằng phần sụn (firmware)</strong>: trung gian</li>
           </ul>
           <aside class="notes">
             Slide này là “khung”. Các slide sau sẽ làm rõ cơ chế và hệ quả của từng cách.
@@ -290,11 +290,11 @@
         </section>
 
         <section>
-          <h2>Hiện thực bằng phần cứng</h2>
+          <h2>Bằng phần cứng</h2>
           <ul>
             <li><strong>Ý tưởng</strong>: thao tác của ngôn ngữ được “đóng” vào mạch phần cứng (CPU/vi mạch).</li>
-            <li><strong>Ngôn ngữ của máy</strong>: lệnh máy được phần cứng thực thi trực tiếp.</li>
-            <li><strong>Hệ quả</strong>:
+            <li><strong>Ngôn ngữ máy</strong>: lệnh máy được phần cứng thực thi trực tiếp.</li>
+            <li><strong>Tính chất</strong>:
               <ul>
                 <li>Chi phí điều phối thấp → hiệu năng cao.</li>
                 <li>Thay đổi tập lệnh/chức năng khó và tốn kém (phải thiết kế lại phần cứng).</li>
@@ -319,13 +319,17 @@
         </section>
 
         <section>
-          <h2>Hiện thực bằng phần mềm</h2>
+          <img src="img/lec-01b/hardware-impl-ex.png" alt="Ví dụ hiện thực bằng phần cứng" style="width: 100%" />
+        </section>
+
+        <section>
+          <h2>Bằng phần mềm</h2>
           <ul>
             <li><strong>Ý tưởng</strong>: viết một <strong>bộ thông dịch</strong> chạy trên máy chủ để thực thi ngôn
               ngữ.</li>
             <li><strong>Ngôn ngữ máy</strong>: là ngôn ngữ mà bộ thông dịch hiểu (có thể là mã nguồn hoặc mã trung
               gian).</li>
-            <li><strong>Hệ quả</strong>:
+            <li><strong>Tính chất</strong>:
               <ul>
                 <li>Dễ phát triển, dễ chỉnh sửa, dễ mở rộng.</li>
                 <li>Có chi phí điều phối/giải mã khi chạy → thường chậm hơn phần cứng.</li>
@@ -356,7 +360,7 @@
               <strong>vi lệnh</strong> (microcode).
             </li>
             <li><strong>Vai trò</strong>: vi lệnh “điều phối” phần cứng để thực hiện một lệnh ở mức máy.</li>
-            <li><strong>Hệ quả</strong>:
+            <li><strong>Tính chất</strong>:
               <ul>
                 <li>Linh hoạt hơn phần cứng thuần túy (có thể thay đổi vi chương trình).</li>
                 <li>Nhanh hơn mô phỏng phần mềm trong nhiều trường hợp.</li>
@@ -370,8 +374,16 @@
         </section>
 
         <section>
-          <img src="img/lec-01b/computer-system-layered-structure.png"
-            alt="Hình 1.6: Cấu trúc phân tầng của hệ thống máy tính" style="width: 100%" />
+          <h2>Khi nào chọn phần sụn?</h2>
+          <ul>
+            <li>Cần cân bằng giữa <strong>tốc độ</strong> và <strong>tính linh hoạt</strong>.</li>
+            <li>Cần hỗ trợ nhiều lệnh/phép toán phức tạp mà phần cứng thuần không hiệu quả.</li>
+            <li>Ví dụ: lệnh số học phức tạp, thao tác chuỗi, thao tác đa phương tiện.</li>
+        </section>
+
+        <section>
+          <img src="img/lec-01b/computer-system-layered-structure.png" alt="Cấu trúc phân tầng của hệ thống máy tính"
+            style="width: 100%" />
         </section>
 
         <section>
@@ -413,7 +425,7 @@
         </section>
 
         <section>
-          <h2>Câu hỏi thảo luận nhanh</h2>
+          <h2>Câu hỏi nhanh</h2>
           <ol>
             <li>Nếu cần thay đổi ngôn ngữ thường xuyên, nên ưu tiên cách hiện thực nào? Vì sao?</li>
             <li>Nếu cần chạy cực nhanh một tập thao tác ổn định, nên ưu tiên cách nào?</li>
@@ -422,9 +434,9 @@
         </section>
 
         <section>
-          <h2>Hiện thực ngôn ngữ lập trình</h2>
+          <h2>Hiện thực hoá ngôn ngữ</h2>
 
-          <p>Có hai cách “thuần” để hiện thực ngôn ngữ lập trình:</p>
+          <p>Có hai cách “thuần” để hiện thực hoá ngôn ngữ <strong>bằng phần mềm</strong>:</p>
 
           <ul>
             <li><strong>Hiện thực theo hướng thông dịch</strong>: chương trình \(\mathscr{L}\) được chạy trực tiếp bởi
@@ -437,7 +449,7 @@
         </section>
 
         <section>
-          <h2>Hiện thực theo hướng thông dịch</h2>
+          <h2>Theo hướng thông dịch</h2>
           <ul>
             <li>Chương trình \(\mathscr{L}\) được đưa trực tiếp vào trình thông dịch</li>
             <li>Trình thông dịch chạy trên máy chủ</li>
@@ -446,8 +458,8 @@
         </section>
 
         <section>
-          <img src="img/lec-01b/purely-interpreted-implementation.png"
-            alt="Hình 1.5: Hiện thực ngôn ngữ theo hướng thông dịch" style="width: 100%" />
+          <img src="img/lec-01b/purely-interpreted-implementation.png" alt="Hiện thực ngôn ngữ theo hướng thông dịch"
+            style="width: 100%" />
         </section>
 
         <section>
@@ -459,7 +471,7 @@
         </section>
 
         <section>
-          <h2>Hiện thực theo hướng biên dịch</h2>
+          <h2>Theo hướng biên dịch</h2>
           <ul>
             <li>Chương trình \(\mathscr{L}\) được dịch sang chương trình ở ngôn ngữ của máy chủ</li>
             <li>Sau đó chương trình đã dịch mới được thực thi</li>
@@ -468,8 +480,8 @@
         </section>
 
         <section>
-          <img src="img/lec-01b/purely-compiled-implementation.png"
-            alt="Hình 1.6: Hiện thực ngôn ngữ theo hướng biên dịch" style="width: 100%" />
+          <img src="img/lec-01b/purely-compiled-implementation.png" alt="Hiện thực ngôn ngữ theo hướng biên dịch"
+            style="width: 100%" />
         </section>
 
         <section>
@@ -543,8 +555,8 @@ for i in [1..N] {
         </section>
 
         <section>
-          <img src="img/lec-01b/combined-implementation.png"
-            alt="Hình 1.7: Hiện thực ngôn ngữ kết hợp thông dịch và biên dịch" style="width: 100%" />
+          <img src="img/lec-01b/combined-implementation.png" alt="Hiện thực ngôn ngữ kết hợp thông dịch và biên dịch"
+            style="width: 100%" />
         </section>
 
         <section>
@@ -557,19 +569,22 @@ for i in [1..N] {
         </section>
 
         <section>
-          <h2>RTS gồm những gì?</h2>
+          <h2>RTS cung cấp dịch vụ gì?</h2>
           <ul>
-            <li>Quản lý bộ nhớ: cấp phát/thu hồi, ngăn xếp/đống, (có thể) thu gom rác.</li>
-            <li>Kiểu dữ liệu mức cao: chuỗi, danh sách, từ điển, đối tượng.</li>
-            <li>Xử lý ngoại lệ và lỗi thời gian chạy.</li>
-            <li>Thư viện chuẩn và vào/ra: tệp, mạng, màn hình, thời gian.</li>
-            <li>Nạp mô-đun và liên kết: tìm hàm, khởi tạo, gọi thư viện.</li>
+            <li><strong>Bộ nhớ</strong>: cấp phát/thu hồi, heap/stack, (có thể) GC.</li>
+            <li><strong>Thực thi</strong>: call stack/frame, gọi hàm &amp; trả về.</li>
+            <li><strong>Ngoại lệ</strong>: ném/bắt lỗi, unwind stack.</li>
+            <li><strong>Đối tượng/kiểu</strong>: tạo đối tượng, dispatch, kiểm tra lúc chạy.</li>
+            <li><strong>Thư viện &amp; hệ thống</strong>: I/O, collection, import/loader.</li>
+            <li><strong>Tối ưu (tuỳ hệ)</strong>: profiling, JIT.</li>
           </ul>
           <aside class="notes">
-            Nhấn mạnh: đây là “dịch vụ nền” của ngôn ngữ; nếu thiếu, chương trình vẫn có thể chạy được vài phép toán đơn
-            giản
-            nhưng sẽ thiếu hầu hết tính năng thực tế.
+            RTS là “hậu trường” để ngôn ngữ chạy đúng cam kết. C++ thường mỏng hơn; Java/Python dày hơn.
           </aside>
+        </section>
+
+        <section>
+          <img src="img/lec-01b/RTS-comparison.png" alt="So sánh RTS của các ngôn ngữ khác nhau" style="width: 100%" />
         </section>
 
         <section>
@@ -584,8 +599,9 @@ for i in [1..N] {
           </ul>
         </section>
 
-        <section>
+        <section style="font-size: .9em;">
           <h2>Ví dụ: lệnh in ra màn hình</h2>
+          <h4>C++</h4>
           <ol>
             <li>Chương trình C++ gọi <span class="inline-code">std::cout &lt;&lt; "Hello, World!"</span></li>
             <li>Thư viện chuẩn C++ xử lý toán tử <span class="inline-code">&lt;&lt;</span>:
@@ -598,8 +614,27 @@ for i in [1..N] {
           </ol>
         </section>
 
+        <section style="font-size: .9em;">
+          <h2>Ví dụ: lệnh in ra màn hình</h2>
+          <h4>Python</h4>
+          <ol>
+            <li>Chương trình Python gọi <span class="inline-code">print("Hello, World!")</span></li>
+            <li>RTS/VM của Python thực thi lời gọi hàm <span class="inline-code">print</span>:
+              <ul>
+                <li>Chuyển đối tượng chuỗi thành dãy byte theo mã hoá (thường UTF-8)</li>
+                <li>Ghi ra luồng chuẩn <span class="inline-code">sys.stdout</span> (có thể là console hoặc file)</li>
+              </ul>
+            </li>
+            <li>Hệ điều hành nhận dãy byte và điều khiển thiết bị xuất để hiển thị</li>
+          </ol>
+          <aside class="notes">
+            Nhấn mạnh khác biệt: Python đi qua runtime/VM + đối tượng string; C++ thường đi qua iostream/ABI.
+            Nhưng cuối cùng đều về OS nhận byte và hiển thị.
+          </aside>
+        </section>
+
         <section>
-          <h2>Vì sao hỗ trợ thực thi giúp cân bằng?</h2>
+          <h2>Vì sao RTS giúp cân bằng?</h2>
           <ul>
             <li>Chạy “gần máy chủ” hơn → giảm chi phí điều phối/giải mã khi chạy → <strong>hiệu năng tốt hơn</strong>.
             </li>
@@ -619,17 +654,18 @@ for i in [1..N] {
         </section>
 
         <section>
-          <h2>Ví dụ các ngôn ngữ lập trình</h2>
-          <ul>
-            <li>Java: dịch sang mã trung gian, thực thi trên máy ảo</li>
-            <li>Python: có bước chuyển sang mã trung gian; phần thực thi do môi trường Python đảm nhiệm</li>
-            <li>C++: biên dịch trực tiếp sang mã máy</li>
-          </ul>
+          <img src="img/lec-01b/implementation-options.png" alt="Các lựa chọn hiện thực ngôn ngữ lập trình"
+            style="width: 100%" />
         </section>
 
         <section>
-          <img src="img/lec-01b/implementation-options.png" alt="Hình 1.8: Các lựa chọn hiện thực ngôn ngữ lập trình"
-            style="width: 100%" />
+          <h2>Tóm tắt</h2>
+          <h4>Hiện thực hoá ngôn ngữ</h4>
+          <ul>
+            <li>Có ba cách hiện thực hoá ngôn ngữ: phần cứng, phần mềm, phần sụn.</li>
+            <li>Hiện thực hoá bằng phần mềm có hai hướng chính: thông dịch và biên dịch.</li>
+            <li>Thực tế thường kết hợp nhiều cách để cân bằng hiệu năng và tính linh hoạt.</li>
+          </ul>
         </section>
       </section>
 
@@ -718,43 +754,8 @@ for i in [1..N] {
         </section>
 
         <section>
-          <img src="img/lec-01b/computer-system-layered-structure.png"
-            alt="Hình 1.9: Cấu trúc phân tầng của hệ thống máy tính" style="width: 100%" />
-        </section>
-
-        <section>
           <h2>Hệ phân cấp máy trừu tượng</h2>
           <img src="img/lec-01b/layered-machines.png" alt="Hình 1.10: Hệ phân cấp máy trừu tượng" style="width: 100%" />
-        </section>
-
-        <section>
-          <h2>Ví dụ hệ phân cấp khi chạy Python</h2>
-          <ol>
-            <li><strong>Mã nguồn Python</strong> (tầng ngôn ngữ)</li>
-            <li><strong>Mã trung gian</strong> (tầng biểu diễn để thực thi)</li>
-            <li><strong>Môi trường thực thi Python</strong> (kiểu dữ liệu, ngoại lệ, nạp mô-đun)</li>
-            <li><strong>Hệ điều hành</strong> (tệp, tiến trình, mạng)</li>
-            <li><strong>Phần cứng</strong> (thực thi lệnh máy)</li>
-          </ol>
-          <aside class="notes">
-            Có thể yêu cầu sinh viên bổ sung thêm tầng “thư viện chuẩn” hoặc “khung làm việc” nếu dùng.
-          </aside>
-        </section>
-
-        <section>
-          <h2>Ví dụ hệ phân cấp khi chạy C++</h2>
-          <ol>
-            <li><strong>Mã nguồn C++</strong> (tầng ngôn ngữ)</li>
-            <li><strong>Trình biên dịch</strong> chuyển mã nguồn thành <strong>mã máy</strong> (tầng chuyển đổi)</li>
-            <li><strong>Thư viện thời gian chạy C/C++</strong> (khởi động chương trình, I/O, cấp phát bộ nhớ, ngoại lệ)
-            </li>
-            <li><strong>Hệ điều hành</strong> (tiến trình, bộ nhớ ảo, tệp, mạng)</li>
-            <li><strong>Phần cứng</strong> (CPU thực thi lệnh máy)</li>
-          </ol>
-          <aside class="notes">
-            Nhấn mạnh: với C++, “mã trung gian” (nếu có) thường nằm trong nội bộ trình biên dịch, còn sản phẩm cuối là
-            mã máy.
-          </aside>
         </section>
 
         <section>
@@ -788,7 +789,7 @@ for i in [1..N] {
         </section>
 
         <section>
-          <h2>Câu hỏi thảo luận nhanh</h2>
+          <h2>Câu hỏi nhanh</h2>
           <ul>
             <li>Nêu một ví dụ “che giấu tầng dưới” mà bạn gặp hằng ngày khi lập trình.</li>
             <li>Nếu thay phần cứng từ máy cá nhân sang máy chủ, tầng nào thay đổi nhiều nhất?</li>
@@ -809,14 +810,14 @@ for i in [1..N] {
       </section>
 
       <section>
-        <section style="font-size: 0.9em;">
+        <section style="font-size: 0.75em;">
           <h2>Tổng kết</h2>
           <ul>
-            <li>Máy trừu tượng: mô hình để hiểu cách chương trình được thực thi</li>
-            <li>Bộ thông dịch: bốn nhóm chức năng và chu trình thực thi lệnh</li>
-            <li>Thông dịch và biên dịch: khác nhau ở thời điểm chuyển đổi và sản phẩm tạo ra</li>
-            <li>Mã trung gian và hỗ trợ thực thi: giải pháp thực tế để cân bằng mục tiêu</li>
-            <li>Hệ phân cấp: công cụ quản trị độ phức tạp trong hệ thống phần mềm</li>
+            <li><strong>Máy trừu tượng</strong>: mô hình để hiểu cách chương trình được thực thi</li>
+            <li><strong>Bộ thông dịch</strong>: bốn nhóm chức năng và chu trình thực thi lệnh</li>
+            <li><strong>Thông dịch và biên dịch</strong>: khác nhau ở thời điểm chuyển đổi và sản phẩm tạo ra</li>
+            <li><strong>Mã trung gian và RTS</strong>: giải pháp thực tế để cân bằng giữa hiệu năng và tính di động</li>
+            <li><strong>Hệ phân cấp</strong>: công cụ quản trị độ phức tạp trong hệ thống phần mềm</li>
           </ul>
         </section>
       </section>
