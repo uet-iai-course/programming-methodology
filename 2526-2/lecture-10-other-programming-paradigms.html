@@ -79,7 +79,9 @@
             <li>Các số 1 đến 9, mỗi số xuất hiện 3 lần</li>
             <li>Giữa hai số <em>i</em> liên tiếp phải có đúng <em>i</em> số khác</li>
             <li>Danh sách dài 27 phần tử</li>
-            <li>Nghiệm ví dụ: <code>1 ,9 ,1 ,2 ,1 ,8 ,2 ,4 ,6 ,2 ,7 ,9 ,4 ,5 ,8 ,6 ,3 ,4 ,7 ,5 ,3 ,9 ,6 ,8 ,3 ,5 ,7</code></li>
+            <li>Nghiệm ví dụ:
+              <code>1 ,9 ,1 ,2 ,1 ,8 ,2 ,4 ,6 ,2 ,7 ,9 ,4 ,5 ,8 ,6 ,3 ,4 ,7 ,5 ,3 ,9 ,6 ,8 ,3 ,5 ,7</code>
+            </li>
           </ul>
         </section>
 
@@ -168,6 +170,127 @@ list_of_27 ( Ls ):-
           <p>Lô-gíc nhưng vẫn thực thi được</p>
         </section>
 
+        <section>
+          <h2>Cú pháp lập trình lô-gíc</h2>
+          <ul>
+            <li>Định nghĩa bảng ký hiệu</li>
+            <li>Định nghĩa hạng thức</li>
+            <li>Định nghĩa công thức</li>
+            <li>Định nghĩa chương trình lô-gíc</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Bảng ký hiệu</h2>
+          <h3>Ký hiệu lô-gíc</h3>
+          <ul>
+            <li>∧ (hội), ∨ (tuyển), ¬ (phủ định), → (kéo theo), ↔ (tương đương), ∀ (với mọi), ∃ (tồn tại)</li>
+            <li>Hằng giá trị: T (đúng), F (sai)</li>
+            <li>Tập các biến \(V\): X, Y, Z, …</li>
+            <li>Các dấu đóng mở ngoặc (), dấu phẩy (phân cách đối số)</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Bảng ký hiệu</h2>
+          <h3>Ký hiệu phi lô-gíc</h3>
+          <ul>
+            <li>Tập các hàm \(\Sigma\) kèm số đối số, ví dụ: <code>sin(x), sum(x,y), fatherOf(x), f(x,y,z)</code></li>
+            <li>Các thuộc tính \(\Pi\), kèm số đối số, ví dụ: <code>love(x,y), isPerfect(x), p(x,y)</code></li>
+            <li>Hằng = hàm với số đối số bằng 0, ví dụ: a, b, c, …</li>
+          </ul>
+          <aside class="notes">
+            Minh họa: bảng ký hiệu (f/2, g/1, p/2, q/1)
+          </aside>
+        </section>
+
+        <section>
+          <h2>Định nghĩa hạng thức</h2>
+          <ul>
+            <li>Biến trong \(V\) là hạng thức</li>
+            <li>Nếu \(f\in\Sigma\) có \(n\) đối số và
+              \(t_1, \ldots, t_n\) là hạng thức thì \(f(t_1, \ldots, t_n)\) là hạng thức</li>
+            <li>Hạng thức không có biến gọi là hạng thức cơ bản (ta bỏ qua dấu đóng mở ngoặc)</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Ví dụ Hạng thức</h2>
+          <pre><code class="language-prolog">
+% hằng: a, b
+% hàm: f/2, g/3
+f(a,b)
+g(a,X,b)
+g(f(a,b), Y, f(X, a))
+  </code></pre>
+        </section>
+
+        <section>
+          <h2>Định nghĩa công thức</h2>
+          <ul>
+            <li>Nếu \(t_1,\ldots,t_n\) là hạng thức và \(p\in\Pi\) có \(n\) đối số thì \(p(t_1,\ldots,t_n)\) là công
+              thức</li>
+            <li>Các hằng giá trị \(T, F\) là công thức</li>
+            <li>Nếu \(A\) và \(B\) là công thức thì \(A\wedge B\), \(A\vee B\), \(\neg A\), \(A\rightarrow B\),
+              \(A\leftrightarrow B\) là công thức</li>
+            <li>Nếu \(F\) là công thức và \(X\) là biến thì \(\forall X.F\), \(\exists X.F\) là công thức</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Chương trình lô-gíc</h2>
+          <ul>
+            <li>Chương trình lô-gíc = tập hợp các công thức</li>
+            <li>Để chứng minh, suy luận tự động, chỉ dùng một lớp
+              công thức đặc biệt gọi là mệnh đề Horn
+              \[ A_1 \wedge \ldots \wedge A_n \rightarrow H \]
+            </li>
+          </ul>
+          <pre><code class="language-prolog">
+H :- A1, A2, ..., An.
+  </code></pre>
+        </section>
+
+
+        <section>
+          <h2>Chương trình lô-gíc</h2>
+          <pre><code class="language-prolog">
+H :- A1, A2, ..., An.
+  </code></pre>
+          <ul>
+            <li>\(H\) gọi là đầu, \(A_1,\ldots,A_n\) gọi là thân của mệnh đề</li>
+            <li>Thân có thể rỗng (n=0), chỉ có đầu, gọi là sự kiện (fact)</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Ví dụ</h2>
+          <pre><code class="language-prolog">% sự kiện (facts)
+parent(ann, bob).
+parent(bob, cody).
+
+% luật (rule)
+grandparent(X, Z) :-
+  parent(X, Y),
+  parent(Y, Z).
+
+% truy vấn (query)
+% ?- grandparent(ann, Who).
+          </code></pre>
+          <p>📌 Máy suy diễn tự tìm <code>Who = cody</code>.</p>
+        </section>
+
+        <section>
+          <h2>Ghi chú cú pháp Prolog</h2>
+          <ul>
+            <li>Dấu chấm kết thúc công thức</li>
+            <li>Dấu phẩy = "và"</li>
+            <li>Chương trình là chuỗi công thức có thứ tự</li>
+          </ul>
+          <aside class="notes">
+            Minh họa: tô màu Head và Body trên một clause
+          </aside>
+        </section>
 
       </section>
 
