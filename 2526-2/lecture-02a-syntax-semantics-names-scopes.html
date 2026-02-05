@@ -11,14 +11,93 @@
   <link rel="stylesheet" href="revealjs/dist/theme/white.css" />
   <link rel="stylesheet" href="plugin/highlight/monokai.css" />
   <link rel="stylesheet" href="lecture-style.css" />
-</head>
 
+  <style>
+    /* Optional: tiny helpers to keep diagrams readable */
+    .mini {
+      font-size: 0.85em;
+    }
+
+    .diagram-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .box {
+      border: 2px solid #1E93AB;
+      padding: 0.6rem 1rem;
+      border-radius: 10px;
+      background: rgba(30, 147, 171, 0.05);
+    }
+
+    .box-gray {
+      border: 2px solid #666;
+      padding: 0.6rem 1rem;
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    .box-red {
+      border: 2px solid #E62727;
+      padding: 0.6rem 1rem;
+      border-radius: 10px;
+      background: rgba(230, 39, 39, 0.05);
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 0.1rem 0.5rem;
+      border-radius: 999px;
+      border: 1px solid #ccc;
+      font-size: 0.85em;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .question-box {
+      border-left: 6px solid #1E93AB;
+      background: rgba(30, 147, 171, 0.07);
+      padding: 0.8rem 1rem;
+      border-radius: 10px;
+    }
+
+    .question-title {
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+    }
+
+    .keyword {
+      font-weight: 700;
+      color: #1E93AB;
+    }
+
+    .inline-code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      background: rgba(0, 0, 0, 0.06);
+      padding: 0.1rem 0.35rem;
+      border-radius: 6px;
+    }
+
+    table {
+      font-size: 0.9em;
+    }
+  </style>
+</head>
 
 <body>
   <div class="reveal">
     <div class="slides">
 
-      <!-- Trang bìa -->
+      <!-- =========================
+                TRANG BÌA + MỤC LỤC
+            ========================== -->
       <section>
         <section>
           <h1>Phương pháp luận lập trình</h1>
@@ -29,23 +108,28 @@
         <section>
           <h2>Nội dung</h2>
           <ol>
-            <li>Mô tả ngôn ngữ lập trình (cú pháp, ngữ nghĩa, trình biên dịch)</li>
-            <li>Tên và môi trường (environment, khối, quy tắc phạm vi)</li>
+            <li>Mô tả ngôn ngữ lập trình</li>
+            <li>Ngữ nghĩa và Cài đặt</li>
+            <li>Tên, Đối tượng được biểu thị và Khối</li>
+            <li>Môi trường và Phạm vi</li>
           </ol>
         </section>
 
         <section>
           <h2>Mục tiêu buổi học</h2>
           <ul>
-            <li>Hiểu các mức mô tả ngôn ngữ và vai trò của văn phạm phi ngữ cảnh</li>
-            <li>Phân biệt cú pháp, ngữ nghĩa tĩnh và ngữ nghĩa động</li>
-            <li>Nắm cấu trúc trình biên dịch và ngữ nghĩa hình thức (SOS)</li>
-            <li>Hiểu môi trường, khối và quy tắc phạm vi tĩnh/động</li>
-          </ul>
+            <li>Nắm bắt cách mô tả ngôn ngữ lập trình: từ vựng, cú pháp, ngữ pháp; văn phạm phi ngữ cảnh
+              (CFG), BNF</li>
+            <li>Phân tích ngữ nghĩa và cài đặt: ngữ nghĩa tĩnh/động, biên dịch, máy trừu tượng</li>
+            <li>Nắm được tên, đối tượng được biểu thị và khối; các cơ chế che khuất và bí danh</li>
+            <li>Phân biệt môi trường và quy tắc phạm vi; so sánh phạm vi tĩnh và phạm vi động</li>
+
         </section>
       </section>
 
-      <!-- PHẦN 1: MÔ TẢ NGÔN NGỮ LẬP TRÌNH -->
+      <!-- ==========================================================
+                1) CÁC MỨC MÔ TẢ NGÔN NGỮ VÀ BIỂU DIỄN NGÔN NGỮ
+            =========================================================== -->
       <section>
         <section>
           <h1>
@@ -56,513 +140,770 @@
 
         <section>
           <h2>Các mức mô tả ngôn ngữ</h2>
-          <p>Để mô tả một ngôn ngữ lập trình, người ta thường phân tách thành nhiều mức:</p>
-          <ul>
-            <li><strong>Cú pháp (syntax)</strong>: cấu trúc hình thức của chương trình (chuỗi ký hiệu hợp lệ).</li>
-            <li><strong>Ngữ nghĩa (semantics)</strong>: ý nghĩa của các cấu trúc khi thực thi.</li>
-            <li><strong>Thực dụng (pragmatics)</strong>: mục đích và cách sử dụng các cấu trúc trong thực tế.</li>
-            <li><strong>Hiện thực (implementation)</strong>: cách xây dựng máy trừu tượng cho ngôn ngữ.</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Sơ đồ các mức mô tả</h2>
-          <div style="display:flex;flex-direction:column;align-items:center;gap:0.5rem;font-size:0.9em;">
-            <div style="border:2px solid #1E93AB;padding:0.5rem 1rem;border-radius:8px;">Cú pháp — “Chương trình có hình thức đúng không?”</div>
-            <div style="border:2px solid #1E93AB;padding:0.5rem 1rem;border-radius:8px;">Ngữ nghĩa tĩnh — “Ràng buộc theo ngữ cảnh có thỏa không?”</div>
-            <div style="border:2px solid #1E93AB;padding:0.5rem 1rem;border-radius:8px;">Ngữ nghĩa động — “Khi chạy, chương trình làm gì?”</div>
-            <div style="border:2px solid #666;padding:0.5rem 1rem;border-radius:8px;">Thực dụng — “Dùng cấu trúc này để làm gì?”</div>
+          <div class="diagram-row mini">
+            <div class="box"><b>Ngữ pháp (Grammar)</b><br />“Chuỗi nào hợp lệ?”</div>
+            <div class="box"><b>Ngữ nghĩa (Semantics)</b><br />“Câu hợp lệ có nghĩa gì?”</div>
+            <div class="box-gray"><b>Ngữ dụng (Pragmatics)</b><br />“Dùng thế nào là tốt?”</div>
+            <div class="box-gray"><b>Cài đặt (Implementation)</b><br />“Thực thi ra sao?”</div>
           </div>
         </section>
 
         <section>
-          <h2>Lexicon và grammar</h2>
+          <h2>Ví dụ: Công thức nấu ăn</h2>
           <ul>
-            <li><strong>Lexicon (từ vựng)</strong>: tập ký hiệu kết thúc (chữ cái, số, từ khóa, toán tử, …).</li>
-            <li><strong>Grammar (ngữ pháp)</strong>: quy tắc sinh chuỗi hợp lệ; văn phạm phi ngữ cảnh dùng quy tắc dạng \(V \to w\).</li>
+            <li><strong>Ngữ pháp</strong>: “câu nào là hợp lệ” trong công thức</li>
+            <li><strong>Ngữ nghĩa</strong>: món ăn thu được tương ứng công thức</li>
+            <li><strong>Ngữ dụng</strong>: mẹo nấu, cách trình bày, lựa chọn nguyên liệu</li>
+            <li><strong>Cài đặt</strong>: bếp, dụng cụ, quy trình cụ thể để thực thi</li>
           </ul>
+          </p>
         </section>
 
         <section>
-          <h2>Ngữ pháp và cú pháp</h2>
-          <ul>
-            <li><strong>Lexicon (từ vựng)</strong>: tập các “từ” cơ bản (ký hiệu kết thúc).</li>
-            <li><strong>Grammar (ngữ pháp)</strong>: quy tắc ghép các từ thành câu/chương trình hợp lệ.</li>
-            <li>Trong ngôn ngữ lập trình, từ vựng có thể là vô hạn (ví dụ: mọi định danh). Công cụ chuẩn để mô tả cú pháp là <strong>văn phạm phi ngữ cảnh</strong> (context-free grammar).</li>
-          </ul>
+          <h2>Từ vựng và Cú pháp</h2>
+          <div class="two-col">
+            <div class="box-gray">
+              <b>Từ vựng (Lexicon)</b>
+              <ul class="mini">
+                <li>Các từ cơ bản: từ khóa, toán tử, số, định danh...</li>
+                <li>Ví dụ: bảng chữ cái tiếng việt có 29 chữ cái, có thể tạo thành các từ ('tôi', 'học',
+                  'lập trình')
+                </li>
+              </ul>
+            </div>
+            <div class="box-gray">
+              <b>Cú pháp (Syntax)</b>
+              <ul class="mini">
+                <li>Ghép token thành cấu trúc hợp lệ (câu/chương trình)</li>
+                <li>Ghép các từ tạo thành câu, phải có chủ ngữ vị ngữ ('tôi học lập trình')</li>
+              </ul>
+            </div>
+          </div>
         </section>
 
         <section>
-          <h2>Văn phạm phi ngữ cảnh: Định nghĩa</h2>
+          <h2>Ngữ pháp là gì?</h2>
+          <ul>
+            <li>Ngữ pháp = toàn bộ hệ thống quy tắc của ngôn ngữ</li>
+            <li>Bao gồm: từ vựng + cú pháp</li>
+          </ul>
           <div class="question-box">
-            <div class="question-title">Định nghĩa</div>
-            Một <span class="keyword">văn phạm phi ngữ cảnh</span> là bộ bốn \(G = (NT, T, R, S)\) trong đó:
-            <ul style="margin-top:0.5em;">
-              <li><strong>NT</strong>: tập hữu hạn ký hiệu không kết thúc (biến, loại cú pháp).</li>
-              <li><strong>T</strong>: tập hữu hạn ký hiệu kết thúc.</li>
-              <li><strong>R</strong>: tập quy tắc dạng \(V \to w\), với \(V \in NT\) và \(w\) là chuỗi trên \(T \cup NT\).</li>
-              <li><strong>S</strong>: ký hiệu bắt đầu, \(S \in NT\).</li>
+            <div class="question-title">Ví dụ nhanh</div>
+            <ul class="mini" style="margin:0.2rem 0 0 1.1rem;">
+              <li>Từ vựng: <span class="inline-code">if</span>, <span class="inline-code">else</span>,
+                <span class="inline-code">identifier</span>, <span class="inline-code">number</span>,
+                <span class="inline-code">+</span>, <span class="inline-code">;</span> ...
+              </li>
+              <li>Cú pháp: <span class="inline-code">if (E) S else S</span>, <span class="inline-code">S →
+                  S ; S</span> ...</li>
+            </ul>
+          </div>
+          <ul>
+            <li>Công cụ chuẩn để mô tả cú pháp là <b>văn phạm phi ngữ cảnh</b></li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Văn phạm phi ngữ cảnh (CFG)</h2>
+          <div class="question-box">
+            <div class="question-title">Định nghĩa (4 thành phần)</div>
+            <p class="mini" style="margin:0;">
+              Một văn phạm phi ngữ cảnh là bộ bốn
+              <span class="inline-code">G = (NT, T, R, S)</span>:
+            </p>
+            <ul class="mini" style="margin-top:0.4rem;">
+              <li><b>T</b>: tập hữu hạn các ký hiệu kết thúc (terminal)</li>
+              <li><b>NT</b>: tập hữu hạn các ký hiệu không kết thúc (non-terminal)</li>
+              <li>
+                <b>R</b>: tập các luật sinh dạng
+                <span class="inline-code">V → w</span>,
+                với <span class="inline-code">V ∈ NT</span> và
+                <span class="inline-code">w ∈ (T ∪ NT)</span>
+              </li>
+              <li><b>S</b>: ký hiệu bắt đầu, <span class="inline-code">S ∈ NT</span></li>
             </ul>
           </div>
         </section>
 
         <section>
-          <h2>Ví dụ: Chuỗi đối xứng (palindrome)</h2>
-          <p>Bảng chữ cái \(A = \{a, b\}\). Chuỗi đối xứng được định nghĩa đệ quy:</p>
-          <ul>
-            <li>Cơ sở: \(a\), \(b\) và chuỗi rỗng \(\varepsilon\) là đối xứng.</li>
-            <li>Bước: Nếu \(s\) đối xứng thì \(asa\) và \(bsb\) cũng đối xứng.</li>
+          <h2>Ví dụ CFG: Chuỗi đối xứng</h2>
+          <div class="question-box">
+            <div class="question-title">Ngữ Pháp</div>
+            <ul class="mini">
+              <li><b>T</b> = { a, b } &nbsp; (bảng chữ cái)</li>
+              <li><b>NT</b> = { P } &nbsp; (P: palindrome)</li>
+              <li><b>S</b> = P</li>
+              <li>
+                <b>R</b>:
+                <pre><code>P → ε | a | b | aPa | bPb</code></pre>
+              </li>
+            </ul>
+          </div>
+          <ul class="mini">
+            <li><b>Cơ sở</b>: <span class="inline-code">ε</span>, <span class="inline-code">a</span>, <span
+                class="inline-code">b</span> là chuỗi đối xứng</li>
+            <li><b>Đệ quy</b>: nếu <span class="inline-code">s</span> là chuỗi đối xứng thì
+              <span class="inline-code">asa</span> và <span class="inline-code">bsb</span> cũng là chuỗi
+              đối xứng
+            </li>
           </ul>
-          <p>Dạng văn phạm:</p>
-          <pre><code>P → a  |  b  |  ε  |  aPa  |  bPb</code></pre>
         </section>
 
         <section>
-          <h2>Ví dụ: Biểu thức số học</h2>
-          <p>\(G = (\{E, I\}, \{a, b, +, *, -, (, )\}, R, E)\) với \(R\) gồm:</p>
-          <pre><code>E → I  |  E+E  |  E*E  |  E-E  |  -E  |  (E)
-I → a  |  b  |  Ia  |  Ib</code></pre>
-          <p>\(E\): biểu thức; \(I\): định danh (identifier).</p>
+          <h2>Backus–Naur Form (BNF)</h2>
+          <ul class="mini">
+            <li><span class="inline-code">::=</span> : ký hiệu định nghĩa (thay cho <span class="inline-code">→</span>)
+            </li>
+            <li><span class="inline-code">&lt;A&gt;</span> : ký hiệu không kết thúc (non-terminal)</li>
+            <li>Ký hiệu kết thúc (terminal): viết trực tiếp, không đặt trong <span
+                class="inline-code">&lt;...&gt;</span></li>
+            <li><span class="inline-code">|</span> : lựa chọn giữa các vế phải</li>
+          </ul>
+          <pre><code>
+                        &lt;E&gt; ::= &lt;I&gt;
+                            | &lt;E&gt; + &lt;E&gt;
+                            | &lt;E&gt; * &lt;E&gt;
+                            | - &lt;E&gt;
+                            | ( &lt;E&gt; )
+                    </code></pre>
         </section>
 
         <section>
-          <h2>Sơ đồ văn phạm phi ngữ cảnh</h2>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;font-size:0.85em;">
-            <div style="border:1px solid #ccc;padding:0.75rem;border-radius:8px;">
-              <strong>Đầu vào</strong><br/>Chuỗi ký hiệu (mã nguồn / token)
+          <h2>Sơ đồ CFG</h2>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;font-size:0.9em;">
+            <div class="box-gray">
+              <b>Đầu vào</b><br />Chuỗi token / ký hiệu
             </div>
-            <div style="border:1px solid #ccc;padding:0.75rem;border-radius:8px;">
-              <strong>Quy tắc R</strong><br/>V → w (V: 1 ký hiệu không kết thúc)
+            <div class="box-gray">
+              <b>Luật sinh P</b><br /><span class="inline-code">V → w</span>
             </div>
-            <div style="border:1px solid #1E93AB;padding:0.75rem;border-radius:8px;grid-column:1/-1;">
-              <strong>Kết quả</strong>: Cây dẫn xuất (cấu trúc cú pháp) hoặc báo lỗi
+            <div class="box" style="grid-column:1/-1;">
+              <b>Kết quả</b>: cây dẫn xuất (parse tree) hoặc báo lỗi
             </div>
           </div>
         </section>
 
         <section>
-          <h2>Dẫn xuất (derivation)</h2>
+          <h2>Dẫn xuất (Derivation)</h2>
           <ul>
-            <li><strong>Dẫn xuất trực tiếp</strong> \(v \Rightarrow w\): thay một ký hiệu không kết thúc \(V\) trong \(v\) bằng vế phải của một quy tắc \(V \to w\).</li>
-            <li><strong>Dẫn xuất</strong> \(v \Rightarrow^* w\): tồn tại dãy hữu hạn dẫn xuất trực tiếp từ \(v\) đến \(w\).</li>
-            <li><strong>Ngôn ngữ sinh bởi G</strong>: \(L(G) = \{ w \in T^* \mid S \Rightarrow^* w \}\).</li>
+            <li><b>Dẫn xuất trực tiếp</b> <span class="inline-code">v ⇒ w</span>: thay 1 non-terminal bằng 1
+              luật</li>
+            <li><b>Dẫn xuất</b> <span class="inline-code">v ⇒* w</span>: chuỗi hữu hạn các bước</li>
+            <li><b>Ngôn ngữ sinh</b>:
+              <span class="inline-code">L(G) = { w ∈ T* | S ⇒* w }</span>
+            </li>
           </ul>
         </section>
 
         <section>
           <h2>Ví dụ dẫn xuất</h2>
-          <p>Chuỗi <span class="inline-code">ab*(a+b)</span> theo văn phạm biểu thức:</p>
-          <pre><code>E ⇒ E*E ⇒ I*E ⇒ ... ⇒ ab*(a+b)</code></pre>
-          <p>Có thể chọn thứ tự mở rộng khác nhau (trái nhất, phải nhất) nhưng cùng mô tả cấu trúc của chuỗi.</p>
-        </section>
-
-        <section>
-          <h2>Cây dẫn xuất (parse tree)</h2>
-          <ul>
-            <li><strong>Cây dẫn xuất</strong>: cây có gốc, mỗi nút gán nhãn trong \(NT \cup T \cup \{\varepsilon\}\).</li>
-            <li>Gốc là \(S\); nút trong là ký hiệu không kết thúc; nếu nút \(A\) có con \(X_1\ldots X_k\) thì \(A \to X_1\ldots X_k \in R\).</li>
-            <li>Đọc lá từ trái sang phải ta được chuỗi terminal.</li>
-            <li>Hai dẫn xuất khác nhau có thể cho cùng một cây → cấu trúc chuỗi được xác định rõ ràng.</li>
+          <p>Chuỗi: <span class="inline-code">ab*(a+b)</span></p>
+          <pre><code class="mini">E ⇒ E*E ⇒ I*E ⇒ ... ⇒ ab*(a+b)</code></pre>
+          <ul class="mini">
+            <li>Có thể dẫn xuất “trái nhất” hoặc “phải nhất”</li>
+            <li>Dù thứ tự khác nhau, mục tiêu là tái hiện <b>cấu trúc</b> của chuỗi</li>
           </ul>
         </section>
 
         <section>
-          <h2>Minh họa cây dẫn xuất</h2>
-          <p>Biểu thức <span class="inline-code">a*b+a</span> có thể có hai cây:</p>
+          <h2>Cây dẫn xuất (Parse tree)</h2>
           <ul>
-            <li><strong>Cây 1</strong>: tổng của (a*b) và a → nhân trước, cộng sau.</li>
-            <li><strong>Cây 2</strong>: tích của a và (b+a) → cộng trước, nhân sau.</li>
+            <li><b>Cây</b> biểu diễn cấu trúc lồng nhau của luật sinh</li>
+            <li>Lá đọc trái→phải cho ra chuỗi terminal</li>
+            <li>Hai dẫn xuất khác nhau có thể cho <b>cùng</b> một cây</li>
           </ul>
-          <p>Hai cây khác nhau cho cùng chuỗi → vấn đề <strong>nhập nhằng (ambiguity)</strong>.</p>
+          <div class="question-box">
+            <div class="question-title">Vì sao cây quan trọng?</div>
+            <ul class="mini" style="margin-top:0.3rem;">
+              <li>Chuỗi chỉ là ký tự; cây cho biết “gắn kết” và “nhóm” (grouping)</li>
+              <li>Là nền tảng để xây AST, kiểm tra kiểu, sinh mã…</li>
+            </ul>
+          </div>
         </section>
 
         <section>
-          <h2>Nhập nhằng (ambiguity)</h2>
+          <h2>Tính mơ hồ (Ambiguity)</h2>
+          <p>Ví dụ chuỗi <span class="inline-code">a*b+a</span> có thể có 2 cây:</p>
+          <ul>
+            <li>(a*b)+a &nbsp; <span class="pill">nhân trước</span></li>
+            <li>a*(b+a) &nbsp; <span class="pill">cộng trước</span></li>
+          </ul>
           <div class="question-box">
             <div class="question-title">Định nghĩa</div>
-            Văn phạm \(G\) là <span class="keyword">nhập nhằng</span> nếu tồn tại ít nhất một chuỗi trong \(L(G)\) có nhiều hơn một cây dẫn xuất.
+            CFG <span class="keyword">mơ hồ</span> nếu tồn tại chuỗi trong <span class="inline-code">L(G)</span> có
+            <b>&gt; 1</b> cây dẫn xuất.
           </div>
-          <p>Văn phạm nhập nhằng không phù hợp để mô tả ngôn ngữ lập trình vì không dịch chương trình một cách duy nhất. Có thể chuyển sang văn phạm tương đương không nhập nhằng (ví dụ: thể hiện thứ tự ưu tiên toán tử).</p>
         </section>
 
         <section>
-          <h2>BNF (Backus–Naur Form)</h2>
-          <ul>
-            <li>Ký hiệu trong định nghĩa AlGOL 60: <span class="inline-code">::=</span> thay cho \(\to\), non-terminal trong \(\langle \rangle\), nhiều vế phải tách bằng <span class="inline-code">|</span>.</li>
-            <li>Ví dụ: <span class="inline-code">&lt;Exp&gt; ::= &lt;Ide&gt; | &lt;Exp&gt;+&lt;Exp&gt; | &lt;Exp&gt;*&lt;Exp&gt; | ...</span></li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Câu hỏi nhanh – Cú pháp</h2>
+          <h2>Câu hỏi (Phần 1)</h2>
           <ol>
-            <li>Tại sao văn phạm nhập nhằng không phù hợp cho ngôn ngữ lập trình?</li>
-            <li>Sự khác nhau giữa “dẫn xuất trực tiếp” và “dẫn xuất” (⇒ và ⇒*)?</li>
-            <li>Cây dẫn xuất cho biết thông tin gì mà chuỗi ký tự không cho?</li>
+            <li>Vì sao CFG mơ hồ gây khó cho biên dịch?</li>
+            <li>Khác nhau giữa <span class="inline-code">⇒</span> và <span class="inline-code">⇒*</span>?
+            </li>
+            <li>Cây dẫn xuất cho biết điều gì mà chuỗi không thể hiện?</li>
           </ol>
-        </section>
-
-        <section>
-          <h2>Ràng buộc cú pháp theo ngữ cảnh</h2>
-          <p>Đúng cú pháp (theo văn phạm) chưa đủ để chương trình “hợp lệ”. Cần thêm ràng buộc phụ thuộc ngữ cảnh:</p>
-          <ul>
-            <li>Định danh phải được khai báo trước khi dùng.</li>
-            <li>Số tham số thực phải bằng số tham số hình thức.</li>
-            <li>Kiểu biểu thức phải tương thích với biến trong phép gán.</li>
-          </ul>
-          <p>Những ràng buộc này thường gọi là <strong>ngữ nghĩa tĩnh</strong> (static semantics).</p>
-        </section>
-
-        <section>
-          <h2>Cú pháp vs ngữ nghĩa tĩnh vs ngữ nghĩa động</h2>
-          <table>
-            <thead>
-              <tr><th>Khái niệm</th><th>Mô tả</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Cú pháp</td><td>Mô tả được bằng văn phạm phi ngữ cảnh</td></tr>
-              <tr><td>Ngữ nghĩa tĩnh</td><td>Ràng buộc kiểm tra được khi biên dịch (không cần chạy)</td></tr>
-              <tr><td>Ngữ nghĩa động</td><td>Hành vi khi thực thi chương trình</td></tr>
-            </tbody>
-          </table>
-        </section>
-
-        <section>
-          <h2>Sơ đồ luồng trình biên dịch</h2>
-          <div style="font-size:0.8em;line-height:1.5;">
-            <p><strong>Mã nguồn</strong> → Scanner → <strong>Token</strong> → Parser → <strong>Cây dẫn xuất / AST</strong> → Phân tích ngữ nghĩa (bảng ký hiệu) → <strong>Mã trung gian</strong> → Tối ưu → <strong>Mã đích</strong></p>
-          </div>
-          <p>Lexical và syntax thường đan xen: scanner cung cấp token khi parser cần.</p>
-        </section>
-
-        <section>
-          <h2>Cấu trúc trình biên dịch (tổng quan)</h2>
-          <p>Trình biên dịch thường gồm nhiều giai đoạn xử lý nối tiếp:</p>
-          <ol>
-            <li><strong>Phân tích từ vựng (lexical analysis)</strong>: nguồn → danh sách token.</li>
-            <li><strong>Phân tích cú pháp (syntax analysis)</strong>: token → cây dẫn xuất.</li>
-            <li><strong>Phân tích ngữ nghĩa</strong>: kiểm tra ràng buộc ngữ cảnh, bổ sung thông tin (kiểu, bảng ký hiệu).</li>
-            <li><strong>Sinh mã trung gian / tối ưu / sinh mã đích</strong>.</li>
-          </ol>
-        </section>
-
-        <section>
-          <h2>Phân tích từ vựng và cú pháp</h2>
-          <ul>
-            <li><strong>Scanner</strong>: đọc ký tự, nhóm thành token (định danh, số, từ khóa, toán tử, dấu chấm phẩy, v.v.).</li>
-            <li><strong>Parser</strong>: dùng văn phạm để xây cây dẫn xuất từ dãy token. Nếu không xây được → báo lỗi cú pháp.</li>
-            <li>Cây dẫn xuất (sau khi bỏ bớt chi tiết) trở thành <strong>cây cú pháp trừu tượng (AST)</strong>, dùng cho các giai đoạn sau.</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Bảng ký hiệu (symbol table)</h2>
-          <ul>
-            <li>Lưu thông tin gắn với mỗi tên: kiểu, nơi khai báo, phạm vi, v.v.</li>
-            <li>Dùng trong phân tích ngữ nghĩa và sinh mã (truy cập biến theo offset, kiểm tra kiểu).</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Ngữ nghĩa hình thức</h2>
-          <p>Mô tả ngữ nghĩa cần vừa chính xác vừa linh hoạt (không gắn chặt một máy cụ thể). Hai họ phương pháp chính:</p>
-          <ul>
-            <li><strong>Denotational semantics</strong>: ý nghĩa chương trình là hàm toán học (input → output) trên các cấu trúc như môi trường, bộ nhớ.</li>
-            <li><strong>Operational semantics</strong>: mô tả hành vi máy trừu tượng bằng các bước chuyển trạng thái (transition).</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>SOS – Structured Operational Semantics</h2>
-          <p>Ví dụ kỹ thuật dùng hệ thống chuyển trạng thái:</p>
-          <ul>
-            <li><strong>Trạng thái</strong> \(\sigma\): ánh xạ biến → giá trị (bộ nhớ đơn giản).</li>
-            <li><strong>Chuyển</strong> dạng \((c, \sigma) \to \tau\) hoặc \((c, \sigma) \to (c', \sigma')\): một bước thực thi lệnh \(c\).</li>
-            <li>Quy tắc cho từng cấu trúc (skip, gán, if, while, seq) định nghĩa đệ quy ý nghĩa thực thi.</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Ví dụ quy tắc SOS: skip và gán</h2>
-          <pre><code>(skip, σ) → σ
-
-(σ(X) xác định)  ⇒  (X := n, σ) → σ[X←n]</code></pre>
-          <p>Điều kiện: dạng phân số (premise / conclusion) để mô tả quy tắc suy diễn.</p>
-        </section>
-
-        <section>
-          <h2>Ví dụ quy tắc SOS: if và while</h2>
-          <p>Nếu điều kiện true thì thực thi nhánh then, nếu false thì nhánh else. Vòng lặp while được mở thành if + seq + while (đệ quy).</p>
-          <p>Từ đó có thể suy ra cả chuỗi chuyển trạng thái cho một chương trình và trạng thái cuối (nếu kết thúc).</p>
-        </section>
-
-        <section>
-          <h2>Tính toán kết thúc và phân kỳ</h2>
-          <ul>
-            <li><strong>Tính toán kết thúc</strong>: dãy chuyển hữu hạn dẫn đến trạng thái không còn lệnh nào (chỉ còn \(\sigma\)).</li>
-            <li><strong>Tính toán phân kỳ</strong>: dãy chuyển vô hạn (ví dụ while true do skip).</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Ví dụ trạng thái và chuyển (SOS)</h2>
-          <p>Trạng thái \(\sigma = [(X, 3), (Y, 5)]\). Sau <span class="inline-code">X := 7</span> thì \(\sigma' = [(X, 7), (Y, 5)]\). Chuyển: \((X := 7, \sigma) \to \sigma'\). Vòng lặp while được mở thành if + seq + while (đệ quy trên trạng thái và lệnh còn lại).</p>
-        </section>
-
-        <section>
-          <h2>Pragmatics và Implementation</h2>
-          <ul>
-            <li><strong>Pragmatics</strong>: trả lời “cấu trúc này dùng để làm gì?”; gắn với phong cách lập trình và kỹ thuật phần mềm.</li>
-            <li><strong>Implementation</strong>: xây trình biên dịch/thông dịch và máy trừu tượng; thường kết hợp biên dịch + thực thi (mã trung gian, RTS).</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Tóm tắt – Mô tả ngôn ngữ</h2>
-          <ul>
-            <li>Phân biệt cú pháp, ngữ nghĩa tĩnh, ngữ nghĩa động, pragmatics, implementation.</li>
-            <li>Văn phạm phi ngữ cảnh: công cụ chuẩn cho cú pháp; dẫn xuất và cây dẫn xuất; nhập nhằng và cách tránh.</li>
-            <li>Trình biên dịch: lexical → syntax → semantic → intermediate/optimisation → code generation.</li>
-            <li>Ngữ nghĩa hình thức: denotational vs operational; SOS dùng chuyển trạng thái để định nghĩa hành vi.</li>
-          </ul>
         </section>
       </section>
 
-      <!-- PHẦN 2: TÊN VÀ MÔI TRƯỜNG -->
+      <!-- ==========================================================
+                2) BIÊN DỊCH, NGỮ DỤNG VÀ CÀI ĐẶT
+            =========================================================== -->
       <section>
         <section>
           <h1>
             <span class="text-light">2.</span><br />
-            Tên và môi trường
+            Ngữ nghĩa và Cài đặt
           </h1>
         </section>
 
         <section>
-          <h2>Tên và đối tượng biểu thị</h2>
+          <h2>Biên dịch là gì?</h2>
           <ul>
-            <li><strong>Tên (name)</strong>: chuỗi ký tự dùng để chỉ một đối tượng khác (biến, thủ tục, kiểu, hằng, …).</li>
-            <li><strong>Đối tượng biểu thị (denotable object)</strong>: đối tượng có thể gán cho một tên (biến, tham số, thủ tục/hàm, kiểu do người dùng định nghĩa, nhãn, mô-đun, hằng, ngoại lệ; cũng như các đối tượng định nghĩa sẵn của ngôn ngữ).</li>
+            <li><b>Biên dịch</b>: chuyển chương trình từ ngôn ngữ nguồn sang ngôn ngữ đích (thường là mã
+              trung gian/máy)</li>
+            <li>Đầu ra thường là chương trình mới (có thể chạy nhiều lần)</li>
           </ul>
-        </section>
-
-        <section>
-          <h2>Tên ≠ Đối tượng</h2>
-          <ul>
-            <li>Một tên có thể chỉ nhiều đối tượng ở những vị trí khác nhau trong chương trình (che khuất).</li>
-            <li>Một đối tượng có thể có nhiều tên (aliasing, ví dụ tham số truyền theo tham chiếu).</li>
-            <li>Liên kết tên–đối tượng được tạo ở nhiều thời điểm: thiết kế ngôn ngữ, viết chương trình, biên dịch, thời gian chạy.</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Môi trường (environment)</h2>
           <div class="question-box">
-            <div class="question-title">Định nghĩa</div>
-            <span class="keyword">Môi trường (tham chiếu)</span> tại một điểm trong chương trình và tại một thời điểm thực thi là tập các liên kết giữa tên và đối tượng biểu thị đang có hiệu lực tại đó.
+            <div class="question-title">Ý tưởng cốt lõi</div>
+            Tách dịch (compile) khỏi chạy (execute) để tăng hiệu năng và tối ưu hóa.
           </div>
-          <p>Môi trường không tồn tại ở mức máy vật lý; nó là bộ phận của máy trừu tượng, được mô phỏng bởi mỗi hiện thực ngôn ngữ.</p>
         </section>
 
         <section>
-          <h2>Sơ đồ tên – môi trường – đối tượng</h2>
-          <div style="display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;font-size:0.9em;">
-            <div style="border:2px solid #1E93AB;padding:0.5rem 1rem;border-radius:8px;">Tên (chuỗi ký tự)</div>
-            <span>→</span>
-            <div style="border:2px solid #666;padding:0.5rem 1rem;border-radius:8px;">Môi trường (liên kết)</div>
-            <span>→</span>
-            <div style="border:2px solid #E62727;padding:0.5rem 1rem;border-radius:8px;">Đối tượng biểu thị</div>
+          <h2>2 giai đoạn trong biên dịch</h2>
+          <div class="two-col">
+            <div class="box">
+              <b>Giai đoạn Phân tích</b>
+              <ul class="mini">
+                <li>Phân tích từ vựng</li>
+                <li>Phân tích cú pháp</li>
+                <li>Phân tích ngữ nghĩa tĩnh</li>
+              </ul>
+            </div>
+            <div class="box">
+              <b>Giai đoạn Tổng hợp</b>
+              <ul class="mini">
+                <li>Sinh mã trung gian</li>
+                <li>Tối ưu hóa</li>
+                <li>Sinh mã đích</li>
+              </ul>
+            </div>
           </div>
-          <p style="margin-top:1rem;">Môi trường tại mỗi điểm chương trình quyết định “tên này hiện trỏ tới đối tượng nào”.</p>
         </section>
 
         <section>
-          <h2>Khai báo (declaration)</h2>
+          <h2>Giai đoạn Phân tích</h2>
           <ul>
-            <li>Khai báo là cấu trúc đưa một liên kết tên–đối tượng vào môi trường.</li>
-            <li>Ví dụ: khai báo biến <span class="inline-code">int x;</span>, khai báo hàm <span class="inline-code">int f() { ... }</span>, khai báo kiểu <span class="inline-code">type T = int;</span>.</li>
-            <li>Một số ngôn ngữ cho phép khai báo ngầm (tên được tạo khi lần đầu gán).</li>
+            <li><b>Phân tích từ vựng (Scaner/Lexer/Tokenizers)</b>: ký tự → từ cơ bản (id, num, keyword,
+              operator...)</li>
+            <li><b>Phân tích cú pháp (Parser)</b>: Các từ cơ bản → cây dẫn xuất</li>
+            <li><b>Phân tích ngữ nghĩa tĩnh</b>: ràng buộc theo ngữ cảnh (khai báo, số tham số, kiểu...)
+            </li>
           </ul>
-        </section>
-
-        <section>
-          <h2>Khối (block)</h2>
           <div class="question-box">
-            <div class="question-title">Định nghĩa</div>
-            Một <span class="keyword">khối</span> là vùng văn bản chương trình, được xác định bởi dấu bắt đầu và kết thúc, có thể chứa các khai báo cục bộ (chỉ hiệu lực trong vùng đó).
+            <div class="question-title">Các ràng buộc ngữ nghĩa tĩnh</div>
+            <ul class="mini" style="margin-top:0.3rem;">
+              <li>Biến phải khai báo trước khi dùng</li>
+              <li>Khớp tham số khi gọi hàm</li>
+              <li>Tương thích kiểu, ví dụ trong phép gán</li>
+            </ul>
           </div>
-          <p>Ví dụ: <span class="inline-code">{ int a; int b; ... }</span> (C/Java); thụt lề trong Python; <span class="inline-code">begin ... end</span> trong Pascal.</p>
         </section>
 
         <section>
-          <h2>Hai loại khối</h2>
+          <h2>Giai đoạn Tổng hợp</h2>
           <ul>
-            <li><strong>Khối gắn với thủ tục/hàm</strong>: thân thủ tục (kể cả khai báo tham số hình thức).</li>
-            <li><strong>Khối dòng (in-line block)</strong>: khối không phải thân thủ tục, có thể xuất hiện ở chỗ có thể đặt lệnh.</li>
+            <li>
+              <b>Sinh mã trung gian</b>:
+              chuyển chương trình sang dạng biểu diễn trung gian,
+              <i>không phụ thuộc kiến trúc máy</i>, thuận tiện cho phân tích và tối ưu
+            </li>
+            <li>
+              <b>Tối ưu hoá</b>:
+              cải thiện chương trình mà <i>không làm thay đổi ý nghĩa</i>,
+              ví dụ loại bỏ mã không dùng, gom biểu thức lặp, tối ưu vòng lặp
+            </li>
+            <li>
+              <b>Sinh mã đích</b>:
+              chuyển mã trung gian thành mã cho máy cụ thể
+              (chọn lệnh, gán thanh ghi, bố trí bộ nhớ)
+            </li>
           </ul>
         </section>
 
+
         <section>
-          <h2>Khối lồng nhau</h2>
+          <h2>Ngữ nghĩa động</h2>
           <ul>
-            <li>Nhiều ngôn ngữ cho phép khối lồng nhau: định nghĩa một khối nằm trọn trong khối khác.</li>
-            <li>Không cho phép “mở A, mở B, đóng A, đóng B” — thứ tự đóng phải ngược với thứ tự mở (LIFO).</li>
+            <li>Mô tả hành vi khi thực thi</li>
+            <li>Thường mô hình hóa bằng <b>máy trừu tượng</b> và <b>chuyển trạng thái</b></li>
           </ul>
+          <div class="question-box">
+            <div class="question-title">Khái niệm cốt lõi</div>
+            <span class="keyword">Trạng thái (State)</span> + <span class="keyword">Quy tắc chuyển
+              (Transition)</span> ⇒ diễn tả từng bước thực thi.
+          </div>
         </section>
 
         <section>
-          <h2>Quy tắc hiển thị (visibility) cơ bản</h2>
-          <p>Tên cục bộ của khối \(B\):</p>
+          <h2>Trạng thái (State)</h2>
           <ul>
-            <li>Hiển thị trong \(B\) và trong mọi khối lồng trong \(B\).</li>
-            <li>Trừ khi có khai báo mới cùng tên bên trong — khi đó khai báo mới che (hide) khai báo ngoài; khi ra khỏi khối trong, khai báo ngoài lại có hiệu lực.</li>
+            <li>Trạng thái <span class="inline-code">σ</span>: ánh xạ <span class="inline-code">Var →
+                Value</span></li>
+            <li>Cập nhật: <span class="inline-code">σ[X ← v]</span></li>
+            <li>Tra cứu: <span class="inline-code">σ(X)</span></li>
           </ul>
+          <pre><code class="mini">σ = [(X,3), (Y,5)]
+σ[X←7] = [(X,7), (Y,5)]</code></pre>
         </section>
 
         <section>
-          <h2>Ba thành phần môi trường</h2>
+          <h2>Cơ chế hoạt động: chuyển trạng thái</h2>
           <ul>
-            <li><strong>Môi trường cục bộ</strong>: liên kết cho các tên khai báo trong khối (và tham số hình thức nếu là khối thủ tục).</li>
-            <li><strong>Môi trường không cục bộ</strong>: liên kết cho tên nhìn thấy từ trong khối nhưng không khai báo tại đó (kế thừa từ khối bên ngoài).</li>
-            <li><strong>Môi trường toàn cục</strong>: liên kết có thể dùng ở mọi khối (thường là tên khai báo ở mức chương trình hoặc nhập từ mô-đun).</li>
+            <li>Dạng kết thúc: <span class="inline-code">⟨c, σ⟩ → τ</span></li>
+            <li>Dạng từng bước: <span class="inline-code">⟨c, σ⟩ → ⟨c', σ'⟩</span></li>
+            <li>Quy tắc suy diễn: “premise / conclusion” (dạng phân số)</li>
           </ul>
+          <pre><code class="mini">(skip, σ) → σ
+(X := n, σ) → σ[X←n]</code></pre>
         </section>
 
         <section>
-          <h2>Thao tác trên môi trường</h2>
-          <p>Khi vào khối: tạo liên kết cho tên cục bộ; tạm vô hiệu hóa liên kết của tên bị che. Khi ra khỏi khối: hủy liên kết cục bộ; khôi phục liên kết đã bị che.</p>
-          <p>Thao tác trên đối tượng: tạo/hủy đối tượng (cấp phát/thu hồi bộ nhớ), truy cập và sửa đổi giá trị (nếu đối tượng cho phép).</p>
-        </section>
-
-        <section>
-          <h2>Phạm vi (scope)</h2>
-          <p><strong>Phạm vi của một khai báo</strong>: phần chương trình trong đó khai báo đó được coi là hiển thị (theo quy tắc của ngôn ngữ).</p>
-          <p>Quy tắc xác định phạm vi gọi là <strong>quy tắc phạm vi (scope rules)</strong>. Hai dạng chính: <strong>phạm vi tĩnh (static/lexical)</strong> và <strong>phạm vi động (dynamic)</strong>.</p>
-        </section>
-
-        <section>
-          <h2>Hai cách hiểu “lồng nhau”</h2>
+          <h2>Ngữ dụng</h2>
           <ul>
-            <li><strong>Tĩnh (theo văn bản)</strong>: khối B lồng trong A nếu trong mã nguồn, B nằm trọn trong A.</li>
-            <li><strong>Động (theo thời gian)</strong>: “khối gần nhất” là khối vừa được vào (kích hoạt) và chưa ra.</li>
+            <li>Không phải đúng/sai, mà là <b>tốt/xấu</b> (phong cách, khả năng bảo trì)</li>
+            <li>Gắn chặt với kỹ thuật phần mềm và cộng đồng người dùng</li>
           </ul>
-          <p>Quy tắc phạm vi tĩnh dùng cách hiểu thứ nhất; quy tắc phạm vi động dùng cách thứ hai.</p>
+          <div class="question-box">
+            <div class="question-title">Tiêu chí đánh giá (gợi ý)</div>
+            <ul class="mini" style="margin-top:0.3rem;">
+              <li>Độ rõ ràng/đọc hiểu</li>
+              <li>Khả năng bảo trì, kiểm thử</li>
+              <li>Ít lỗi do nhầm lẫn</li>
+              <li>Hiệu năng (khi cần), tính nhất quán phong cách</li>
+            </ul>
+          </div>
         </section>
 
         <section>
-          <h2>Phạm vi tĩnh (static scope)</h2>
-          <ul>
-            <li>Liên kết hợp lệ cho một tên tại điểm \(P\) chỉ phụ thuộc vào <strong>cấu trúc văn bản</strong> chương trình (khối nào chứa \(P\), khối nào chứa khai báo).</li>
-            <li>Trình biên dịch có thể xác định được “tên này trỏ tới khai báo nào” khi biên dịch.</li>
-            <li>Quy tắc điển hình: <strong>nearest nested scope</strong> — tìm từ khối hiện tại ra ngoài, chọn khai báo gần nhất.</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Ví dụ phạm vi tĩnh</h2>
-          <pre><code>A: { int x = 0;
-  void fie() { x = 1; }
-  B: { int x;
-       fie();
-     }
-  write(x);
+          <h2>Ví dụ ngữ dụng</h2>
+          <div class="two-col">
+            <div class="box-gray">
+              <b>Ví dụ “xấu”</b>
+              <pre><code class="mini">if (cond) goto L;
+...
+L: ...</code></pre>
+              <p class="mini">Khó đọc, khó chứng minh tính đúng, khó bảo trì</p>
+            </div>
+            <div class="box-gray">
+              <b>Ví dụ “tốt”</b>
+              <pre><code class="mini">if (cond) {
+  ...
+} else {
+  ...
 }</code></pre>
-          <p>Trong <span class="inline-code">fie</span>, <span class="inline-code">x</span> theo phạm vi tĩnh là <span class="inline-code">x</span> của khối A (nơi khai báo <span class="inline-code">fie</span>). Sau <span class="inline-code">fie()</span>, <span class="inline-code">write(x)</span> in 1.</p>
+              <p class="mini">Cấu trúc rõ ràng, dễ kiểm thử</p>
+            </div>
+          </div>
         </section>
 
         <section>
-          <h2>Phạm vi động (dynamic scope)</h2>
+          <h2>Cài đặt (Implementation)</h2>
           <ul>
-            <li>Liên kết hợp lệ cho tên \(X\) tại điểm \(P\) là <strong>liên kết được tạo gần nhất (theo thời gian) cho \(X\)</strong> mà vẫn còn hiệu lực khi điều khiển tới \(P\).</li>
-            <li>Phụ thuộc thứ tự gọi/ vào–ra khối lúc chạy, không chỉ cấu trúc văn bản.</li>
+            <li><b>Máy trừu tượng</b>: cấu trúc dữ liệu + thuật toán để lưu trữ &amp; thực thi chương trình
+            </li>
+            <li><b>Hai chiến lược chính</b>:
+              <ul>
+                <li><b>Thông dịch</b> (interpretation)</li>
+                <li><b>Biên dịch</b> (compilation)</li>
+              </ul>
+            </li>
+            <li><b>Giải pháp lai</b>: bytecode + VM, runtime support…</li>
           </ul>
         </section>
 
         <section>
-          <h2>Ví dụ phạm vi động</h2>
-          <p>Cùng đoạn mã: khi gọi <span class="inline-code">fie()</span> từ trong B, “x gần nhất còn hoạt động” có thể là <span class="inline-code">x</span> của B. Khi đó <span class="inline-code">fie()</span> gán 1 cho x của B; sau khi ra B, <span class="inline-code">write(x)</span> in x của A (vẫn 0). Kết quả in ra khác phạm vi tĩnh.</p>
-        </section>
-
-        <section>
-          <h2>So sánh phạm vi tĩnh và động</h2>
+          <h2>Thông dịch vs Biên dịch</h2>
           <table>
             <thead>
-              <tr><th>Tiêu chí</th><th>Phạm vi tĩnh</th><th>Phạm vi động</th></tr>
+              <tr>
+                <th>Tiêu chí</th>
+                <th>Thông dịch</th>
+                <th>Biên dịch</th>
+              </tr>
             </thead>
             <tbody>
-              <tr><td>Xác định bởi</td><td>Cấu trúc văn bản</td><td>Thứ tự kích hoạt lúc chạy</td></tr>
-              <tr><td>Thời điểm xác định</td><td>Biên dịch</td><td>Thời gian chạy</td></tr>
-              <tr><td>Hiệu quả truy cập</td><td>Tốt (offset/static chain)</td><td>Thường kém hơn (tìm trên stack/A-list)</td></tr>
-              <tr><td>Đọc chương trình</td><td>Dễ suy luận theo văn bản</td><td>Khó hơn, phụ thuộc luồng gọi</td></tr>
+              <tr>
+                <td>Overhead</td>
+                <td>Có giải mã lúc chạy</td>
+                <td>Giải mã/lập kế hoạch trước</td>
+              </tr>
+              <tr>
+                <td>Hiệu năng</td>
+                <td>Thường thấp hơn</td>
+                <td>Thường cao hơn</td>
+              </tr>
+              <tr>
+                <td>Debug/REPL</td>
+                <td>Dễ tương tác</td>
+                <td>Cần thêm mapping/symbol</td>
+              </tr>
+              <tr>
+                <td>Phổ biến</td>
+                <td>Script/VM</td>
+                <td>Hệ thống/hiệu năng</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </section>
+
+      <!-- ==========================================================
+                3) BIẾN, KHỐI VÀ MÔI TRƯỜNG
+            =========================================================== -->
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">3.</span><br />
+            Tên, Đối tượng được biểu thị và Khối
+          </h1>
+        </section>
+
+        <section>
+          <h2>Tên và Đối tượng</h2>
+          <ul>
+            <li><b>Tên (Name)</b>: chuỗi ký tự dùng để chỉ một thực thể</li>
+            <li><b>Đối tượng biểu thị (Denotable object)</b>: thứ mà tên “trỏ tới” (biến, hằng, hàm, kiểu,
+              nhãn...)</li>
+          </ul>
+          <div class="question-box">
+            <div class="question-title">Điểm mấu chốt</div>
+            <span class="keyword">Tên ≠ Đối tượng</span>: một tên có thể che khuất tên khác; một đối tượng
+            có thể có nhiều tên.
+          </div>
+        </section>
+
+        <section>
+          <h2>Ví dụ: Che khuất tên</h2>
+          <pre><code class="mini">// Mã giả
+int x = 10;
+{
+    int y = x + 1;
+    int x = 99;   // che khuất x bên ngoài
+    print(x, y);
+}
+print(x);</code></pre>
+          <ul class="mini">
+            <li>Trong khối trong: <span class="inline-code">x = 99</span>, <span class="inline-code">y =
+                11</span></li>
+            <li>Sau khi ra khối: <span class="inline-code">x = 10</span></li>
+          </ul>
+        </section>
+
+        <!-- aliasing -->
+        <section>
+          <h2>Bí danh (Aliasing)</h2>
+          <ul>
+            <li>Nhiều tên cùng trỏ tới <b>một đối tượng</b> (ô nhớ)</li>
+            <li>Xuất hiện trong: con trỏ, tham chiếu, tham số truyền theo tham chiếu</li>
+          </ul>
+          <div class="question-box">
+            <div class="question-title">Hệ quả</div>
+            Thay đổi qua một tên có thể ảnh hưởng đến giá trị nhìn thấy qua tên khác → khó suy luận, dễ lỗi.
+          </div>
+        </section>
+
+        <section>
+          <h2>Khối (Block)</h2>
+          <div class="question-box">
+            <div class="question-title">Định nghĩa</div>
+            <span class="keyword">Khối</span> là vùng văn bản chương trình có ranh giới xác định,
+            trong đó có thể xuất hiện các <b>khai báo cục bộ</b>.
+          </div>
+          <ul class="mini">
+            <li>C / Java: <span class="inline-code">{ ... }</span></li>
+            <li>Pascal: <span class="inline-code">begin ... end</span></li>
+            <li>Python: khối xác định bằng thụt lề</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Khối lồng nhau và che khuất</h2>
+          <ul>
+            <li>Khối có thể <b>lồng nhau</b> (nesting)</li>
+            <li>Đóng/mở theo nguyên tắc <b>LIFO</b></li>
+            <li>Khai báo trong khối trong có thể <b>che</b> khai báo cùng tên ở khối ngoài</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Ví dụ Khối</h2>
+          <pre><code class="mini">// Giả mã
+int x = 1;
+{
+    int y = 2;
+    {
+        int x = 3;   // che khuất x bên ngoài
+        print(x, y);
+    }
+    print(x, y);
+}
+print(x);</code></pre>
+          <ul class="mini">
+            <li>Khối trong cùng: <span class="inline-code">x = 3</span>, <span class="inline-code">y =
+                2</span></li>
+            <li>Khối giữa: <span class="inline-code">x = 1</span>, <span class="inline-code">y = 2</span>
+            </li>
+            <li>Ngoài mọi khối: <span class="inline-code">x = 1</span></li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Câu hỏi tổng hợp</h2>
+          <ol>
+            <li>Vì sao nói tên và đối tượng được biểu thị là hai khái niệm khác nhau?</li>
+            <li>Cho một ví dụ trong đó một đối tượng có nhiều tên.</li>
+            <li>Cho một ví dụ che khuất tên do khối lồng nhau.</li>
+          </ol>
+        </section>
+      </section>
+
+      <!-- ==========================================================
+                4) MÔI TRƯỜNG VÀ PHẠM VI
+            ========================================================== -->
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">4.</span><br />
+            Môi trường và Phạm vi
+          </h1>
+        </section>
+
+        <section>
+          <h2>Môi trường (Environment)</h2>
+          <div class="question-box">
+            <div class="question-title">Định nghĩa</div>
+            <span class="keyword">Môi trường</span> tại một điểm chương trình và thời điểm thực thi
+            là tập các liên kết <b>tên → đối tượng</b> đang có hiệu lực.
+          </div>
+          <div class="diagram-row" style="margin-top:1rem;">
+            <div class="box">Tên</div>
+            <div>→</div>
+            <div class="box-gray">Môi trường</div>
+            <div>→</div>
+            <div class="box-red">Đối tượng</div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Phân loại biến theo môi trường</h2>
+          <div class="two-col">
+            <div class="box-gray">
+              <b>Cục bộ (Local)</b>
+              <p class="mini">Khai báo trong khối hiện tại</p>
+            </div>
+            <div class="box-gray">
+              <b>Phi cục bộ (Non-local)</b>
+              <p class="mini">Nhìn thấy trong khối nhưng khai báo ở khối ngoài</p>
+            </div>
+          </div>
+          <div class="box-gray" style="margin-top:1rem;">
+            <b>Toàn cục (Global)</b>
+            <p class="mini">Có thể truy cập ở mọi khối (mức chương trình / mô-đun)</p>
+          </div>
+        </section>
+
+        <section>
+          <h2>Phạm vi</h2>
+          <ul>
+            <li><b>Phạm vi của một khai báo</b>: phần chương trình nơi tên đó được coi là hiển thị</li>
+            <li>Quy tắc xác định phạm vi gọi </li>
+            <li>Hai dạng chính: Tĩnh (Static) và Động (Dynamic)</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Phạm vi tĩnh</h2>
+          <ul>
+            <li>Liên kết tên–đối tượng phụ thuộc <b>cấu trúc văn bản</b></li>
+            <li>Quy tắc: <b>nearest nested scope</b></li>
+            <li>Có thể xác định tại <b>thời điểm biên dịch</b></li>
+          </ul>
+          <pre><code class="mini">int x = 0;
+void fie() { 
+    x = 1; 
+}
+B: { 
+    int x; 
+    fie(); 
+}
+write(x);
+</code></pre>
+        </section>
+
+        <section>
+          <h2>Ví dụ: Phạm vi tĩnh</h2>
+          <pre><code class="mini">int x = 0;
+void f() {
+    print(x);
+}
+void g() {
+    int x = 1;
+    f();
+}
+g();</code></pre>
+          <ul class="mini">
+            <li><span class="inline-code">f</span> được định nghĩa ở mức toàn cục. Trong <span
+                class="inline-code">f</span>, <span class="inline-code">x</span> luôn là <b>x
+                toàn cục</b>. Kết quả in ra: <b>0</b></li>
+          </ul>
+          <div class="question-box">
+            <div class="question-title">Nhận xét</div>
+            Liên kết tên–đối tượng được quyết định bởi <b>vị trí định nghĩa trong mã nguồn</b>.
+          </div>
+        </section>
+
+        <section>
+          <h2>Phạm vi động</h2>
+          <ul>
+            <li>Liên kết phụ thuộc <b>thứ tự gọi/kích hoạt lúc chạy</b></li>
+            <li>Tên trỏ tới liên kết “gần nhất theo thời gian” còn hiệu lực</li>
+          </ul>
+          <div class="question-box">
+            <div class="question-title">Hệ quả</div>
+            Hành vi chương trình phụ thuộc luồng gọi → khó đọc, khó dự đoán, khó tối ưu.
+          </div>
+        </section>
+
+        <section>
+          <h2>Ví dụ: Phạm vi động </h2>
+          <pre><code class="mini">int x = 0;
+void f() {
+    print(x);
+}
+void g() {
+    int x = 1;
+    f();
+}
+g();</code></pre>
+          <ul class="mini">
+            <li>Khi <span class="inline-code">f</span> được gọi từ <span class="inline-code">g</span>. <span
+                class="inline-code">x</span> gần nhất còn hiệu lực là <b>x của g</b>. Kết quả in ra:
+              <b>1</b>
+            </li>
+          </ul>
+          <div class="question-box">
+            <div class="question-title">Nhận xét</div>
+            Liên kết phụ thuộc <b>chuỗi gọi lúc chạy</b>, không chỉ mã nguồn.
+          </div>
+        </section>
+
+        <section>
+          <h2>So sánh Static và Dynamic Scope</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Tiêu chí</th>
+                <th>Static</th>
+                <th>Dynamic</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Cơ sở xác định</td>
+                <td>Cấu trúc văn bản</td>
+                <td>Thứ tự gọi</td>
+              </tr>
+              <tr>
+                <td>Thời điểm</td>
+                <td>Biên dịch</td>
+                <td>Runtime</td>
+              </tr>
+              <tr>
+                <td>Dễ suy luận</td>
+                <td>Cao</td>
+                <td>Thấp</td>
+              </tr>
+              <tr>
+                <td>Hiệu năng</td>
+                <td>Tốt</td>
+                <td>Kém hơn</td>
+              </tr>
             </tbody>
           </table>
         </section>
 
         <section>
-          <h2>Một số vấn đề phạm vi</h2>
+          <h2>Tại sao phạm vi tĩnh phổ biến?</h2>
           <ul>
-            <li><strong>Phạm vi bắt đầu từ đâu</strong>: C/Java — từ điểm khai báo đến hết khối; Python — toàn bộ khối (nhưng “gán trước khi dùng” có thể gây ngoại lệ).</li>
-            <li><strong>Hàm đệ quy tương hỗ</strong>: cần khai báo trước (forward declaration) hoặc cơ chế cho phép tham chiếu trước định nghĩa.</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Câu hỏi nhanh – Phạm vi</h2>
-          <ol>
-            <li>Trong phạm vi tĩnh, trình biên dịch có thể biết “offset” của biến cục bộ trong activation record không? Còn biến không cục bộ?</li>
-            <li>Tại sao phạm vi động thường kém hiệu quả hơn khi truy cập biến không cục bộ?</li>
-            <li>Cho ví dụ một tên có phạm vi chỉ trong một phần của khối (từ điểm khai báo đến hết khối).</li>
-          </ol>
-        </section>
-
-        <section>
-          <h2>Aliasing và dangling reference</h2>
-          <ul>
-            <li><strong>Aliasing</strong>: cùng một đối tượng (ví dụ ô nhớ) có thể truy cập qua nhiều tên (tham số tham chiếu, con trỏ). Cần cẩn thận khi sửa qua một tên ảnh hưởng tới tên kia.</li>
-            <li><strong>Dangling reference</strong>: tên hoặc con trỏ vẫn trỏ tới vùng nhớ đã bị thu hồi → truy cập không hợp lệ. Là lỗi lập trình cần tránh.</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Tóm tắt – Tên và môi trường</h2>
-          <ul>
-            <li>Tên và đối tượng biểu thị; môi trường là tập liên kết tên–đối tượng có hiệu lực tại một điểm và thời điểm.</li>
-            <li>Khối và hai loại khối; quy tắc hiển thị; ba thành phần môi trường (cục bộ, không cục bộ, toàn cục).</li>
-            <li>Phạm vi tĩnh (lexical) vs động; ưu nhược điểm và ví dụ.</li>
-            <li>Một số vấn đề: phạm vi theo điểm khai báo, đệ quy tương hỗ, aliasing, dangling reference.</li>
+            <li>Dễ đọc và kiểm chứng chương trình</li>
+            <li>Hỗ trợ tối ưu và phân tích tĩnh</li>
+            <li>Phù hợp với lập trình mô-đun và tái sử dụng</li>
+            <li>Hạn chế các hành vi “bất ngờ” khi chạy</li>
           </ul>
         </section>
       </section>
 
-      <!-- TỔNG KẾT -->
+      <!-- =========================
+                KẾT BUỔI HỌC – TỔNG KẾT
+            ========================= -->
       <section>
-        <section style="font-size: 0.85em;">
-          <h2>Tổng kết</h2>
+        <section style="font-size:0.9em;">
+          <h2>Tổng kết buổi học</h2>
           <ul>
-            <li><strong>Mô tả ngôn ngữ</strong>: cú pháp (văn phạm phi ngữ cảnh, dẫn xuất, cây, nhập nhằng), ngữ nghĩa tĩnh, ngữ nghĩa động; cấu trúc trình biên dịch; ngữ nghĩa hình thức (SOS).</li>
-            <li><strong>Tên và môi trường</strong>: đối tượng biểu thị, môi trường, khối, visibility; phạm vi tĩnh và động; thao tác trên môi trường và một số vấn đề phạm vi.</li>
+            <li>
+              <b>Mô tả ngôn ngữ lập trình</b>:
+              cách đặc tả hình thức một ngôn ngữ bằng từ vựng, cú pháp, ngữ pháp (CFG, BNF).
+            </li>
+            <li>
+              <b>Ngữ nghĩa và Cài đặt</b>:
+              cách chương trình được hiểu và thực thi thông qua ngữ nghĩa tĩnh/động,
+              biên dịch và máy trừu tượng.
+            </li>
+            <li>
+              <b>Tên, Đối tượng được định danh và Khối</b>:
+              cơ chế gắn tên với đối tượng,
+              khối tạo ra phạm vi cục bộ và hiện tượng che khuất, bí danh.
+            </li>
+            <li>
+              <b>Môi trường và Phạm vi</b>:
+              cách môi trường duy trì liên kết tên–đối tượng,
+              và cách static/dynamic scope quyết định liên kết khi thực thi.
+            </li>
           </ul>
         </section>
-      </section>
 
-      <div class="footer">
-        Phương pháp luận lập trình (Học kỳ 2 2025-2026) §2a: Cú pháp, ngữ nghĩa, tên và phạm vi
-      </div>
+        <section>
+          <h2>Thông điệp chính</h2>
+          <div class="question-box">
+            <ul class="mini" style="margin:0.3rem 0 0 1rem;">
+              <li>Cú pháp quyết định <b>chương trình nào hợp lệ</b></li>
+              <li>Ngữ nghĩa quyết định <b>chương trình làm gì</b></li>
+              <li>Khối và môi trường quyết định <b>tên trỏ tới đâu</b></li>
+              <li>Phạm vi tĩnh giúp chương trình
+
+                <div class="footer">
+                  Phương pháp luận lập trình (Học kỳ 2 2025-2026) §2a: Cú pháp, ngữ nghĩa, tên và phạm
+                  vi
+                </div>
+          </div>
     </div>
-  </div>
-  <script src="revealjs/dist/reveal.js"></script>
-  <script src="plugin/notes/notes.js"></script>
-  <script src="plugin/markdown/markdown.js"></script>
-  <script src="plugin/highlight/highlight.js"></script>
-  <script src="plugin/math/math.js"></script>
-  <script>
-    Reveal.initialize({
-      controlsLayout: "edges",
-      slideNumber: true,
-      hashOneBasedIndex: true,
-      hash: true,
-      plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX],
-    });
-  </script>
+
+    <script src="revealjs/dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/math/math.js"></script>
+    <script>
+      Reveal.initialize({
+        controlsLayout: "edges",
+        slideNumber: true,
+        hashOneBasedIndex: true,
+        hash: true,
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX],
+      });
+    </script>
 </body>
 
 </html>
