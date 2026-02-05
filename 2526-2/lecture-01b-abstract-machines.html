@@ -354,7 +354,7 @@
         </section>
 
         <section style="font-size: .8em;">
-          <h2>Hiện thực bằng phần sụn (vi chương trình)</h2>
+          <h2>bằng phần sụn (vi chương trình)</h2>
           <ul>
             <li><strong>Ý tưởng</strong>: thay vì mạch cứng hoàn toàn, một phần điều khiển được thực hiện bằng
               <strong>vi lệnh</strong> (microcode).
@@ -387,7 +387,7 @@
         </section>
 
         <section>
-          <h2>So sánh nhanh</h2>
+          <h2>So sánh</h2>
           <table>
             <thead>
               <tr>
@@ -439,12 +439,8 @@
           <p>Có hai cách “thuần” để hiện thực hoá ngôn ngữ <strong>bằng phần mềm</strong>:</p>
 
           <ul>
-            <li><strong>Hiện thực theo hướng thông dịch</strong>: chương trình \(\mathscr{L}\) được chạy trực tiếp bởi
-              trình
-              thông dịch.</li>
-            <li><strong>Hiện thực theo hướng biên dịch</strong>: chương trình \(\mathscr{L}\) được dịch sang chương
-              trình ở ngôn
-              ngữ của máy chủ, rồi chạy chương trình đã dịch.</li>
+            <li>Hiện thực hoá theo hướng <strong>thông dịch</strong>.</li>
+            <li>Hiện thực hoá theo hướng <strong>biên dịch</strong>.</li>
           </ul>
         </section>
 
@@ -523,7 +519,7 @@
         </section>
 
         <section>
-          <h2>Ví dụ: vòng lặp và chi phí giải mã lặp lại</h2>
+          <h2>Ví dụ: vòng lặp</h2>
           <ul>
             <li>Nếu cấu trúc lặp ở mức cao, bộ thông dịch có thể “mô phỏng” lặp trong thời gian chạy</li>
             <li>Câu lệnh bên trong vòng lặp có thể bị giải mã nhiều lần → kém hiệu quả</li>
@@ -545,12 +541,13 @@ for i in [1..N] {
         </section>
 
         <section>
-          <h2>Thực tế: Sử dụng ngôn ngữ trung gian</h2>
+          <h2>Thực tế</h2>
+          <h4>Sử dụng ngôn ngữ trung gian</h4>
           <ul>
             <li>Thực tế thường không “thuần” thông dịch hoặc “thuần” biên dịch</li>
             <li>Chương trình nguồn thường được chuyển sang một dạng <strong>mã trung gian</strong></li>
-            <li>Mã trung gian được thực thi bởi bộ thông dịch trung gian hoặc môi trường hỗ trợ thực thi (runtime
-              support)</li>
+            <li>Mã trung gian được thực thi bởi bộ thông dịch trung gian hoặc môi trường <span class="keyword">hỗ trợ
+                thực thi (runtime support)</span></li>
           </ul>
         </section>
 
@@ -590,11 +587,10 @@ for i in [1..N] {
         <section>
           <h2>Tận dụng máy chủ thế nào?</h2>
           <ul>
-            <li>Máy chủ (phần cứng + hệ điều hành) đã có sẵn: thực thi mã máy, quản lý tiến trình, bộ nhớ ảo, hệ tệp,
+            <li>Máy chủ (phần cứng + OS) đã có: thực thi mã máy, quản lý tiến trình, bộ nhớ ảo, hệ tệp,
               mạng.</li>
-            <li>Hỗ trợ thực thi <strong>không làm lại từ đầu</strong>, mà <strong>gọi (call) và bao bọc (wrap)</strong>
-              dịch vụ của hệ
-              điều hành.</li>
+            <li>RTS <strong>không làm lại từ đầu</strong>, mà <strong>gọi (call) và bao bọc (wrap)</strong>
+              dịch vụ của OS.</li>
             <li>Ví dụ: thao tác “in ra màn hình” của ngôn ngữ → cuối cùng gọi dịch vụ ghi dữ liệu của hệ điều hành.</li>
           </ul>
         </section>
@@ -695,6 +691,11 @@ for i in [1..N] {
         </section>
 
         <section>
+          <h2>Hệ phân cấp máy trừu tượng</h2>
+          <img src="img/lec-01b/layered-machines.png" alt="Hình 1.10: Hệ phân cấp máy trừu tượng" style="width: 100%" />
+        </section>
+
+        <section>
           <h2>Vì sao phải có nhiều tầng?</h2>
           <ul>
             <li><strong>Giảm độ phức tạp</strong>: mỗi tầng chỉ cần hiểu một “miền” nhỏ.</li>
@@ -704,7 +705,7 @@ for i in [1..N] {
           </ul>
         </section>
 
-        <section>
+        <section style="font-size: .9em;">
           <h2>“ngôn ngữ” của mỗi tầng</h2>
           <ul>
             <li>“Ngôn ngữ”:<strong> tập thao tác + quy tắc sử dụng</strong>.</li>
@@ -754,12 +755,7 @@ for i in [1..N] {
         </section>
 
         <section>
-          <h2>Hệ phân cấp máy trừu tượng</h2>
-          <img src="img/lec-01b/layered-machines.png" alt="Hình 1.10: Hệ phân cấp máy trừu tượng" style="width: 100%" />
-        </section>
-
-        <section>
-          <h2>Tính di động nhờ hệ phân cấp</h2>
+          <h2>Tính di động</h2>
           <ul>
             <li>Đổi phần cứng: thường chỉ cần đổi/biên dịch lại các tầng thấp, tầng trên ít đổi.</li>
             <li>Đổi hệ điều hành: nếu giao diện ổn định, chương trình tầng trên vẫn chạy.</li>
@@ -768,7 +764,7 @@ for i in [1..N] {
         </section>
 
         <section>
-          <h2>Tính bảo trì nhờ hệ phân cấp</h2>
+          <h2>Tính bảo trì</h2>
           <ul>
             <li>Mỗi tầng có <strong>ranh giới trách nhiệm</strong> rõ ràng.</li>
             <li>Sửa lỗi/tối ưu ở tầng dưới có thể mang lợi ích cho nhiều tầng trên.</li>
@@ -777,7 +773,7 @@ for i in [1..N] {
         </section>
 
         <section>
-          <h2>Đánh đổi khi phân tầng</h2>
+          <h2>Đánh đổi khi phân cấp</h2>
           <ul>
             <li><strong>Chi phí phụ trội</strong>: gọi qua nhiều tầng có thể tốn thời gian.</li>
             <li><strong>Độ khó chẩn đoán</strong>: lỗi có thể xuất hiện ở tầng dưới nhưng biểu hiện ở tầng trên.</li>
@@ -792,7 +788,6 @@ for i in [1..N] {
           <h2>Câu hỏi nhanh</h2>
           <ul>
             <li>Nêu một ví dụ “che giấu tầng dưới” mà bạn gặp hằng ngày khi lập trình.</li>
-            <li>Nếu thay phần cứng từ máy cá nhân sang máy chủ, tầng nào thay đổi nhiều nhất?</li>
             <li>Theo bạn, phân tầng giúp hay làm giảm hiệu năng? Vì sao?</li>
           </ul>
         </section>
