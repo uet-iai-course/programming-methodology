@@ -80,7 +80,7 @@
             <li>Giữa hai số <em>i</em> liên tiếp phải có đúng <em>i</em> số khác</li>
             <li>Danh sách dài 27 phần tử</li>
             <li>Nghiệm ví dụ:
-              <code>1 ,9 ,1 ,2 ,1 ,8 ,2 ,4 ,6 ,2 ,7 ,9 ,4 ,5 ,8 ,6 ,3 ,4 ,7 ,5 ,3 ,9 ,6 ,8 ,3 ,5 ,7</code>
+              <code>1,9,1,2,1,8,2,4,6,2,7,9,4,5,8, 6,3,4,7,5,3,9,6,8,3,5,7</code>
             </li>
           </ul>
         </section>
@@ -127,7 +127,7 @@
             <li>“Trong Ls có danh sách con [9 ,_ ,_ ,_ ,_ ,_ ,_ ,_ ,_ ,_ ,9 ,_ ,_ ,_ ,_ ,_ ,_ ,_ ,_ ,_ ,9]”</li>
           </ul>
 
-          <p>📌 Các mệnh đề lô-gíc đặc tả nghiệm.</p>
+          <p>Các mệnh đề lô-gíc đặc tả nghiệm.</p>
         </section>
 
         <section>
@@ -147,7 +147,7 @@
 list_of_27 ( Ls ):-
   Ls = [_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_].
           </code></pre>
-          <p>📌 Khai báo: đặc tả Lô-gíc của nghiệm (Ls), không phải thuật toán.</p>
+          <p>Khai báo: đặc tả Lô-gíc của nghiệm (Ls), không phải thuật toán.</p>
         </section>
 
         <!-- Slide 5 -->
@@ -196,7 +196,7 @@ list_of_27 ( Ls ):-
           <h3>Ký hiệu phi lô-gíc</h3>
           <ul>
             <li>Tập các hàm \(\Sigma\) kèm số đối số, ví dụ: <code>sin(x), sum(x,y), fatherOf(x), f(x,y,z)</code></li>
-            <li>Các thuộc tính \(\Pi\), kèm số đối số, ví dụ: <code>love(x,y), isPerfect(x), p(x,y)</code></li>
+            <li>Tập các thuộc tính \(\Pi\), kèm số đối số, ví dụ: <code>love(x,y), isPerfect(x), p(x,y)</code></li>
             <li>Hằng = hàm với số đối số bằng 0, ví dụ: a, b, c, …</li>
           </ul>
           <aside class="notes">
@@ -208,7 +208,7 @@ list_of_27 ( Ls ):-
           <h2>Định nghĩa hạng thức</h2>
           <ul>
             <li>Biến trong \(V\) là hạng thức</li>
-            <li>Nếu \(f\in\Sigma\) có \(n\) đối số và
+            <li>Nếu hàm \(f\in\Sigma\) có \(n\) đối số và
               \(t_1, \ldots, t_n\) là hạng thức thì \(f(t_1, \ldots, t_n)\) là hạng thức</li>
             <li>Hạng thức không có biến gọi là hạng thức cơ bản (ta bỏ qua dấu đóng mở ngoặc)</li>
           </ul>
@@ -228,7 +228,7 @@ g(f(a,b), Y, f(X, a))
         <section>
           <h2>Định nghĩa công thức</h2>
           <ul>
-            <li>Nếu \(t_1,\ldots,t_n\) là hạng thức và \(p\in\Pi\) có \(n\) đối số thì \(p(t_1,\ldots,t_n)\) là công
+            <li>Nếu \(t_1,\ldots,t_n\) là hạng thức và thuộc tính \(p\in\Pi\) có \(n\) đối số thì \(p(t_1,\ldots,t_n)\) là công
               thức</li>
             <li>Các hằng giá trị \(T, F\) là công thức</li>
             <li>Nếu \(A\) và \(B\) là công thức thì \(A\wedge B\), \(A\vee B\), \(\neg A\), \(A\rightarrow B\),
@@ -277,7 +277,7 @@ grandparent(X, Z) :-
 % truy vấn (query)
 % ?- grandparent(ann, Who).
           </code></pre>
-          <p>📌 Máy suy diễn tự tìm <code>Who = cody</code>.</p>
+          <p>Máy suy diễn tự tìm <code>Who = cody</code>.</p>
         </section>
 
         <section>
