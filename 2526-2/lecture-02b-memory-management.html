@@ -29,35 +29,561 @@
         <section>
           <h2>Nội dung</h2>
           <ol>
-            <li>Nội dung 1</li>
-            <li>Nội dung 2</li>
+            <li>Kỹ thuật quản lý bộ nhớ</li>
+            <li>Quản lý bộ nhớ tĩnh</li>
+            <li>Quản lý bộ nhớ động bằng stack</li>
+            <li>Quản lý bộ nhớ động bằng heap</li>
+            <li>Hiện thực quy tắc phạm vi</li>
           </ol>
+        </section>
+
+        <section>
+          <h2>Mục tiêu buổi học</h2>
+          <ul>
+            <li>Phân biệt quản lý bộ nhớ tĩnh và động; vai trò của stack và heap</li>
+            <li>Hiểu cấu trúc activation record cho khối và thủ tục</li>
+            <li>Nắm quản lý heap (khối cố định, biến đổi; phân mảnh; danh sách tự do)</li>
+            <li>Hiểu hiện thực phạm vi tĩnh (static chain, display) và động (A-list, CRT)</li>
+          </ul>
         </section>
       </section>
 
+      <!-- PHẦN 1: KỸ THUẬT QUẢN LÝ BỘ NHỚ -->
       <section>
         <section>
           <h1>
             <span class="text-light">1.</span><br />
-            Nội dung 1
+            Kỹ thuật quản lý bộ nhớ
           </h1>
         </section>
+
         <section>
-          <h2>Nội dung chi tiết 1</h2>
-          <p>Chi tiết về nội dung 1...</p>
+          <h2>Bốn nhóm chức năng bộ thông dịch</h2>
+          <ol>
+            <li>Thao tác dữ liệu nguyên thủy (số học, logic).</li>
+            <li>Điều khiển trình tự (rẽ nhánh, lặp, nhảy).</li>
+            <li>Điều khiển chuyển dữ liệu (nạp/ghi, ngăn xếp toán hạng).</li>
+            <li><strong>Quản lý bộ nhớ</strong> (cấp phát, thu hồi, stack, heap).</li>
+          </ol>
+        </section>
+
+        <section>
+          <h2>Vai trò quản lý bộ nhớ</h2>
+          <p>Quản lý bộ nhớ là một trong bốn nhóm chức năng của bộ thông dịch (máy trừu tượng):</p>
+          <ul>
+            <li>Xác định <strong>cách sắp xếp</strong> chương trình và dữ liệu trong bộ nhớ.</li>
+            <li>Xác định <strong>thời gian tồn tại</strong> của từng vùng nhớ.</li>
+            <li>Cung cấp <strong>cấu trúc phụ trợ</strong> để truy xuất thông tin (ví dụ: stack, heap, bảng ký hiệu).</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Máy mức thấp vs mức cao</h2>
+          <ul>
+            <li><strong>Máy mức thấp</strong>: quản lý bộ nhớ rất đơn giản, có thể hoàn toàn tĩnh — nạp chương trình và dữ liệu vào một vùng cố định, giữ đến khi kết thúc.</li>
+            <li><strong>Ngôn ngữ mức cao</strong>: có đệ quy, cấp phát tường minh (malloc/free), khối lồng nhau → cần quản lý động (stack, heap).</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Tại sao cần quản lý động?</h2>
+          <ul>
+            <li><strong>Đệ quy</strong>: số lần gọi thủ tục đồng thời phụ thuộc tham số/thời điểm chạy, không thể cố định trước.</li>
+            <li><strong>Cấp phát tường minh</strong>: malloc/free có thể gọi theo thứ tự bất kỳ → không thể dùng riêng stack (LIFO).</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Ví dụ: Đệ quy Fibonacci</h2>
+          <pre><code>int fib(int n) {
+  if (n == 0) return 1;
+  if (n == 1) return 1;
+  return fib(n-1) + fib(n-2);
+}</code></pre>
+          <p>Số lần gọi <span class="inline-code">fib</span> đồng thời khi tính <span class="inline-code">fib(n)</span> có thể rất lớn (cỡ O(2<sup>n</sup>)) → không thể cấp phát tĩnh cho mỗi thủ tục.</p>
+        </section>
+
+        <section>
+          <h2>Sơ đồ Stack vs Heap</h2>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;font-size:0.85em;">
+            <div style="border:2px solid #1E93AB;padding:0.75rem;border-radius:8px;">
+              <strong>Stack</strong><br/>Vào/ra LIFO (khối, thủ tục). AR push/pop. Nhanh, kích thước thường cố định.
+            </div>
+            <div style="border:2px solid #E62727;padding:0.75rem;border-radius:8px;">
+              <strong>Heap</strong><br/>Cấp/trả tùy ý (malloc/free). Cần quản lý free list, chống phân mảnh.
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Sơ đồ hai kỹ thuật chính</h2>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;font-size:0.9em;">
+            <div style="border:2px solid #1E93AB;padding:1rem;border-radius:8px;">
+              <strong>Quản lý tĩnh</strong><br/>Compiler cấp phát trước khi chạy; vùng nhớ cố định suốt thời gian chương trình.
+            </div>
+            <div style="border:2px solid #E62727;padding:1rem;border-radius:8px;">
+              <strong>Quản lý động</strong><br/>Stack (LIFO) cho khối/thủ tục; Heap cho cấp phát tường minh (malloc/free).
+            </div>
+          </div>
         </section>
       </section>
 
+      <!-- PHẦN 2: QUẢN LÝ BỘ NHỚ TĨNH -->
       <section>
         <section>
           <h1>
             <span class="text-light">2.</span><br />
-            Nội dung 2
+            Quản lý bộ nhớ tĩnh
           </h1>
         </section>
+
         <section>
-          <h2>Nội dung chi tiết 2</h2>
-          <p>Chi tiết về nội dung 2...</p>
+          <h2>So sánh tĩnh và động (tóm tắt)</h2>
+          <table style="font-size:0.85em;">
+            <thead>
+              <tr><th>Tiêu chí</th><th>Tĩnh</th><th>Động (stack/heap)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Thời điểm</td><td>Trước khi chạy (compiler)</td><td>Khi chạy (runtime)</td></tr>
+              <tr><td>Vị trí</td><td>Vùng cố định</td><td>Stack (LIFO) / Heap (tùy ý)</td></tr>
+              <tr><td>Đối tượng điển hình</td><td>Biến toàn cục, mã, hằng</td><td>Biến cục bộ, AR, malloc</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section>
+          <h2>Quản lý bộ nhớ tĩnh</h2>
+          <ul>
+            <li>Do <strong>trình biên dịch</strong> thực hiện trước khi chương trình chạy.</li>
+            <li>Đối tượng được cấp phát tĩnh nằm trong <strong>vùng nhớ cố định</strong> (do compiler quyết định) và tồn tại <strong>suốt thời gian thực thi</strong>.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Đối tượng cấp phát tĩnh điển hình</h2>
+          <ul>
+            <li><strong>Biến toàn cục</strong>: hiển thị trong toàn chương trình → có thể đặt ở vùng cố định.</li>
+            <li><strong>Mã lệnh (object code)</strong>: thường không đổi khi chạy → cũng cấp phát tĩnh.</li>
+            <li><strong>Hằng số</strong> (nếu giá trị xác định lúc biên dịch).</li>
+            <li><strong>Bảng do compiler tạo</strong>: bảng ký hiệu, thông tin kiểm tra kiểu, hỗ trợ GC, v.v.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Ngôn ngữ không đệ quy</h2>
+          <ul>
+            <li>Nếu ngôn ngữ <strong>không hỗ trợ đệ quy</strong>, có thể cấp phát tĩnh cho mỗi thủ tục một vùng nhớ riêng (local, tham số, địa chỉ trả về, thanh ghi lưu, v.v.).</li>
+            <li>Nhiều lần gọi cùng một thủ tục <strong>dùng chung</strong> vùng đó — đúng vì không có hai lần gọi đồng thời.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Sơ đồ quản lý tĩnh</h2>
+          <div style="font-size:0.85em;">
+            <p><strong>Bộ nhớ chương trình</strong></p>
+            <div style="border:1px solid #ccc;padding:0.5rem;">Vùng Thủ tục 1 | Vùng Thủ tục 2 | … | Vùng Thủ tục n</div>
+            <p style="margin-top:0.5rem;">Mỗi thủ tục có một vùng cố định; các lần gọi chia sẻ cùng vùng.</p>
+          </div>
+        </section>
+      </section>
+
+      <!-- PHẦN 3: QUẢN LÝ ĐỘNG BẰNG STACK -->
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">3.</span><br />
+            Quản lý bộ nhớ động bằng stack
+          </h1>
+        </section>
+
+        <section>
+          <h2>Tại sao dùng stack?</h2>
+          <ul>
+            <li>Khối (in-line hoặc gắn với thủ tục) được <strong>vào và ra theo thứ tự LIFO</strong>: vào A, vào B thì trước khi ra A phải ra B.</li>
+            <li>Vì vậy bộ nhớ cho thông tin cục bộ mỗi khối/thủ tục được quản lý tự nhiên bằng <strong>stack</strong> (push khi vào, pop khi ra).</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Activation record (frame)</h2>
+          <div class="question-box">
+            <div class="question-title">Định nghĩa</div>
+            <span class="keyword">Activation record</span> (bản ghi kích hoạt, frame) là vùng nhớ trên stack dành cho <strong>một lần kích hoạt</strong> của một khối in-line hoặc một lần gọi thủ tục. Mỗi lần vào khối hoặc gọi thủ tục tạo một activation record mới.
+          </div>
+        </section>
+
+        <section>
+          <h2>Runtime stack (system stack)</h2>
+          <p>Stack chứa các activation record gọi là <strong>runtime stack</strong> (hay system stack). Con trỏ stack thường trỏ tới activation record hiện tại (đỉnh stack).</p>
+        </section>
+
+        <section>
+          <h2>Ví dụ: Khối lồng nhau</h2>
+          <pre><code>A: { int a = 1; int b = 0;
+  B: { int c = 3; int b = 3; }
+  b = a + 1;
+}</code></pre>
+          <p>Vào A → push AR cho A (a, b). Vào B → push AR cho B (c, b nội bộ). Ra B → pop. Gán b = a+1 dùng b của A. Ra A → pop.</p>
+        </section>
+
+        <section>
+          <h2>Minh họa stack khi vào/ra khối</h2>
+          <div style="font-size:0.85em;">
+            <p><strong>Vào A</strong>: Stack = [AR_A]</p>
+            <p><strong>Vào B</strong>: Stack = [AR_A, AR_B]</p>
+            <p><strong>Ra B</strong>: Stack = [AR_A]</p>
+            <p><strong>Ra A</strong>: Stack = []</p>
+          </div>
+        </section>
+
+        <section>
+          <h2>Activation record cho khối in-line</h2>
+          <ul>
+            <li><strong>Kết quả trung gian</strong>: chỗ lưu tạm khi tính biểu thức (tùy compiler/kiến trúc có thể dùng thanh ghi).</li>
+            <li><strong>Biến cục bộ</strong>: kích thước thường do compiler xác định (trừ mảng động).</li>
+            <li><strong>Con trỏ dynamic chain</strong>: trỏ tới activation record trước đó trên stack (để biết “khối cha” khi thoát).</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Dynamic chain (chuỗi động)</h2>
+          <p>Tập các con trỏ từ activation record hiện tại về các record trước đó theo thứ tự stack gọi là <strong>dynamic chain</strong> (hay control link). Dùng để khôi phục con trỏ stack khi thoát khối/thủ tục.</p>
+        </section>
+
+        <section>
+          <h2>Activation record cho thủ tục/hàm</h2>
+          <p>Ngoài các thành phần như khối in-line, còn có:</p>
+          <ul>
+            <li><strong>Static chain pointer</strong>: dùng cho phạm vi tĩnh (xem sau).</li>
+            <li><strong>Return address</strong>: địa chỉ lệnh tiếp theo sau khi thủ tục kết thúc.</li>
+            <li><strong>Địa chỉ lưu kết quả</strong> (chỉ với hàm): nơi ghi giá trị trả về (thường trong AR của caller).</li>
+            <li><strong>Tham số</strong>: giá trị (hoặc tham chiếu) tham số thực.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Sơ đồ cấu trúc AR thủ tục</h2>
+          <div style="font-size:0.8em;border:1px solid #ccc;padding:0.75rem;text-align:left;">
+            <div>Dynamic chain pointer | Static chain pointer</div>
+            <div>Return address | Địa chỉ kết quả (nếu là hàm)</div>
+            <div>Tham số</div>
+            <div>Biến cục bộ</div>
+            <div>Kết quả trung gian</div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Quản lý stack: Caller và Callee</h2>
+          <ul>
+            <li><strong>Caller</strong>: chương trình/thủ tục thực hiện lời gọi.</li>
+            <li><strong>Callee</strong>: thủ tục được gọi.</li>
+            <li>Quản lý stack do <strong>calling sequence</strong> (trong caller) và <strong>prologue/epilogue</strong> (trong callee) đảm nhiệm.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Calling sequence và prologue</h2>
+          <p>Khi gọi thủ tục, cần:</p>
+          <ul>
+            <li>Cập nhật program counter (nhảy vào callee); lưu địa chỉ trả về.</li>
+            <li>Cấp phát vùng stack cho AR mới; cập nhật con trỏ stack/AR.</li>
+            <li>Truyền tham số (thường do caller).</li>
+            <li>Lưu thanh ghi (ví dụ con trỏ AR cũ) vào dynamic chain.</li>
+            <li>Thực hiện mã khởi tạo (nếu có).</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Epilogue và trả điều khiển</h2>
+          <p>Khi thủ tục kết thúc:</p>
+          <ul>
+            <li>Cập nhật program counter (trả về caller).</li>
+            <li>Ghi giá trị trả về (nếu là hàm) vào vị trí caller đã chuẩn bị.</li>
+            <li>Khôi phục thanh ghi (con trỏ AR cũ từ dynamic chain).</li>
+            <li>Mã kết thúc (finalisation) nếu ngôn ngữ yêu cầu.</li>
+            <li>Giải phóng AR (pop stack), cập nhật con trỏ stack.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Biến cục bộ: offset cố định</h2>
+          <p>Trình biên dịch thường <strong>không lưu tên biến</strong> trong activation record. Mỗi biến cục bộ được gắn một <strong>offset cố định</strong> so với con trỏ AR (hoặc một vị trí cố định trong AR). Truy cập biến = base + offset.</p>
+        </section>
+
+        <section>
+          <h2>Câu hỏi nhanh – Stack và AR</h2>
+          <ol>
+            <li>Dynamic chain và static chain khác nhau thế nào về “hướng” (theo văn bản hay theo thứ tự gọi)?</li>
+            <li>Procedure và function khác nhau gì trong cấu trúc AR?</li>
+            <li>Tại sao caller và callee đều tham gia quản lý stack (calling sequence + prologue/epilogue)?</li>
+          </ol>
+        </section>
+      </section>
+
+      <!-- PHẦN 4: QUẢN LÝ ĐỘNG BẰNG HEAP -->
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">4.</span><br />
+            Quản lý bộ nhớ động bằng heap
+          </h1>
+        </section>
+
+        <section>
+          <h2>Khi nào cần heap?</h2>
+          <p>Khi ngôn ngữ có <strong>lệnh cấp phát và giải phóng tường minh</strong> (ví dụ C: <span class="inline-code">malloc</span>, <span class="inline-code">free</span>), thứ tự cấp phát/giải phóng có thể bất kỳ → không thể chỉ dùng stack (LIFO).</p>
+          <p>Vùng nhớ dùng cho loại cấp phát này gọi là <strong>heap</strong> (trong ngữ cảnh ngôn ngữ lập trình: vùng có thể cấp/trả khối tương đối tự do).</p>
+        </section>
+
+        <section>
+          <h2>Ví dụ C: malloc và free</h2>
+          <pre><code>int *p, *q;
+p = malloc(sizeof(int));
+q = malloc(sizeof(int));
+*p = 0; *q = 1;
+free(p);
+free(q);</code></pre>
+          <p>Có thể free(p) trước free(q) hoặc ngược lại — thứ tự không theo LIFO → cần heap.</p>
+        </section>
+
+        <section>
+          <h2>Hai loại quản lý heap</h2>
+          <ul>
+            <li><strong>Khối có kích thước cố định</strong>: heap chia thành các ô cùng kích thước, nối thành danh sách tự do (free list).</li>
+            <li><strong>Khối có kích thước thay đổi</strong>: cấp phát vùng có độ dài tùy yêu cầu; cần kỹ thuật chống phân mảnh và tái sử dụng.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Heap: khối cố định</h2>
+          <ul>
+            <li>Heap gồm nhiều <strong>block</strong> nhỏ cùng kích thước, nối thành <strong>free list</strong>.</li>
+            <li><strong>Cấp phát</strong>: lấy phần tử đầu free list, trả con trỏ, cập nhật đầu danh sách.</li>
+            <li><strong>Giải phóng</strong>: nối block vừa trả lại vào đầu free list.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Sơ đồ free list (khối cố định)</h2>
+          <div style="font-size:0.85em;">
+            <p>FL_start → [block1] → [block2] → [block3] → … → null</p>
+            <p>Sau khi cấp phát một block: FL_start trỏ tới block2; block1 trả về cho chương trình.</p>
+          </div>
+        </section>
+
+        <section>
+          <h2>Heap: khối kích thước thay đổi</h2>
+          <p>Khi cần cấp phát vùng có kích thước bất kỳ (ví dụ mảng động):</p>
+          <ul>
+            <li>Không thể dùng chỉ một cỡ block → cần quản lý các vùng có độ dài khác nhau.</li>
+            <li>Mục tiêu: giảm <strong>phân mảnh</strong> (fragmentation) và tăng tốc cấp phát/giải phóng.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Phân mảnh nội và ngoại</h2>
+          <ul>
+            <li><strong>Phân mảnh nội (internal)</strong>: cấp block lớn hơn yêu cầu → phần thừa bên trong block bị lãng phí cho đến khi block được trả.</li>
+            <li><strong>Phân mảnh ngoại (external)</strong>: tổng bộ nhớ trống đủ nhưng rải rác nhiều block nhỏ → không đáp ứng được yêu cầu một vùng liên tục lớn.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Sơ đồ phân mảnh ngoại</h2>
+          <div style="font-size:0.85em;">
+            <p>Bộ nhớ: [đã dùng] [trống x] [đã dùng] [trống y] [đã dùng] …</p>
+            <p>Nếu cần vùng &gt; x và &gt; y nhưng &lt; x+y thì không thỏa dù tổng trống = x+y.</p>
+          </div>
+        </section>
+
+        <section>
+          <h2>Danh sách tự do một danh sách</h2>
+          <p>Heap ban đầu là một block lớn. Cấp phát n từ: lấy n từ đầu heap, đẩy con trỏ heap. Block trả lại được đưa vào <strong>free list</strong>. Khi hết vùng ban đầu phải tái sử dụng từ free list.</p>
+          <ul>
+            <li><strong>First fit</strong>: tìm block đủ lớn đầu tiên.</li>
+            <li><strong>Best fit</strong>: tìm block đủ lớn nhưng nhỏ nhất → giảm phân mảnh nội, tốn thời gian tìm hơn.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Gộp block liền kề</h2>
+          <p>Khi trả block, kiểm tra block liền kề có đang trống không; nếu có thì <strong>gộp (merge)</strong> thành một block lớn hơn để giảm phân mảnh ngoại. Gộp chỉ các block liền kề gọi là <strong>compaction từng phần</strong>.</p>
+        </section>
+
+        <section>
+          <h2>Compaction toàn bộ</h2>
+          <p>Khi hết vùng heap ban đầu: di chuyển tất cả block đang dùng về một đầu, gom toàn bộ vùng trống thành một block liên tục, rồi tiếp tục cấp phát. Chỉ áp dụng được nếu các block <strong>có thể di chuyển</strong> (con trỏ tới chúng phải được cập nhật — thường do runtime/GC).</p>
+        </section>
+
+        <section>
+          <h2>Nhiều free list (buddy, Fibonacci heap)</h2>
+          <ul>
+            <li><strong>Buddy system</strong>: kích thước block là lũy thừa của 2; cấp 2<sup>k</sup> ≥ n; khi thiếu thì tách block lớn thành hai “bạn”; khi trả thì gộp với “bạn” nếu bạn đang trống.</li>
+            <li><strong>Fibonacci heap</strong>: tương tự nhưng dùng kích thước theo số Fibonacci → giảm phân mảnh nội so với lũy thừa 2.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>So sánh First fit và Best fit</h2>
+          <table style="font-size:0.85em;">
+            <thead>
+              <tr><th>Phương pháp</th><th>Ý tưởng</th><th>Ưu / Nhược</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>First fit</td><td>Lấy block đủ lớn đầu tiên</td><td>Nhanh; có thể phân mảnh nội nhiều hơn</td></tr>
+              <tr><td>Best fit</td><td>Lấy block đủ lớn nhưng nhỏ nhất</td><td>Giảm lãng phí trong block; tìm chậm hơn</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section>
+          <h2>Câu hỏi nhanh – Heap</h2>
+          <ol>
+            <li>Tại sao heap với khối cố định không phù hợp cho mảng có kích thước thay đổi?</li>
+            <li>Compaction toàn bộ có thể làm hỏng con trỏ đang trỏ tới block di chuyển không? Runtime phải làm gì?</li>
+            <li>Buddy system dùng lũy thừa 2 có ưu điểm gì khi tách/gộp block?</li>
+          </ol>
+        </section>
+      </section>
+
+      <!-- PHẦN 5: HIỆN THỰC QUY TẮC PHẠM VI -->
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">5.</span><br />
+            Hiện thực quy tắc phạm vi
+          </h1>
+        </section>
+
+        <section>
+          <h2>Vấn đề biến không cục bộ</h2>
+          <p>Activation record chứa biến cục bộ. Khi gặp tham chiếu tới <strong>biến không cục bộ</strong>, cần tìm activation record chứa khai báo của biến đó. Thứ tự tìm phụ thuộc <strong>quy tắc phạm vi</strong> (tĩnh hay động).</p>
+        </section>
+
+        <section>
+          <h2>Phạm vi tĩnh: static chain</h2>
+          <ul>
+            <li>Theo phạm vi tĩnh, “khối cha” là khối <strong>bao bọc theo văn bản</strong>, không phải theo thứ tự kích hoạt.</li>
+            <li>Trong AR lưu <strong>static chain pointer</strong>: trỏ tới AR của khối bao bọc trực tiếp (theo cấu trúc chương trình).</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Ví dụ static chain</h2>
+          <p>A chứa B, B chứa C và thủ tục <span class="inline-code">fie</span>. Gọi từ C: fie(2). Trong fie, biến không cục bộ <span class="inline-code">x</span> được khai báo ở B, <span class="inline-code">y</span> ở A. AR của fie có static chain trỏ tới AR của B (nơi khai báo fie); B trỏ tới A. Để lấy x: theo 1 con trỏ static; để lấy y: theo 2 con trỏ.</p>
+        </section>
+
+        <section>
+          <h2>Sơ đồ static chain</h2>
+          <div style="font-size:0.85em;">
+            <p>Stack (từ đỉnh): [AR_fie] → static → [AR_B] → static → [AR_A]</p>
+            <p>Trong fie: x ở B (1 bước); y ở A (2 bước). Compiler biết “khoảng cách” (1, 2) khi biên dịch.</p>
+          </div>
+        </section>
+
+        <section>
+          <h2>Tính static chain pointer khi gọi</h2>
+          <ul>
+            <li><strong>Callee nằm ngoài caller</strong>: callee ở mức lồng m, caller ở n (m &lt; n). Caller đi ngược static chain (n−m) bước để lấy con trỏ AR đúng mức m, truyền cho callee.</li>
+            <li><strong>Callee nằm trong caller</strong>: khối bao bọc trực tiếp callee là caller → static chain của callee = con trỏ AR của caller.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Khoảng cách lồng (nesting depth)</h2>
+          <p>Compiler lưu “mức lồng” của mỗi khối/thủ tục (trong bảng ký hiệu). Khi gọi, khoảng cách (số bước đi ngược static chain) được tính tại thời điểm biên dịch và gắn với lời gọi. Tại runtime chỉ cần đi ngược đúng số bước, không cần tìm theo tên.</p>
+        </section>
+
+        <section>
+          <h2>Display</h2>
+          <ul>
+            <li><strong>Display</strong>: mảng (vector) trong đó phần tử thứ k chứa con trỏ tới AR đang hoạt động ở mức lồng k.</li>
+            <li>Truy cập biến không cục bộ ở mức k: lấy display[k], rồi dùng offset trong AR đó — chỉ <strong>hai lần truy cập bộ nhớ</strong> thay vì k bước theo static chain.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Sơ đồ Display</h2>
+          <div style="font-size:0.85em;">
+            <p>display[0] → AR mức 0 (ví dụ main)</p>
+            <p>display[1] → AR mức 1 hiện tại</p>
+            <p>display[2] → AR mức 2 hiện tại …</p>
+            <p>Vào khối mức k: lưu display[k] vào AR mới; gán display[k] = con trỏ AR mới. Ra: khôi phục display[k].</p>
+          </div>
+        </section>
+
+        <section>
+          <h2>Cập nhật display</h2>
+          <p>Khi vào thủ tục/khối ở mức k: lưu giá trị cũ của display[k] (thường vào AR mới), rồi gán display[k] = con trỏ AR mới. Khi ra: khôi phục display[k] từ AR. Việc này do prologue/epilogue đảm nhiệm.</p>
+        </section>
+
+        <section>
+          <h2>Phạm vi động: tìm theo thứ tự stack</h2>
+          <p>Với phạm vi động, liên kết hợp lệ cho tên X là <strong>liên kết được tạo gần nhất cho X</strong> mà vẫn còn hiệu lực. Vì vậy có thể tìm bằng cách đi ngược stack (theo dynamic chain) và tìm AR đầu tiên chứa khai báo X. Cần lưu <strong>tên</strong> trong AR (hoặc trong cấu trúc riêng).</p>
+        </section>
+
+        <section>
+          <h2>A-list (association list)</h2>
+          <p>Thay vì lưu tên trong từng AR, có thể dùng một <strong>danh sách liên kết (A-list)</strong> quản lý như stack: vào khối thì thêm các cặp (tên, đối tượng) vào đầu; ra khối thì bỏ. Tìm tên = duyệt từ đầu danh sách. Thường dùng trong hiện thực Lisp.</p>
+        </section>
+
+        <section>
+          <h2>Nhược điểm phạm vi động (A-list / stack)</h2>
+          <ul>
+            <li>Phải lưu <strong>tên</strong> tại runtime (static scope không cần).</li>
+            <li>Truy cập biến không cục bộ có thể phải duyệt nhiều phần tử (O(độ sâu)).</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>CRT (Central Referencing Table)</h2>
+          <p>Bảng trung tâm chứa mọi tên; mỗi tên có vị trí cố định (hoặc tìm bằng băm). Mỗi mục lưu: có đang active không, con trỏ tới thông tin đối tượng (vị trí, kiểu, …). Vào khối: đẩy giá trị cũ lên stack ẩn, cập nhật bảng. Ra khối: pop và khôi phục. Truy cập tên = một lần vào bảng + một lần theo con trỏ — <strong>hằng số</strong>, nhưng vào/ra khối tốn hơn.</p>
+        </section>
+
+        <section>
+          <h2>So sánh hiện thực phạm vi</h2>
+          <table style="font-size:0.8em;">
+            <thead>
+              <tr><th>Phạm vi</th><th>Cấu trúc</th><th>Truy cập không cục bộ</th><th>Lưu tên lúc chạy?</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Tĩnh</td><td>Static chain</td><td>Đi ngược k bước</td><td>Không</td></tr>
+              <tr><td>Tĩnh</td><td>Display</td><td>2 lần truy cập</td><td>Không</td></tr>
+              <tr><td>Động</td><td>A-list / stack AR</td><td>Duyệt theo tên</td><td>Có</td></tr>
+              <tr><td>Động</td><td>CRT</td><td>Bảng + con trỏ</td><td>Có (trong bảng)</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section>
+          <h2>Câu hỏi nhanh – Quản lý bộ nhớ</h2>
+          <ol>
+            <li>Tại sao đệ quy khiến cấp phát tĩnh cho thủ tục không đủ?</li>
+            <li>Dynamic chain và static chain khác nhau thế nào? Dùng cho mục đích gì?</li>
+            <li>Phân mảnh nội và phân mảnh ngoại khác nhau ra sao? Kỹ thuật nào giảm từng loại?</li>
+          </ol>
+        </section>
+      </section>
+
+      <!-- TỔNG KẾT -->
+      <section>
+        <section>
+          <h2>Tóm tắt – Quản lý bộ nhớ</h2>
+          <ul>
+            <li><strong>Kỹ thuật</strong>: tĩnh (compiler, vùng cố định) vs động (stack cho khối/thủ tục, heap cho malloc/free).</li>
+            <li><strong>Stack</strong>: activation record (AR) cho khối in-line và thủ tục; dynamic/static chain; calling sequence, prologue, epilogue.</li>
+            <li><strong>Heap</strong>: khối cố định (free list) vs biến đổi (first/best fit, gộp, compaction, buddy/Fibonacci).</li>
+            <li><strong>Phạm vi</strong>: tĩnh → static chain, display; động → A-list, CRT.</li>
+          </ul>
+        </section>
+
+        <section style="font-size:0.85em;">
+          <h2>Tổng kết</h2>
+          <ul>
+            <li>Quản lý bộ nhớ là thành phần quan trọng của máy trừu tượng; phân biệt tĩnh và động, stack và heap.</li>
+            <li>Activation record và runtime stack là nền tảng cho thực thi thủ tục và khối; heap cho cấp phát tường minh.</li>
+            <li>Hiện thực phạm vi tĩnh (static chain, display) và động (A-list, CRT) gắn chặt với cấu trúc AR và bảng ký hiệu.</li>
+          </ul>
         </section>
       </section>
 
