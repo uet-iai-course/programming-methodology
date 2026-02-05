@@ -22,43 +22,153 @@
       <section>
         <section>
           <h1>Phương pháp luận lập trình</h1>
-          <h3>Bài 10: Tổng hợp các mẫu hình lập trình</h3>
+          <h3>Bài 10: Các mẫu hình lập trình khác</h3>
           <p>Trường ĐH Công nghệ – Đại học Quốc gia Hà Nội</p>
         </section>
 
         <section>
           <h2>Nội dung</h2>
           <ol>
-            <li>Nội dung 1</li>
-            <li>Nội dung 2</li>
+            <li>Lập trình lô-gíc</li>
+            <li>Lập trình ràng buộc</li>
+            <li>Lập trình song song</li>
+            <li>Lập trình hướng dịch vụ</li>
           </ol>
         </section>
+
+        <section>
+          <h2>Mục tiêu buổi học</h2>
+          <ul>
+            <li>Hiểu các mẫu hình lập trình khác (lô-gíc, ràng buộc, song song, hướng dịch vụ)</li>
+            <li>Mở rộng tư duy lập trình</li>
+            <li>Biết một số ngôn ngữ lập trình đại diện khác</li>
+          </ul>
+        </section>
+
       </section>
 
       <section>
+        <!-- Slide 1 -->
+        <!-- Slide 2 -->
         <section>
-          <h1>
-            <span class="text-light">1.</span><br />
-            Nội dung 1
-          </h1>
+          <h3>Thuật toán = Lô-gíc + Điều khiển</h3>
+          <ul>
+            <li>Lô-gíc: <em>mô tả nghiệm (mục tiêu)</em></li>
+            <li>Điều khiển: <em>các bước giải (cách làm)</em></li>
+          </ul>
         </section>
-        <section>
-          <h2>Nội dung chi tiết 1</h2>
-          <p>Chi tiết về nội dung 1...</p>
-        </section>
-      </section>
 
-      <section>
+        <!-- Slide 3 -->
         <section>
-          <h1>
-            <span class="text-light">2.</span><br />
-            Nội dung 2
-          </h1>
+          <h2>Lập trình truyền thống</h2>
+          <ul>
+            <li>Lập trình viên viết Lô-gíc</li>
+            <li>Lập trình viên viết Điều khiển</li>
+            <li>Bao gồm: Thuật toán + các trạng thái (biến)</li>
+          </ul>
+          <aside class="notes">
+            Minh họa: sơ đồ vòng lặp, if, biến
+          </aside>
         </section>
+
+        <!-- Slide 7 -->
         <section>
-          <h2>Nội dung chi tiết 2</h2>
-          <p>Chi tiết về nội dung 2...</p>
+          <h2>Ví dụ:</h2>
+          <p><strong>Bài toán</strong></p>
+          <ul>
+            <li>Các số 1 đến 9, mỗi số xuất hiện 3 lần</li>
+            <li>Giữa hai số <em>i</em> liên tiếp phải có đúng <em>i</em> số khác</li>
+            <li>Danh sách dài 27 phần tử</li>
+            <li>Nghiệm ví dụ: <code>1 ,9 ,1 ,2 ,1 ,8 ,2 ,4 ,6 ,2 ,7 ,9 ,4 ,5 ,8 ,6 ,3 ,4 ,7 ,5 ,3 ,9 ,6 ,8 ,3 ,5 ,7</code></li>
+          </ul>
         </section>
+
+        <!-- Slide 8 -->
+        <section>
+          <h2>Cách tiếp cận truyền thống</h2>
+          <ul>
+            <li>Sinh mọi hoán vị có thể</li>
+            <li>Kiểm tra từng hoán vị</li>
+          </ul>
+          <p><strong>Phải làm:</strong></p>
+          <ul>
+            <li>Viết vòng lặp lồng nhau</li>
+            <li>Quản lý trạng thái</li>
+            <li>Kiểm soát quay lui (đệ quy) thủ công</li>
+          </ul>
+          <p>➡️ Dài, khó viết, dễ sai</p>
+        </section>
+
+
+        <!-- Slide 4 -->
+        <section>
+          <h2>Lập trình Lô-gíc</h2>
+          <ul>
+            <li>Lập trình viên chỉ viết Lô-gíc</li>
+            <li>Điều khiển do máy đảm nhiệm (tự động)</li>
+            <li>Chỉ khai báo, không chỉ dẫn</li>
+          </ul>
+          <aside class="notes">
+            Minh họa: máy suy diễn + ràng buộc
+          </aside>
+        </section>
+
+        <!-- Slide 9 -->
+        <section>
+          <h2>Cách tiếp cận Lô-gíc</h2>
+          <ul>
+            <li>Khai báo: chỉ mô tả điều kiện đúng, không viết thuật toán</li>
+            <li>Ví dụ: “Ls là danh sách 27 phần tử”</li>
+            <li>“Trong Ls có danh sách con [1, _, 1, _, 1]”</li>
+            <li>“Trong Ls có danh sách con [2, _, _, 2, _, _, 2]”</li>
+            <li>...</li>
+            <li>“Trong Ls có danh sách con [9 ,_ ,_ ,_ ,_ ,_ ,_ ,_ ,_ ,_ ,9 ,_ ,_ ,_ ,_ ,_ ,_ ,_ ,_ ,_ ,9]”</li>
+          </ul>
+
+          <p>📌 Các mệnh đề lô-gíc đặc tả nghiệm.</p>
+        </section>
+
+        <section>
+          <h2>Cách tiếp cận Lô-gíc</h2>
+          <pre style="font-size: 0.4em;"><code class="language-prolog">sol(Ls) :-
+  list_of_27 ( Ls ),
+  sublist([9 ,_ ,_ ,_ ,_ ,_ ,_ ,_ ,_ ,_ ,9 ,_ ,_ ,_ ,_ ,_ ,_ ,_ ,_ ,_ ,9] , Ls ), 
+  sublist([8 ,_ ,_ ,_ ,_ ,_ ,_ ,_ ,_ ,8 ,_ ,_ ,_ ,_ ,_ ,_ ,_ ,_ ,8] , Ls ),
+  sublist([7 ,_ ,_ ,_ ,_ ,_ ,_ ,_ ,7 ,_ ,_ ,_ ,_ ,_ ,_ ,_ ,7] , Ls ), 
+  sublist([6 ,_ ,_ ,_ ,_ ,_ ,_ ,6 ,_ ,_ ,_ ,_ ,_ ,_ ,6] , Ls ),
+  sublist([5 ,_ ,_ ,_ ,_ ,_ ,5 ,_ ,_ ,_ ,_ ,_ ,5] , Ls ), 
+  sublist([4 ,_ ,_ ,_ ,_ ,4 ,_ ,_ ,_ ,_ ,4] , Ls ),
+  sublist([3 ,_ ,_ ,_ ,3 ,_ ,_ ,_ ,3] , Ls ), 
+  sublist([2 ,_ ,_ ,2 ,_ ,_ ,2] , Ls ),
+  sublist([1 ,_ ,1 ,_ ,1] , Ls ).
+
+list_of_27 ( Ls ):-
+  Ls = [_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_].
+          </code></pre>
+          <p>📌 Khai báo: đặc tả Lô-gíc của nghiệm (Ls), không phải thuật toán.</p>
+        </section>
+
+        <!-- Slide 5 -->
+        <section>
+          <h2>Tính toán bằng Suy diễn</h2>
+          <ul>
+            <li>Bài toán = mệnh đề Lô-gíc</li>
+            <li>Chạy chương trình = chứng minh (suy diễn tự động)</li>
+            <li>Kết quả = nghiệm Lô-gíc (được chứng minh thỏa mãn mệnh đề Lô-gíc)</li>
+          </ul>
+        </section>
+
+        <!-- Slide 6 -->
+        <section>
+          <h2>Hai cách đọc chương trình</h2>
+          <ul>
+            <li><strong>Khai báo</strong>: điều kiện đúng</li>
+            <li><strong>Thủ tục</strong>: thứ tự suy diễn</li>
+          </ul>
+          <p>Lô-gíc nhưng vẫn thực thi được</p>
+        </section>
+
+
       </section>
 
       <div class="footer">
