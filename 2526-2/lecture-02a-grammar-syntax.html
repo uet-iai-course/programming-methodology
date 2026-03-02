@@ -1,0 +1,740 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Bài 2a: Cú pháp và ngữ nghĩa</title>
+
+  <link rel="stylesheet" href="revealjs/dist/reset.css" />
+  <link rel="stylesheet" href="revealjs/dist/reveal.css" />
+  <link rel="stylesheet" href="revealjs/dist/theme/white.css" />
+  <link rel="stylesheet" href="plugin/highlight/monokai.css" />
+  <link rel="stylesheet" href="lecture-style.css" />
+</head>
+
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <section>
+        <section>
+          <h1>Phương pháp luận lập trình</h1>
+          <h3>Bài 2a: Cú pháp và ngữ nghĩa</h3>
+          <p>Trường ĐH Công nghệ – Đại học Quốc gia Hà Nội</p>
+        </section>
+
+        <section>
+          <h2>Nội dung</h2>
+          <ol>
+            <li><span class="keyword">Cú pháp</span>: ngữ pháp, cây dẫn xuất, sự nhập nhằng, ràng buộc tĩnh</li>
+            <li><span class="keyword">Biên dịch</span>: các giai đoạn, vai trò của cú pháp và ngữ nghĩa trong biên dịch
+            </li>
+            <li><span class="keyword">Ngữ nghĩa</span>: phương pháp mô tả, SOS và hệ chuyển trạng thái</li>
+          </ol>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">1.</span><br />
+            Cú pháp
+          </h1>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Các mức mô tả ngôn ngữ</h2>
+          <ul>
+            <li><span class="keyword">Ngữ pháp</span> (Grammar): “câu/chuỗi nào <strong>đúng</strong>?”</li>
+            <li><span class="keyword">Ngữ nghĩa</span> (Semantics): “câu/chuỗi đúng <strong>có nghĩa gì</strong>?”</li>
+            <li><span class="keyword">Ngữ dụng</span> (Pragmatics): “dùng câu có nghĩa <strong>như thế nào</strong>?”
+            </li>
+            <li>Với ngôn ngữ lập trình, thường thêm mức <span class="keyword">hiện thực hoá</span> (Implementation):
+              “<strong>thực
+                thi</strong> sao cho đúng ngữ nghĩa?”</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Ngữ pháp</h2>
+          <div>Các thành phần cơ bản của ngữ pháp:</div>
+          <ul>
+            <li><strong>Bảng chữ cái</strong> (Alphabet): tập ký hiệu cơ sở (chữ cái/ký tự).</li>
+            <li><strong>Từ vựng</strong> (Lexicon): các <span class="keyword">token</span> (từ/ký hiệu) tạo từ bảng chữ
+              cái.</li>
+            <li><strong>Cú pháp</strong> (Syntax): chọn ra tập các chuỗi token tạo thành <span class="keyword">cụm/“câu”
+                hợp
+                lệ</span>.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Ngữ nghĩa</h2>
+          <p>Gán <span class="keyword">ý nghĩa</span> cho mỗi câu đúng.</p>
+          <p>“Ý nghĩa” trong lập trình:</p>
+          <ul>
+            <li><strong>hàm toán học</strong> tính được</li>
+            <li><strong>vết thay đổi
+                trạng
+                thái</strong> của máy trừu tượng</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Ngữ dụng</h2>
+          <p>Nghiên cứu câu hỏi: “<span class="keyword">Làm thế nào</span> để sử dụng một câu có ý nghĩa?”.</p>
+          <ul>
+            <li>Quan tâm đến khía cạnh xã hội, thói quen sử dụng ngôn ngữ.</li>
+            <li>Trong lập trình: liên quan đến phong cách lập trình, cách truyền tham số tối ưu.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Hiện thực hoá</h2>
+          <div>
+            Mô tả “<span class="keyword">cách thực thi</span> một câu đúng sao cho tuân thủ ngữ nghĩa”.
+          </div>
+          <ul>
+            <li>Quan trọng đối với người thiết kế phần mềm và ngôn ngữ.</li>
+            <li>Liên quan đến chi phí thực thi của các cấu trúc.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Câu hỏi nhanh</h2>
+          <ol>
+            <li>Vì sao mô tả cú pháp bằng ngôn ngữ tự nhiên dễ gây <span class="keyword">sự nhập nhằng</span>?</li>
+            <li>“Ngữ nghĩa = hàm tính được” và “ngữ nghĩa = vết trạng thái” khác nhau ở điểm nào?</li>
+          </ol>
+        </section>
+
+        <section>
+          <h2>Ngôn ngữ tự nhiên → mô tả hình thức</h2>
+          <ul>
+            <li>Mô tả cú pháp bằng ngôn ngữ tự nhiên: <span class="keyword">nhập nhằng</span>, khó dùng cho <span
+                class="keyword">biên dịch</span>.</li>
+            <li><span class="keyword">Ngữ pháp tạo sinh</span> (generative grammar) giúp mô tả cú pháp <strong>chặt
+                chẽ</strong>.</li>
+            <li>Trong lập trình, công cụ trọng tâm: <span class="keyword">ngữ pháp phi ngữ cảnh</span> (context-free
+              grammar).</li>
+          </ul>
+        </section>
+
+        <section data-auto-animate>
+          <h2>Ví dụ: chuỗi đối xứng</h2>
+          <ul>
+            <li>Bảng chữ cái: \(A=\{a,b\}\).</li>
+            <li>Chọn ra các chuỗi đọc xuôi = đọc ngược (đối xứng, palindrome).</li>
+          </ul>
+        </section>
+
+        <section data-auto-animate>
+          <h2>Ví dụ: chuỗi đối xứng</h2>
+          <div>Định nghĩa đệ quy:</div>
+          <ul>
+            <li>\(a,b\) là đối xứng;</li>
+            <li>nếu \(s\) đối xứng thì \(asa, bsb\) đối xứng;</li>
+            <li>thêm chuỗi rỗng
+              \(\varepsilon\) để có độ dài chẵn.</li>
+          </ul>
+          <div style="font-size: .75em;">\[
+            \begin{array}{rcl}
+            P &\to& \varepsilon \\
+            P &\to& a \\
+            P &\to& b \\
+            P &\to& a\,P\,a \\
+            P &\to& b\,P\,b
+            \end{array}
+            \]</div>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Ngữ pháp phi ngữ cảnh</h2>
+          <div class="question-box">
+            <div class="question-title">Định nghĩa</div>
+            Một <span class="keyword">ngữ pháp phi ngữ cảnh</span> (context-free grammar) là bộ tứ \((NT,T,R,S)\) trong
+            đó:
+            <ul>
+              <li>\(NT\): tập hữu hạn <span class="keyword">ký hiệu phi kết thúc</span> (non-terminal).</li>
+              <li>\(T\): tập hữu hạn <span class="keyword">ký hiệu kết thúc</span> (terminal).</li>
+              <li>\(R\): tập hữu hạn <span class="keyword">luật sinh</span> dạng \(V \to w\), với \(V \in NT\) và \(w\)
+                là chuỗi trên \(T \cup NT\) (có thể rỗng).</li>
+              <li>\(S \in NT\): <span class="keyword">ký hiệu bắt đầu</span> (start symbol).</li>
+            </ul>
+          </div>
+        </section>
+
+        <section>
+          <h2>\(A^*\) và ngôn ngữ hình thức</h2>
+          <ul>
+            <li>Với bảng chữ cái \(A\), ký hiệu \(A^*\) là tập mọi chuỗi hữu hạn trên \(A\) (gồm cả chuỗi rỗng
+              \(\varepsilon\)).</li>
+            <li>Một <span class="keyword">ngôn ngữ hình thức</span> (formal language) trên \(A\) là một tập con của
+              \(A^*\).</li>
+            <li>Vai trò ngữ pháp: chọn ra một tập con “đúng” từ tất cả chuỗi có thể có.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.9em;">
+          <h2>Ví dụ: Biểu thức số học</h2>
+          <p>
+            Ngữ pháp \(G = (\{E, I\}, \{a, b, +, ∗, −, (, )\}, R, E)\).
+            <br>
+            Với \(R\) gồm các luật:
+          </p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px; font-size:0.7em;">
+            <div>
+              <ol>
+                <li>\(E \to I\)</li>
+                <li>\(E \to E + E\)</li>
+                <li>\(E \to E ∗ E\)</li>
+                <li>\(E \to E − E\)</li>
+                <li>\(E \to −E\)</li>
+                <li>\(E \to (E)\)</li>
+              </ol>
+            </div>
+            <div>
+              <ol start="7">
+                <li>\(I \to a\)</li>
+                <li>\(I \to b\)</li>
+                <li>\(I \to I a\)</li>
+                <li>\(I \to I b\)</li>
+              </ol>
+            </div>
+          </div>
+          <p>Văn phạm này cho phép định nghĩa đệ quy các biểu thức như \(a + b * (a - b)\).
+          </p>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Ký pháp BNF</h2>
+          <h4>Backus Naur Form</h4>
+          <ul>
+            <li>Mũi tên \(\rightarrow\) được thay bằng <span class="inline-code">::=</span>.</li>
+            <li>Ký hiệu phi kết thúc đặt trong ngoặc nhọn: <span class="inline-code">&lt;Exp&gt;</span>.</li>
+            <li>Dùng dấu gạch đứng <span class="inline-code">|</span> để nhóm các quy tắc có cùng vế trái.</li>
+          </ul>
+          <div style="font-size: 0.7em;">
+            \[
+            \begin{array}{rcl}
+            \langle E \rangle &::=& \langle I \rangle \\
+            &|& \langle E \rangle + \langle E \rangle \\
+            &|& \langle E \rangle \ast \langle E \rangle \\
+            &|& \langle E \rangle - \langle E \rangle \\
+            &|& -\langle E \rangle \\
+            &|& (\langle E \rangle)
+            \end{array}
+            \]
+          </div>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Dẫn xuất (derivation)</h2>
+          <div class="question-box">
+            <div class="question-title">Định nghĩa</div>
+            Với \(G=(NT,T,R,S)\), hai chuỗi \(v,w\) trên \(NT \cup T\):
+            <ul>
+              <li>\(v \Rightarrow w\): \(w\) thu được từ \(v\) bằng cách thay một ký hiệu phi kết thúc \(V\) trong \(v\)
+                bởi
+                “thân” \(w'\) của một luật \(V \to w'\) trong \(R\).</li>
+              <li>\(v \Rightarrow^{*} w\): tồn tại dãy hữu hạn (có thể rỗng) các bước \(v \Rightarrow w_0 \Rightarrow
+                w_1 \Rightarrow \cdots \Rightarrow w\).</li>
+            </ul>
+          </div>
+        </section>
+
+        <section data-auto-animate style="font-size: 0.9em;">
+          <h2>Ví dụ dẫn xuất</h2>
+          <div>Sinh chuỗi \(ab ∗ (a+b)\):</div>
+          <ul>
+            <li>Bắt đầu từ ký hiệu đầu \(E\), thay \(E\) bằng \(E ∗ E\) theo quy tắc \(E \to E ∗ E\).</li>
+            <li>Có thể chọn mở rộng “trái nhất” hoặc “phải nhất”</li>
+            <li>Thứ tự khác nhau nhưng có thể cho cùng cấu trúc cây dẫn xuất.</li>
+            </li>
+          </ul>
+        </section>
+
+        <section data-auto-animate>
+          <h2>Ví dụ dẫn xuất</h2>
+          <div>Sinh chuỗi \(ab ∗ (a+b)\):</div>
+          <div style="font-size: 0.5em;">
+            \[
+            \begin{aligned}
+            E &\Rightarrow_{3}\; E * E\\
+            &\Rightarrow_{1}\; I * E\\
+            &\Rightarrow_{10}\; I\mathbf{b} * E\\
+            &\Rightarrow_{7}\; \mathbf{ab} * E\\
+            &\Rightarrow_{6}\; \mathbf{ab} * (E)\\
+            &\Rightarrow_{2}\; \mathbf{ab} * (E + E)\\
+            &\Rightarrow_{1}\; \mathbf{ab} * (I + E)\\
+            &\Rightarrow_{7}\; \mathbf{ab} * (a + E)\\
+            &\Rightarrow_{1}\; \mathbf{ab} * (a + I)\\
+            &\Rightarrow_{8}\; \mathbf{ab} * (a + b)
+            \end{aligned}
+            \]
+          </div>
+        </section>
+
+        <section>
+          <h2>Ngôn ngữ sinh bởi ngữ pháp</h2>
+          <div class="question-box">
+            <div class="question-title">Định nghĩa</div>
+            Ngôn ngữ sinh bởi \(G=(NT,T,R,S)\) là
+            \[
+            L(G)=\{\, w \in T^{*}\mid S \Rightarrow^{*} w \,\}.
+            \]
+          </div>
+        </section>
+
+        <section style="font-size: 0.7em;" data-auto-animate>
+          <h2>Cây dẫn xuất (parse tree)</h2>
+          <div class="question-box">
+            <div class="question-title">Định nghĩa</div>
+            Một <span class="keyword">cây dẫn xuất</span> là cây có thứ tự, sao cho:
+            <ul>
+              <li>Mỗi nút gán nhãn bởi ký hiệu thuộc \(NT \cup T \cup \{\varepsilon\}\).</li>
+              <li>Gốc mang nhãn \(S\); mọi nút trong (interior) mang nhãn thuộc \(NT\).</li>
+              <li>Nếu nút \(A \in NT\) có các nút con lần lượt là \(X_1,\ldots,X_k\) thì \(A \to X_1\cdots X_k \in R\).
+              </li>
+              <li>Nếu có nút \(\varepsilon\) thì đó là con duy nhất của cha \(A\) và \(A \to \varepsilon \in R\).</li>
+            </ul>
+          </div>
+        </section>
+
+        <section>
+          <h2>Ví dụ</h2>
+          <div style="text-align: center;">
+            <img src="img/lec-02a/parse-tree-example.png" alt="Parse tree example"
+              style="max-width: 45%; height: auto;">
+            <div style="font-size: 0.75em; color: #555;">
+              <em>Một cây dẫn xuất cho \(ab ∗ (a+b)\).</em>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Duyệt lá trái → phải</h2>
+          <div class="question-box">
+            <div class="question-title">Định nghĩa</div>
+            <ul>
+              <li>Kết quả duyệt trái→phải của cây là dãy lá thu được bằng định nghĩa đệ quy: duyệt lần lượt các cây con
+                \(T_1,\ldots,T_k\).</li>
+              <li>Một chuỗi <strong>thừa nhận</strong> cây dẫn xuất \(T\) nếu nó là kết quả duyệt trái→phải các lá của
+                \(T\).</li>
+            </ul>
+          </div>
+        </section>
+
+        <section>
+          <h2>Tính nhập nhằng của ngữ pháp</h2>
+          <div class="question-box">
+            <div class="question-title">Định nghĩa</div>
+            Một ngữ pháp \(G\) là <span class="keyword">sự nhập nhằng</span> (ambiguous) nếu tồn tại \(w \in L(G)\) sao
+            cho
+            \(w\) <strong>thừa nhận nhiều hơn một</strong> cây dẫn xuất.
+          </div>
+          <p style="margin-top:10px;">
+            Ghi nhớ: nhiều <strong>dẫn xuất</strong> cho cùng \(w\) là bình thường; vấn đề là nhiều
+            <strong>cây</strong>.
+          </p>
+        </section>
+
+        <section data-auto-animate>
+          <h2>Ví dụ</h2>
+          <ul>
+            <li>Cùng một chuỗi có thể có <strong>hai cây</strong> khác nhau → <span class="keyword">độ ưu tiên toán
+                tử</span> thay đổi.</li>
+            <li>Một cây hiểu là “\( (a∗b)+a \)”; cây khác hiểu là “\( a∗(b+a) \)”.</li>
+          </ul>
+        </section>
+
+        <section data-auto-animate>
+          <h2>Ví dụ</h2>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px; font-size:0.7em;">
+            <div style="text-align: center;">
+              <img src="img/lec-02a/ambiguity-1.png" alt="Ambiguous parse tree 1"
+                style="max-width: 100%; height: auto;">
+              <div style="font-size: 0.75em; color: #555;">
+                <em>Cây dẫn xuất 1 cho \(ab ∗ (a+b)\).</em>
+              </div>
+            </div>
+            <div style="text-align: center;">
+              <img src="img/lec-02a/ambiguity-2.png" alt="Ambiguous parse tree 2"
+                style="max-width: 100%; height: auto;">
+              <div style="font-size: 0.75em; color: #555;">
+                <em>Cây dẫn xuất 2 cho \(ab ∗ (a+b)\).</em>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section style="font-size: 0.85em;" data-auto-animate>
+          <h2>Khử nhập nhằng</h2>
+
+          <ul>
+            <li>Thay đổi văn phạm để ép buộc thứ tự ưu tiên và tính kết hợp.</li>
+            <li>Thường làm văn phạm phức tạp hơn (nhiều ký hiệu phi kết thúc hơn).</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.85em;" data-auto-animate>
+          <h2>Khử nhập nhằng</h2>
+          <h4>Ví dụ</h4>
+
+          <ul>
+            <li><strong>Chia 4 tầng</strong> để “ép” ưu tiên:
+              <ul>
+                <li>\(E\): mức <strong>thấp nhất</strong> — cộng/trừ hai ngôi</li>
+                <li>\(T\): mức <strong>trung</strong> — nhân</li>
+                <li>\(A\): mức <strong>cao</strong> — một ngôi \( - \), ngoặc</li>
+                <li>\(I\): định danh — chuỗi chữ \(a,b\)</li>
+              </ul>
+            </li>
+            <li><strong>Hệ quả:</strong> \( - \) một ngôi ưu tiên cao nhất, đến \( * \), đến \(+\) và \(-\) hai ngôi.
+            </li>
+            <li><strong>Liên kết phải</strong> cho toán tử cùng mức: \(a+b+a\) hiểu là \(a+(b+a)\).</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.85em;" data-auto-animate>
+          <h2>Khử nhập nhằng</h2>
+          <h4>Ví dụ</h4>
+
+          <div style="font-size: 0.8em;">
+            \[
+            G' = (\{E, T, A, I\},\; \{a, b, +, *, -, (, )\},\; R',\; E)
+            \]
+            \[
+            \begin{array}{rcl}
+            E &\to& T \mid T + E \mid T - E \\
+            T &\to& A \mid A * T \\
+            A &\to& I \mid {-}A \mid (E) \\
+            I &\to& a \mid b \mid I\,a \mid I\,b
+            \end{array}
+            \]
+          </div>
+
+          <p style="margin-top:10px;">
+            <strong>Ghi nhớ:</strong> mỗi tầng chỉ “gọi” tầng <em>cao hơn</em> → không còn hai cách phân tích cho cùng
+            một chuỗi.
+          </p>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Ví dụ thực tế</h2>
+          <h4>Ngữ pháp nhập nhằng: câu lệnh if/else</h4>
+          <pre><code class="language-plaintext" data-trim>
+if (expression1) if (expression2) command1;
+    else command2;
+    </code></pre>
+          <ul>
+            <li>Cần quyết định <strong>else</strong> thuộc về <strong>if</strong> nào.</li>
+            <li>Java: “else thuộc về <strong>if gần nhất</strong> mà nó có thể thuộc về”.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.75em;">
+          <h2>Ngữ pháp Java cho if/else</h2>
+          <pre><code class="language-plaintext" data-trim>
+Statement ::= ... | IfThenStatement | IfThenElseStatement |
+              StatementWithoutTrailingSubstatement
+
+StatementWithoutTrailingSubstatement ::= ... | Block | EmptyStatement |
+                                        ReturnStatement
+
+StatementNoShortIf ::= ... | StatementWithoutTrailingSubstatement |
+                       IfThenElseStatementNoShortIf
+
+IfThenStatement ::= if ( Expression ) Statement
+
+IfThenElseStatement ::=
+    if ( Expression ) StatementNoShortIf else Statement
+
+IfThenElseStatementNoShortIf ::=
+    if ( Expression ) StatementNoShortIf else StatementNoShortIf
+    </code></pre>
+        </section>
+
+        <section>
+          <h2>Câu hỏi nhanh</h2>
+          <ol>
+            <li>Vì sao ngữ pháp nhập nhằng không thể sử dụng trong <span class="keyword">biên dịch</span>?</li>
+            <li>Khử sự nhập nhằng thường phải đánh đổi bằng điều gì?</li>
+          </ol>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Ràng buộc cú pháp theo ngữ cảnh</h2>
+          <ul>
+            <li>Một chuỗi có thể đúng theo ngữ pháp nhưng <strong>chưa chắc hợp lệ</strong> ở vị trí xuất hiện.</li>
+            <li>Ví dụ: <span class="inline-code">I = R+3;</span> có thể cần:
+              <ul>
+                <li><strong>khai báo</strong> \(I, R\) trước khi dùng;</li>
+                <li>kiểu của <span class="inline-code">R+3</span> <strong>tương thích</strong> với kiểu của \(I\).</li>
+              </ul>
+            </li>
+            <li>Những ràng buộc này không được mô tả bằng <span class="keyword">CFG</span> vì phụ thuộc <span
+                class="keyword">ngữ cảnh</span>.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Ví dụ</h2>
+          <h4>Ràng buộc ngữ cảnh tĩnh</h4>
+          <ul>
+            <li>Định danh phải <strong>được khai báo</strong> trước khi dùng (Pascal, C, Java).</li>
+            <li>Số đối số thực tế = số tham số hình thức (C, Pascal, Java...).</li>
+            <li>Kiểu biểu thức gán phải <strong>tương thích</strong> kiểu biến đích.</li>
+            <li>Không cho phép gán vào biến điều khiển vòng <span class="inline-code">for</span> (Pascal).</li>
+            <li>Trước khi dùng biến phải có phép gán (Java, Python).</li>
+            <li>Ghi đè phương thức chỉ khi chữ ký “khớp/compatible” (Java/Java5).</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Thuật ngữ hay dùng</h2>
+          <ul>
+            <li><span class="keyword">Cú pháp</span> (syntax): phần mô tả được bằng <span class="keyword">CFG</span>.
+            </li>
+            <li><span class="keyword">Ngữ nghĩa tĩnh</span> (static semantics): ràng buộc ngữ cảnh kiểm tra được từ
+              <strong>văn bản
+                chương trình</strong>.
+            </li>
+            <li><span class="keyword">Ngữ nghĩa động</span> (dynamic semantics): mọi điều xảy ra khi
+              <strong>chạy</strong>
+              chương trình.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Ngữ nghĩa tĩnh</h2>
+          <p>Ví dụ:</p>
+          <ul>
+            <li>Kiểm tra kiểu (Type checking).</li>
+            <li>Số lượng tham số hàm phải khớp với khai báo.</li>
+            <li>Gán giá trị cho biến điều khiển vòng lặp <span class="inline-code">for</span> (bị cấm trong Pascal).
+            </li>
+          </ul>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">2.</span><br />
+            Biên dịch
+          </h1>
+        </section>
+
+        <section data-auto-animate>
+          <h2>Trình biên dịch (compiler)</h2>
+          <ul>
+            <li>Dịch từ <span class="keyword">chương trình nguồn</span> sang <span class="keyword">mã đối tượng</span>
+              qua một chuỗi các pha.</li>
+            <li>Mỗi pha tạo ra một <strong>biểu diễn trung gian</strong> để phục vụ các pha sau.</li>
+          </ul>
+        </section>
+
+        <section data-auto-animate>
+          <h2>Trình biên dịch (compiler)</h2>
+          <div style="text-align: center;">
+            <img src="img/lec-02a/compiler-phases.png" alt="Compiler phases" style="max-width: 80%; height: auto;">
+          </div>
+        </section>
+
+        <section>
+          <h2>Phân tích từ vựng</h2>
+          <ul>
+            <li>Đọc ký tự và gom thành <span class="keyword">token</span>.</li>
+            <li>Ví dụ chuỗi <span class="inline-code">x = 1 + foo++;</span> → 7 token:
+              <ul>
+                <li>định danh (identifier) <span class="inline-code">x</span>, <span class="inline-code">=</span>, số
+                  (number) <span class="inline-code">1</span>, <span class="inline-code">+</span>, định danh <span
+                    class="inline-code">foo</span>, <span class="inline-code">++</span>, <span
+                    class="inline-code">;</span></li>
+              </ul>
+            </li>
+            <li>Chưa kiểm tra cấu trúc lớn (ví dụ ngoặc cân bằng).</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Văn phạm chính quy</h2>
+          <ul>
+            <li><span class="keyword">Văn phạm chính quy</span> (regular grammar): luật dạng \(A \to bB\) (hoặc \(A \to
+              Bb\)), \(b\) là 1
+              ký hiệu kết thúc.</li>
+            <li>Hạn chế: không “đếm” tùy ý → không mô tả cân bằng ngoặc.</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Scanner vs Parser</h2>
+          <ul>
+            <li><strong>Scanner</strong> dùng văn phạm chính quy để nhận dạng token.
+              <ul>
+                <li>Ví dụ: nhận dạng định danh, số, toán tử, dấu câu...</li>
+                <li>tập từ có thể vô hạn, ví dụ: định danh có thể dài tùy ý.</li>
+              </ul>
+            </li>
+            <li><strong>Parser</strong> dùng <span class="keyword">CFG</span> để phân tích chuỗi token thành cấu trúc.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Phân tích cú pháp</h2>
+          <ul>
+            <li>Mục tiêu: dựng <span class="keyword">cây dẫn xuất</span> cho danh sách token.</li>
+            <li>Lá của cây (đọc trái→phải) phải đúng theo ngữ pháp.</li>
+            <li>Nếu không dựng được cây → báo lỗi cú pháp và dừng biên dịch.</li>
+            <li>Thực tế: scanner và parser thường <strong>đan xen</strong> (parser “đòi” token khi cần).</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Phân tích ngữ nghĩa</h2>
+          <ul>
+            <li>Kiểm tra các <span class="keyword">ràng buộc cú pháp dựa trên ngữ cảnh</span>.</li>
+            <li><strong>Nhiệm vụ:</strong> Xử lý khai báo, kiểm tra kiểu, đối chiếu tham số hàm.</li>
+            <li>Giai đoạn này bổ sung thông tin vào cây dẫn xuất để tạo ra "cây dẫn xuất tăng cường".</li>
+          </ul>
+
+          <div class="question-box">
+            <div class="question-title">Bảng ký hiệu (Symbol Table)</div>
+            Là cấu trúc dữ liệu lưu trữ mọi thông tin về định danh (identifier) như: kiểu dữ liệu, phạm vi (scope), vị
+            trí khai báo.
+          </div>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Mã trung gian → mã đích</h2>
+          <ul>
+            <li><span class="keyword">Mã trung gian</span> (Intermediate Form - IR):
+              <ul>
+                <li>Độc lập với ngôn
+                  ngữ nguồn và kiến trúc máy đích
+                </li>
+                <li>Tối ưu hóa hiệu quả</li>
+              </ul>
+            </li>
+            <li><strong>Các kỹ thuật tối ưu hóa điển hình:</strong>
+              <ul>
+                <li>Loại bỏ mã chết.</li>
+                <li>Mở rộng nội hàm hàm.</li>
+                <li>Phân tích nhân tử biểu thức con.</li>
+                <li>Tối ưu hóa vòng lặp.</li>
+              </ul>
+            </li>
+            <li><span class="keyword">Sinh mã đích</span>: Tạo ra mã đối tượng.
+              <ul>
+                <li>Thực hiện các tối ưu phụ thuộc kiến trúc như <strong>gán thanh ghi</strong>.</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">3.</span><br />
+            Ngữ nghĩa
+          </h1>
+        </section>
+
+        <section>
+          <h2>Tại sao cần phương pháp hình thức?</h2>
+          <ul>
+            <li>Ngôn ngữ tự nhiên thường gây mơ hồ, nhập nhằng.</li>
+            <li>Cần sự <strong>chính xác</strong> (exactness) để người dùng biết chương trình sẽ chạy thế nào.</li>
+            <li>Cần sự <strong>linh hoạt</strong> (flexibility) để cho phép nhiều cách hiện thực khác nhau trên các kiến
+              trúc máy tính khác nhau.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Hai dòng ngữ nghĩa chính</h2>
+          <ul>
+            <li><span class="keyword">Ngữ nghĩa ánh xạ</span> (Denotational): Coi ý nghĩa chương trình là các hàm toán
+              học.</li>
+            <li><span class="keyword">Ngữ nghĩa vận hành</span> (Operational): Mô tả hành vi của máy trừu tượng khi thực
+              thi các cấu trúc ngôn ngữ.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Ngữ nghĩa vận hành cấu trúc (SOS)</h2>
+          <ul>
+            <li>Sử dụng các hệ thống <span class="keyword">chuyển trạng thái</span> (transition systems).</li>
+            <li><span class="keyword">Trạng thái (\(\sigma\))</span>: Một hàm (hoặc tập các cặp) ánh xạ tên biến sang
+              giá trị.</li>
+            <li>Ví dụ: \(\sigma = [(X, 3), (Y, 5)]\).</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Quy tắc chuyển trạng thái</h2>
+          <p>Dạng tổng quát cho lệnh:</p>
+          \[ \langle c, \sigma \rangle \rightarrow \sigma' \]
+          <p>Ý nghĩa: Lệnh \(c\) bắt đầu trong trạng thái \(\sigma\) sẽ kết thúc tại trạng thái \(\sigma'\).</p>
+          <p>Ví dụ lệnh <span class="inline-code">skip</span>:</p>
+          \[ \langle \text{skip}, \sigma \rangle \rightarrow \sigma \]
+        </section>
+
+        <section>
+          <h2>Tính toán (Computations)</h2>
+          <ul>
+            <li>Một chuỗi các bước chuyển trạng thái không thể kéo dài thêm.</li>
+            <li><strong>Hữu hạn (Finite):</strong> Chương trình kết thúc (thành công hoặc lỗi).</li>
+            <li><strong>Phân kỳ (Divergent):</strong> Chương trình lặp vô hạn.</li>
+          </ul>
+        </section>
+      </section>
+
+      <section>
+        <section style="font-size: 0.65em;">
+          <h2>Tổng kết</h2>
+          <ul>
+            <li>Phân biệt <strong>cú pháp</strong>, <strong>ngữ nghĩa</strong>, <strong>ngữ dụng</strong>, <strong>hiện
+                thực</strong>.</li>
+            <li><span class="keyword">Ngữ pháp phi ngữ cảnh</span>: công cụ cốt lõi để định nghĩa cú pháp.</li>
+            <li><span class="keyword">Cây dẫn xuất</span> và <span class="keyword">sự nhập nhằng</span>: cần một cây duy
+              nhất để
+              có diễn giải chuẩn.</li>
+            <li><span class="keyword">Static semantics</span>: lọc các chuỗi theo CFG nhưng có thể sai ràng buộc ngữ
+              cảnh.
+            </li>
+            <li>Tổ chức <span class="keyword">compiler</span>: lexical → parsing → static checks → IR → tối ưu → sinh
+              mã.</li>
+            <li><span class="keyword">SOS</span>: mô tả ngữ nghĩa bằng hệ chuyển trạng thái cho biểu thức và lệnh.</li>
+          </ul>
+
+          <!-- Sources: :contentReference[oaicite:0]{index=0} :contentReference[oaicite:1]{index=1} -->
+        </section>
+      </section>
+
+      <div class="footer">
+        Phương pháp luận lập trình (Học kỳ 2 2025-2026) §2a: Cú pháp &amp; ngữ nghĩa
+      </div>
+    </div>
+  </div>
+  <script src="revealjs/dist/reveal.js"></script>
+  <script src="plugin/notes/notes.js"></script>
+  <script src="plugin/markdown/markdown.js"></script>
+  <script src="plugin/highlight/highlight.js"></script>
+  <script src="plugin/math/math.js"></script>
+  <script>
+    Reveal.initialize({
+      controlsLayout: "edges",
+      slideNumber: true,
+      hashOneBasedIndex: true,
+      hash: true,
+      plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX],
+    });
+  </script>
+</body>
+
+</html>
