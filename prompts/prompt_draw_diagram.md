@@ -33,10 +33,10 @@
   - Operations: Các phép toán
   - Runtime support (RTS): Hỗ trợ thực thi
 
-**Style guide (clean whiteboard hand-drawn):**
+**Style guide (clean hand-drawn on white background):**
 
 * 16:9 canvas, generous margins for slides.
-* White background, no gridlines.
+* Absolute white background, no gridlines.
 * Hand-drawn style: simulate whiteboard marker look.
 * Marker-like strokes, slightly imperfect but neat; uniform thickness.
 * Shapes: rounded rectangles (process), diamonds (decision), consistent sizing.
