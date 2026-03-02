@@ -284,9 +284,6 @@
             <li><strong>Bằng phần mềm (software)</strong>: linh hoạt, chậm hơn</li>
             <li><strong>Bằng phần sụn (firmware)</strong>: trung gian</li>
           </ul>
-          <aside class="notes">
-            Slide này là “khung”. Các slide sau sẽ làm rõ cơ chế và hệ quả của từng cách.
-          </aside>
         </section>
 
         <section>
@@ -301,9 +298,6 @@
               </ul>
             </li>
           </ul>
-          <aside class="notes">
-            Có thể liên hệ: tập lệnh của CPU là một “ngôn ngữ” được hiện thực bằng phần cứng.
-          </aside>
         </section>
 
         <section>
@@ -313,9 +307,6 @@
             <li>Chức năng ít thay đổi, cần xử lý với tần suất rất cao.</li>
             <li>Ví dụ: lệnh số học cơ bản, điều khiển luồng cơ bản.</li>
           </ul>
-          <aside class="notes">
-            Nhấn mạnh “ít thay đổi” là điều kiện quan trọng; nếu thay đổi nhiều thì chi phí bảo trì sẽ rất lớn.
-          </aside>
         </section>
 
         <section>
@@ -336,9 +327,6 @@
               </ul>
             </li>
           </ul>
-          <aside class="notes">
-            Liên hệ Python: phổ biến nhất là hiện thực bằng phần mềm thông qua môi trường thực thi.
-          </aside>
         </section>
 
         <section>
@@ -348,9 +336,6 @@
             <li>Cần tương tác tốt (thử nghiệm nhanh, gỡ lỗi thuận tiện).</li>
             <li>Chấp nhận đánh đổi hiệu năng, hoặc sẽ tối ưu dần về sau.</li>
           </ul>
-          <aside class="notes">
-            Có thể gợi ý: về sau có thể thêm biên dịch, mã trung gian, hoặc tối ưu hóa để tăng tốc.
-          </aside>
         </section>
 
         <section style="font-size: .8em;">
@@ -367,10 +352,6 @@
               </ul>
             </li>
           </ul>
-          <aside class="notes">
-            Nói ngắn: vi chương trình là tầng trung gian giữa phần cứng và phần mềm, dùng để điều khiển cách thực hiện
-            lệnh.
-          </aside>
         </section>
 
         <section>
@@ -418,10 +399,6 @@
               </tr>
             </tbody>
           </table>
-          <aside class="notes">
-            Nhấn mạnh: đây là so sánh định tính. Mục tiêu là giúp sinh viên hiểu bản chất đánh đổi, không phải số liệu
-            cụ thể.
-          </aside>
         </section>
 
         <section>
@@ -575,9 +552,6 @@ for i in [1..N] {
             <li><strong>Thư viện &amp; hệ thống</strong>: I/O, collection, import/loader.</li>
             <li><strong>Tối ưu (tuỳ hệ)</strong>: profiling, JIT.</li>
           </ul>
-          <aside class="notes">
-            RTS là “hậu trường” để ngôn ngữ chạy đúng cam kết. C++ thường mỏng hơn; Java/Python dày hơn.
-          </aside>
         </section>
 
         <section>
@@ -623,10 +597,6 @@ for i in [1..N] {
             </li>
             <li>Hệ điều hành nhận dãy byte và điều khiển thiết bị xuất để hiển thị</li>
           </ol>
-          <aside class="notes">
-            Nhấn mạnh khác biệt: Python đi qua runtime/VM + đối tượng string; C++ thường đi qua iostream/ABI.
-            Nhưng cuối cùng đều về OS nhận byte và hiển thị.
-          </aside>
         </section>
 
         <section>
@@ -684,10 +654,6 @@ for i in [1..N] {
               </ul>
             </li>
           </ul>
-          <aside class="notes">
-            Mục tiêu: thay vì nhìn “một máy”, ta nhìn “một chuỗi máy”. Mỗi tầng che giấu chi tiết và nâng mức trừu
-            tượng.
-          </aside>
         </section>
 
         <section>
@@ -718,10 +684,6 @@ for i in [1..N] {
               </ul>
             </li>
           </ul>
-          <aside class="notes">
-            Nhấn mạnh: không nhất thiết chỉ là “ngôn ngữ lập trình”; giao diện lập trình và lời gọi hệ thống cũng là
-            “ngôn ngữ”.
-          </aside>
         </section>
 
         <section>
@@ -749,9 +711,6 @@ for i in [1..N] {
               </ul>
             </li>
           </ul>
-          <aside class="notes">
-            Có thể hỏi sinh viên: “Nếu đổi hệ điều hành, dòng Python mở tệp có cần đổi không?” (thường là không).
-          </aside>
         </section>
 
         <section>
@@ -779,9 +738,6 @@ for i in [1..N] {
             <li><strong>Độ khó chẩn đoán</strong>: lỗi có thể xuất hiện ở tầng dưới nhưng biểu hiện ở tầng trên.</li>
             <li>Cần công cụ: ghi nhật ký, gỡ lỗi, theo dõi hiệu năng theo tầng.</li>
           </ul>
-          <aside class="notes">
-            Đây là điểm tốt để liên hệ: vì sao đôi khi tối ưu phải “đi xuống tầng dưới”.
-          </aside>
         </section>
 
         <section>
