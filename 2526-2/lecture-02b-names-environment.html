@@ -35,144 +35,86 @@
             <li>Một số vấn đề tinh tế về phạm vi</li>
           </ol>
         </section>
-
-        <section>
-          <h2>Mục tiêu buổi học</h2>
-          <ul>
-            <li>Hiểu <span class="keyword">tên</span> (name) khác gì <span class="keyword">đối tượng</span> mà nó biểu
-              diễn</li>
-            <li>Nắm khái niệm <span class="keyword">môi trường</span> (environment) và vai trò của <span
-                class="keyword">khối</span> (block)</li>
-            <li>Phân biệt <span class="keyword">phạm vi tĩnh</span> (static/lexical scope) và <span class="keyword">phạm
-                vi động</span> (dynamic scope)</li>
-            <li>Nhận diện các tình huống dễ gây lỗi/nhầm: <span class="keyword">che khuất</span>, <span
-                class="keyword">aliasing</span>, “define before use”</li>
-          </ul>
-        </section>
       </section>
 
       <section>
         <section>
           <h1>
             <span class="text-light">1.</span><br />
-            Tên và đối tượng có thể được đặt tên
+            Tên và đối tượng có thể định danh
           </h1>
         </section>
 
-        <section>
-          <h2>Tên là gì?</h2>
+        <section style="font-size: 0.85em;">
+          <h2>Vai trò của tên</h2>
+          <ul>
+            <li><span class="keyword">Tên</span> (name) là một chuỗi ký tự dùng để đại diện cho một thứ khác.</li>
+            <li>Cho phép <span class="keyword">trừu tượng hóa</span> (abstraction):
+              <ul>
+                <li><strong>Dữ liệu:</strong> Dùng tên để đại diện cho một vị trí trong bộ nhớ (biến).</li>
+                <li><strong>Điều khiển:</strong> Dùng tên để đại diện cho một tập hợp các lệnh (thủ tục/hàm).</li>
+              </ul>
+            </li>
+            <li>Giúp tách rời mã nguồn khỏi các chi tiết vật lý thấp của máy tính.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Tên và Đối tượng</h2>
+          <ul>
+            <li>Cần phân biệt rõ: <strong>Tên</strong> là chuỗi ký tự; <strong>Đối tượng</strong> nó biểu thị có thể là
+              biến, hàm, kiểu dữ liệu, v.v..</li>
+            <li><span class="keyword">Đa danh</span> (Aliasing): Một đối tượng có nhiều tên gọi khác nhau.</li>
+            <li>Một tên có thể biểu thị các đối tượng khác nhau tại các thời điểm khác nhau.</li>
+          </ul>
           <div class="question-box">
             <div class="question-title">Định nghĩa</div>
-            Một <span class="keyword">tên</span> (name) là một chuỗi ký tự dùng để <strong>biểu diễn/định danh</strong>
-            một đối tượng khác (ví dụ: biến, hàm, kiểu, phép toán...).
-          </div>
-          <ul>
-            <li>Trong nhiều ngôn ngữ, tên là <strong>định danh</strong> (identifier).</li>
-            <li>Một số ký hiệu cũng là tên: <span class="inline-code">+</span>, <span class="inline-code">-</span> có
-              thể biểu diễn phép toán nguyên thủy.</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Tên ≠ đối tượng được gọi tên</h2>
-          <ul>
-            <li><span class="keyword">Tên</span> chỉ là chuỗi ký tự; <span class="keyword">điều được biểu diễn</span> có
-              thể là đối tượng phức tạp (biến, hàm, kiểu...).</li>
-            <li>Một đối tượng có thể có <strong>nhiều tên</strong> → <span class="keyword">aliasing</span> (nhiều “bí
-              danh”).</li>
-            <li>Một tên có thể biểu diễn <strong>các đối tượng khác nhau</strong> ở các thời điểm/vùng khác nhau.</li>
-          </ul>
-          <p>Ghi nhớ: “biến <span class="inline-code">fie</span>” thường là viết tắt của “biến <strong>có tên</strong>
-            <span class="inline-code">fie</span>”.
-          </p>
-        </section>
-
-        <section>
-          <h2>Tên giúp trừu tượng hoá dữ liệu &amp; điều khiển</h2>
-          <ul>
-            <li><strong>Trừu tượng dữ liệu</strong>: tên biến che giấu chi tiết địa chỉ bộ nhớ.</li>
-            <li><strong>Trừu tượng điều khiển</strong>: tên thủ tục/hàm biểu diễn cả một tập lệnh + giao diện gọi (tên +
-              tham số).</li>
-            <li>Để “xử lý đúng tên” cần: <strong>quy tắc ngữ nghĩa</strong> + <strong>cơ chế hiện thực</strong> phù hợp.
-            </li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Đối tượng có thể được đặt tên</h2>
-          <div class="question-box">
-            <div class="question-title">Định nghĩa</div>
-            Các đối tượng mà một tên có thể được gán cho gọi là <span class="keyword">đối tượng có thể được đặt
-              tên</span> (denotable objects).
-          </div>
-          <ul>
-            <li>Do người lập trình đặt tên: biến, tham số hình thức, thủ tục/hàm, kiểu tự định nghĩa, nhãn, mô-đun, hằng
-              tự định nghĩa, ngoại lệ...</li>
-            <li>Do ngôn ngữ định nghĩa sẵn: kiểu nguyên thủy, phép toán nguyên thủy, hằng có sẵn.</li>
-          </ul>
-        </section>
-
-        <section style="font-size: 0.9em;">
-          <h2>Thời điểm tạo “ràng buộc” tên–đối tượng</h2>
-          <ul>
-            <li><strong>Thiết kế ngôn ngữ</strong>: ràng buộc cho kiểu/phép toán/hằng nguyên thủy (vd: <span
-                class="inline-code">+</span>, <span class="inline-code">int</span>).</li>
-            <li><strong>Viết chương trình</strong>: xuất hiện tên trong mã; ràng buộc có thể “mới là mô tả”, chưa cấp
-              phát.</li>
-            <li><strong>Thời điểm biên dịch</strong>: có thể cấp phát cho phần xử lý tĩnh (vd: biến toàn cục).</li>
-            <li><strong>Thời điểm chạy</strong>: tạo các ràng buộc còn lại (vd: biến cục bộ trong đệ quy, cấp phát
-              động).</li>
-          </ul>
-          <p>Nhận xét: thường gom thành 2 nhóm: <span class="keyword">tĩnh</span> (trước khi chạy) và <span
-              class="keyword">động</span> (khi chạy).</p>
-        </section>
-
-        <section>
-          <h2>Aliasing: khi nhiều tên cùng chỉ một đối tượng</h2>
-          <ul>
-            <li><span class="keyword">Aliasing</span>: một đối tượng có thể được truy cập bằng <strong>nhiều
-                tên</strong> trong cùng một môi trường.</li>
-            <li>Dễ gặp khi: truyền tham chiếu, con trỏ.</li>
-          </ul>
-          <pre><code class="language-cpp" data-trim>
-int *X, *Y;
-X = (int*) malloc(sizeof(int));
-*X = 5;
-Y = X;
-*Y = 10;
-write(*X);   // in ra 10
-    </code></pre>
-        </section>
-
-        <section>
-          <h2>Figure placeholder</h2>
-          <div class="placeholder" style="border:1px dashed #999;padding:18px;border-radius:8px;">
-            <em>[Figure placeholder]</em><br />
-            <strong>Mô tả:</strong> Ví dụ một tên (identifier) biểu diễn các đối tượng khác nhau ở các khối lồng nhau
-            (Fig. 4.1)<br />
-            <strong>Mục đích:</strong> Minh hoạ “một tên có thể trỏ tới các đối tượng khác nhau” và hiện tượng che khuất
+            Các đối tượng mà tên có thể gán cho được gọi là <span class="keyword">đối tượng có thể định danh</span>
+            (denotable objects).
           </div>
         </section>
 
-        <section>
-          <h2>Câu hỏi nhanh</h2>
-          <ol>
-            <li>Vì sao nói <strong>tên</strong> chỉ là chuỗi ký tự nhưng lại “quan trọng” trong ngôn ngữ bậc cao?</li>
-            <li>Khi nào <span class="keyword">aliasing</span> trở nên nguy hiểm cho việc hiểu/chứng minh chương trình?
-            </li>
-            <li>Nêu một ví dụ bạn từng gặp: cùng một tên nhưng “ý nghĩa” thay đổi theo vùng chương trình.</li>
-          </ol>
+        <section style="font-size: 0.8em;">
+          <h2>Các loại đối tượng có thể định danh</h2>
+          <ul>
+            <li><strong>Do người dùng định nghĩa:</strong> Biến, tham số hình thức, thủ tục, kiểu dữ liệu tự định nghĩa,
+              nhãn (label), module, hằng số, ngoại lệ.</li>
+            <li><strong>Do ngôn ngữ định nghĩa:</strong> Kiểu dữ liệu cơ bản (primitive types), các phép toán cơ bản,
+              hằng số có sẵn.</li>
+          </ul>
+          <p>Mỗi ngôn ngữ sẽ có danh sách đối tượng có thể định danh khác nhau.</p>
         </section>
 
-        <section>
-          <h2>Tóm tắt</h2>
-          <ul>
-            <li><span class="keyword">Tên</span> (name) là cơ chế trừu tượng hoá: dữ liệu và điều khiển.</li>
-            <li><span class="keyword">Denotable objects</span> là tập các loại đối tượng có thể gán tên.</li>
-            <li>Ràng buộc tên–đối tượng có thể được tạo ở nhiều pha: thiết kế, viết mã, biên dịch, chạy.</li>
-            <li><span class="keyword">Aliasing</span> là nguồn gốc của nhiều hành vi khó lường nếu không quản lý tốt.
-            </li>
-          </ul>
+        <section style="font-size: 0.85em;">
+          <h2>Các giai đoạn tạo liên kết</h2>
+          <p>Sự liên kết giữa tên và đối tượng (<span class="keyword">binding</span>) được tạo ra tại các thời điểm:</p>
+          <table style="width: 100%;font-size: .7em;">
+            <thead>
+              <tr>
+                <th>Giai đoạn</th>
+                <th>Mô tả</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Thiết kế ngôn ngữ</strong></td>
+                <td>Liên kết các hằng số, kiểu và phép toán cơ bản (vd: <span class="inline-code">+</span> là phép
+                  cộng).</td>
+              </tr>
+              <tr>
+                <td><strong>Viết chương trình</strong></td>
+                <td>Lập trình viên chọn tên cho biến, hàm (liên kết một phần).</td>
+              </tr>
+              <tr>
+                <td><strong>Thời gian biên dịch</strong></td>
+                <td>Compiler cấp phát bộ nhớ tĩnh (vd: biến toàn cục) và tạo liên kết.</td>
+              </tr>
+              <tr>
+                <td><strong>Thời gian thực thi</strong></td>
+                <td>Tạo liên kết cho biến cục bộ trong hàm đệ quy hoặc bộ nhớ động.</td>
+              </tr>
+            </tbody>
+          </table>
         </section>
       </section>
 
@@ -180,164 +122,221 @@ write(*X);   // in ra 10
         <section>
           <h1>
             <span class="text-light">2.</span><br />
-            Môi trường và khối (block)
+            Môi trường và khối
           </h1>
         </section>
 
-        <section>
-          <h2>Khái niệm: Môi trường</h2>
+        <section data-auto-animate>
+          <h2>Môi trường</h2>
           <div class="question-box">
             <div class="question-title">Định nghĩa</div>
-            <span class="keyword">Môi trường</span> (referencing <span class="keyword">environment</span>) là tập các
-            liên kết giữa <strong>tên</strong> và <strong>đối tượng có thể được đặt tên</strong> đang tồn tại
-            <strong>tại thời điểm chạy</strong>, ở một điểm chương trình và một thời điểm cụ thể trong thực thi.
+            <span class="keyword">Môi trường</span> (referencing environment) là tập hợp các liên kết giữa tên và đối
+            tượng hiện hữu tại một điểm cụ thể trong chương trình và tại một thời điểm cụ thể khi thực thi.
           </div>
+        </section>
+
+        <section data-auto-animate>
+          <h2>Môi trường</h2>
           <ul>
-            <li>Thường chỉ xét các liên kết <strong>không phải</strong> do ngôn ngữ định nghĩa sẵn.</li>
-            <li>Môi trường là “thành phần” mà hiện thực ngôn ngữ phải mô phỏng (không có sẵn ở mức máy vật lý).</li>
+            <li>Môi trường là thành phần của <span class="keyword">máy trừu tượng</span> giúp xác định liên kết đúng cho
+              mỗi tên.</li>
+            <li>Được tạo ra thông qua các <span class="keyword">khai báo</span> (explicit/implicit declaration).</li>
           </ul>
         </section>
 
-        <section style="font-size: 0.9em;">
-          <h2>Khai báo và môi trường</h2>
-          <ul>
-            <li><span class="keyword">Khai báo</span> (declaration) là cấu trúc tạo liên kết mới trong môi trường.</li>
-            <li>Ví dụ khai báo tường minh:
-              <ul>
-                <li><span class="inline-code">int x;</span> (biến)</li>
-                <li><span class="inline-code">int f(){ return 0; }</span> (hàm)</li>
-                <li><span class="inline-code">type T = int;</span> (kiểu)</li>
-              </ul>
-            </li>
-            <li>Một số ngôn ngữ có <strong>khai báo ngầm</strong>: tạo tên khi dùng lần đầu (kiểu suy ra từ ngữ cảnh).
-            </li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Khái niệm: Khối</h2>
+        <section data-auto-animate>
+          <h2>Khối (Blocks)</h2>
           <div class="question-box">
             <div class="question-title">Định nghĩa</div>
-            Một <span class="keyword">khối</span> (block) là một vùng văn bản của chương trình, có dấu bắt đầu/kết thúc,
-            và có thể chứa các khai báo cục bộ cho vùng đó.
+            Một <span class="keyword">khối</span> là một vùng văn bản của chương trình, có dấu hiệu bắt đầu và kết thúc,
+            có thể chứa các khai báo cục bộ.
           </div>
+        </section>
+
+        <section data-auto-animate>
+          <h2>Khối (Blocks)</h2>
           <ul>
-            <li>Dấu khối theo ngôn ngữ: <span class="inline-code">begin...end</span>, <span
-                class="inline-code">{...}</span>, <span class="inline-code">(...)</span>, <span
-                class="inline-code">let...in...end</span>, thụt dòng (Python)...</li>
-            <li>Hai kiểu thường gặp:
-              <ul>
-                <li><strong>Khối gắn với thủ tục</strong>: thân thủ tục + khai báo tham số.</li>
-                <li><strong>Khối tại chỗ</strong> (in-line): xuất hiện nơi có thể đặt lệnh.</li>
-              </ul>
+            <li><strong>Khối gắn với thủ tục:</strong> Thân của thủ tục cộng với các tham số hình thức.
+            </li>
+            <li><strong>Khối nội tuyến (In-line block):</strong> Xuất hiện tại bất kỳ vị trí nào cho phép đặt lệnh.
             </li>
           </ul>
         </section>
 
-        <section style="font-size: 0.9em;">
-          <h2>Môi trường thay đổi khi nào?</h2>
-          <ul>
-            <li>Thông thường, môi trường thay đổi tại hai thời điểm: <strong>vào khối</strong> và <strong>ra
-                khối</strong>.</li>
-            <li>Khối là “đơn vị nhỏ nhất” thường gắn với một môi trường tương đối ổn định trong khi thực thi.</li>
-            <li>Khối có thể <strong>lồng nhau</strong> (nested), nhưng không được “đóng mở chéo” (không giao cắt kiểu A
-              mở, B mở, A đóng, B đóng).</li>
-          </ul>
-        </section>
+        <section data-auto-animate>
+          <h2>Khối (Blocks)</h2>
+          <div style="font-size:.75em">
+            <pre><code class="language-cpp" data-line-numbers="" data-trim>
+int main() {
+    int x = 100;
 
-        <section>
-          <h2>Quy tắc nhìn thấy (visibility) trong ngôn ngữ có khối</h2>
-          <ul>
-            <li>Một tên cục bộ của khối <strong>nhìn thấy</strong> trong khối đó và các khối nằm trong nó…</li>
-            <li>…<strong>trừ khi</strong> khối trong khai báo lại cùng tên: khai báo mới <span class="keyword">che
-                khuất</span> khai báo cũ.</li>
-            <li>Không có “nhìn thấy từ ngoài vào trong”: tên sinh ra ở khối trong không dùng được ở khối ngoài.</li>
-            <li>Hai khối cùng cấp: tên cục bộ của khối này không nhìn thấy ở khối kia.</li>
-          </ul>
-        </section>
+    // Bắt đầu một khối nội tuyến (In-line block) 
+    {
+        int y = 50; 
+        // Khai báo này che khuất biến x bên ngoài trong phạm vi khối này 
+        int x = 20;
+        
+        std::cout << "Bên trong khối nội tuyến:" << std::endl;
+        std::cout << "x = " << x << " (biến cục bộ của khối)" << std::endl;
+        std::cout << "y = " << y << std::endl;
+    } 
+    // Kết thúc khối nội tuyến: biến y bị hủy, x bên ngoài được kích hoạt lại 
 
-        <section>
-          <h2>Loại môi trường trong một khối</h2>
-          <div class="question-box">
-            <div class="question-title">Định nghĩa</div>
-            Môi trường gắn với một khối gồm: <span class="keyword">môi trường cục bộ</span> (local), <span
-              class="keyword">môi trường không-cục-bộ</span> (non-local), và <span class="keyword">môi trường toàn
-              cục</span> (global).
+    std::cout << "Bên ngoài khối nội tuyến, x = " << x << std::endl;
+    return 0;
+}</code></pre>
           </div>
-          <ul>
-            <li><strong>Local</strong>: các tên khai báo trong khối (với thủ tục: gồm cả tham số hình thức).</li>
-            <li><strong>Non-local</strong>: các tên nhìn thấy từ trong khối nhưng khai báo ở ngoài.</li>
-            <li><strong>Global</strong>: các tên dùng được trong mọi khối (một phần của non-local).</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Figure placeholder</h2>
-          <div class="placeholder" style="border:1px dashed #999;padding:18px;border-radius:8px;">
-            <em>[Figure placeholder]</em><br />
-            <strong>Mô tả:</strong> Ví dụ các khối lồng nhau A, B, C, D và các môi trường khác nhau, có che khuất tên
-            (Fig. 4.2)<br />
-            <strong>Mục đích:</strong> Minh hoạ local/non-local/global và hiện tượng “c” ở khối trong che khuất “c” ở
-            khối ngoài
+          <div>
+            Trong C++, các khối được xác định bằng cặp dấu ngoặc nhọn <code class="inline-code">{ }</code>.
           </div>
         </section>
 
         <section style="font-size: 0.85em;">
-          <h2>Thao tác trên môi trường khi vào/ra khối</h2>
+          <h2>Cấu trúc Khối lồng nhau</h2>
           <ul>
-            <li><strong>Khi vào khối</strong>:
-              <ul>
-                <li>Tạo liên kết cho các tên cục bộ (naming).</li>
-                <li><span class="keyword">Vô hiệu hoá</span> liên kết cũ của các tên bị khai báo lại (che khuất).</li>
-              </ul>
-            </li>
-            <li><strong>Khi ra khối</strong>:
-              <ul>
-                <li>Huỷ liên kết cục bộ (unnaming).</li>
-                <li><span class="keyword">Kích hoạt lại</span> các liên kết đã bị vô hiệu hoá khi vào khối.</li>
-              </ul>
-            </li>
-            <li>Ghi nhớ: trong môi trường có cả liên kết <strong>đang hoạt động</strong> và <strong>tạm ngưng</strong>
-              (bị che khuất).</li>
+            <li>Hầu hết các ngôn ngữ hiện đại cho phép các khối lồng nhau (nested blocks).</li>
+            <li>Quy tắc cơ bản: <span class="keyword">Khối mở sau phải đóng trước</span> (không cho phép chồng lấn kiểu
+              A-mở, B-mở, A-đóng, B-đóng).</li>
+            <li><span class="keyword">Quy tắc hiển thị:</span> Một tên cục bộ của một khối sẽ hiển thị trong khối đó và
+              các khối lồng bên trong nó, trừ khi bị định nghĩa lại.</li>
           </ul>
         </section>
 
-        <section style="font-size: 0.85em;">
-          <h2>Vòng đời “tên–đối tượng” không nhất thiết trùng nhau</h2>
+        <section style="font-size: 0.75em;">
+          <h2>Các thành phần của Môi trường</h2>
+          <div class="question-box">
+            <div class="question-title">Phân loại</div>
+            Môi trường tại một điểm trong khối được hợp thành từ:
+            <ul>
+              <li><strong>Môi trường cục bộ:</strong> Các tên khai báo trực tiếp trong khối (bao gồm tham số nếu là thủ
+                tục).</li>
+              <li><strong>Môi trường không cục bộ:</strong> Các tên hiển thị từ bên ngoài nhưng không khai báo tại chỗ.
+              </li>
+              <li><strong>Môi trường toàn cục:</strong> Các tên có thể dùng ở mọi nơi trong chương trình.</li>
+            </ul>
+          </div>
+          <p>⭐️ Khai báo bên trong sẽ che khuất khai báo bên ngoài nếu trùng tên.</p>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Các thao tác trên Môi trường</h2>
           <ul>
-            <li>Thường: tạo liên kết và cấp phát đối tượng xảy ra cùng lúc (vd: <span class="inline-code">int
-                x;</span>).</li>
-            <li>Nhưng có thể:
-              <ul>
-                <li><strong>Đối tượng sống lâu hơn liên kết</strong>: truyền tham chiếu → tham số hình thức chỉ tồn tại
-                  trong thời gian gọi.</li>
-                <li><strong>Liên kết sống lâu hơn đối tượng</strong>: tên vẫn trỏ tới vùng nhớ đã bị thu hồi → <span
-                    class="keyword">dangling reference</span> (tham chiếu treo).</li>
-              </ul>
+            <li><span class="keyword">Naming</span>: Tạo liên kết khi vào khối.</li>
+            <li><span class="keyword">Reference</span>: Sử dụng tên để truy cập đối tượng.</li>
+            <li><span class="keyword">Deactivation</span>: Vô hiệu hóa liên kết cũ khi có tên mới trùng lặp che khuất.
             </li>
+            <li><span class="keyword">Reactivation</span>: Kích hoạt lại liên kết sau khi thoát khỏi khối che khuất.
+            </li>
+            <li><span class="keyword">Unnaming</span>: Hủy liên kết khi thoát khỏi khối.</li>
           </ul>
         </section>
 
         <section>
-          <h2>Câu hỏi nhanh</h2>
-          <ol>
-            <li>Vì sao nói môi trường là “đặc trưng của ngôn ngữ bậc cao” và phải được mô phỏng khi hiện thực?</li>
-            <li>Khi một tên bị che khuất, liên kết cũ bị <em>huỷ</em> hay chỉ <em>tạm ngưng</em>?</li>
-            <li>Cho ví dụ một tình huống có nguy cơ <span class="keyword">dangling reference</span> theo mô tả của
-              chương.</li>
-          </ol>
+          <h2>Ví dụ về môi trường</h2>
+          <div style="font-size:.7em">
+            <pre><code class="language-cpp" data-line-numbers="" data-trim>
+#include &lt;iostream&gt;
+
+// 1. MÔI TRƯỜNG TOÀN CỤC (Global Environment)
+// Các tên khai báo ở đây có thể được sử dụng ở mọi nơi trong chương trình.
+int x = 100; 
+int y = 200;
+
+void minh_hoa_moi_truong(int p) { // 'p' thuộc Môi trường cục bộ của hàm 
+    
+    // 2. MÔI TRƯỜNG CỤC BỘ (Local Environment) của hàm
+    // Bao gồm các tham số hình thức và các biến khai báo trực tiếp trong khối này.
+    int local_var = 10; 
+
+    // Tại điểm này, Môi trường không cục bộ bao gồm 'x' và 'y' từ bên ngoài.
+    
+    if (p > 0) {
+        // 3. MÔI TRƯỜNG KHÔNG CỤC BỘ (Non-local Environment)
+        // Đối với khối 'if' này, 'local_var' và 'p' là các tên hiển thị từ bên ngoài
+        // nhưng không được khai báo tại chính khối này.
+        
+        int z = local_var + x; 
+        std::cout << "Giá trị z: " << z << std::endl;
+
+        // ⭐️ QUY TẮC CHE KHUẤT (Shadowing/Hiding)
+        // Khai báo trùng tên ở khối bên trong sẽ che khuất khai báo ở khối bên ngoài.
+        int x = 5; // Tên 'x' cục bộ này che khuất 'x' toàn cục (100).
+        
+        std::cout << "x trong khối if (bị che): " << x << std::endl; // In ra 5
+    }
+
+    // Sau khi thoát khối 'if', liên kết 'x = 5' bị hủy (unnaming).
+    // Liên kết 'x = 100' được kích hoạt lại (reactivation).
+    std::cout << "x ngoài khối if: " << x << std::endl; // In ra 100
+}
+
+int main() {
+    minh_hoa_moi_truong(1);
+    return 0;
+}
+</code></pre>
+          </div>
+        </section>
+
+        <section data-auto-animate>
+          <h2>Đa danh</h2>
+          <ul>
+            <li><span class="keyword">Đa danh</span> (Aliasing): Nhiều tên cho cùng một đối tượng trong cùng môi trường
+              (thường
+              qua con trỏ hoặc truyền tham chiếu).</li>
+          </ul>
+        </section>
+
+        <section data-auto-animate>
+          <h2>Đa danh</h2>
+          <div style="font-size:.75em">
+            <pre><code class="language-cpp" data-line-numbers="" data-trim>
+int main() {
+    int x = 5; 
+    int &y = x;  // 'y' là bí danh (alias) của 'x' 
+    int *p = &x; // '*p' cũng là một cách khác để truy cập vào đối tượng 'x' 
+
+    y = 10; // Thay đổi qua tên 'y'
+    std::cout << x; // Kết quả là 10 vì 'x' và 'y' là cùng một đối tượng 
+    
+    *p = 20; // Thay đổi qua con trỏ
+    std::cout << x; // Kết quả là 20
+    return 0;
+}</code></pre>
+          </div>
         </section>
 
         <section>
-          <h2>Tóm tắt</h2>
+          <h2>Tham chiếu lơ lửng</h2>
           <ul>
-            <li><span class="keyword">Môi trường</span> là tập liên kết tên–đối tượng tại thời điểm chạy.</li>
-            <li><span class="keyword">Khối</span> là cấu trúc tổ chức khai báo cục bộ và làm “điểm thay đổi” môi trường.
-            </li>
-            <li>Môi trường của khối gồm: <strong>local</strong>, <strong>non-local</strong>, <strong>global</strong>.
-            </li>
-            <li>Vào/ra khối tạo–huỷ–vô hiệu–kích hoạt lại các liên kết theo quy tắc nhìn thấy.</li>
+            <li><span class="keyword">Tham chiếu lơ lửng</span> (Dangling Reference): Tên vẫn tồn tại nhưng đối tượng nó
+              biểu thị đã bị hủy
+              (lỗi nguy hiểm).</li>
+            <li>Vòng đời của liên kết (binding lifetime) và vòng đời của đối tượng (object lifetime) không nhất thiết
+              trùng nhau.</li>
           </ul>
+        </section>
+
+        <section data-auto-animate>
+          <h2>Tham chiếu lơ lửng</h2>
+          <div style="font-size:.75em">
+            <pre><code class="language-cpp" data-line-numbers="" data-trim>
+int* dangling_example() {
+    int local_val = 42; 
+    return &local_val; 
+} // 'local_val' bị hủy khi thoát hàm, nhưng địa chỉ của nó vẫn được trả về 
+
+int main() {
+    int* ptr = dangling_example(); 
+    
+    // 'ptr' hiện là một Dangling Pointer (một dạng của dangling reference) 
+    // Đối tượng tại địa chỉ này không còn tồn tại hợp lệ nữa.
+    
+    // std::cout << *ptr; // NGUY HIỂM: Truy cập vào vùng nhớ đã bị thu hồi 
+    
+    return 0;
+}</code></pre>
+          </div>
         </section>
       </section>
 
@@ -345,249 +344,246 @@ write(*X);   // in ra 10
         <section>
           <h1>
             <span class="text-light">3.</span><br />
-            Quy tắc phạm vi (scope): tĩnh và động
+            Quy tắc phạm vi: tĩnh và động
           </h1>
         </section>
 
-        <section style="font-size: 0.9em;">
-          <h2>Vấn đề: “x” nào được dùng?</h2>
-          <ul>
-            <li>Cùng một tên <span class="inline-code">x</span> có thể có nhiều khai báo ở các khối khác nhau.</li>
-            <li>Câu hỏi trọng tâm: khi gặp một tham chiếu <strong>không-cục-bộ</strong> tới <span
-                class="inline-code">x</span>, ta chọn liên kết nào?</li>
-            <li>Kết quả có thể khác nhau tuỳ <span class="keyword">quy tắc phạm vi</span> (scope rule).</li>
-          </ul>
-          <pre><code class="language-cpp" data-trim>
-A:{ int x = 0;
-    void fie(){ x = 1; }
-    B:{ int x;
-        fie();
-    }
-    write(x);
-}
-    </code></pre>
-        </section>
-
         <section>
-          <h2>Phạm vi tĩnh (static / lexical scope)</h2>
-          <div class="question-box">
-            <div class="question-title">Định nghĩa</div>
-            Với <span class="keyword">phạm vi tĩnh</span> (static/lexical scope), môi trường tại mọi điểm phụ thuộc
-            <strong>chỉ</strong> vào cấu trúc cú pháp (văn bản) của chương trình; vì vậy có thể xác định chủ yếu ở thời
-            điểm biên dịch.
-          </div>
+          <h2>Đặt vấn đề</h2>
           <ul>
-            <li>Quy tắc “khối lồng gần nhất”: tìm khai báo từ khối hiện tại ra ngoài dần.</li>
-            <li>Nếu không có: tìm trong môi trường định nghĩa sẵn của ngôn ngữ; không có nữa → lỗi.</li>
+            <li>Khi gặp một tên <strong>không-cục-bộ</strong> trong thân thủ tục: cần xác định liên kết nào hợp lệ?</li>
+            <li>Chỉ cần dựa vào <span class="keyword">văn bản chương trình</span> hay còn phụ thuộc <span
+                class="keyword">luồng thực thi</span>?</li>
+            <li>Đây là khác biệt giữa <span class="keyword">phạm vi tĩnh</span> và <span class="keyword">phạm vi
+                động</span>.</li>
           </ul>
-        </section>
-
-        <section style="font-size: 0.9em;">
-          <h2>Hệ quả của phạm vi tĩnh</h2>
-          <ul>
-            <li>Người lập trình dễ hiểu: nối mỗi lần dùng tên về khai báo bằng cách “đọc cấu trúc” chương trình.</li>
-            <li>Trình biên dịch làm được nhiều kiểm tra/ tối ưu:
-              <ul>
-                <li>Kiểm tra kiểu sớm (vd: gán ký tự cho biến nguyên).</li>
-                <li>Thay thế hằng, tối ưu truy cập tên dựa trên thông tin biên dịch.</li>
-              </ul>
-            </li>
-            <li>Ghi nhớ: biên dịch biết “liên kết khai báo”, nhưng thường <em>không</em> biết giá trị cụ thể lúc chạy.
-            </li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Figure placeholder</h2>
-          <div class="placeholder" style="border:1px dashed #999;padding:18px;border-radius:8px;">
-            <em>[Figure placeholder]</em><br />
-            <strong>Mô tả:</strong> Ví dụ minh hoạ phạm vi tĩnh: mỗi lần dùng tên nối về khai báo theo khối lồng gần
-            nhất (Fig. 4.3)<br />
-            <strong>Mục đích:</strong> Làm rõ “nearest nested scope” và phạm vi của tham số hình thức
-          </div>
-        </section>
-
-        <section>
-          <h2>Phạm vi động (dynamic scope)</h2>
-          <div class="question-box">
-            <div class="question-title">Định nghĩa</div>
-            Với <span class="keyword">phạm vi động</span> (dynamic scope), liên kết hợp lệ cho tên <span
-              class="inline-code">X</span> tại điểm <span class="inline-code">P</span> là liên kết <strong>được tạo gần
-              nhất theo thời gian</strong> và vẫn còn <strong>đang hoạt động</strong> khi luồng điều khiển đến <span
-              class="inline-code">P</span>.
-          </div>
-          <ul>
-            <li>Tức là “tìm theo lịch sử gọi” (call history), không phải theo cấu trúc văn bản.</li>
-            <li>Điểm khác chỉ nằm ở phần <strong>non-local và non-global</strong>; local/global thì giống phạm vi tĩnh.
-            </li>
-          </ul>
-        </section>
-
-        <section style="font-size: 0.9em;">
-          <h2>Vì sao phạm vi động “dễ hiện thực”?</h2>
-          <ul>
-            <li>Tra cứu non-local theo “khối đang hoạt động gần nhất” → khớp với kỷ luật ngăn xếp (LIFO).</li>
-            <li>Không cần cơ chế bổ sung để đi theo quan hệ “bao chứa theo văn bản”.</li>
-            <li>Nhưng đánh đổi: khó hiểu hơn và kém tối ưu hơn trong nhiều trường hợp.</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Figure placeholder</h2>
-          <div class="placeholder" style="border:1px dashed #999;padding:18px;border-radius:8px;">
-            <em>[Figure placeholder]</em><br />
-            <strong>Mô tả:</strong> Ví dụ minh hoạ phạm vi động: tên được gán theo liên kết gần nhất trong ngăn xếp kích
-            hoạt (Fig. 4.4 &amp; Fig. 4.5)<br />
-            <strong>Mục đích:</strong> So sánh kết quả in ra khác nhau giữa phạm vi tĩnh và phạm vi động
-          </div>
-        </section>
-
-        <section style="font-size: 0.9em;">
-          <h2>Một “lợi” và nhiều “hại” của phạm vi động</h2>
-          <ul>
-            <li><strong>Lợi (bề ngoài)</strong>: có thể thay đổi hành vi thủ tục bằng cách “định nghĩa lại” biến
-              non-local trước khi gọi (không cần tham số).</li>
-            <li><strong>Hại</strong>: lời gọi cùng một thủ tục có thể cho kết quả khác chỉ vì một biến non-local ở xa bị
-              đổi.</li>
-            <li>Vì vậy: phạm vi động ít dùng trong ngôn ngữ hiện đại đa dụng; đa số chọn phạm vi tĩnh.</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Câu hỏi nhanh</h2>
-          <ol>
-            <li>Trong đoạn mã ví dụ, dưới <span class="keyword">phạm vi tĩnh</span> và <span class="keyword">phạm vi
-                động</span>, <span class="inline-code">write(x)</span> có thể in ra gì? (Giải thích theo “cách tìm khai
-              báo”.)</li>
-            <li>Vì sao phạm vi tĩnh giúp tối ưu hoá tốt hơn?</li>
-            <li>Nếu bạn đọc một chương trình lớn, bạn thích quy tắc nào hơn? Vì sao?</li>
-          </ol>
-        </section>
-
-        <section>
-          <h2>Tóm tắt</h2>
-          <ul>
-            <li><span class="keyword">Static scope</span>: tra cứu theo cấu trúc khối lồng (lexical) → dễ hiểu, dễ kiểm
-              tra/tối ưu.</li>
-            <li><span class="keyword">Dynamic scope</span>: tra cứu theo liên kết hoạt động gần nhất theo thời gian → dễ
-              hiện thực hơn, nhưng khó đọc và khó tối ưu.</li>
-            <li>Sự khác biệt chủ yếu nằm ở cách xác định <strong>non-local environment</strong>.</li>
-          </ul>
-        </section>
-      </section>
-
-      <section>
-        <section>
-          <h1>
-            <span class="text-light">4.</span><br />
-            Một số vấn đề tinh tế về phạm vi
-          </h1>
-        </section>
-
-        <section style="font-size: 0.9em;">
-          <h2>Phạm vi bắt đầu từ đâu?</h2>
-          <ul>
-            <li>Trong C/Java: phạm vi của khai báo biến bắt đầu <strong>từ điểm khai báo</strong> đến hết khối.</li>
-            <li>Vì vậy có thể tồn tại hai tên cùng chữ viết trong cùng một thân hàm, nhưng hiệu lực “từ sau khai báo”.
-            </li>
-          </ul>
-          <pre><code class="language-cpp" data-trim>
-int val = 1000;
-void f(){
-    int foo = val;
-    int val = 100;
-}
-    </code></pre>
-          <ul>
-            <li>Dòng <span class="inline-code">int foo = val;</span> dùng <span class="inline-code">val</span> toàn cục.
-            </li>
-          </ul>
-        </section>
-
-        <section style="font-size: 0.9em;">
-          <h2>Python: “không khai báo tường minh” nhưng phạm vi khác</h2>
-          <ul>
-            <li>Trong Python: tên cục bộ thường được “giới thiệu” khi xuất hiện ở vế trái phép gán lần đầu.</li>
-            <li>Nhưng phạm vi của tên cục bộ có thể bao trùm <strong>cả khối</strong>.</li>
-            <li>Hệ quả: có thể vi phạm quy tắc “define before use” khi đọc tên trước khi nó được gán giá trị.</li>
-          </ul>
-          <pre><code class="language-cpp" data-trim>
-val = 1000
-def f():
-    foo = val
-    val = 100
-    </code></pre>
         </section>
 
         <section style="font-size: 0.85em;">
-          <h2>“Khai báo trước khi dùng” và đệ quy tương hỗ</h2>
+          <h2>Ví dụ</h2>
+          <pre><code class="language-plaintext" data-trim>
+A: {
+    int x = 0;
+    
+    void fie(){ x = 1; }
+
+    B: { 
+        int x;
+        fie();
+    }
+
+    write(x);
+}
+    </code></pre>
           <ul>
-            <li>Quy tắc <strong>declaration before use</strong> đôi khi khó thoả mãn: <span class="keyword">đệ quy tương
-                hỗ</span> (mutual recursion).</li>
-            <li>Giải pháp trong ANSI C: dùng <strong>khai báo hàm</strong> (function declaration) trước, định nghĩa
-              (definition) sau.</li>
+            <li>Câu hỏi: <span class="inline-code">write(x)</span> in ra <strong>0</strong> hay <strong>1</strong>?</li>
+            <li class="fragment">Trả lời: Tuỳ <span class="keyword">kiểu phạm vi</span> của ngôn ngữ (động hay tĩnh).
+            </li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Phạm vi tĩnh</h2>
+          <div class="question-box">
+            <div class="question-title">Định nghĩa</div>
+            Môi trường phụ thuộc <strong>duy nhất</strong> vào cấu trúc văn bản của chương trình (không phụ thuộc luồng
+            chạy).
+          </div>
+          <ul>
+            <li><strong>Tra cứu:</strong> Môi trường cục bộ $\rightarrow$ Khối bao ngoài (gần $\rightarrow$ xa)
+              $\rightarrow$ Ngôn
+              ngữ $\rightarrow$ Không tìm thấy: Báo lỗi.</li>
+            <li><strong>Thủ tục:</strong> Tên thuộc khối bao ngoài; cho phép đệ quy.</li>
+            <li><strong>Ghi nhớ:</strong> Compiler có thể xác định liên kết ngay khi biên dịch.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Hệ quả của phạm vi tĩnh</h2>
+          <ul>
+            <li><strong>Dễ hiểu:</strong> Xác định đúng khai báo chỉ bằng cách quan sát văn bản chương trình.
+            </li>
+            <li><strong>Compiler hỗ trợ:</strong> Thực hiện kiểm tra kiểu (type checks) và tối ưu hóa mã
+              nguồn.</li>
+            <li><strong>Hiệu năng:</strong> Truy cập biến hiệu quả nhờ xác định được khoảng cách (offset) trong bộ
+              nhớ.</li>
+            <li><strong>Đặc điểm:</strong> Biết rõ <strong>cách truy cập</strong> dù không biết giá trị thực tế lúc
+              chạy.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Ví dụ phạm vi tĩnh</h2>
+          <div style="font-size:.75em">
+            <pre><code class="language-cpp" data-line-numbers="" data-trim>
+// 1. Khai báo ở môi trường toàn cục (Global environment) 
+int x = 10; 
+
+void hien_thi() {
+    // Theo quy tắc phạm vi tĩnh, 'x' ở đây được liên kết với 'x' ở dòng 2
+    // vì đó là khối bao ngoài gần nhất chứa định nghĩa của 'x' 
+    std::cout << "Gia tri x la: " << x << std::endl;
+}
+
+int main() {
+    // 2. Khai báo cục bộ (Local environment) trong main 
+    // Biến này che khuất (shadow) biến x toàn cục bên trong main 
+    int x = 20; 
+
+    // Gọi hàm hien_thi
+    hien_thi(); 
+
+    return 0;
+}</code></pre>
+          </div>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Phạm vi động</h2>
+          <div class="question-box">
+            <div class="question-title">Định nghĩa</div>
+            Theo <span class="keyword">phạm vi động</span> (dynamic scope), liên kết hợp lệ của tên \(X\) tại điểm
+            \(P\) là
+            <strong>liên kết được tạo gần nhất theo thời gian</strong> cho \(X\) mà vẫn còn <strong>đang hoạt
+              động</strong> khi luồng chạy tới \(P\).
+          </div>
+          <ul>
+            <li>Dễ hiện thực (dùng stack) nhưng làm chương trình khó đọc và khó tối ưu hóa.</li>
+            <li>Ví dụ các ngôn ngữ: APL, LISP (một số phiên bản), Perl.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>So sánh</h2>
+          <div style="font-size: 0.9em;">
+            <pre><code class="language-plaintext" data-trim>
+A: {
+    int x = 0;
+    void fie() { write(x); }
+    
+    B: { 
+        int x = 1;
+        fie();
+    }
+}
+      </code></pre>
+          </div>
+          <ul>
+            <li><strong>Phạm vi tĩnh:</strong> <span class="inline-code">fie</span> in ra <strong>0</strong> vì <span
+                class="inline-code">x</span> được tìm trong khối cha của <span class="inline-code">fie</span> (khối A).
+            </li>
+            <li><strong>Phạm vi động:</strong> <span class="inline-code">fie</span> in ra <strong>1</strong> vì <span
+                class="inline-code">x</span> được tìm trong khối kích hoạt gần nhất (khối B).</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Điểm bắt đầu của phạm vi</h2>
+          <ul>
+            <li><strong>C/C++ và Java:</strong> Phạm vi bắt đầu từ <span class="keyword">điểm khai báo</span> đến hết
+              khối.</li>
+            <li><strong>Python:</strong> Phạm vi là <span class="keyword">toàn bộ khối</span> chứa nó nếu tên được gán
+              giá trị trong khối đó.</li>
+            <li>Sự khác biệt này dẫn đến cách xử lý các biến trùng tên khác nhau giữa các ngôn ngữ.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>C/Java: Khai báo trước khi dùng</h2>
+
+          <pre><code class="language-cpp" data-trim>
+int val = 1000; // val toàn cục
+void f(){
+  int foo = val; // lấy val toàn cục (1000) 
+  int val = 100; // val cục bộ bắt đầu từ đây 
+}
+    </code></pre>
+          <ul>
+            <li>Trong cùng một khối có thể tồn tại hai đối tượng cùng tên <span class="inline-code">val</span> ở các
+              thời điểm khác nhau.</li>
+            <li>Biến <span class="inline-code">foo</span> nhận giá trị toàn cục vì lúc đó <span
+                class="inline-code">val</span> cục bộ chưa có hiệu lực.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Python: Phạm vi toàn khối</h2>
+          <pre><code class="language-python" data-trim>
+val = 1000
+def f():
+  foo = val  # Lỗi! 
+  val = 100  # val bị coi là cục bộ trong toàn bộ f() 
+    </code></pre>
+          <ul>
+            <li>Sự hiện diện của lệnh gán <span class="inline-code">val = 100</span> khiến <span
+                class="inline-code">val</span> trở thành biến cục bộ cho <strong>toàn bộ</strong> hàm <span
+                class="inline-code">f</span>.</li>
+            <li>Lỗi <span class="keyword">vi phạm thứ tự sử dụng</span> (define before use) xảy ra vì <span
+                class="inline-code">val</span> cục bộ chưa được gán giá trị khi nạp vào <span
+                class="inline-code">foo</span>.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Đệ quy tương hỗ (Mutual Recursion)</h2>
+          <ul>
+            <li>Ràng buộc "khai báo trước khi dùng" bị vi phạm khi hai hàm gọi lẫn nhau.</li>
+            <li><strong>Giải pháp trong C:</strong> Sử dụng <span class="keyword">khai báo hàm</span> (function
+              declaration) để giới thiệu chữ ký hàm trước.</li>
           </ul>
           <pre><code class="language-cpp" data-trim>
-int g(int n);
-int f(int n){
-    return g(n);
-}
-int g(int n){
-    if (n == 0) return 0;
-    return f(n-1);
+int g(int n);   // Khai báo (Declaration) 
+int f(int n){ return g(n); }
+int g(int n){ // Định nghĩa (Definition) 
+  if (n == 0) return 0;
+  return f(n-1);
 }
     </code></pre>
         </section>
 
-        <section style="font-size: 0.9em;">
-          <h2>Nới lỏng “khai báo trước khi dùng” theo từng ngôn ngữ</h2>
-          <ul>
-            <li>Java: khai báo biến có thể ở bất kỳ vị trí trong khối; phạm vi từ điểm khai báo đến hết khối.</li>
-            <li>Thành viên lớp (field/method): có thể nhìn thấy trong toàn bộ lớp, không phụ thuộc thứ tự khai báo → hỗ
-              trợ đệ quy tương hỗ giữa các phương thức.</li>
-            <li>Python: không gặp vấn đề đệ quy tương hỗ theo kiểu “khai báo trước”, vì không kiểm tra tĩnh phạm vi ở
-              mức đó.</li>
-          </ul>
-        </section>
-
-        <section>
-          <h2>Câu hỏi nhanh</h2>
-          <ol>
-            <li>Trong C/Java, vì sao dòng <span class="inline-code">int foo = val;</span> ở ví dụ lại dùng <span
-                class="inline-code">val</span> toàn cục?</li>
-            <li>Trong Python, vì sao đoạn ví dụ có thể gây lỗi khi gọi <span class="inline-code">f()</span>?</li>
-            <li>Nêu một lý do vì sao ngôn ngữ cần cơ chế hỗ trợ đệ quy tương hỗ.</li>
-          </ol>
-        </section>
-
-        <section>
-          <h2>Tóm tắt</h2>
-          <ul>
-            <li>“Phạm vi” còn phụ thuộc chi tiết ngôn ngữ: bắt đầu tại điểm khai báo hay bao trùm khối.</li>
-            <li>Quy tắc “khai báo trước khi dùng” có nhiều ngoại lệ/biến thể để hỗ trợ thực tiễn (vd: đệ quy tương hỗ).
-            </li>
-            <li>Hiểu đúng các tinh tế này giúp tránh lỗi khó tìm và đọc chương trình chắc chắn hơn.</li>
-          </ul>
+        <section style="font-size: 0.8em;">
+          <h2>Sự khác biệt giữa các ngôn ngữ</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Ngôn ngữ</th>
+                <th>Đặc điểm Phạm vi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Java (biến)</strong></td>
+                <td>Từ điểm khai báo đến hết khối lệnh.</td>
+              </tr>
+              <tr>
+                <td><strong>Java (lớp)</strong></td>
+                <td>Thành viên lớp (field/method) hiển thị trong <strong>toàn bộ</strong> lớp.</td>
+              </tr>
+              <tr>
+                <td><strong>Python</strong></td>
+                <td>Toàn bộ khối; không kiểm tra tĩnh nghiêm ngặt nên dễ lỗi runtime.</td>
+              </tr>
+              <tr>
+                <td><strong>C99</strong></td>
+                <td>Cho phép khai báo ngầm định (implicit declaration) kèm cảnh báo.</td>
+              </tr>
+            </tbody>
+          </table>
         </section>
       </section>
 
       <section>
-        <section style="font-size: 0.75em;">
+        <section style="font-size: 0.85em;">
           <h2>Tổng kết</h2>
           <ul>
-            <li><strong>Tên</strong>: cơ chế trừu tượng hoá; tên ≠ đối tượng; có thể xảy ra <span
-                class="keyword">aliasing</span>.</li>
-            <li><strong>Môi trường</strong>: tập liên kết tên–đối tượng tại runtime; thay đổi chủ yếu khi vào/ra <span
-                class="keyword">khối</span>.</li>
-            <li><strong>Khối</strong>: công cụ tổ chức khai báo cục bộ và quy tắc nhìn thấy.</li>
-            <li><strong>Loại môi trường</strong>: <span class="keyword">local</span>, <span
-                class="keyword">non-local</span>, <span class="keyword">global</span>.</li>
-            <li><strong>Scope</strong>: <span class="keyword">tĩnh</span> (theo văn bản) vs <span
-                class="keyword">động</span> (theo lịch sử thực thi).</li>
-            <li><strong>Vấn đề tinh tế</strong>: điểm bắt đầu phạm vi, “declare before use”, đệ quy tương hỗ,
-              define-before-use.</li>
+            <li><span class="keyword">Tên</span> là định danh biểu thị cho đối tượng, không phải chính đối tượng đó.
+            </li>
+            <li><span class="keyword">Môi trường</span> quản lý các liên kết giữa tên và đối tượng.</li>
+            <li><span class="keyword">Khối</span> là nền tảng để tổ chức môi trường và quy tắc hiển thị.</li>
+            <li><span class="keyword">Phạm vi tĩnh</span> dựa trên văn bản, <span class="keyword">phạm vi động</span>
+              dựa trên thời gian thực thi.</li>
+            <li>Hầu hết ngôn ngữ hiện nay ưu tiên quy tắc phạm vi tĩnh vì tính minh bạch và hiệu năng.</li>
           </ul>
-
         </section>
       </section>
 
