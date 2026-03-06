@@ -96,7 +96,7 @@
         <section style="font-size: 0.85em;" data-auto-animate="">
           <h2>Đặc điểm của quản lý tĩnh</h2>
           <ul>
-            <li>Thực hiện bởi trước khi chạy</li>
+            <li>Thực hiện trước khi chạy</li>
             <li>Trình biên dịch (<span class="keyword">compiler</span>) thực hiện</li>
             <li>Các đối tượng nằm ở vùng nhớ cố định suốt thời gian chạy</li>
           </ul>
@@ -143,9 +143,9 @@ int fib (int n) {
               \(C(n)=C(n-1)+C(n-2)\).</li>
             <li class="fragment">Dãy Fibonacci tăng nhanh ⇒ số lời gọi đồng thời có thể rất lớn theo <span
                 class="keyword">n</span> (không cố định trước khi chạy).</li>
-            <li>Không thể xác định <strong>số lượng bộ nhớ cần thiết</strong> cho các biến cục bộ và tham số của mỗi lời
+            <li class="fragment">Không thể xác định <strong>số lượng bộ nhớ cần thiết</strong> cho các biến cục bộ và tham số của mỗi lời
               gọi.</li>
-            <li>\(\Rightarrow\) Không thể dùng quản lý tĩnh.</li>
+            <li class="fragment">\(\Rightarrow\) Không thể dùng quản lý tĩnh.</li>
           </ul>
         </section>
 
@@ -538,7 +538,7 @@ free(q);</code></pre>
             Để tìm khối rỗi kích thước \(k \ge n\):
             <ul>
               <li><strong>Vị trí đầu tiên:</strong> Chọn khối rỗi đầu tiên đủ lớn (ưu tiên tốc độ).</li>
-              <li><strong>Vị trí tốt nhất:</strong> Chọn khối rỗi có kích thước gần nhất với yêu cầu (ưu tiên tiết kiệm
+              <li><strong>Vị trí khớp nhất:</strong> Chọn khối rỗi có kích thước gần nhất với yêu cầu (ưu tiên tiết kiệm
                 bộ
                 nhớ).</li>
             </ul>
