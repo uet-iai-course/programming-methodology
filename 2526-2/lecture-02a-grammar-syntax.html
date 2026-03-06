@@ -46,15 +46,16 @@
 
         <section style="font-size: 0.8em;">
           <h2>Các mức mô tả ngôn ngữ</h2>
+          Theo Ngôn ngữ học của Noam Chomsky, có 3 mức mô tả ngôn ngữ:
           <ul>
             <li><span class="keyword">Ngữ pháp</span> (Grammar): “câu/chuỗi nào <strong>đúng</strong>?”</li>
             <li><span class="keyword">Ngữ nghĩa</span> (Semantics): “câu/chuỗi đúng <strong>có nghĩa gì</strong>?”</li>
             <li><span class="keyword">Ngữ dụng</span> (Pragmatics): “dùng câu có nghĩa <strong>như thế nào</strong>?”
             </li>
-            <li>Với ngôn ngữ lập trình, thường thêm mức <span class="keyword">hiện thực hoá</span> (Implementation):
-              “<strong>thực
-                thi</strong> sao cho đúng ngữ nghĩa?”</li>
           </ul>
+          <p>Với ngôn ngữ lập trình, thường thêm mức <span class="keyword">hiện thực hoá</span> (Implementation):
+            “<strong>thực
+              thi</strong> sao cho đúng ngữ nghĩa?”</p>
         </section>
 
         <section style="font-size: 0.8em;">
@@ -102,21 +103,23 @@
           </ul>
         </section>
 
-        <section>
+        <!-- <section>
           <h2>Câu hỏi nhanh</h2>
           <ol>
             <li>Vì sao mô tả cú pháp bằng ngôn ngữ tự nhiên dễ gây <span class="keyword">sự nhập nhằng</span>?</li>
             <li>“Ngữ nghĩa = hàm tính được” và “ngữ nghĩa = vết trạng thái” khác nhau ở điểm nào?</li>
           </ol>
-        </section>
+        </section> -->
 
         <section>
           <h2>Ngôn ngữ tự nhiên → mô tả hình thức</h2>
           <ul>
             <li>Mô tả cú pháp bằng ngôn ngữ tự nhiên: <span class="keyword">nhập nhằng</span>, khó dùng cho <span
                 class="keyword">biên dịch</span>.</li>
-            <li><span class="keyword">Ngữ pháp tạo sinh</span> (generative grammar) giúp mô tả cú pháp <strong>chặt
-                chẽ</strong>.</li>
+            <li><span class="keyword">Ngữ pháp tạo sinh</span> (generative grammar, Noam Chomsky) giúp mô tả cú pháp
+              <strong>chặt
+                chẽ</strong>.
+            </li>
             <li>Trong lập trình, công cụ trọng tâm: <span class="keyword">ngữ pháp phi ngữ cảnh</span> (context-free
               grammar).</li>
           </ul>
@@ -126,20 +129,23 @@
           <h2>Ví dụ: chuỗi đối xứng</h2>
           <ul>
             <li>Bảng chữ cái: \(A=\{a,b\}\).</li>
-            <li>Chọn ra các chuỗi đọc xuôi = đọc ngược (đối xứng, palindrome).</li>
+            <li>Ngữ pháp tạo sinh: Xây dựng tập hữu hạn các quy tắc để tạo ra các chuỗi <span class="keyword">đọc xuôi =
+                đọc ngược</span> (đối xứng,
+              <strong>palindrome</strong>).
+            </li>
           </ul>
         </section>
 
         <section data-auto-animate>
           <h2>Ví dụ: chuỗi đối xứng</h2>
-          <div>Định nghĩa đệ quy:</div>
           <ul>
             <li>\(a,b\) là đối xứng;</li>
             <li>nếu \(s\) đối xứng thì \(asa, bsb\) đối xứng;</li>
             <li>thêm chuỗi rỗng
               \(\varepsilon\) để có độ dài chẵn.</li>
           </ul>
-          <div style="font-size: .75em;">\[
+          <div><strong>Văn phạm* tạo sinh:</strong></div>
+          <div style="font-size: .7em;">\[
             \begin{array}{rcl}
             P &\to& \varepsilon \\
             P &\to& a \\
@@ -148,6 +154,9 @@
             P &\to& b\,P\,b
             \end{array}
             \]</div>
+          <div style="font-size: 0.5em; color: #555;">
+            <em>* "Văn phạm" = "Ngữ pháp" = "Grammar". "Văn phạm" là từ cũ hơn.</em>
+          </div>
         </section>
 
         <section style="font-size: 0.8em;">
@@ -173,14 +182,14 @@
               \(\varepsilon\)).</li>
             <li>Một <span class="keyword">ngôn ngữ hình thức</span> (formal language) trên \(A\) là một tập con của
               \(A^*\).</li>
-            <li>Vai trò ngữ pháp: chọn ra một tập con “đúng” từ tất cả chuỗi có thể có.</li>
+            <li>Vai trò ngữ pháp: Chọn ra một tập con của \(A^*\) làm ngôn ngữ hợp lệ.</li>
           </ul>
         </section>
 
         <section style="font-size: 0.9em;">
           <h2>Ví dụ: Biểu thức số học</h2>
           <p>
-            Ngữ pháp \(G = (\{E, I\}, \{a, b, +, ∗, −, (, )\}, R, E)\).
+            Văn phạm \(G = (\{E, I\}, \{a, b, +, ∗, −, (, )\}, R, E)\).
             <br>
             Với \(R\) gồm các luật:
           </p>
@@ -234,11 +243,10 @@
           <h2>Dẫn xuất (derivation)</h2>
           <div class="question-box">
             <div class="question-title">Định nghĩa</div>
-            Với \(G=(NT,T,R,S)\), hai chuỗi \(v,w\) trên \(NT \cup T\):
+            Với \(G=(NT,T,R,S)\), hai chuỗi \(v,w \in (NT \cup T)^*\):
             <ul>
               <li>\(v \Rightarrow w\): \(w\) thu được từ \(v\) bằng cách thay một ký hiệu phi kết thúc \(V\) trong \(v\)
-                bởi
-                “thân” \(w'\) của một luật \(V \to w'\) trong \(R\).</li>
+                bởi \(w'\) của một luật \(V \to w'\) trong \(R\).</li>
               <li>\(v \Rightarrow^{*} w\): tồn tại dãy hữu hạn (có thể rỗng) các bước \(v \Rightarrow w_0 \Rightarrow
                 w_1 \Rightarrow \cdots \Rightarrow w\).</li>
             </ul>
@@ -327,16 +335,16 @@
           </div>
         </section>
 
-        <section>
+        <section style="font-size: 0.9em;">
           <h2>Tính nhập nhằng của ngữ pháp</h2>
           <div class="question-box">
             <div class="question-title">Định nghĩa</div>
-            Một ngữ pháp \(G\) là <span class="keyword">sự nhập nhằng</span> (ambiguous) nếu tồn tại \(w \in L(G)\) sao
+            Một ngữ pháp \(G\) là <span class="keyword">nhập nhằng</span> (ambiguous) nếu tồn tại \(w \in L(G)\) sao
             cho
             \(w\) <strong>thừa nhận nhiều hơn một</strong> cây dẫn xuất.
           </div>
           <p style="margin-top:10px;">
-            Ghi nhớ: nhiều <strong>dẫn xuất</strong> cho cùng \(w\) là bình thường; vấn đề là nhiều
+            Ghi nhớ: Nhiều <strong>dẫn xuất</strong> cho cùng \(w\) là bình thường; vấn đề là nhiều
             <strong>cây</strong>.
           </p>
         </section>
