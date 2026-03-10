@@ -54,22 +54,6 @@
           </div>
         </section>
 
-        <!-- <section>
-          <h2>Thứ tự đánh giá biểu thức</h2>
-          <ul>
-            <li><strong>Vấn đề:</strong> <span class="keyword">Thứ tự đánh giá</span> khác nhau có thể làm thay đổi kết
-              quả biểu thức.
-              <ul>
-                <li>Ví dụ: Biểu thức \(a + b * c\) có thể hiểu là \((a + b) * c\) hoặc \(a + (b * c)\) tùy vào thứ tự
-                  đánh giá.
-                </li>
-              </ul>
-            </li>
-            <li>Biểu thức cần các quy tắc về <span class="keyword">ưu tiên toán tử</span>
-              (operator precedence).</li>
-          </ul>
-        </section> -->
-
         <section>
           <h2>Biểu diễn biểu thức</h2>
           <p>Có hai cách phổ biến để biểu diễn biểu thức:</p>
@@ -123,22 +107,31 @@
           </ul>
         </section>
 
-        <section style="font-size: 0.8em;">
-          <h2>Ký pháp tiền tố</h2>
-          <p>Cần các quy ước <strong>Ưu tiên</strong> và <strong>Kết hợp</strong> để xác định thứ tự đánh giá:</p>
+        <section style="font-size: 0.7em;">
+          <h2>Ký pháp trung tố: Ưu tiên &amp; Kết hợp</h2>
+          <p>Ký pháp trung tố yêu cầu thêm quy ước để tránh nhập nhằng:</p>
           <ul>
-            <li><span class="keyword">Ưu tiên</span> (precedence): Thứ tự thực hiện các toán tử.
+            <li><span class="keyword">Ưu tiên</span> (precedence): Toán tử nào được thực hiện trước.
               <ul>
-                <li>Ví dụ: Trong \(a + b * c\), nhân (*) ưu tiên cao hơn (+).</li>
+                <li>Ví dụ: Trong \(a + b * c\), nhân (*) ưu tiên cao hơn (+) → kết quả là \(a + (b * c)\).</li>
+                <li>⚠️ Nguy hiểm: <code class="inline-code">x=4 and y=5</code> trong Pascal bị hiểu là <code
+                    class="inline-code">x=(4 and y)=5</code> vì <code class="inline-code">and</code> có ưu tiên cao hơn
+                  <code class="inline-code">=</code>.
+                </li>
               </ul>
             </li>
-            <li><span class="keyword">Kết hợp</span> (associativity): Thứ tự thực hiện các toán tử cùng cấp đứng
-              cạnh nhau.
+            <li><span class="keyword">Kết hợp</span> (associativity): Hướng thực hiện khi các toán tử cùng cấp đứng cạnh
+              nhau.
               <ul>
-                <li>Ví dụ: \(a - b - c\) thường kết hợp từ trái sang phải, nên được đánh giá như \((a - b) - c\).</li>
+                <li>Ví dụ: \(a - b - c\) kết hợp trái → \((a-b)-c\). Nhưng APL kết hợp <em>phải</em> → \(a-(b-c)\).</li>
+                <li>Ví dụ: Lũy thừa kết hợp phải: <code class="inline-code">5**3**2</code> = \(5^{(3^2)}\) = \(5^9\).
+                </li>
               </ul>
             </li>
           </ul>
+          <p style="margin-top:0.5em; font-size:0.9em; color:#555;">
+            ✅ Tiền tố và hậu tố <strong>không cần</strong> các quy tắc này vì thứ tự đã rõ ràng từ cú pháp.
+          </p>
         </section>
 
         <section data-auto-animate>
@@ -226,19 +219,44 @@
           </div>
         </section>
 
-        <section style="font-size: 0.8em;">
+        <section style="font-size: 0.78em;">
           <h2>Tại sao thứ tự đánh giá quan trọng?</h2>
-          <ul>
-            <li><span class="keyword">Tác dụng phụ</span> (side effects): Thay đổi trạng thái khiến kết quả phụ thuộc
-              vào việc vế nào tính trước.</li>
-            <li><span class="keyword">Số học hữu hạn</span> (finite arithmetic): Tràn số hoặc sai số làm đổi kết quả khi
-              đổi thứ tự toán hạng.</li>
-            <li><span class="keyword">Toán hạng không xác định</span>: Một số nhánh có thể gây lỗi nếu bị đánh giá sai
-              thời điểm.</li>
-            <li><span class="keyword">Đánh giá ngắn mạch</span> (short-circuit): Giúp tránh lỗi runtime và tăng hiệu
-              năng.</li>
-            <li><span class="keyword">Tối ưu hóa</span>: Compiler có thể đổi thứ tự nếu ngôn ngữ cho phép (như C).</li>
-          </ul>
+          <table style="width:100%; border-collapse:collapse;">
+            <thead>
+              <tr style="background:#f0f4ff;">
+                <th style="padding:6px 10px; text-align:left; border-bottom:2px solid #3b5bdb;">Lý do</th>
+                <th style="padding:6px 10px; text-align:left; border-bottom:2px solid #3b5bdb;">Mức độ</th>
+                <th style="padding:6px 10px; text-align:left; border-bottom:2px solid #3b5bdb;">Ví dụ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="background:#fff3f3;">
+                <td style="padding:5px 10px;"><span class="keyword">Tác dụng phụ</span></td>
+                <td style="padding:5px 10px; color:#c0392b; font-weight:bold;">⚠️ Quan trọng nhất</td>
+                <td style="padding:5px 10px;"><code class="inline-code">(a+f(b))*(c+f(b))</code>: f có thể sửa c</td>
+              </tr>
+              <tr style="background:#fff3f3;">
+                <td style="padding:5px 10px;"><span class="keyword">Ngắn mạch</span></td>
+                <td style="padding:5px 10px; color:#c0392b; font-weight:bold;">⚠️ Quan trọng nhất</td>
+                <td style="padding:5px 10px;"><code class="inline-code">a==0 || b/a&gt;2</code>: tránh chia 0</td>
+              </tr>
+              <tr>
+                <td style="padding:5px 10px;"><span class="keyword">Số học hữu hạn</span></td>
+                <td style="padding:5px 10px; color:#e67e22;">Quan trọng</td>
+                <td style="padding:5px 10px;">Đổi thứ tự có thể gây tràn số</td>
+              </tr>
+              <tr>
+                <td style="padding:5px 10px;"><span class="keyword">Toán hạng không xác định</span></td>
+                <td style="padding:5px 10px; color:#e67e22;">Quan trọng</td>
+                <td style="padding:5px 10px;"><code class="inline-code">a==0 ? b : b/a</code>: cần lazy eval</td>
+              </tr>
+              <tr>
+                <td style="padding:5px 10px;"><span class="keyword">Tối ưu hóa</span></td>
+                <td style="padding:5px 10px; color:#27ae60;">Bổ sung</td>
+                <td style="padding:5px 10px;">Compiler đổi thứ tự để dùng pipeline CPU</td>
+              </tr>
+            </tbody>
+          </table>
         </section>
 
         <section style="font-size: 0.9em;">
@@ -289,6 +307,36 @@
           </ul>
           <pre><code class="language-cpp" data-trim>
 while(p != NULL && p->value != 3)</code></pre>
+        </section>
+
+        <section style="font-size: 0.78em;">
+          <h2>Ngắn mạch: Pascal vs C</h2>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div>
+              <p style="text-align:center; font-weight:bold; color:#c0392b;">❌ Pascal — KHÔNG ngắn mạch</p>
+              <pre><code class="language-pascal" data-trim>
+p := list;
+while (p &lt;&gt; nil) and
+      (p^.value &lt;&gt; 3) do
+  p := p^.next;
+(* Lỗi! Khi p = nil,
+   p^.value vẫn bị đánh giá
+   → truy cập con trỏ null! *)</code></pre>
+            </div>
+            <div>
+              <p style="text-align:center; font-weight:bold; color:#27ae60;">✅ C — Có ngắn mạch</p>
+              <pre><code class="language-c" data-trim>
+p = list;
+while (p != NULL &&
+       p->value != 3)
+  p = p->next;
+/* An toàn: khi p == NULL,
+   vế phải KHÔNG được đánh giá
+   → không truy cập null */</code></pre>
+            </div>
+          </div>
+          <p style="margin-top:0.5em; font-size:0.9em;">Ngắn mạch không chỉ là tối ưu hiệu năng — nó <strong>thay đổi
+              tính đúng đắn</strong> của chương trình.</p>
         </section>
 
         <section style="font-size: 0.8em;" data-auto-animate>
@@ -606,6 +654,24 @@ print(a)  # Kết quả: [1, 2, 3, 4] - a cũng bị thay đổi do b là alias 
           </ul>
         </section>
 
+        <section style="font-size: 0.8em;">
+          <h2>Định lý Böhm–Jacopini</h2>
+          <div class="question-box">
+            <div class="question-title">Định lý</div>
+            Mọi chương trình đều có thể được viết lại thành chương trình tương đương <strong>không dùng <code
+                class="inline-code">goto</code></strong>, chỉ sử dụng: tuần tự, rẽ nhánh, và lặp.
+          </div>
+          <ul>
+            <li class="fragment"><strong>Hệ quả tích cực:</strong> <code class="inline-code">goto</code> là <em>không
+                cần thiết</em> về mặt lý thuyết.</li>
+            <li class="fragment"><strong>Hệ quả thực tế:</strong> Các phép biến đổi để loại bỏ <code
+                class="inline-code">goto</code> thường <em>phá vỡ cấu trúc</em> chương trình gốc, tạo ra mã phức tạp
+              hơn.</li>
+            <li class="fragment">→ Vấn đề không phải lý thuyết mà là <span class="keyword">thực tiễn</span>: <code
+                class="inline-code">goto</code> dễ bị lạm dụng, làm mã khó bảo trì.</li>
+          </ul>
+        </section>
+
         <section style="font-size: 0.8em;" data-auto-animate>
           <h2>Lệnh điều kiện</h2>
           <p><span class="inline-code">if</span>: rẽ nhánh theo điều kiện Boolean.</p>
@@ -718,23 +784,63 @@ switch (expression) {
           </ul>
         </section>
 
-        <section style="font-size: 0.75em;" data-auto-animate>
-          <h2>Lặp xác định</h2>
+        <section style="font-size: 0.7em;">
+          <h2>Tính đầy đủ Turing</h2>
+          <div class="question-box">
+            <div class="question-title">Kết quả lý thuyết quan trọng</div>
+            <ul>
+              <li>Ngôn ngữ chỉ có <strong>gán + if + for (xác định)</strong>: <span class="keyword">không</span>
+                Turing-đầy đủ — chỉ biểu diễn được <em>hàm toàn phần</em> (luôn dừng).</li>
+              <li>Ngôn ngữ có thêm <strong>while (không xác định)</strong>: <span class="keyword">Turing-đầy đủ</span> —
+                biểu diễn được mọi hàm tính được, kể cả hàm không dừng.</li>
+            </ul>
+          </div>
+          <table style="width:100%; font-size:0.88em; margin-top:0.6em;">
+            <thead>
+              <tr>
+                <th>Cấu trúc</th>
+                <th>Đủ để biểu diễn</th>
+                <th>Turing-đầy đủ?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>gán + if + for</td>
+                <td>Hàm toàn phần</td>
+                <td>❌ Không</td>
+              </tr>
+              <tr>
+                <td>gán + if + while</td>
+                <td>Mọi hàm tính được</td>
+                <td>✅ Có</td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="font-size:0.85em; color:#555; margin-top:0.4em;">Ví dụ: hàm <em>f(x) = x nếu x chẵn, không dừng nếu
+              x lẻ</em> — biểu diễn được bằng <code class="inline-code">while</code>, nhưng <em>không thể</em> bằng
+            <code class="inline-code">for</code> thuần.
+          </p>
+        </section>
+
+        <section style="font-size: 0.7em;" data-auto-animate>
+          <h2>Lặp xác định — Mô hình "thuần khiết"</h2>
+          <pre><code class="language-plaintext" data-trim>
+for I = start to end by step do
+  body</code></pre>
           <ul>
-            <li><strong>Các thành phần:</strong>
-              <ul>
-                <li><strong>Khởi tạo</strong> (init): Thiết lập giá trị bắt đầu cho biến điều khiển.</li>
-                <li><strong>Điều kiện</strong> (condition): Xác định điểm kết thúc của vòng lặp.
-                <li><strong>Cập nhật</strong> (update): Cách thay đổi biến điều khiển sau mỗi lần lặp.</li>
-              </ul>
+            <li><strong>Trước khi lặp:</strong> <code class="inline-code">start</code>, <code
+                class="inline-code">end</code> được tính <em>một lần</em> và <span class="keyword">đóng băng</span>
+              (frozen).</li>
+            <li><strong>Biến điều khiển</strong> <code class="inline-code">I</code> <strong>không được</strong> thay đổi
+              trong thân vòng lặp.</li>
+            <li><strong>Số lần lặp</strong> \(ic\) được xác định tĩnh trước khi chạy:<br>
+              \[ic = \left\lfloor \frac{\text{end} - \text{start} + \text{step}}{\text{step}} \right\rfloor\]
             </li>
-            <li>Mô hình "thuần khiết":
-              <ul>
-                <li>Biến điều khiển <strong>không được</strong> thay đổi trong thân vòng lặp.</li>
-                <li>Giá trị đầu/cuối được tính toán và "đóng băng" (frozen) trước khi lặp.</li>
-              </ul>
-            </li>
+            <li>⭐ Đảm bảo: chương trình <strong>luôn kết thúc</strong> — không thể tạo vòng lặp vô hạn bằng <code
+                class="inline-code">for</code> thuần.</li>
           </ul>
+          <p style="font-size:0.85em; color:#555;">Ngôn ngữ: Algol, Pascal, Ada — C/Java <em>không</em> theo mô hình
+            này.</p>
         </section>
 
         <section style="font-size: 0.9em;" data-auto-animate>
@@ -751,14 +857,23 @@ while (condition) {
 }</code></pre>
         </section>
 
-        <section style="font-size: 0.9em;" data-auto-animate>
-          <h2>Lặp xác định</h2>
-
-          <p>Python: <code class="inline-code">for name in exp</code> là lệnh lặp nguyên thủy.</p>
-          <p>Đây là một dạng lặp xác định, vì số lần lặp được xác định bởi độ dài của đối tượng có thể lặp (iterable).
-          </p>
+        <section style="font-size: 0.75em;" data-auto-animate>
+          <h2>Lặp xác định — Python <code class="inline-code">for-each</code></h2>
+          <p>Python: <code class="inline-code">for name in exp</code> là lệnh lặp nguyên thủy, <code
+              class="inline-code">for</code> kiểu C chỉ là trường hợp đặc biệt.</p>
           <pre><code class="language-python" data-trim>for name in iterable:
-  # thân vòng lặp</code></pre>
+  # thân vòng lặp
+
+# for kiểu C dùng range():
+for i in range(0, 10, 1):
+  # tương đương for i = 0 to 9 by 1</code></pre>
+          <div class="question-box" style="margin-top:0.5em; font-size:0.85em;">
+            <div class="question-title">⚠️ Lưu ý</div>
+            Python lưu <em>danh tính</em> (identity) của iterable, không phải bản sao. Nếu iterable là
+            <strong>mutable</strong> (ví dụ: <code class="inline-code">list</code>), có thể tạo vòng lặp vô hạn bằng
+            cách thêm phần tử trong thân vòng lặp → Python <code class="inline-code">for</code> <em>không hoàn toàn</em>
+            là lặp xác định thuần túy.
+          </div>
         </section>
       </section>
 
@@ -892,7 +1007,8 @@ int fact(int n) {
   if (n <= 1) return 1;
   return n * fact(n-1);
 }</code></pre>
-              <p>Cần lưu giá trị của \(n\) và kết quả của \(fact(n-1)\) trên Stack → mỗi lần gọi thêm 1 tầng Stack (\(O(n)\) bộ nhớ).</p>
+              <p>Cần lưu giá trị của \(n\) và kết quả của \(fact(n-1)\) trên Stack → mỗi lần gọi thêm 1 tầng Stack
+                (\(O(n)\) bộ nhớ).</p>
             </div>
             <div>
               <p><strong>Đệ quy đuôi:</strong></p>
@@ -903,6 +1019,77 @@ int factrc(int n, int res) {
 }</code></pre>
               <p>Chỉ cần lưu giá trị của \(n\) và \(res\) trên Stack → có thể tái sử dụng cùng một tầng Stack cho mọi
                 lời gọi (\(O(1)\) bộ nhớ).</p>
+            </div>
+          </div>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Stack bản ghi kích hoạt: fact(3)</h2>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start;">
+            <!-- Regular recursion stack -->
+            <div>
+              <p style="text-align:center; font-weight:bold; margin-bottom:6px;">Đệ quy thường — <code
+                  class="inline-code">fact(3)</code></p>
+              <svg width="80%" viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+                <defs>
+                  <marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+                    <path d="M0,0 L8,4 L0,8 Z" fill="#e74c3c" />
+                  </marker>
+                </defs>
+                <!-- Stack frames -->
+                <rect x="20" y="10" width="160" height="50" rx="4" fill="#fde8e8" stroke="#e74c3c" stroke-width="1.5" />
+                <text x="100" y="30" text-anchor="middle" font-size="12" font-weight="bold"
+                  fill="#c0392b">fact(3)</text>
+                <text x="100" y="48" text-anchor="middle" font-size="11" fill="#555">n=3, chờ fact(2)…</text>
+
+                <rect x="20" y="70" width="160" height="50" rx="4" fill="#fde8e8" stroke="#e74c3c" stroke-width="1.5" />
+                <text x="100" y="90" text-anchor="middle" font-size="12" font-weight="bold"
+                  fill="#c0392b">fact(2)</text>
+                <text x="100" y="108" text-anchor="middle" font-size="11" fill="#555">n=2, chờ fact(1)…</text>
+
+                <rect x="20" y="130" width="160" height="50" rx="4" fill="#fde8e8" stroke="#e74c3c"
+                  stroke-width="1.5" />
+                <text x="100" y="150" text-anchor="middle" font-size="12" font-weight="bold"
+                  fill="#c0392b">fact(1)</text>
+                <text x="100" y="168" text-anchor="middle" font-size="11" fill="#555">n=1 → trả về 1</text>
+
+                <!-- arrows -->
+                <line x1="100" y1="60" x2="100" y2="68" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#arr)" />
+                <line x1="100" y1="120" x2="100" y2="128" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#arr)" />
+
+                <text x="100" y="210" text-anchor="middle" font-size="11" fill="#e74c3c" font-weight="bold">3 tầng
+                  stack</text>
+                <text x="100" y="228" text-anchor="middle" font-size="11" fill="#e74c3c">→ O(n) bộ nhớ</text>
+              </svg>
+            </div>
+            <!-- Tail recursion stack -->
+            <div>
+              <p style="text-align:center; font-weight:bold; margin-bottom:6px;">Đệ quy đuôi — <code
+                  class="inline-code">factrc(3,1)</code></p>
+              <svg width="100%" viewBox="0 0 240 260" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+                <defs>
+                  <marker id="arr2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+                    <path d="M0,0 L8,4 L0,8 Z" fill="#27ae60" />
+                  </marker>
+                </defs>
+                <!-- Single reused frame -->
+                <rect x="20" y="70" width="160" height="70" rx="4" fill="#e8fdf0" stroke="#27ae60" stroke-width="2" />
+                <text x="100" y="95" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e8449">Bản ghi duy
+                  nhất</text>
+                <text x="100" y="113" text-anchor="middle" font-size="11" fill="#555">factrc(3,1)</text>
+                <text x="100" y="129" text-anchor="middle" font-size="11" fill="#555">→ factrc(2,3) → factrc(1,6)</text>
+
+                <!-- circular arrow to show reuse -->
+                <path d="M 185 105 Q 205 90 205 120 Q 205 150 185 135" fill="none" stroke="#27ae60" stroke-width="1.5"
+                  marker-end="url(#arr2)" stroke-dasharray="4,3" />
+                <text x="207" y="108" font-size="10" fill="#27ae60">tái</text>
+                <text x="203" y="120" font-size="10" fill="#27ae60">sử</text>
+                <text x="203" y="132" font-size="10" fill="#27ae60">dụng</text>
+
+                <text x="100" y="210" text-anchor="middle" font-size="11" fill="#27ae60" font-weight="bold">1 tầng stack
+                  duy nhất</text>
+                <text x="100" y="228" text-anchor="middle" font-size="11" fill="#27ae60">→ O(1) bộ nhớ</text>
+              </svg>
             </div>
           </div>
         </section>
@@ -936,6 +1123,26 @@ int factrc(int n, int res) {
             </tbody>
           </table>
         </section>
+
+        <section style="font-size: 0.75em;">
+          <h2>Đệ quy gián tiếp (Mutual Recursion)</h2>
+          <p>Đệ quy không chỉ xảy ra khi hàm tự gọi mình — hai hàm có thể gọi qua lại nhau:</p>
+          <pre><code class="language-cpp" data-trim>
+bool isEven(int n) {
+  if (n == 0) return true;
+  return isOdd(n - 1);   // gọi isOdd
+}
+
+bool isOdd(int n) {
+  if (n == 0) return false;
+  return isEven(n - 1);  // gọi lại isEven
+}</code></pre>
+          <ul>
+            <li>P gọi Q, Q gọi P → <span class="keyword">đệ quy gián tiếp</span> (mutual/indirect recursion).</li>
+            <li>Chuỗi gọi hàm có thể dài hơn: P → Q → R → P → …</li>
+            <li>Yêu cầu khai báo hàm trước (<em>forward declaration</em>) trong một số ngôn ngữ (C/C++).</li>
+          </ul>
+        </section>
       </section>
 
       <section>
@@ -944,12 +1151,28 @@ int factrc(int n, int res) {
           <ul>
             <li><span class="keyword">Biểu thức</span> tạo giá trị; <span class="keyword">Lệnh</span> thay đổi trạng
               thái (Memory/Environment).</li>
-            <li>Cần hiểu rõ quy tắc <span class="keyword">ưu tiên</span> và <strong>ngắn mạch</strong> để viết mã
-              nguồn
-              an toàn.</li>
-            <li>Lệnh lặp có thể là xác định (bounded) hoặc không (unbounded).</li>
-            <li><strong>Lập trình cấu trúc</strong> và <strong>Đệ quy đuôi</strong> giúp mã nguồn vừa dễ hiểu vừa đạt
-              hiệu năng cao.</li>
+            <li>Ký pháp trung tố cần quy tắc <span class="keyword">ưu tiên</span> và <span class="keyword">kết
+                hợp</span>; tiền tố/hậu tố không cần.</li>
+            <li>Thứ tự đánh giá biểu thức quan trọng nhất ở: <strong>tác dụng phụ</strong> và <strong>ngắn
+                mạch</strong>.</li>
+            <li>Lệnh lặp: <strong>xác định</strong> (for thuần — luôn dừng, không Turing-đầy đủ) vs <strong>không xác
+                định</strong> (while — Turing-đầy đủ).</li>
+            <li><strong>Lập trình cấu trúc</strong>: đơn nhập–đơn xuất, không goto.</li>
+            <li><strong>Đệ quy đuôi</strong> (TCO): hiệu năng ngang vòng lặp, O(1) bộ nhớ.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.88em;">
+          <h2>Bài tiếp theo</h2>
+          <div class="question-box">
+            <div class="question-title">Câu hỏi gợi mở</div>
+            <p>Chúng ta đã biết cách <em>viết</em> các cấu trúc điều khiển — nhưng nếu muốn <strong>đặt tên</strong> cho
+              một nhóm lệnh và <strong>tái sử dụng</strong> nó ở nhiều nơi, ta làm thế nào?</p>
+          </div>
+          <ul style="margin-top:0.8em;">
+            <li>📦 <strong>Thủ tục và hàm</strong> — trừu tượng hóa trên điều khiển.</li>
+            <li>📨 <strong>Cơ chế truyền tham số</strong> — by value, by reference, by name…</li>
+            <li>🚨 <strong>Ngoại lệ</strong> (exceptions) — điều khiển luồng khi có lỗi.</li>
           </ul>
         </section>
       </section>
