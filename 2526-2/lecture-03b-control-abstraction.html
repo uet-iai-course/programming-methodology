@@ -242,28 +242,30 @@ int main() {
           </ul>
         </section>
 
-        <section style="font-size: 0.8em;">
+        <section style="font-size: 0.7em;">
           <h2>Truyền tham chiếu trong C++</h2>
-          <div>
-            <pre><code class="language-cpp" data-trim data-line-numbers="">
-void swap ( int *a, int *b) {
-  int tmp = *a;
-  *a=*b; 
-  *b=tmp;
+          <pre><code class="language-cpp" data-trim data-line-numbers="">
+// C++ có tham chiếu thật với ký hiệu &
+void swap(int& x, int& y) {
+  int temp = x;
+  x = y;
+  y = temp;
 }
-int v1 = 1;
-int v2 = 2;
-swap(&v1, &v2);
-cout << v1 << " " << v2;  // in ra: 2 1
-</code></pre>
-          </div>
+int a = 1, b = 2;
+swap(a, b);   // gọi trực tiếp, không cần &a
+// a = 2, b = 1</code></pre>
           <ul>
-            <li>C++ chỉ có <strong>truyền tham trị</strong>, nhưng truyền <strong>địa chỉ</strong> giúp mô phỏng tham
-              chiếu.</li>
-            <li><code class="inline-code">&amp;</code> lấy địa chỉ; <code class="inline-code">*</code> giải tham chiếu
-              để
-              đọc/ghi giá trị trong ô nhớ được trỏ tới.</li>
+            <li>Dấu <code class="inline-code">&amp;</code> trong khai báo tham số tạo ra <strong>bí danh thật</strong>
+              — không cần truyền địa chỉ tường minh khi gọi.</li>
+            <li>C <strong>không có</strong> tham chiếu như vậy; phải dùng con trỏ
+              (<code class="inline-code">int *a</code>) và truyền địa chỉ
+              (<code class="inline-code">&amp;a</code>) để mô phỏng.</li>
           </ul>
+          <div>
+            C chỉ có <strong>truyền tham trị</strong>. C++ bổ sung <strong>tham chiếu thật</strong> (<code
+              class="inline-code">&amp;</code>).
+            Đây là hai cơ chế khác nhau — không nên nhầm lẫn.
+          </div>
         </section>
 
         <section style="font-size: 0.85em;">
@@ -276,6 +278,87 @@ cout << v1 << " " << v2;  // in ra: 2 1
             dữ
             liệu lớn → truyền tham chiếu (không sao chép).
           </div>
+        </section>
+
+        <section>
+          <h2>Truyền theo đối tượng</h2>
+          <div class="question-box">
+            <div class="question-title">Định nghĩa</div>
+            Trong các ngôn ngữ dùng mô hình <strong>tham chiếu</strong> cho biến (Python, Java với kiểu lớp),
+            <span class="keyword">truyền tham trị</span> thực chất là truyền <strong>tham chiếu tới đối tượng</strong>
+            — không phải tới biến. Còn gọi là <em>call by assignment</em> hay <em>call by sharing</em>.
+          </div>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Ví dụ Python: kiểu không đổi được</h2>
+          <pre><code class="language-python" data-trim data-line-numbers="">
+def increment(x):
+    x = x + 1   # tạo đối tượng mới, rebind x cục bộ
+
+a = 5
+increment(a)
+print(a)   # vẫn là 5 — giống call by value!
+          </code></pre>
+          <ul>
+            <li>Số nguyên (<code class="inline-code">int</code>) là <strong>immutable</strong>.</li>
+            <li>Gán lại <code class="inline-code">x</code> chỉ thay đổi liên kết cục bộ, không ảnh hưởng <code
+                class="inline-code">a</code>.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Ví dụ Python: kiểu đổi được</h2>
+          <pre><code class="language-python" data-trim data-line-numbers="">
+def append_zero(lst):
+    lst.append(0)   # sửa đối tượng được chia sẻ
+
+L = [1, 2, 3]
+append_zero(L)
+print(L)   # [1, 2, 3, 0] — L bị thay đổi!
+          </code></pre>
+          <ul>
+            <li>List (<code class="inline-code">list</code>) là <strong>mutable</strong>.</li>
+            <li>Hàm và bên gọi <strong>chia sẻ cùng một đối tượng</strong> — sửa nội dung thì thấy ở cả hai.</li>
+          </ul>
+          <div>
+            Không thể mô phỏng đúng <em>truyền tham chiếu</em> trong Python — ta chỉ có thể thay đổi
+            <strong>nội dung</strong> đối tượng, không thể đổi <strong>biến nào</strong> bên gọi đang trỏ tới.
+          </div>
+        </section>
+
+        <section style="font-size: 0.7em;">
+          <h2>So sánh nhanh</h2>
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Chế độ</th>
+                <th>Truyền cái gì?</th>
+                <th>Sửa formal → ảnh hưởng actual?</th>
+                <th>Sửa nội dung → ảnh hưởng actual?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Tham trị (C)</td>
+                <td>Bản sao giá trị</td>
+                <td>Không</td>
+                <td>N/A</td>
+              </tr>
+              <tr>
+                <td>Tham chiếu (C++ &amp;)</td>
+                <td>Địa chỉ biến</td>
+                <td><strong>Có</strong></td>
+                <td><strong>Có</strong></td>
+              </tr>
+              <tr>
+                <td>Theo đối tượng (Python)</td>
+                <td>Tham chiếu đối tượng</td>
+                <td>Không</td>
+                <td><strong>Có</strong> (nếu mutable)</td>
+              </tr>
+            </tbody>
+          </table>
         </section>
 
         <section style="font-size: 0.85em;" data-auto-animate>
@@ -374,6 +457,64 @@ Double(a);         -- sau lời gọi, a = 10</code></pre>
             <li><strong>Chép ra</strong>: khi hàm kết thúc, giá trị của <code class="inline-code">x</code> (= 10) được
               chép ngược về <code class="inline-code">a</code>.</li>
           </ul>
+        </section>
+
+        <section>
+          <h2>Trị–kết quả ≠ Tham chiếu</h2>
+          <p style="font-size:0.85em;">Hai chế độ cho kết quả <strong>khác nhau</strong> khi có <span class="keyword">bí
+              danh</span> (aliasing).</p>
+          <pre><code class="language-cpp" data-trim data-line-numbers="">
+void foo (/* x, y */ int x, int y, int b) {
+    if (x == y) b = 1;
+    else        b = 2;
+}
+
+int a = 3, b = 0;
+foo(a, a, b);   // gọi với hai tham số đầu là cùng biến a
+          </code></pre>
+          <p style="font-size:0.8em;">Điều kiện <code class="inline-code">x == y</code> cho kết quả gì? Phụ thuộc vào
+            chế độ truyền!</p>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Phân tích: Truyền trị–kết quả</h2>
+          <ul>
+            <li>Khi gọi: chép <code class="inline-code">a=3</code> vào <strong>hai biến cục bộ riêng biệt</strong> <code
+                class="inline-code">x</code> và <code class="inline-code">y</code>.</li>
+            <li>Không có bí danh: <code class="inline-code">x == y</code> là <code class="inline-code">3 == 3</code> →
+              <strong>true</strong> → <code class="inline-code">b = 1</code>.
+            </li>
+            <li>Khi kết thúc: chép ngược <code class="inline-code">x → a</code>, <code class="inline-code">y → a</code>,
+              <code class="inline-code">b</code> → biến <code class="inline-code">b</code> bên gọi = <strong>1</strong>.
+            </li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Phân tích: Truyền tham chiếu</h2>
+          <ul>
+            <li>Khi gọi: <code class="inline-code">x</code> và <code class="inline-code">y</code> đều là <strong>bí danh
+                của <code class="inline-code">a</code></strong>.</li>
+            <li>Điều kiện <code class="inline-code">x == y</code> thực chất là <code class="inline-code">a == a</code> →
+              <strong>luôn true</strong> → <code class="inline-code">b = 1</code>.
+            </li>
+            <li>Trong ví dụ này kết quả trùng nhau — nhưng xét ví dụ sau:</li>
+          </ul>
+          <pre><code class="language-cpp" data-trim data-line-numbers="">
+void bar (int x, int y) {
+    x = x + 1;          // x (= a) tăng lên 4
+    if (x == y)         // Trị–kết quả: 4 == 3? → false → write(0)
+        write(1);       // Tham chiếu:  4 == 4? → true  → write(1)
+    else
+        write(0);
+}
+int a = 3;
+bar(a, a);
+          </code></pre>
+          <div>
+            <strong>Truyền trị–kết quả:</strong> in ra <code class="inline-code">0</code> (không có bí danh, y giữ nguyên = 3).<br>
+            <strong>Truyền tham chiếu:</strong> in ra <code class="inline-code">1</code> (x và y cùng là a, thay đổi x tức thay đổi y).
+          </div>
         </section>
 
         <section style="font-size: 0.8em;">
@@ -538,7 +679,7 @@ y = summation(2*x*x - 2*x + 1, x, 1, 10);
         </section>
 
         <section>
-          <h2>Nhận xét</h2>
+          <h2>Nhận xét: Truyền theo tên</h2>
           <ul>
             <li><strong>Ưu điểm:</strong> Rất linh hoạt, mạnh mẽ.</li>
             <li><strong>Nhược điểm:</strong>
@@ -548,6 +689,43 @@ y = summation(2*x*x - 2*x + 1, x, 1, 10);
               </ul>
             </li>
           </ul>
+        </section>
+
+        <section>
+          <h2>Bài tập: Truyền theo tên</h2>
+          <p style="font-size: 0.85em;">Cho đoạn mã sau (ngôn ngữ giả, <code class="inline-code">name</code> = truyền
+            theo tên):</p>
+          <pre><code class="language-cpp" data-trim>
+int X = 2;
+
+void foo (name int Y) {
+    X++;        // (1)
+    write(Y);   // (2)
+    X++;        // (3)
+}
+
+foo(X + 1);
+write(X);       // (4)
+          </code></pre>
+          <p style="font-size: 0.85em;"><strong>Hỏi:</strong> Lệnh (2) in ra giá trị nào? Lệnh (4) in ra giá trị nào?
+          </p>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Đáp án</h2>
+          <ul>
+            <li>Theo quy tắc sao chép: mọi lần gặp <code class="inline-code">Y</code> trong thân hàm → thay bằng biểu
+              thức <code class="inline-code">X + 1</code> <em>trong môi trường bên gọi</em>.</li>
+            <li><strong>(1)</strong> <code class="inline-code">X++</code> → X = 3.</li>
+            <li><strong>(2)</strong> <code class="inline-code">write(Y)</code> → đánh giá <code
+                class="inline-code">X + 1</code> với X = 3 → in ra <strong>4</strong>.</li>
+            <li><strong>(3)</strong> <code class="inline-code">X++</code> → X = 4.</li>
+            <li><strong>(4)</strong> <code class="inline-code">write(X)</code> → in ra <strong>4</strong>.</li>
+          </ul>
+          <div>
+            Tham số <code class="inline-code">Y</code> được đánh giá <strong>tại thời điểm sử dụng</strong>,
+            không phải lúc gọi hàm. Kết quả phụ thuộc vào trạng thái X <em>ngay trước</em> lần đánh giá đó.
+          </div>
         </section>
       </section>
 
@@ -670,14 +848,16 @@ y = summation(2*x*x - 2*x + 1, x, 1, 10);
         <section>
           <h2>Hàm đóng vai trò kết quả</h2>
           <p>Hàm có thể tạo ra và trả về một hàm khác tại thời điểm chạy.</p>
-          <pre><code class="language-cpp" data-trim>
+          <pre><code class="language-cpp" data-trim data-line-numbers="">
 void->int F() {
-  int x = 1;
-  int g() { return x + 1; }
-  return g; // Trả về hàm g dưới dạng bao đóng
+    int x = 1;        // x là biến cục bộ của F
+    int g() { return x + 1; }
+    return g;         // trả về bao đóng của g
 }
-void->int gg = F();
-int z = gg(); // Gọi hàm g sau khi F đã kết thúc</code></pre>
+
+void->int gg = F();   // F đã kết thúc!
+int z = gg();         // gọi g sau khi F chết
+          </code></pre>
           <p><strong>Vấn đề "Funarg ngược":</strong> Môi trường của <code>g</code> chứa <code>x</code> là biến cục bộ
             của <code>F</code>.</p>
         </section>
@@ -688,12 +868,54 @@ int z = gg(); // Gọi hàm g sau khi F đã kết thúc</code></pre>
             <li>Theo kỷ luật ngăn xếp, khi <code>F</code> kết thúc, bản ghi kích hoạt của nó bị hủy.</li>
             <li>Lúc này, bao đóng của <code>gg</code> trỏ vào một vùng nhớ không còn hợp lệ.</li>
           </ul>
+        </section>
 
-          <div class="question-box">
-            <div class="question-title">Giải pháp</div>
-            Phải <strong>từ bỏ mô hình ngăn xếp</strong> cho các bản ghi kích hoạt. Các bản ghi này được cấp
-            phát trên <strong>Heap</strong> và chỉ được giải phóng bởi Garbage Collector khi không còn bao đóng nào tham
-            chiếu tới.
+        <section>
+          <h2>Tại sao ngăn xếp không đủ?</h2>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5em; align-items: start;">
+            <div>
+              <strong>Khi <code class="inline-code">F()</code> đang chạy</strong>
+              <div
+                style="border: 2px solid #4a90d9; border-radius: 8px; padding: 0.6em; margin-top: 0.4em; font-family: monospace; font-size: 0.9em; background: #f0f6ff;">
+                <div
+                  style="background:#4a90d9; color:white; padding:0.2em 0.5em; border-radius:4px; margin-bottom:0.4em;">
+                  Act Rec của F</div>
+                <div style="padding-left:1em;">x = 1</div>
+                <div style="padding-left:1em; color:#888;">← bao đóng của g trỏ vào đây</div>
+                <hr style="border-color:#ccc;">
+                <div style="background:#aaa; color:white; padding:0.2em 0.5em; border-radius:4px;">Act Rec của main
+                </div>
+              </div>
+            </div>
+            <div>
+              <strong>Sau khi <code class="inline-code">F()</code> kết thúc</strong>
+              <div
+                style="border: 2px solid #e05252; border-radius: 8px; padding: 0.6em; margin-top: 0.4em; font-family: monospace; font-size: 0.9em; background: #fff0f0;">
+                <div
+                  style="background:#e05252; color:white; padding:0.2em 0.5em; border-radius:4px; margin-bottom:0.4em; text-decoration: line-through;">
+                  Act Rec của F (đã hủy)</div>
+                <div style="padding-left:1em; color:#e05252;">x = ??? ← tham chiếu treo!</div>
+                <hr style="border-color:#ccc;">
+                <div style="background:#aaa; color:white; padding:0.2em 0.5em; border-radius:4px;">Act Rec của main
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Giải pháp: Cấp phát trên Heap</h2>
+          <ul>
+            <li>Thay vì dùng ngăn xếp, bản ghi kích hoạt được cấp phát trên <span class="keyword">heap</span>.</li>
+            <li>Bao đóng giữ một <strong>con trỏ tới bản ghi kích hoạt</strong> trên heap — bản ghi này <strong>không bị
+                hủy</strong> khi hàm kết thúc.</li>
+            <li><span class="keyword">Garbage Collector</span> (GC) chỉ thu hồi bộ nhớ khi không còn bao đóng nào tham
+              chiếu
+              tới nữa.</li>
+          </ul>
+          <div>
+            Đây là lý do Python, Java, Scala, JavaScript cần <strong>GC</strong>. C++ tránh vấn đề này bằng cách
+            <strong>cấm hàm lồng</strong>.
           </div>
         </section>
 
@@ -709,13 +931,55 @@ int z = gg(); // Gọi hàm g sau khi F đã kết thúc</code></pre>
         </section>
 
         <section style="font-size: 0.8em;" data-auto-animate>
-          <h2>Biểu thức Lambda</h2>
-          <div class="question-box">
-            <div class="question-title">Bài tập nhanh</div>
-            Tại sao trong ngôn ngữ C, ta không cần bao đóng khi truyền hàm làm tham số? <br>
-            <span class="fragment"><em>Gợi ý:</em> C không cho phép định nghĩa hàm lồng nhau; mọi hàm đều ở mức toàn
-              cục.</span>
-          </div>
+          <h2>Bao đóng xuất hiện ở đâu?</h2>
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Tình huống</th>
+                <th>Tại sao cần bao đóng?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Truyền theo tên</strong></td>
+                <td>Tham số thực tế phải được đánh giá trong môi trường của <em>bên gọi</em>, không phải bên được gọi
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Hàm làm tham số</strong> (deep binding)</td>
+                <td>Hàm được truyền đi cần "mang theo" môi trường lúc nó được định nghĩa</td>
+              </tr>
+              <tr>
+                <td><strong>Hàm làm kết quả</strong></td>
+                <td>Hàm trả về có thể tham chiếu biến cục bộ của hàm gọi — cần giữ môi trường đó sống</td>
+              </tr>
+              <tr>
+                <td><strong>Biểu thức Lambda</strong></td>
+                <td>Hàm ẩn danh thường chứa biến từ phạm vi bên ngoài</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Tại sao C không cần bao đóng?</h2>
+          <ul>
+            <li>C <strong>không cho phép</strong> định nghĩa hàm lồng nhau.</li>
+            <li>Mọi hàm đều ở mức toàn cục → không có biến tự do phi cục bộ.</li>
+            <li>Để truyền hàm làm tham số: chỉ cần <strong>con trỏ hàm</strong> (function pointer) — không cần con trỏ
+              môi trường.</li>
+          </ul>
+          <pre><code class="language-cpp" data-trim data-line-numbers="">
+// C: truyền hàm qua function pointer — không cần closure
+int square(int x) { return x * x; }
+
+int apply(int (*f)(int), int val) {
+    return f(val);   // f chỉ là địa chỉ mã lệnh
+}
+
+int result = apply(square, 5);  // = 25
+          </code></pre>
+          <p>Ngược lại, Python/Scala/Java luôn dùng bao đóng vì cho phép hàm lồng và lambda.</p>
         </section>
       </section>
 
@@ -773,59 +1037,233 @@ try {
           </ul>
         </section>
 
-        <section style="font-size: 0.8em;">
+        <section>
           <h2>Cài đặt ngoại lệ</h2>
-          <p>Có hai hướng tiếp cận chính:</p>
-          <div class="question-box">
-            <div class="question-title">Cài đặt</div>
-            <ul>
-              <li><strong>Dựa trên ngăn xếp:</strong> Khi vào khối <code class="inline-code">try</code>, đẩy trình xử lý
-                vào
-                ngăn xếp. Tốn chi phí quản lý ngay cả khi không có lỗi.</li>
-              <li><strong>Dựa trên bảng (Table-based):</strong> Trình biên dịch tạo bảng tra cứu (EH table) ánh xạ địa
-                chỉ
-                lệnh tới trình xử lý.
-                <ul>
-                  <li>Không tốn phí khi chạy bình thường.</li>
-                  <li>Khi có lỗi, tốn thời gian tìm kiếm trong bảng (binary search).</li>
-                </ul>
-              </li>
-            </ul>
+          <p style="font-size: 0.85em;">Thách thức: xử lý ngoại lệ cần đúng nhưng cũng phải <strong>không gây chi
+              phí</strong> trong luồng thực thi bình thường.</p>
+        </section>
+
+        <section style="font-size: 0.78em;">
+          <h2>Chiến lược 1: Dựa trên ngăn xếp</h2>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em;">
+            <div>
+              <strong>Cách hoạt động</strong>
+              <ul style="margin-top: 0.4em;">
+                <li>Khi <strong>vào</strong> khối <code class="inline-code">try</code>: đẩy con trỏ handler lên ngăn
+                  xếp.</li>
+                <li>Khi <strong>ra bình thường</strong>: lấy con trỏ handler ra.</li>
+                <li>Khi <strong>có ngoại lệ</strong>: tra ngăn xếp, nhảy tới handler.</li>
+              </ul>
+            </div>
+            <div>
+              <strong>Đánh giá</strong>
+              <ul style="margin-top: 0.4em;">
+                <li>✅ Đơn giản để cài đặt.</li>
+                <li>✅ Nhanh khi có ngoại lệ.</li>
+                <li>❌ <strong>Tốn chi phí ngay cả khi không có lỗi</strong> — mỗi lần vào/ra <code
+                    class="inline-code">try</code> đều thao tác ngăn xếp.</li>
+              </ul>
+            </div>
           </div>
         </section>
 
-        <section style="font-size: 0.85em;">
-          <h2>Triết lý EAFP (Python)</h2>
-          <div class="question-box">
-            <div class="question-title">Ghi nhớ</div>
-            <strong>EAFP:</strong> "Easier to Ask Forgiveness than Permission" (Dễ xin lỗi hơn là xin phép).
+        <section style="font-size: 0.65em;">
+          <h2>Chiến lược 2: Dựa trên bảng</h2>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1em;">
+            <div>
+              <strong>Cách hoạt động</strong>
+              <ul style="margin-top: 0.4em;">
+                <li>Trình biên dịch tạo bảng Exception Handler (EH): <code
+                    class="inline-code">(địa chỉ_đầu, địa chỉ_handler)</code>.</li>
+                <li>Khi vào/ra <code class="inline-code">try</code> bình thường: <strong>không làm gì</strong>.</li>
+                <li>Khi có ngoại lệ: tìm kiếm nhị phân trong bảng EH theo <code class="inline-code">PC</code> hiện tại.
+                </li>
+              </ul>
+            </div>
+            <div>
+              <strong>Đánh giá</strong>
+              <ul style="margin-top: 0.4em;">
+                <li>✅ <strong>Chi phí bằng 0 trên đường bình thường</strong>.</li>
+                <li>✅ Được dùng trong C++, Java hiện đại.</li>
+                <li>❌ Khi có ngoại lệ: chậm hơn O(log n) do phải tìm bảng.</li>
+              </ul>
+            </div>
           </div>
+          <div class="question-box" style="margin-top: 0.8em;">
+            <div class="question-title">Lý do chọn bảng</div>
+            Ngoại lệ hiếm xảy ra hơn nhiều so với việc vào/ra khối <code class="inline-code">try</code>.
+            Tối ưu cho <strong>trường hợp phổ biến</strong> (không lỗi) là lựa chọn đúng đắn.
+          </div>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Minh họa bảng EH</h2>
+          <div
+            style="font-family: monospace; font-size: 0.9em; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5em; align-items: start;">
+            <div>
+              <strong>Mã nguồn</strong>
+              <pre><code class="language-cpp" data-trim>
+// addr 100
+try {
+  // addr 104
+  foo();
+  // addr 120
+  bar();
+  // addr 136
+} catch (X& e) {
+  // addr 140 (handler)
+  handle(e);
+}
+// addr 160
+              </code></pre>
+            </div>
+            <div>
+              <strong>Bảng EH sinh ra</strong>
+              <table class="comparison-table" style="font-size:0.9em; margin-top:0.5em;">
+                <thead>
+                  <tr>
+                    <th>ip_start</th>
+                    <th>ip_end</th>
+                    <th>handler</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>104</td>
+                    <td>136</td>
+                    <td>140</td>
+                  </tr>
+                  <tr>
+                    <td colspan="3" style="color:#888; font-style:italic;">… (mỗi hàm có một dòng ẩn)</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p style="margin-top: 0.5em;">Nếu ngoại lệ tại addr 120: tìm dòng có <code>ip_start ≤ 120 ≤ ip_end</code>
+                → nhảy tới 140.</p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Ngoại lệ như công cụ điều khiển</h2>
+          <p style="font-size: 0.85em;">Ngoại lệ không chỉ dùng để xử lý lỗi — đôi khi chúng giúp viết <strong>mã hiệu
+              quả
+              hơn</strong>.</p>
+          <p style="font-size: 0.85em;"><strong>Bài toán:</strong> Tính tích các nhãn của cây nhị phân. Nếu có nhãn = 0,
+            tích = 0 ngay lập tức.</p>
+        </section>
+
+        <section style="font-size: 0.78em;">
+          <h2>Cách 1: Không dùng ngoại lệ</h2>
+          <pre><code class="language-cpp" data-trim data-line-numbers="">
+int mul(Tree t) {
+    if (t == null) return 1;
+    if (t.val == 0) return 0;           // kiểm tra ở MỖI nút
+    int left  = mul(t.left);
+    if (left == 0) return 0;            // kiểm tra lại sau mỗi lần đệ quy
+    int right = mul(t.right);
+    if (right == 0) return 0;
+    return t.val * left * right;
+}
+          </code></pre>
           <ul>
-            <li>Thay vì kiểm tra điều kiện trước (<code class="inline-code">if</code>), ta cứ thực hiện và xử lý lỗi nếu
-              nó
-              xảy ra (<code class="inline-code">try-except</code>).</li>
-            <li>Giúp mã nguồn sạch hơn và đôi khi hiệu năng cao hơn nếu ngoại lệ hiếm khi xảy ra.</li>
+            <li>Đúng, nhưng <strong>kiểm tra điều kiện lặp lại</strong> ở mọi nút kể cả khi không có số 0.</li>
+            <li>Không thoát sớm được khi gặp số 0 ở sâu trong cây.</li>
           </ul>
+        </section>
+
+        <section style="font-size: 0.78em;">
+          <h2>Cách 2: Dùng ngoại lệ để thoát sớm</h2>
+          <pre><code class="language-cpp" data-trim data-line-numbers="">
+class Zero {};   // định nghĩa lớp ngoại lệ
+
+int mulAux(Tree t) {
+    if (t == null) return 1;
+    if (t.val == 0) throw Zero{};   // thoát ngay lập tức!
+    return t.val * mulAux(t.left) * mulAux(t.right);
+}
+
+int mulEff(Tree t) {
+    try {
+        return mulAux(t);
+    } catch (Zero&) {
+        return 0;   // bắt ngoại lệ, trả về 0
+    }
+}
+          </code></pre>
+          <div>
+            <code class="inline-code">mulAux</code> <strong>không có điều kiện kiểm tra lặp</strong> — mã sạch hơn.
+            Khi gặp số 0, ngoại lệ lan truyền ngược toàn bộ ngăn xếp đệ quy một lần duy nhất,
+            bỏ qua mọi tính toán còn lại.
+          </div>
         </section>
       </section>
 
       <section>
-        <section style="font-size: 0.6em;">
-          <h2>Tổng kết</h2>
+        <section>
+          <h2>Bạn đã gặp những điều này ở đâu?</h2>
+          <p style="font-size: 0.85em;">Các khái niệm hôm nay không chỉ nằm trong sách — chúng ẩn sau mọi công cụ bạn
+            dùng hằng ngày.</p>
+        </section>
+
+        <section style="font-size: 0.65em;">
+          <h2>Từ lý thuyết đến thực tế</h2>
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Khái niệm</th>
+                <th>Bạn gặp ở đâu?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Truyền tham trị / Truyền theo đối tượng</strong></td>
+                <td>Python, Java — tại sao <code>f(x)</code> không thay đổi <code>x</code> nguyên thủy nhưng thay đổi
+                  list</td>
+              </tr>
+              <tr>
+                <td><strong>Truyền hằng</strong></td>
+                <td>C++ <code>const &amp;</code> — truyền tham số lớn mà không sao chép, không sửa được</td>
+              </tr>
+              <tr>
+                <td><strong>Bao đóng</strong></td>
+                <td>JavaScript callbacks, Python decorators, React hooks (<code>useState</code>), Swift completion
+                  handlers</td>
+              </tr>
+              <tr>
+                <td><strong>Hàm bậc cao</strong></td>
+                <td><code>map</code>, <code>filter</code>, <code>reduce</code> trong Python/JS;
+                  <code>sort(key=...)</code>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Heap cho activation records</strong></td>
+                <td>Async/await trong JS/Python — coroutine không thể dùng ngăn xếp thông thường</td>
+              </tr>
+              <tr>
+                <td><strong>Ngoại lệ + lan truyền động</strong></td>
+                <td>Django/Flask error handling, Java Spring <code>@ExceptionHandler</code>, try-catch trong mọi
+                  codebase</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section style="font-size: 0.7em;">
+          <h2>Câu hỏi để suy ngẫm</h2>
           <ul>
-            <li><span class="keyword">Chương trình con</span> là công cụ phân rã bài toán; trao đổi qua tham số, giá trị
-              trả về và môi trường phi cục bộ.</li>
-            <li><span class="keyword">Truyền tham số</span> gồm các lớp giao tiếp (vào/ra/vào-ra) và nhiều chế độ gọi:
-              tham trị, tham chiếu, truyền hằng, kết quả, trị–kết quả.</li>
-            <li><span class="keyword">Truyền theo tên</span> dựa trên quy tắc sao chép không bắt giữ biến; tham số có
-              thể bị đánh giá nhiều lần ⇒ tốn kém.</li>
-            <li><span class="keyword">Bao đóng</span> là “mã + môi trường”, nền tảng cho truyền theo tên và hàm bậc cao.
+            <li>Khi bạn viết <code class="inline-code">lambda x: x*2</code> trong Python và truyền nó cho <code
+                class="inline-code">map()</code>, bao đóng nào được tạo ra? Môi trường nào được đóng lại?</li>
+            <li>Tại sao JavaScript có khái niệm <code class="inline-code">closure</code> nổi tiếng (và kéo theo nhiều
+              bug)? Liên quan gì đến <em>upward funarg problem</em>?</li>
+            <li>Khi <code class="inline-code">async/await</code> "tạm dừng" một hàm, activation record của hàm đó ở đâu?
             </li>
-            <li><span class="keyword">Hàm bậc cao</span> cần <span class="keyword">chính sách liên kết</span>
-              (sâu/nông); trả về hàm kéo theo vấn đề vòng đời môi trường (heap + thu gom rác).</li>
-            <li><span class="keyword">Ngoại lệ</span> tách xử lý lỗi khỏi logic chính và lan truyền theo chuỗi gọi hàm
-              đến handler phù hợp.</li>
           </ul>
+          <div class="question-box" style="margin-top: 1em;">
+            <div class="question-title">Thông điệp</div>
+            Ngôn ngữ lập trình không phải tập hợp cú pháp tùy tiện. Chúng là những lựa chọn
+            thiết kế có chủ đích — và chương này giải thích <em>tại sao</em> những lựa chọn đó được đưa ra.
+          </div>
         </section>
       </section>
 
