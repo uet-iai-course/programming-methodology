@@ -275,9 +275,37 @@ swap(a, b);   // gọi trực tiếp, không cần &a
             <span class="keyword">Truyền hằng</span> (call by constant): ngữ nghĩa như truyền tham trị nhưng tham số
             hình thức bị ràng buộc tĩnh:
             <strong>không được sửa</strong> trong thân hàm. Hệ thống có thể chọn cách cài đặt: dữ liệu nhỏ → sao chép,
-            dữ
-            liệu lớn → truyền tham chiếu (không sao chép).
+            dữ liệu lớn → truyền tham chiếu (không sao chép).
           </div>
+        </section>
+
+        <section style="font-size: 0.65em;">
+          <h2>Ví dụ truyền hằng (C++)</h2>
+          <pre><code class="language-cpp" data-trim data-line-numbers="">
+// const & : ngữ nghĩa "chỉ đọc", cài đặt bằng tham chiếu (không sao chép)
+void print_info(const std::string& s) {
+    std::cout << s << std::endl;
+    // s = "khác";  // ❌ lỗi biên dịch: không được sửa tham số hằng
+}
+
+// const (tham trị): dữ liệu nhỏ — sao chép, nhưng không cho sửa
+void show(const int x) {
+    std::cout << x << std::endl;
+    // x = 99;  // ❌ lỗi biên dịch
+}
+
+std::string name = "Alice";
+print_info(name);   // không sao chép chuỗi, chỉ truyền địa chỉ
+show(42);           // 42 được sao chép vào x
+          </code></pre>
+          <ul>
+            <li><code class="inline-code">const &amp;</code>: dùng cho dữ liệu <strong>lớn</strong>
+              — tránh sao chép, vẫn đảm bảo không sửa được.</li>
+            <li><code class="inline-code">const</code> (tham trị): dùng cho dữ liệu <strong>nhỏ</strong>
+              (int, double…) — sao chép rẻ, cấm sửa.</li>
+            <li>Trình biên dịch <strong>kiểm tra tĩnh</strong>: mọi lần gán vào tham số hằng đều bị từ chối
+              ngay lúc biên dịch.</li>
+          </ul>
         </section>
 
         <section>
@@ -512,8 +540,10 @@ int a = 3;
 bar(a, a);
           </code></pre>
           <div>
-            <strong>Truyền trị–kết quả:</strong> in ra <code class="inline-code">0</code> (không có bí danh, y giữ nguyên = 3).<br>
-            <strong>Truyền tham chiếu:</strong> in ra <code class="inline-code">1</code> (x và y cùng là a, thay đổi x tức thay đổi y).
+            <strong>Truyền trị–kết quả:</strong> in ra <code class="inline-code">0</code> (không có bí danh, y giữ
+            nguyên = 3).<br>
+            <strong>Truyền tham chiếu:</strong> in ra <code class="inline-code">1</code> (x và y cùng là a, thay đổi x
+            tức thay đổi y).
           </div>
         </section>
 
