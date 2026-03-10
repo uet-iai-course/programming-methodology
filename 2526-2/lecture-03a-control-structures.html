@@ -259,17 +259,6 @@
           </table>
         </section>
 
-        <section style="font-size: 0.9em;">
-          <h2>Ví dụ về tác dụng phụ</h2>
-          <ul>
-            <li>Cho biểu thức</em> <span>\((a + f(b)) * (c + f(b))\).</span></li>
-            <li>Giả sử \(f(b)\) có <span class="keyword">tác dụng phụ</span> là <strong>làm thay đổi giá trị của
-                \(c\)</strong>.</li>
-            <li>Thứ tự đánh giá (\(a + f(b)\) trước hay sau \(c + f(b)\)?) ảnh hưởng đến kết quả cuối cùng của biểu
-              thức.</li>
-          </ul>
-        </section>
-
         <section style="font-size: 0.85em;">
           <h2>Đánh giá Háo hức vs Đánh giá Lười</h2>
           <div class="question-box">
@@ -377,9 +366,6 @@ while (p != NULL &&
             <span class="keyword">Lệnh</span> (command) là một thực thể cú pháp mà việc đánh giá nó có thể gây ra tác
             dụng phụ và <strong>không nhất thiết</strong> trả về giá trị.
           </div>
-          <ul>
-            <li>Mục đích: Lệnh làm thay đổi trạng thái bộ nhớ của chương trình.</li>
-          </ul>
         </section>
 
         <section>
@@ -387,8 +373,14 @@ while (p != NULL &&
           <div class="question-box">
             <div class="question-title">Định nghĩa</div>
             <span class="keyword">Biến</span> (variable) là một <strong>tên định danh</strong> đại diện cho một
-            <strong>vị trí trong bộ nhớ</strong> nơi giá trị có thể được lưu trữ và thay đổi.
+            giá trị hoặc một vị trí trong bộ nhớ — tùy theo mô hình của ngôn ngữ.
           </div>
+          <ul>
+            <li><span class="keyword">Biến khả biến</span>: tên đại diện cho một <strong>vùng chứa</strong> (location) —
+              giá trị có thể thay đổi. Ví dụ: C, Pascal.</li>
+            <li><span class="keyword">Mô hình tham chiếu</span>: tên đại diện cho một <strong>tham chiếu</strong> tới
+              giá trị. Ví dụ: Python, Java (đối tượng).</li>
+          </ul>
         </section>
 
         <section data-auto-animate="">
@@ -396,15 +388,11 @@ while (p != NULL &&
           <div class="question-box">
             <div class="question-title">Định nghĩa</div>
             <span class="keyword">Phép gán</span> (assignment) là một loại lệnh đặc biệt dùng để <strong>thay đổi
-              giá trị
-              của biến</strong>.
+              giá trị của biến</strong>.
           </div>
           <ul>
-            <li>Lệnh <code class="inline-code">x = 5</code> gán giá trị <span class="inline-code">5</span>
-              cho biến <span class="inline-code">x</span>.
-              Tên <span class="inline-code">x</span> bây giờ đại diện cho một vị trí trong bộ nhớ nơi giá trị <span
-                class="inline-code">5</span> được lưu trữ.
-            </li>
+            <li>Ví dụ: <code class="inline-code">x = 5</code> — ghi giá trị <code class="inline-code">5</code> vào vùng
+              chứa của <code class="inline-code">x</code>.</li>
           </ul>
         </section>
 
@@ -445,7 +433,8 @@ while (p != NULL &&
               chỉ).</li>
             <li><span class="keyword">Bộ nhớ</span> (Memory): Địa chỉ \(\rightarrow\) Giá trị lưu trữ.</li>
           </ul>
-          <!-- <p>Phân loại: Ngôn ngữ mệnh lệnh có cả hai; ngôn ngữ khai báo chủ yếu chỉ có môi trường.</p> -->
+          <p>Phân loại: <strong>Ngôn ngữ mệnh lệnh</strong> có cả hai (Environment + Memory); <strong>ngôn ngữ khai
+              báo</strong> chỉ có Environment — không có Memory vì không có biến khả biến.</p>
         </section>
 
         <section data-auto-animate="">
@@ -475,49 +464,13 @@ while (p != NULL &&
 
         <section style="font-size: 0.85em;" data-auto-animate="">
           <h2>Hai mô hình chính của biến</h2>
-          <p>Trong mô hình tham chiếu (vd: Python), khi viết <code class="inline-code">x = y</code>:</p>
-          <ul>
-            <li><span class="inline-code">x</span> và <span class="inline-code">y</span> đều tham chiếu tới
-              cùng một đối tượng trong bộ nhớ.</li>
-            <li>Đây là hiện tượng <strong>đa danh</strong> (aliasing).</li>
-          </ul>
-          <pre>
-            <code class="language-python" data-trim data-line-numbers="">
+          <p style="margin-top:0.4em;">Hệ quả quan trọng của mô hình tham chiếu — <strong>đa danh</strong> (aliasing):
+          </p>
+          <pre><code class="language-python" data-trim>
 a = [1, 2, 3]
-b = a  # b và a cùng tham chiếu tới cùng một danh sách
-b.append(4)  # Thay đổi danh sách thông qua b
-print(a)  # Kết quả: [1, 2, 3, 4] - a cũng bị thay đổi do b là alias của a
-</code>
-          </pre>
-        </section>
-
-        <section style="font-size: 0.85em;" data-auto-animate="">
-          <h2>Hai mô hình chính của biến</h2>
-          <div>
-            <strong>Lưu ý (Python):</strong> <em>mutability/immutability</em> quyết định cách tham chiếu hoạt động.
-            <ul>
-              <li><strong>Mutable</strong> (vd: <span class="inline-code">list</span>): sửa qua một tham chiếu → mọi
-                tham chiếu cùng trỏ đều bị ảnh hưởng.</li>
-              <li><strong>Immutable</strong> (vd: <span class="inline-code">int</span>, <span
-                  class="inline-code">str</span>): <span class="inline-code">x = y</span> → cùng trỏ một giá trị; nhưng
-                gán lại <span class="inline-code">x</span> → <span class="inline-code">x</span> trỏ đối tượng mới, không
-                ảnh hưởng <span class="inline-code">y</span>.</li>
-            </ul>
-          </div>
-        </section>
-
-        <section style="font-size: 0.85em;" data-auto-animate="">
-          <h2>Hai mô hình chính của biến</h2>
-          <p>Trong mô hình biến khả biến (vd: C), khi viết <code class="inline-code">x = y</code>:</p>
-          <ul>
-            <li><span class="inline-code">x</span> và <span class="inline-code">y</span> là hai biến riêng biệt, mỗi
-              biến có
-              vùng chứa riêng trong bộ nhớ.</li>
-            <li>Giá trị của <span class="inline-code">y</span> được sao chép vào vùng chứa của <span
-                class="inline-code">x</span>, nên sau lệnh gán, <span class="inline-code">x</span> và <span
-                class="inline-code">y</span> có cùng giá trị nhưng không
-              phải là alias của nhau.</li>
-          </ul>
+b = a        # b và a cùng trỏ tới một danh sách
+b.append(4)
+print(a)     # [1, 2, 3, 4] — a bị thay đổi theo!</code></pre>
         </section>
 
         <section style="font-size: 0.85em;" data-auto-animate="">
@@ -564,11 +517,12 @@ print(a)  # Kết quả: [1, 2, 3, 4] - a cũng bị thay đổi do b là alias 
           <h2>Biến thể của phép gán</h2>
           <ul>
             <li><strong>C:</strong> phép gán có tác dụng phụ và <strong>trả về</strong> r-value → cho phép <span
-                class="inline-code">y = x = 2</span>.</li>
-            <li><strong>Python:</strong> <strong>gán theo chuỗi</strong> <span class="inline-code">x = y
-                = exp</span> (gán theo thứ tự từ phải sang trái).</li>
+                class="inline-code">y = x = 2</span> (gán từ phải sang trái).</li>
+            <li><strong>Python:</strong> <strong>gán theo chuỗi</strong> <span class="inline-code">x = y = exp</span> —
+              gán <strong>tên trái nhất trước</strong>: tương đương <code
+                class="inline-code">tmp=exp; x=tmp; y=tmp</code>.</li>
             <li><strong>Python:</strong> <strong>gán đa biến</strong> <span class="inline-code">x, y
-                = exp1, exp2</span> (tính vế phải trước).</li>
+                = exp1, exp2</span> — tính toàn bộ vế phải trước, rồi mới gán.</li>
           </ul>
         </section>
       </section>
@@ -581,18 +535,10 @@ print(a)  # Kết quả: [1, 2, 3, 4] - a cũng bị thay đổi do b là alias 
           </h1>
         </section>
 
-        <section style="font-size: 0.85em;">
-          <h2>Tổng quan</h2>
-          <div class="question-box">
-            <div class="question-title">Định nghĩa</div>
-            <span class="keyword">Lệnh điều khiển trình tự</span> (sequence control commands) là các lệnh dùng để chỉ
-            định thứ tự thực hiện các bước
-            tính toán trong chương trình.
-          </div>
-        </section>
-
         <section style="font-size: .7em;">
-          <h2>Phân loại</h2>
+          <h2>Lệnh điều khiển trình tự</h2>
+          <p style="margin-bottom:0.4em;"><span class="keyword">Lệnh điều khiển trình tự</span> chỉ định thứ tự thực
+            hiện các bước tính toán. Ba nhóm chính:</p>
           <table style="width: 100%;">
             <thead>
               <tr>
@@ -666,9 +612,7 @@ print(a)  # Kết quả: [1, 2, 3, 4] - a cũng bị thay đổi do b là alias 
                 cần thiết</em> về mặt lý thuyết.</li>
             <li class="fragment"><strong>Hệ quả thực tế:</strong> Các phép biến đổi để loại bỏ <code
                 class="inline-code">goto</code> thường <em>phá vỡ cấu trúc</em> chương trình gốc, tạo ra mã phức tạp
-              hơn.</li>
-            <li class="fragment">→ Vấn đề không phải lý thuyết mà là <span class="keyword">thực tiễn</span>: <code
-                class="inline-code">goto</code> dễ bị lạm dụng, làm mã khó bảo trì.</li>
+              hơn → vấn đề là <span class="keyword">thực tiễn</span>, không phải lý thuyết.</li>
           </ul>
         </section>
 
@@ -784,46 +728,8 @@ switch (expression) {
           </ul>
         </section>
 
-        <section style="font-size: 0.7em;">
-          <h2>Tính đầy đủ Turing</h2>
-          <div class="question-box">
-            <div class="question-title">Kết quả lý thuyết quan trọng</div>
-            <ul>
-              <li>Ngôn ngữ chỉ có <strong>gán + if + for (xác định)</strong>: <span class="keyword">không</span>
-                Turing-đầy đủ — chỉ biểu diễn được <em>hàm toàn phần</em> (luôn dừng).</li>
-              <li>Ngôn ngữ có thêm <strong>while (không xác định)</strong>: <span class="keyword">Turing-đầy đủ</span> —
-                biểu diễn được mọi hàm tính được, kể cả hàm không dừng.</li>
-            </ul>
-          </div>
-          <table style="width:100%; font-size:0.88em; margin-top:0.6em;">
-            <thead>
-              <tr>
-                <th>Cấu trúc</th>
-                <th>Đủ để biểu diễn</th>
-                <th>Turing-đầy đủ?</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>gán + if + for</td>
-                <td>Hàm toàn phần</td>
-                <td>❌ Không</td>
-              </tr>
-              <tr>
-                <td>gán + if + while</td>
-                <td>Mọi hàm tính được</td>
-                <td>✅ Có</td>
-              </tr>
-            </tbody>
-          </table>
-          <p style="font-size:0.85em; color:#555; margin-top:0.4em;">Ví dụ: hàm <em>f(x) = x nếu x chẵn, không dừng nếu
-              x lẻ</em> — biểu diễn được bằng <code class="inline-code">while</code>, nhưng <em>không thể</em> bằng
-            <code class="inline-code">for</code> thuần.
-          </p>
-        </section>
-
         <section style="font-size: 0.7em;" data-auto-animate>
-          <h2>Lặp xác định — Mô hình "thuần khiết"</h2>
+          <h2>Lặp xác định — Mô hình "thuần khiết" (Algol)</h2>
           <pre><code class="language-plaintext" data-trim>
 for I = start to end by step do
   body</code></pre>
@@ -844,9 +750,10 @@ for I = start to end by step do
         </section>
 
         <section style="font-size: 0.9em;" data-auto-animate>
-          <h2>Lặp xác định</h2>
+          <h2>Lặp xác định — C/Java</h2>
           <p>C/Java: <code class="inline-code">for</code> thực chất chỉ là cách viết tắt của <code
-              class="inline-code">while</code>.</p>
+              class="inline-code">while</code> — <strong>không</strong> đóng băng biểu thức điều khiển, không cấm sửa
+            biến đếm.</p>
           <p>
             <span class="inline-code">for (init; condition; update)</span> tương đương với:
           </p>
@@ -874,6 +781,44 @@ for i in range(0, 10, 1):
             cách thêm phần tử trong thân vòng lặp → Python <code class="inline-code">for</code> <em>không hoàn toàn</em>
             là lặp xác định thuần túy.
           </div>
+        </section>
+
+        <section style="font-size: 0.7em;">
+          <h2>Tính đầy đủ Turing</h2>
+          <div class="question-box">
+            <div class="question-title">Kết quả lý thuyết quan trọng</div>
+            <ul>
+              <li>Ngôn ngữ chỉ có <strong>gán + if + for (xác định thuần)</strong>: <span class="keyword">không</span>
+                Turing-đầy đủ — chỉ biểu diễn được <em>hàm toàn phần</em> (luôn dừng).</li>
+              <li>Ngôn ngữ có thêm <strong>while (không xác định)</strong>: <span class="keyword">Turing-đầy đủ</span> —
+                biểu diễn được mọi hàm tính được, kể cả hàm không dừng.</li>
+            </ul>
+          </div>
+          <table style="width:100%; font-size:0.88em; margin-top:0.6em;">
+            <thead>
+              <tr>
+                <th>Cấu trúc</th>
+                <th>Đủ để biểu diễn</th>
+                <th>Turing-đầy đủ?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>gán + if + for (Algol)</td>
+                <td>Hàm toàn phần</td>
+                <td>❌ Không</td>
+              </tr>
+              <tr>
+                <td>gán + if + while</td>
+                <td>Mọi hàm tính được</td>
+                <td>✅ Có</td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="font-size:0.85em; color:#555; margin-top:0.4em;">Ví dụ: hàm <em>f(x) = x nếu x chẵn, không dừng nếu
+              x lẻ</em> — biểu diễn được bằng <code class="inline-code">while</code>, nhưng <em>không thể</em> bằng
+            <code class="inline-code">for</code> thuần.
+          </p>
         </section>
       </section>
 
@@ -922,15 +867,6 @@ for i in range(0, 10, 1):
           </h1>
         </section>
 
-        <section>
-          <h2>Đệ quy (Recursion)</h2>
-          <ul>
-            <li>Cơ chế thay thế cho vòng lặp.</li>
-            <li>Một chương trình con gọi chính nó.</li>
-            <li>Phù hợp cho cấu trúc dữ liệu như danh sách, cây.</li>
-          </ul>
-        </section>
-
         <section style="font-size: 0.7em;" data-auto-animate>
           <h2>Vòng lặp vs Đệ quy</h2>
           <table class="comparison-table">
@@ -955,7 +891,7 @@ for i in range(0, 10, 1):
               <tr>
                 <td><strong>Tốc độ</strong></td>
                 <td>Thường nhanh hơn.</td>
-                <td>Có thể chậm hơn do có thêm các thủ tục gọi hàm.</td>
+                <td>Có thể chậm hơn — nhưng <em>không nhất thiết</em> (xem đệ quy đuôi bên dưới).</td>
               </tr>
               <tr>
                 <td><strong>Độ rõ ràng</strong></td>
@@ -1030,7 +966,7 @@ int factrc(int n, int res) {
             <div>
               <p style="text-align:center; font-weight:bold; margin-bottom:6px;">Đệ quy thường — <code
                   class="inline-code">fact(3)</code></p>
-              <svg width="80%" viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+              <svg width="100%" viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg" style="display:block;">
                 <defs>
                   <marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
                     <path d="M0,0 L8,4 L0,8 Z" fill="#e74c3c" />
@@ -1080,11 +1016,9 @@ int factrc(int n, int res) {
                 <text x="100" y="129" text-anchor="middle" font-size="11" fill="#555">→ factrc(2,3) → factrc(1,6)</text>
 
                 <!-- circular arrow to show reuse -->
-                <path d="M 185 105 Q 205 90 205 120 Q 205 150 185 135" fill="none" stroke="#27ae60" stroke-width="1.5"
+                <path d="M 182 105 Q 198 90 198 120 Q 198 150 182 135" fill="none" stroke="#27ae60" stroke-width="1.5"
                   marker-end="url(#arr2)" stroke-dasharray="4,3" />
-                <text x="207" y="108" font-size="10" fill="#27ae60">tái</text>
-                <text x="203" y="120" font-size="10" fill="#27ae60">sử</text>
-                <text x="203" y="132" font-size="10" fill="#27ae60">dụng</text>
+                <text x="185" y="103" font-size="10" fill="#27ae60">tái sử dụng</text>
 
                 <text x="100" y="210" text-anchor="middle" font-size="11" fill="#27ae60" font-weight="bold">1 tầng stack
                   duy nhất</text>
