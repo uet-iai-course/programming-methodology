@@ -1,0 +1,1313 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Bài 4: Tổ chức và trừu tượng hóa dữ liệu</title>
+
+  <link rel="stylesheet" href="revealjs/dist/reset.css" />
+  <link rel="stylesheet" href="revealjs/dist/reveal.css" />
+  <link rel="stylesheet" href="revealjs/dist/theme/white.css" />
+  <link rel="stylesheet" href="plugin/highlight/monokai.css" />
+  <link rel="stylesheet" href="lecture-style.css" />
+</head>
+
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ========================================================
+           TITLE & TABLE OF CONTENTS
+           ======================================================== -->
+      <section>
+        <section>
+          <h1>Phương pháp luận lập trình</h1>
+          <h3>Bài 4: Tổ chức &amp; trừu tượng hoá <br /> dữ liệu</h3>
+          <p>Trường ĐH Công nghệ – Đại học Quốc gia Hà Nội</p>
+        </section>
+
+        <section>
+          <h2>Nội dung</h2>
+          <ol>
+            <li>Kiểu dữ liệu và Hệ thống kiểu</li>
+            <li>Các kiểu vô hướng và phức hợp</li>
+            <li>Tương đương và Tương thích kiểu</li>
+            <li>Tính đa hình (Polymorphism)</li>
+            <li>Trừu tượng hóa dữ liệu (ADT) và Module</li>
+            <li>Tham chiếu treo &amp; Garbage Collection</li>
+          </ol>
+        </section>
+      </section>
+
+      <!-- ========================================================
+           SECTION 1 – KIỂU DỮ LIỆU VÀ HỆ THỐNG KIỂU
+           ======================================================== -->
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">1.</span><br />
+            Kiểu dữ liệu và <br /> Hệ thống kiểu
+          </h1>
+        </section>
+
+        <section style="font-size: 1em;" data-auto-animate>
+          <h2>Tại sao cần kiểu dữ liệu?</h2>
+          <ul>
+            <li>Phần cứng chỉ thấy bit.</li>
+            <li>Lập trình viên cần khái niệm gần bài toán hơn.</li>
+            <li><span class="keyword">Kiểu dữ liệu</span> gắn bit với ý nghĩa.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 1em;" data-auto-animate>
+          <h2>Tại sao cần kiểu dữ liệu?</h2>
+          <ul>
+            <li><strong>Thiết kế</strong>: phân biệt <span class="inline-code">Room</span> và <span
+                class="inline-code">Price</span>.</li>
+            <li><strong>Kiểm tra</strong>: bắt lỗi gán, gọi hàm, truy cập sai kiểu.</li>
+            <li><strong>Cài đặt</strong>: hỗ trợ cấp phát và tối ưu bộ nhớ.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.9em;">
+          <h2>Kiểu dữ liệu là gì?</h2>
+          <div class="question-box">
+            <div class="question-title">Định nghĩa</div>
+            <span class="keyword">Kiểu dữ liệu</span> = tập giá trị + cách biểu diễn + các thao tác.
+          </div>
+          <ul>
+            <li><span class="keyword">Đồng nhất</span>: cùng cấu trúc hoặc cùng cách dùng.</li>
+            <li><span class="keyword">Biểu diễn hiệu quả</span>: lưu được trong bộ nhớ hữu hạn.</li>
+            <li><span class="keyword">Thao tác hiệu quả</span>: tính toán được trên biểu diễn đó.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.9em;">
+          <h2>Hệ thống kiểu (Type System)</h2>
+          <div>Thành phần của hệ thống kiểu</div>
+          <ul>
+            <li>Kiểu tiền định.</li>
+            <li>Cách tạo kiểu mới.</li>
+            <li>Quy tắc <strong>tương đương</strong>.</li>
+            <li>Quy tắc <strong>tương thích</strong>.</li>
+            <li>Quy tắc <strong>suy diễn kiểu</strong>.</li>
+            <li>Kiểm tra <strong>tĩnh</strong> hay <strong>động</strong>.</li>
+          </ul>
+          <p>Hệ thống kiểu <span class="keyword">an toàn</span> nếu lỗi kiểu không thể lọt qua mà không bị phát hiện.
+          </p>
+        </section>
+
+        <!-- NEW SLIDE: denotable / expressible / storable -->
+        <section>
+          <h2>Denotable, Expressible, Storable</h2>
+          <table class="comparison-table" style="font-size:0.88em;">
+            <thead>
+              <tr>
+                <th>Tính chất</th>
+                <th>Ý nghĩa</th>
+                <th>Ví dụ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="keyword">Denotable</span></td>
+                <td>Đặt tên được</td>
+                <td>Hàm qua khai báo</td>
+              </tr>
+              <tr>
+                <td><span class="keyword">Expressible</span></td>
+                <td>Xuất hiện như kết quả biểu thức</td>
+                <td>Hàm trong ML, Haskell</td>
+              </tr>
+              <tr>
+                <td><span class="keyword">Storable</span></td>
+                <td>Lưu được trong biến</td>
+                <td>Hàm trong Python</td>
+              </tr>
+            </tbody>
+          </table>
+          <ul>
+            <li>Python: hàm thỏa cả 3 tính chất.</li>
+          </ul>
+        </section>
+
+        <section style="font-size:0.7em;">
+          <h2>Kiểm tra kiểu: Tĩnh vs Động</h2>
+          <div>
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>Đặc điểm</th>
+                  <th>Kiểm tra Tĩnh (Static)</th>
+                  <th>Kiểm tra Động (Dynamic)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Thời điểm</td>
+                  <td>Lúc biên dịch</td>
+                  <td>Lúc chạy</td>
+                </tr>
+                <tr>
+                  <td>Hiệu năng</td>
+                  <td>Thường nhanh hơn khi chạy</td>
+                  <td>Tốn kiểm tra lúc chạy</td>
+                </tr>
+                <tr>
+                  <td>Tính linh hoạt</td>
+                  <td>Chặt chẽ hơn</td>
+                  <td>Linh hoạt hơn</td>
+                </tr>
+                <tr>
+                  <td>Phát hiện lỗi</td>
+                  <td>Sớm</td>
+                  <td>Muộn</td>
+                </tr>
+                <tr>
+                  <td>Ví dụ</td>
+                  <td>Java, C, ML, Haskell</td>
+                  <td>Python, Lisp, Scheme</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="font-size:0.96em;margin-top:10px;color:#555;">
+            Ghi nhớ: lỗi kiểu nói chung là <strong>không quyết định được</strong>, nên kiểm tra tĩnh luôn phải bảo thủ.
+          </p>
+        </section>
+
+        <section style="font-size:0.85em;">
+          <h2>Phân loại độ an toàn kiểu</h2>
+          <ul style="font-size:0.95em;">
+            <li>
+              <span class="keyword">Không an toàn</span>: lỗi kiểu có thể lọt qua.
+              <br /><span style="color:#888;font-size:0.85em;">→ C, C++ (pointer arithmetic, union)</span>
+            </li>
+            <li style="margin-top:10px;">
+              <span class="keyword">An toàn cục bộ</span>: đa số an toàn, vẫn còn điểm nguy hiểm.
+              <br /><span style="color:#888;font-size:0.85em;">→ Pascal, Ada (untagged variant records, explicit
+                deallocation)</span>
+            </li>
+            <li style="margin-top:10px;">
+              <span class="keyword">An toàn</span>: chương trình đúng kiểu không gây lỗi kiểu ẩn.
+              <br /><span style="color:#888;font-size:0.85em;">→ ML, Haskell (tĩnh); Lisp, Python (động); Java (tĩnh +
+                một số kiểm tra động)</span>
+            </li>
+          </ul>
+          <div class="question-box" style="margin-top:14px;padding:10px 14px;">
+            An toàn kiểu thường cần cả kiểm tra tĩnh lẫn động.
+          </div>
+        </section>
+      </section>
+
+      <!-- ========================================================
+           SECTION 2 – CÁC KIỂU VÔ HƯỚNG VÀ PHỨC HỢP
+           ======================================================== -->
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">2.</span><br />
+            Các kiểu vô hướng <br /> và phức hợp
+          </h1>
+        </section>
+
+        <!-- NEW: Scalar types overview -->
+        <section style="font-size:0.85em;">
+          <h2>Kiểu vô hướng (Scalar Types)</h2>
+          <p>Giá trị không ghép từ giá trị khác.</p>
+          <table class="comparison-table" style="width:100%;">
+            <thead>
+              <tr>
+                <th>Kiểu</th>
+                <th>Giá trị</th>
+                <th>Ghi chú</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Boolean</strong></td>
+                <td>true, false</td>
+                <td>Thường 1 byte</td>
+              </tr>
+              <tr>
+                <td><strong>Character</strong></td>
+                <td>Mã ký tự</td>
+                <td>ASCII hoặc Unicode</td>
+              </tr>
+              <tr>
+                <td><strong>Integer</strong></td>
+                <td>Tập con hữu hạn của ℤ</td>
+                <td>2/4/8 bytes, bù hai</td>
+              </tr>
+              <tr>
+                <td><strong>Real</strong></td>
+                <td>Tập con hữu hạn của ℚ</td>
+                <td>IEEE 754</td>
+              </tr>
+              <tr>
+                <td><strong>Unit / Void</strong></td>
+                <td>Một giá trị <span class="inline-code">()</span></td>
+                <td>Kiểu singleton</td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="margin-top:14px;">
+            <span><strong>Lưu ý:</strong> <span class="inline-code">void</span> là kiểu có đúng một giá trị, không phải
+              tập rỗng.</span>
+          </div>
+        </section>
+
+        <section style="font-size:0.9em;">
+          <h2>Kiểu liệt kê (Enumeration)</h2>
+          <p>Tập hữu hạn các hằng số có tên.</p>
+          <pre><code class="language-plaintext" data-trim>
+type Dwarf = {Bashful, Doc, Dopey, Grumpy, Happy, Sleepy, Sneezy};
+type Direction = {North, South, East, West};
+          </code></pre>
+          <ul style="margin-top:10px;">
+            <li>Dễ đọc hơn số nguyên thô.</li>
+            <li>Là <span class="keyword">kiểu có thứ tự</span>.</li>
+          </ul>
+          <div style="margin-top:14px;padding:10px 14px;color: #555;">
+            C: <span class="inline-code">enum</span> gần <span class="inline-code">int</span>.<br />
+            Pascal/Ada: mỗi enum là một kiểu riêng.
+          </div>
+        </section>
+
+        <section style="font-size:0.95em;">
+          <h2>Kiểu khoảng (Interval)</h2>
+          <p>Tập con liên tục của một <span class="keyword">kiểu cơ sở</span>.</p>
+          <pre><code class="language-plaintext" data-trim>
+type Bingo      = 1..90;
+type WorkHour   = 9..17;
+type SomeDwarves = Grumpy..Sleepy;   -- kiểu cơ sở là Dwarf
+          </code></pre>
+          <ul style="margin-top:10px;">
+            <li>Ghi ràng buộc miền ngay trong kiểu.</li>
+            <li>Lỗi vượt cận thường kiểm tra <strong>động</strong>.</li>
+            <li>Dùng được như kiểu cơ sở, nhưng không luôn ngược lại.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Phân loại kiểu phức hợp</h2>
+          <ul>
+            <li><strong>Bản ghi</strong> — truy cập theo tên trường</li>
+            <li><strong>Mảng</strong> — truy cập theo chỉ số</li>
+            <li><strong>Hợp</strong> — gộp nhiều biến thể</li>
+            <li><strong>Tập hợp</strong> (Set) — tập con của kiểu cơ sở</li>
+            <li><strong>Con trỏ</strong> — trỏ tới đối tượng khác</li>
+            <li><strong>Dãy</strong> — độ dài thay đổi</li>
+            <li><strong>Kiểu đệ quy</strong> — list, tree, ...</li>
+            <li><strong>Kiểu hàm</strong> — first-class trong ngôn ngữ hàm</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Bản ghi (Record)</h2>
+          <p>Tập hữu hạn các <span class="keyword">trường</span> có tên.</p>
+          <div>
+            <pre><code class="language-cpp" data-trim>
+struct Hall {
+    char   name[5];      // 5 bytes
+    int    capacity;     // 4 bytes — nhưng cần căn biên!
+    struct {
+        char department[10];
+        int  telephone;
+    } manager;
+};
+// Kích thước thực tế: 28 bytes (7 × 4), dù chỉ 23 bytes có nghĩa
+            </code></pre>
+          </div>
+          <ul>
+            <li>Truy cập trường qua offset hằng số.</li>
+            <li><span class="keyword">Căn biên</span> có thể tạo khoảng trống bộ nhớ.</li>
+          </ul>
+        </section>
+
+        <section style="font-size:0.9em;" data-auto-animate>
+          <h2>Mảng (Array)</h2>
+          <ul>
+            <li>Các phần tử <strong>cùng kiểu</strong>, truy cập bằng chỉ số.</li>
+            <li>Ví dụ: <span class="inline-code">int W[21..30]</span>, <span class="inline-code">float
+                Z[Dopey..Sneezy]</span></li>
+          </ul>
+        </section>
+
+        <section style="font-size:0.9em;" data-auto-animate>
+          <h2>Mảng (Array)</h2>
+          <div>Công thức tính địa chỉ mảng \(n\) chiều (row-major order):</div>
+          <div>
+            \[ \text{addr}(V[i_1, \dots, i_n]) = \text{base} + \sum_{j=1}^{n} (i_j - L_j) \cdot S_j \]
+            \(L_j\): biên dưới. \(S_j\): stride. \(S_n = \text{sizeof}(T)\).
+          </div>
+          <ul>
+            <li>Nếu cận biết ở compile-time, truy cập chỉ còn vài phép nhân cộng.</li>
+          </ul>
+        </section>
+
+        <!-- NEW: Worked example for array address -->
+        <section data-auto-animate>
+          <h2>Ví dụ: Địa chỉ mảng 3 chiều</h2>
+          <p>Tính địa chỉ phần tử.</p>
+          <div class="question-box">
+            <div class="question-title">Bài toán</div>
+            <span class="inline-code">int A[10][10][10]</span>, mỗi phần tử 4 bytes, row-major, <span
+              class="inline-code">A[0][0][0] = 0</span>.<br />
+            Tính địa chỉ <span class="inline-code">A[2][2][5]</span>.
+          </div>
+        </section>
+
+        <section data-auto-animate>
+          <h2>Ví dụ: Địa chỉ mảng 3 chiều</h2>
+          <p>Tính địa chỉ phần tử.</p>
+          <p><strong>Bước 1: stride</strong></p>
+          <ul>
+            <li>\(S_3 = 4\)</li>
+            <li>\(S_2 = 10 \times 4 = 40\)</li>
+            <li>\(S_1 = 10 \times 40 = 400\)</li>
+          </ul>
+        </section>
+
+        <section data-auto-animate>
+          <h2>Ví dụ: Địa chỉ mảng 3 chiều</h2>
+          <p>Tính địa chỉ phần tử.</p>
+          <p><strong>Bước 2: thế công thức</strong> (\(L_j = 0\))</p>
+          \[
+          \begin{aligned}
+          \text{addr}
+          &= 0 + 2 \times 400 + 2 \times 40 + 5 \times 4 \\
+          &= 800 + 80 + 20 = \mathbf{900}
+          \end{aligned}
+          \]
+        </section>
+
+        <section>
+          <h2>Hình dạng mảng (Array Shape)</h2>
+          <p><strong>Hình dạng</strong> = số chiều + miền chỉ số mỗi chiều.</p>
+          <ul>
+            <li><span class="keyword">Tĩnh</span>: biết ở compile-time, truy cập nhanh nhất.</li>
+            <li><span class="keyword">Cố định khi khai báo</span>: cần thêm mô tả hình dạng.</li>
+            <li><span class="keyword">Động hoàn toàn</span>: phải cấp phát trên heap.</li>
+          </ul>
+          <p>Đối tượng sống lâu thường đặt trên heap.</p>
+        </section>
+
+        <section style="font-size:0.9em;" data-auto-animate>
+          <h2>Dope Vector</h2>
+          <p>Khi hình dạng chưa biết trước, máy ảo dùng <span class="keyword">dope vector</span>.</p>
+          <div class="question-box" style="margin-top:12px;">
+            <div class="question-title">Nội dung của Dope Vector</div>
+            <ul>
+              <li>Địa chỉ đầu mảng</li>
+              <li>Số chiều</li>
+              <li>Biên dưới từng chiều</li>
+              <li>Stride từng chiều</li>
+            </ul>
+            <div>
+              Truy cập phần tử = đọc mô tả + tính địa chỉ thực.
+            </div>
+          </div>
+        </section>
+
+        <section style="font-size:0.8em;" data-auto-animate>
+          <h2>Dope Vector</h2>
+          <div class="placeholder" style="border:1px dashed #999;padding:12px;border-radius:8px;margin-top:12px;">
+            <em>[Figure placeholder: img/lec-04/dope-vector.png]</em><br />
+            <strong>Mô tả:</strong> Activation record gồm phần cố định và phần biến đổi; dope vector trỏ tới mảng.
+          </div>
+        </section>
+
+        <section data-auto-animate>
+          <h2>Hợp không gắn thẻ <br /> (Untagged Union)</h2>
+          <p>Một vùng nhớ dùng chung cho nhiều kiểu, nhưng không có thẻ biến thể.</p>
+          <pre><code class="language-c" data-trim>
+union Example {
+  int   lastyear;
+  struct {
+    float height;
+    int   year;
+  } student;
+};
+// Ai theo dõi biến thể hiện hành?
+// → Lập trình viên. Ngôn ngữ không bảo vệ.
+          </code></pre>
+        </section>
+
+        <section data-auto-animate>
+          <h2>Hợp không gắn thẻ <br /> (Untagged Union)</h2>
+          <div class="question-box" style="margin-top:12px;">
+            <div class="question-title">⚠ Hậu quả</div>
+            Đọc sai trường \(\to\) diễn giải sai dữ liệu.
+          </div>
+        </section>
+
+        <section style="font-size: .8em;">
+          <h2>Hợp có gắn thẻ <br /> (Tagged Union)</h2>
+          <p>Mỗi giá trị có một <span class="keyword">thẻ</span> chỉ biến thể hợp lệ.</p>
+          <pre><code class="language-plaintext" data-trim>
+type Three = n  of int
+           | b  of bool
+           | st of char;
+
+Three V = st 'A';
+
+V = case V in
+      n  x : n(x + 1)
+      b  x : b(not x)
+      st x : st x
+    end case
+          </code></pre>
+          <ul style="margin-top:8px;font-size:0.9em;">
+            <li>Truy cập sai biến thể sẽ báo lỗi lúc chạy.</li>
+            <li>Đây là <span class="keyword">sum type</span>; enum là trường hợp đặc biệt.</li>
+          </ul>
+        </section>
+
+        <section data-auto-animate>
+          <h2>Con trỏ (Pointer)</h2>
+          <p>Con trỏ là địa chỉ của đối tượng kiểu <span class="inline-code">T</span>.</p>
+          <pre><code class="language-c" data-trim>
+int* p = malloc(sizeof(int));
+*p = 33;           // ghi qua dereference
+
+float r = 3.14;
+float* q = &r;     // con trỏ vào stack
+r = *q + 1;        // đọc qua dereference
+          </code></pre>
+        </section>
+
+        <section data-auto-animate>
+          <h2>Con trỏ (Pointer)</h2>
+          <div class="question-box" style="margin-top:14px;">
+            <div class="question-title">⚠ Hai mối nguy hiểm chính</div>
+            <ul>
+              <li><strong>Pointer arithmetic</strong>: dễ làm con trỏ trỏ sai đối tượng.</li>
+              <li><strong>Dangling reference</strong>: trỏ vào vùng nhớ đã giải phóng.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- NEW: Recursive types -->
+        <section>
+          <h2>Kiểu đệ quy (Recursive Types)</h2>
+          <p>Giá trị có thể chứa <em>tham chiếu</em> tới chính kiểu đó.</p>
+          <pre><code class="language-java" data-trim>
+type int_list = {
+  int      val;
+  int_list next;   // trường đệ quy — cùng kiểu!
+};
+
+// Xây dựng danh sách [2]:
+int_list l = new int_list();
+l.val  = 2;
+l.next = null;    // null = trường hợp cơ sở (kết thúc đệ quy)
+          </code></pre>
+          <ul style="margin-top:10px;font-size:0.9em;">
+            <li>Các node trên heap nối nhau bằng con trỏ.</li>
+            <li>Java không giải phóng tường minh, nên cần <strong>GC</strong>.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Kiểu đệ quy trong ML</h2>
+          <p>ML dùng <span class="keyword">datatype</span> cho kiểu đệ quy.</p>
+          <pre><code class="language-plaintext" data-trim>
+datatype int_list =
+    Null                       (* trường hợp cơ sở *)
+  | CONS of int * int_list;    (* trường hợp đệ quy *)
+
+(* Xây dựng danh sách [1, 2, 3]: *)
+val l = CONS(1, CONS(2, CONS(3, Null)));
+          </code></pre>
+          <ul style="margin-top:10px;font-size:0.9em;">
+            <li>Pattern matching buộc xử lý đủ trường hợp.</li>
+            <li>Thực chất là <strong>tagged union đệ quy</strong>.</li>
+          </ul>
+        </section>
+
+        <!-- NEW: Sequences -->
+        <section data-auto-animate>
+          <h2>Dãy (Sequence) — Python list/tuple</h2>
+          <ul>
+            <li>Độ dài <strong>thay đổi</strong>; phần tử có thể <strong>khác kiểu</strong>.</li>
+            <li>Truy cập theo chỉ số, hỗ trợ thêm/xóa.</li>
+          </ul>
+        </section>
+
+        <section data-auto-animate>
+          <h2>Dãy (Sequence) — Python list/tuple</h2>
+          <div class="question-box" style="margin-top:10px;">
+            <div class="question-title">Cách lưu trữ</div>
+            Thường là <strong>vector con trỏ</strong> tới phần tử thực.
+            <br />
+            <span class="inline-code">A = [[10,[2,3],'bob'], 'foo', 1]</span>: mỗi ô là một con trỏ.
+          </div>
+          <ul style="margin-top:10px;font-size:0.92em;">
+            <li><em>Append</em>: <strong>O(1) khấu hao</strong>.</li>
+            <li>Chèn/xóa ở giữa: <strong>O(n)</strong>.</li>
+          </ul>
+        </section>
+      </section>
+
+      <!-- ========================================================
+           SECTION 3 – TƯƠNG ĐƯƠNG VÀ TƯƠNG THÍCH KIỂU
+           ======================================================== -->
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">3.</span><br />
+            Tương đương và <br /> Tương thích kiểu
+          </h1>
+        </section>
+
+        <section style="font-size:0.9em;">
+          <h2>Tương đương tên <br /> (Name Equivalence)</h2>
+          <p>Hai kiểu chỉ tương đương khi có <strong>cùng tên</strong>.</p>
+          <pre><code class="language-plaintext" data-trim>
+type T1 = 1..10;
+type T2 = 1..10;
+// T1 ≠ T2  (dù cùng cấu trúc — vì có hai lần khai báo riêng)
+
+var x : T1;
+var y : T2;
+x := y;   // LỖI KIỂU — ngay cả khi biểu diễn giống hệt nhau
+          </code></pre>
+          <ul>
+            <li>Mỗi khai báo <span class="inline-code">type</span> tạo một kiểu riêng.</li>
+            <li>Giữ đúng ý định thiết kế: <span class="inline-code">Room</span> khác <span
+                class="inline-code">Price</span>.</li>
+          </ul>
+        </section>
+
+        <section style="font-size:0.9em;">
+          <h2>Tương đương cấu trúc <br /> (Structural Equivalence)</h2>
+          <p>Hai kiểu tương đương nếu có <strong>cùng cấu trúc</strong> sau khi mở rộng.</p>
+          <pre><code class="language-plaintext" data-trim>
+type T1 = int;
+type T2 = int;
+// T1 ≡ T2  (vì cả hai mở rộng thành int)
+
+type T3 = struct { T1 a; T2 b; }
+type T4 = struct { int a; int b; }
+// T3 ≡ T4  (sau khi mở rộng T1 và T2)
+          </code></pre>
+          <ul style="margin-top:10px;font-size:0.9em;">
+            <li>Linh hoạt hơn name equivalence.</li>
+            <li>Khó với kiểu đệ quy vì mở rộng có thể không dừng.</li>
+          </ul>
+        </section>
+
+        <!-- NEW: Language comparison table -->
+        <section style="font-size:0.8em;">
+          <h2>Ngôn ngữ dùng quy tắc nào?</h2>
+          <table class="comparison-table" style="width: 100%;">
+            <thead>
+              <tr>
+                <th>Ngôn ngữ</th>
+                <th>Record / Struct</th>
+                <th>Array</th>
+                <th>typedef / alias</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Java</strong></td>
+                <td>Tên</td>
+                <td>Cấu trúc</td>
+                <td>Tên</td>
+              </tr>
+              <tr>
+                <td><strong>C</strong></td>
+                <td>Tên</td>
+                <td>Cấu trúc</td>
+                <td>Cấu trúc (typedef)</td>
+              </tr>
+              <tr>
+                <td><strong>C++</strong></td>
+                <td>Tên</td>
+                <td>Cấu trúc</td>
+                <td>Tên</td>
+              </tr>
+              <tr>
+                <td><strong>ML</strong></td>
+                <td>Cấu trúc</td>
+                <td>Cấu trúc</td>
+                <td>Tên (datatype)</td>
+              </tr>
+              <tr>
+                <td><strong>Modula-2</strong></td>
+                <td>Tên</td>
+                <td>Tên</td>
+                <td>Tên</td>
+              </tr>
+              <tr>
+                <td><strong>Modula-3</strong></td>
+                <td>Cấu trúc</td>
+                <td>Cấu trúc</td>
+                <td>Cấu trúc</td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="font-size:0.95em;margin-top:10px;">Nhiều ngôn ngữ pha trộn cả hai quy tắc.</p>
+        </section>
+
+        <section style="font-size:0.9em;">
+          <h2>Tương thích kiểu <br /> (Type Compatibility)</h2>
+          <p><span class="keyword">Tương thích</span> = giá trị kiểu T dùng được ở nơi cần kiểu S.</p>
+          <ol>
+            <li><strong>T ≡ S</strong>: hai kiểu tương đương.</li>
+            <li><strong>T ⊆ S</strong>: T là tập con của S, ví dụ kiểu khoảng.</li>
+            <li><strong>Cùng thao tác</strong>: tương thích cấu trúc hay duck typing.</li>
+            <li><strong>Có chuyển đổi chuẩn</strong>: như <span class="inline-code">int → float</span>.</li>
+            <li><strong>Có chuyển đổi tự định nghĩa</strong>.</li>
+          </ol>
+        </section>
+
+        <section style="font-size:0.75em;">
+          <h2>Coercion và Cast</h2>
+          <p>Cả hai đều đổi giá trị, khác ở <strong>ai quyết định</strong>.</p>
+          <table class="comparison-table" style="width: 100%;">
+            <thead>
+              <tr>
+                <th>Cơ chế</th>
+                <th>Ai chèn chuyển đổi?</th>
+                <th>Ví dụ</th>
+                <th>Ý nghĩa sư phạm</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="keyword">Coercion</span></td>
+                <td>Trình biên dịch / ngôn ngữ</td>
+                <td><span class="inline-code">float x = 3 + 2.0;</span></td>
+                <td><span class="inline-code">3</span> được ngầm đổi thành <span class="inline-code">3.0</span>.</td>
+              </tr>
+              <tr>
+                <td><span class="keyword">Cast</span></td>
+                <td>Lập trình viên</td>
+                <td><span class="inline-code">float x = (float)3 + 2.0;</span></td>
+                <td>Ý định đổi kiểu được viết tường minh trong mã.</td>
+              </tr>
+            </tbody>
+          </table>
+          <ul style="margin-top:10px;">
+            <li>Coercion tiện nhưng dễ mơ hồ.</li>
+            <li>Cast rõ ý định hơn.</li>
+          </ul>
+        </section>
+
+        <section style="font-size:0.9em;">
+          <h2>Tương thích cấu trúc tĩnh</h2>
+          <p>Kiểm tra ở <strong>compile-time</strong> rằng đối tượng có đủ thao tác cần dùng.</p>
+          <pre><code class="language-scala" data-trim>
+// Scala: tham số x chỉ cần có phương thức .a : Int
+def f(x: { def a: Int }): Int = x.a
+
+f(new { def a = 20; def b = 100 })  // hợp lệ — x.a tồn tại → 20
+f(new { def b = 100 })              // LỖI compile — x.a không có
+          </code></pre>
+          <div class="question-box" style="margin-top:14px;">
+            <div class="question-title">Đặc điểm</div>
+            Kiểu của <span class="inline-code">x</span> là tập yêu cầu thao tác. An toàn, nhưng cần hỗ trợ kiểu cấu
+            trúc.
+          </div>
+        </section>
+
+        <section style="font-size:0.9em;">
+          <h2>Duck Typing</h2>
+          <p>Kiểm tra ở <strong>run-time</strong>: có thao tác cần thiết thì dùng được.</p>
+          <pre><code class="language-python" data-trim>
+def f(x):
+    return x.a     # không có khai báo kiểu — chỉ gọi .a
+
+class Duck:
+    a = 20
+    b = 100
+
+class Robot:
+    a = 99
+
+f(Duck())    # → 20  (hợp lệ, có .a)
+f(Robot())   # → 99  (cũng hợp lệ, có .a)
+f(42)        # → AttributeError tại run-time (int không có .a)
+          </code></pre>
+          <ul style="font-size:0.95em;margin-top:8px;">
+            <li><em>"Nếu nó đi như vịt và kêu như vịt, thì đó là vịt."</em></li>
+            <li>Linh hoạt, nhưng lỗi xuất hiện muộn.</li>
+          </ul>
+        </section>
+      </section>
+
+      <!-- ========================================================
+           SECTION 4 – TÍNH ĐA HÌNH
+           ======================================================== -->
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">4.</span><br />
+            Tính đa hình <br /> (Polymorphism)
+          </h1>
+        </section>
+
+        <section>
+          <h2>Khái niệm đa hình</h2>
+          <div class="question-box">
+            <div class="question-title">Định nghĩa</div>
+            Hệ thống kiểu là <span class="keyword">đa hình</span> nếu một đối tượng dùng được dưới <strong>nhiều
+              kiểu</strong>.
+          </div>
+          <ul style="margin-top:12px;">
+            <li>Nếu không có đa hình, phải viết <span class="inline-code">int_sort</span>, <span
+                class="inline-code">float_sort</span>, ...</li>
+            <li>Đa hình cho phép viết một hàm chung.</li>
+          </ul>
+          <pre><code class="language-plaintext" data-trim>void sort(&lt;T&gt; A[])  // T là tham số kiểu</code></pre>
+        </section>
+
+        <section style="font-size:0.95em;">
+          <h2>Các loại đa hình</h2>
+          <ul>
+            <li>
+              <span class="keyword">Ad-hoc / Overloading</span>: một tên, nhiều cài đặt.
+              <br /><span style="font-size:0.85em;color:#888;">Ví dụ: <span class="inline-code">+</span> cho int và
+                float là hai hàm khác nhau.</span>
+            </li>
+            <li style="margin-top:10px;">
+              <span class="keyword">Parametric</span>: một đoạn mã dùng cho nhiều kiểu.
+              <br /><span style="font-size:0.85em;color:#888;">Ví dụ: <span class="inline-code">swap&lt;T&gt;</span>,
+                <span class="inline-code">null : T*</span>, hàm identity.</span>
+            </li>
+            <li style="margin-top:10px;">
+              <span class="keyword">Subtype</span>: dùng được với các kiểu con.
+              <br /><span style="font-size:0.85em;color:#888;">Ví dụ: Liskov Substitution Principle trong OOP.</span>
+            </li>
+          </ul>
+        </section>
+
+        <section style="font-size:0.9em;">
+          <h2>Phân biệt Overloading và Coercion</h2>
+          <p>Cả hai đều xử lý được <span class="inline-code">1 + 2.0</span>, nhưng cơ chế khác nhau.</p>
+          <ul>
+            <li>
+              <span class="keyword">Overloading</span>: có nhiều phiên bản của <span class="inline-code">+</span>.
+            </li>
+            <li>
+              <span class="keyword">Coercion</span>: trình biên dịch đổi <span class="inline-code">1</span> thành <span
+                class="inline-code">1.0</span>.
+            </li>
+            <li>
+              <strong>Gợi ý</strong>: xem ngôn ngữ của bạn dùng cơ chế nào.
+            </li>
+          </ul>
+        </section>
+
+        <section style="font-size:0.9em;">
+          <h2>Đa hình tham số tường minh — C++ Templates</h2>
+          <p>Viết rõ <span class="inline-code">&lt;T&gt;</span>. Trình biên dịch sinh mã riêng cho từng kiểu.</p>
+          <pre><code class="language-cpp" data-trim>
+template &lt;typename T&gt;
+void swap(T&amp; x, T&amp; y) {
+    T tmp = x;
+    x = y;
+    y = tmp;
+}
+// swap&lt;int&gt;, swap&lt;float&gt;, swap&lt;string&gt; là các hàm riêng biệt
+          </code></pre>
+          <ul style="margin-top:10px;">
+            <li>✅ Nhanh, tối ưu tốt.</li>
+            <li>❌ Dễ <em>code bloat</em>.</li>
+          </ul>
+        </section>
+
+        <section style="font-size:0.9em;">
+          <h2>Đa hình tham số ngầm định — ML</h2>
+          <p>Trình biên dịch <em>tự suy ra</em> tham số kiểu.</p>
+          <pre><code class="language-plaintext" data-trim>
+- fun swap(x, y) =
+    let tmp = !x in
+    (x := !y; y := tmp);
+
+val swap = fn : ('a ref) * ('a ref) -> unit
+(* 'a là tham số kiểu — trình biên dịch tự suy ra *)
+          </code></pre>
+          <ul style="margin-top:10px;">
+            <li>✅ Một bản mã, gọn hơn.</li>
+            <li>❌ Có thể chậm hơn template.</li>
+          </ul>
+        </section>
+
+        <section style="font-size:0.9em;">
+          <h2>Suy diễn kiểu (Type Inference) — Ví dụ</h2>
+          <p>Trình biên dịch suy ra kiểu tổng quát nhất.</p>
+          <pre><code class="language-plaintext" data-trim>
+fun f(n) { return n + 1; }
+-- Suy luận: 1 : int, (+) : int×int→int → n : int → f : int → int
+
+fun Ide(x) { return x; }
+-- Không có ràng buộc nào → Ide : 'a → 'a  (đa hình thực sự!)
+
+fun Comp(f, g, x) { return f(g(x)); }
+-- Suy ra kiểu tổng quát nhất:
+--   ('a→'b) × ('c→'a) × 'c  →  'b
+          </code></pre>
+          <p style="font-size:0.95em;margin-top:10px;">Các biến kiểu như <span class="inline-code">'a</span>, <span
+              class="inline-code">'b</span> cho thấy hàm vẫn tổng quát.</p>
+        </section>
+
+        <section>
+          <h2>Suy diễn kiểu — Thuật toán</h2>
+          <div class="question-box">
+            <div class="question-title">3 bước chính</div>
+            <ol>
+              <li style="margin-bottom:8px;"><strong>Gán biến kiểu</strong> cho tên và biểu thức mới.</li>
+              <li style="margin-bottom:8px;"><strong>Sinh ràng buộc</strong> từ cây cú pháp.</li>
+              <li><strong>Giải ràng buộc</strong> bằng <span class="keyword">unification</span>.</li>
+            </ol>
+          </div>
+          <p style="font-size:0.95em;margin-top:12px;">Kết quả: kiểu tổng quát nhất, không cần chú thích thủ công.</p>
+        </section>
+      </section>
+
+      <!-- ========================================================
+           SECTION 5 – TRỪU TƯỢNG HÓA DỮ LIỆU & MODULE
+           ======================================================== -->
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">5.</span><br />
+            Trừu tượng hóa <br /> dữ liệu và Module
+          </h1>
+        </section>
+
+        <!-- NEW: motivating transition -->
+        <section style="font-size:0.9em;">
+          <h2>Vấn đề: Kiểu do người dùng định nghĩa vs Kiểu tiền định</h2>
+          <ul>
+            <li>Kiểu tiền định như <span class="inline-code">int</span>, <span class="inline-code">bool</span> che giấu
+              biểu diễn.</li>
+            <li>Kiểu tự định nghĩa thì thường không.</li>
+          </ul>
+          <pre><code class="language-c" data-trim>
+// Đây là hành vi KHÔNG nên cho phép:
+int second_from_top(Int_Stack s) {
+    return s.P[s.top - 1];  // truy cập trực tiếp biểu diễn!
+}
+          </code></pre>
+          <p>Cần <span class="keyword">ADT</span>* để chỉ lộ các thao tác hợp lệ.</p>
+
+          <div style="font-size: .7em;margin-top: 12px; color: #888;">
+            *ADT = Abstract Data Type (Kiểu dữ liệu trừu tượng)
+          </div>
+        </section>
+
+        <section style="font-size:0.9em;">
+          <h2>Kiểu dữ liệu trừu tượng (ADT)</h2>
+          <div class="question-box">
+            <div class="question-title">5 thành phần của ADT</div>
+            <ol>
+              <li>Tên kiểu.</li>
+              <li>Biểu diễn bên trong.</li>
+              <li>Chữ ký thao tác.</li>
+              <li>Cài đặt thao tác.</li>
+              <li><span class="keyword">Vỏ bảo mật</span> tách giao diện và cài đặt.</li>
+            </ol>
+          </div>
+          <ul style="margin-top:12px;">
+            <li><strong>Bên trong</strong>: <span class="inline-code">Int_Stack</span> là biểu diễn cụ thể.</li>
+            <li><strong>Bên ngoài</strong>: <span class="inline-code">Int_Stack</span> là kiểu mờ.</li>
+          </ul>
+        </section>
+
+        <!-- NEW: Int_Stack pseudocode -->
+        <section style="font-size:0.9em;">
+          <h2>Ví dụ: ADT Stack số nguyên</h2>
+          <pre><code class="language-plaintext" data-trim>
+abstype Int_Stack {
+  type Int_Stack = struct {       -- biểu diễn (ẩn bên ngoài)
+    int P[100];
+    int top;
+  };
+
+  signature                       -- giao diện công khai
+    Int_Stack create_stack();
+    Int_Stack push(int x, Int_Stack s);
+    int       top(Int_Stack s);
+    Int_Stack pop(Int_Stack s);
+    bool      empty(Int_Stack s);
+
+  operations                      -- cài đặt (ẩn bên ngoài)
+    Int_Stack create_stack() { return {P={}, top=0}; }
+    Int_Stack push(int x, Int_Stack s) { s.P[s.top++]=x; return s; }
+    int       top(Int_Stack s)  { return s.P[s.top-1]; }
+    Int_Stack pop(Int_Stack s)  { s.top--; return s; }
+    bool      empty(Int_Stack s){ return s.top == 0; }
+}
+          </code></pre>
+          <p style="font-size:0.92em;margin-top:6px;">Ngoài ADT, <span class="inline-code">Int_Stack</span> không còn là
+            record, nên truy cập trực tiếp sẽ lỗi kiểu.</p>
+        </section>
+
+        <!-- NEW: Constructors / Transformers / Observers -->
+        <section style="font-size:0.8em;">
+          <h2>Phân loại thao tác trong ADT</h2>
+          <div style="font-size:0.92em;">
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>Loại</th>
+                  <th>Mô tả</th>
+                  <th>Ví dụ (Int_Stack)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="keyword">Constructors</span></td>
+                  <td>Tạo giá trị kiểu T</td>
+                  <td><span class="inline-code">create_stack</span>, <span class="inline-code">push</span></td>
+                </tr>
+                <tr>
+                  <td><span class="keyword">Transformers</span></td>
+                  <td>Biến đổi giá trị T thành giá trị T mới</td>
+                  <td><span class="inline-code">pop</span></td>
+                </tr>
+                <tr>
+                  <td><span class="keyword">Observers</span></td>
+                  <td>Quan sát T để trả về kiểu khác</td>
+                  <td><span class="inline-code">top</span>, <span class="inline-code">empty</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="question-box" style="margin-top:14px;">
+            <div class="question-title">Quy tắc vàng</div>
+            Không có constructor thì không tạo được giá trị ADT.
+          </div>
+        </section>
+
+        <section style="font-size:0.75em;">
+          <h2>Che giấu thông tin và Độc lập biểu diễn</h2>
+          <ul>
+            <li><span class="keyword">Che giấu thông tin</span>: client không truy cập trực tiếp biểu diễn.</li>
+            <li>Có thể đổi cài đặt mà không sửa mã bên ngoài.</li>
+            <li><span class="keyword">Độc lập biểu diễn</span>: client không phân biệt hai cài đặt đúng.</li>
+          </ul>
+          <div class="question-box" style="margin-top:14px;">
+            <div class="question-title">Mệnh đề kiểm chứng được</div>
+            Thay một ADT bằng ADT khác cùng <em>signature</em> sẽ không gây lỗi kiểu.
+          </div>
+        </section>
+
+        <section>
+          <h2>Module và Package</h2>
+          <p>ADT đóng gói một kiểu; module đóng gói nhiều kiểu và hàm liên quan.</p>
+          <ul>
+            <li><span class="inline-code">public</span>: giao diện cho client.</li>
+            <li><span class="inline-code">private</span>: phần cài đặt ẩn.</li>
+            <li>Có thể <span class="inline-code">import</span> module khác.</li>
+            <li>Hỗ trợ <strong>biên dịch riêng biệt</strong>.</li>
+          </ul>
+          <p><strong>Lưu ý:</strong> module và biên dịch riêng biệt là hai khái niệm khác nhau.</p>
+        </section>
+
+        <section style="font-size:0.8em;">
+          <h2>Module tổng quát <br /> (Generic Module)</h2>
+          <p>Module có thể nhận <strong>tham số kiểu</strong>.</p>
+          <pre><code class="language-plaintext" data-trim>
+module Buffer[T] {
+  -- Buffer kiểu T tổng quát
+  -- Không phải chỉ Buffer of int
+  import Queue[T];
+
+  public:
+    void put(T item);
+    T    get();
+  private:
+    Queue[T] q;
+}
+
+-- Sử dụng:
+Buffer[int]    buf_int;
+Buffer[string] buf_str;
+          </code></pre>
+          <p style="font-size:0.95em;margin-top:8px;">Ý tưởng gần template C++, nhưng ở cấp module.</p>
+        </section>
+      </section>
+
+      <!-- ========================================================
+           SECTION 6 – THAM CHIẾU TREO & GARBAGE COLLECTION
+           ======================================================== -->
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">6.</span><br />
+            Tham chiếu treo &amp; <br /> Garbage Collection
+          </h1>
+        </section>
+
+        <section style="font-size:0.9em;">
+          <h2>Giải phóng tường minh và Tham chiếu treo</h2>
+          <p>Với <span class="inline-code">free</span> / <span class="inline-code">delete</span>, lập trình viên tự giải
+            phóng bộ nhớ.</p>
+          <pre><code class="language-c" data-trim>
+int* p = malloc(sizeof(int));
+*p = 5;
+int* q = p;    // q và p trỏ cùng một đối tượng
+
+free(p);       // giải phóng — nhưng q vẫn còn!
+p = NULL;
+
+print(*q);     // NGUY HIỂM: q là dangling reference
+               // trỏ vào vùng đã tái sử dụng
+          </code></pre>
+          <ul style="margin-top:10px;">
+            <li><span class="inline-code">q</span> vẫn đúng kiểu và không null.</li>
+            <li>Nhưng nó trỏ vào vùng nhớ đã giải phóng.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Giải phóng ngầm định và Rác bộ nhớ</h2>
+          <p>Khi không còn đường nào tới đối tượng, nó thành <span class="keyword">rác</span>.</p>
+          <pre><code class="language-c" data-trim>
+int* p = malloc(sizeof(int));
+*p = 5;
+
+p = NULL;   // con trỏ duy nhất tới đối tượng mất đi
+            // đối tượng không còn tiếp cận được — rác!
+            // nhưng vùng nhớ chưa được thu hồi
+          </code></pre>
+          <ul style="margin-top:10px;">
+            <li>Không có tham chiếu treo.</li>
+            <li>Bộ nhớ vẫn bị chiếm, nên cần <span class="keyword">GC</span>.</li>
+          </ul>
+        </section>
+
+        <!-- NEW: Tombstones -->
+        <section style="font-size:0.7em;">
+          <h2>Phát hiện tham chiếu treo: Tombstone</h2>
+          <p>Mỗi đối tượng heap đi kèm một <span class="keyword">tombstone</span>.</p>
+          <ul style="margin-top:10px;">
+            <li>Con trỏ trỏ tới tombstone; tombstone mới trỏ tới đối tượng thật.</li>
+            <li>Khi giải phóng, đánh dấu tombstone là không hợp lệ.</li>
+            <li>Con trỏ trên stack cũng phải trỏ tới tombstone.</li>
+            <li>Cemetery cũng cần dọn dẹp riêng.</li>
+          </ul>
+          <div class="question-box" style="margin-top:14px;">
+            <div class="question-title">Chi phí</div>
+            <strong>Không gian</strong>: thêm tombstone cho mỗi đối tượng.<br />
+            <strong>Thời gian</strong>: mỗi lần dereference qua 2 tầng gián tiếp.
+          </div>
+        </section>
+
+        <!-- NEW: Locks and Keys -->
+        <section style="font-size:0.7em;">
+          <h2>Phát hiện tham chiếu treo: Locks &amp; Keys</h2>
+          <p>Phương án khác cho heap, không cần tầng gián tiếp.</p>
+          <ul>
+            <li>Mỗi đối tượng có một <span class="keyword">lock</span>.</li>
+            <li>Mỗi con trỏ mang cặp (địa chỉ, key).</li>
+            <li>Sao chép con trỏ nghĩa là sao chép luôn cả cặp <span class="inline-code">(địa chỉ, key)</span>.</li>
+            <li>Khi dereference, kiểm tra <span class="inline-code">key == lock</span>.</li>
+            <li>Khi giải phóng, đổi lock để các key cũ mất hiệu lực.</li>
+          </ul>
+          <div class="question-box" style="margin-top:10px;">
+            <div class="question-title">So sánh với Tombstone</div>
+            Tốn key cho mỗi con trỏ, nhưng không tạo rác phụ như tombstone.
+          </div>
+        </section>
+
+        <section style="font-size:0.9em;">
+          <h2>Garbage Collection: Nguyên lý</h2>
+          <p>Trong ngôn ngữ không có giải phóng tường minh, máy ảo cần <span class="keyword">GC</span>.</p>
+          <ol>
+            <li><strong>Phát hiện rác</strong>.</li>
+            <li><strong>Thu hồi</strong> vùng nhớ đó.</li>
+          </ol>
+          <p style="margin-top:10px;">Bốn kỹ thuật chính: Reference Counting, Mark &amp; Sweep, Mark &amp; Compact, Stop
+            &amp; Copy.</p>
+        </section>
+
+        <section>
+          <h2>Đếm tham chiếu <br /> (Reference Counting)</h2>
+          <ul style="font-size:0.9em;">
+            <li>Mỗi đối tượng có <span class="keyword">reference counter</span>.</li>
+            <li>Tạo hay sao chép con trỏ thì tăng đếm; mất con trỏ thì giảm.</li>
+            <li>Counter về 0 thì giải phóng ngay.</li>
+          </ul>
+          <p style="margin-top:16px;">✅ Tăng dần, không gây dừng dài.</p>
+          <p style="margin-top:8px;">❌ Không xử lý tốt cấu trúc vòng.</p>
+        </section>
+
+        <section>
+          <h2>Mark and Sweep</h2>
+          <ol style="font-size:0.92em;">
+            <li style="margin-bottom:10px;"><span class="keyword">Mark</span>: từ <em>root set</em>, đánh dấu mọi đối
+              tượng còn tiếp cận được.</li>
+            <li><span class="keyword">Sweep</span>: quét heap và thu hồi block không được đánh dấu.</li>
+          </ol>
+          <p style="margin-top:16px;">✅ Xử lý được vòng, dễ cài đặt.</p>
+          <p style="margin-top:8px;">❌ O(heap size), gây phân mảnh, phải dừng chương trình.</p>
+        </section>
+
+        <section>
+          <h2>Mark and Compact</h2>
+          <p>Bản cải tiến của Mark &amp; Sweep: thay pha sweep bằng pha <span class="keyword">nén</span>.</p>
+          <ol style="font-size:0.92em;">
+            <li>Mark: giống hệt Mark &amp; Sweep.</li>
+            <li style="margin-top:8px;"><span class="keyword">Compact</span>: dồn các đối tượng còn sống về một phía và
+              cập nhật lại con trỏ.</li>
+          </ol>
+          <p style="margin-top:16px;">✅ Không phân mảnh, cấp phát mới nhanh.</p>
+          <p style="margin-top:8px;">❌ Đắt hơn vì phải di chuyển đối tượng.</p>
+        </section>
+
+        <section style="font-size:0.9em;">
+          <h2>Stop and Copy</h2>
+          <ul style="font-size:0.9em;">
+            <li>Heap chia hai nửa: <span class="keyword">fromspace</span> và <span class="keyword">tospace</span>.</li>
+            <li>Cấp phát trong fromspace bằng cách tăng pointer.</li>
+            <li>Khi đầy, sao chép các đối tượng còn sống sang tospace.</li>
+            <li>Sau đó hai vùng đổi vai trò.</li>
+          </ul>
+          <p style="margin-top:16px;">✅ Chi phí theo số đối tượng còn sống, không phân mảnh.</p>
+          <p style="margin-top:8px;">❌ Tốn gấp đôi bộ nhớ và vẫn phải dừng chương trình.</p>
+          <div class="placeholder"
+            style="border:1px dashed #999;padding:10px;border-radius:8px;margin-top:14px;font-size:0.82em;">
+            <em>[Figure placeholder: img/lec-04/gc-copying.png]</em><br />
+            <strong>Mô tả:</strong> Từ fromspace, các đối tượng còn sống được sao chép sang tospace và nén lại.
+          </div>
+        </section>
+
+        <!-- NEW: GC comparison table -->
+        <section style="font-size:0.8em;">
+          <h2>So sánh các kỹ thuật GC</h2>
+          <table class="comparison-table" style="font-size:0.84em;">
+            <thead>
+              <tr>
+                <th>Kỹ thuật</th>
+                <th>Chi phí thời gian</th>
+                <th>Phân mảnh</th>
+                <th>Tăng dần?</th>
+                <th>Vòng tròn?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Reference Counting</strong></td>
+                <td>O(chương trình)</td>
+                <td>Có</td>
+                <td>✅</td>
+                <td>❌</td>
+              </tr>
+              <tr>
+                <td><strong>Mark &amp; Sweep</strong></td>
+                <td>O(heap size)</td>
+                <td>Có</td>
+                <td>❌</td>
+                <td>✅</td>
+              </tr>
+              <tr>
+                <td><strong>Mark &amp; Compact</strong></td>
+                <td>O(heap size) × 2–3</td>
+                <td>Không</td>
+                <td>❌</td>
+                <td>✅</td>
+              </tr>
+              <tr>
+                <td><strong>Stop &amp; Copy</strong></td>
+                <td>O(live objects)</td>
+                <td>Không</td>
+                <td>❌</td>
+                <td>✅</td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="font-size:0.92em;margin-top:10px;">GC thực tế thường là tổ hợp nhiều kỹ thuật, ví dụ GC phân thế hệ.
+          </p>
+        </section>
+      </section>
+
+      <!-- ========================================================
+           TỔNG KẾT
+           ======================================================== -->
+      <section>
+        <section>
+          <h2>Tổng kết — Phần 1: Kiểu và Cấu trúc dữ liệu</h2>
+          <ul style="font-size: 0.98em;">
+            <li style="margin-bottom:8px;">
+              <span class="keyword">Kiểu dữ liệu</span>: mô tả ý nghĩa, bắt lỗi, hỗ trợ cài đặt.
+            </li>
+            <li style="margin-bottom:8px;">
+              <span class="keyword">Kiểm tra kiểu</span>: tĩnh sớm hơn, động linh hoạt hơn.
+            </li>
+            <li style="margin-bottom:8px;">
+              <span class="keyword">Mảng</span>: địa chỉ tính từ base, chỉ số, stride; hình dạng động cần <span
+                class="inline-code">dope vector</span>.
+            </li>
+            <li style="margin-bottom:8px;">
+              <span class="keyword">Tagged union</span> an toàn hơn untagged union.
+            </li>
+            <li>
+              <span class="keyword">Đa hình</span>: overloading, parametric, subtype.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Tổng kết — Phần 2: Trừu tượng hóa và Bộ nhớ</h2>
+          <ul style="font-size: 0.98em;">
+            <li style="margin-bottom:8px;">
+              <span class="keyword">ADT</span> che giấu biểu diễn và chỉ lộ giao diện.
+            </li>
+            <li style="margin-bottom:8px;">
+              <span class="keyword">Tombstone</span>: bắt lỗi tốt, nhưng tốn thời gian và bộ nhớ.
+            </li>
+            <li style="margin-bottom:8px;">
+              <span class="keyword">Locks &amp; Keys</span>: không tạo rác phụ, nhưng cần key cho mỗi con trỏ.
+            </li>
+            <li>
+              <span class="keyword">GC</span>: mỗi kỹ thuật đổi lấy thời gian, bộ nhớ và mức phân mảnh khác nhau.
+            </li>
+          </ul>
+        </section>
+
+        <!-- NEW: Discussion questions -->
+        <section>
+          <h2>Câu hỏi thảo luận</h2>
+          <ol style="font-size:0.96em;">
+            <li style="margin-bottom:12px;">Việc hàm là <em>storable</em> trong Python cho phép cách lập trình nào mà C
+              thiếu?</li>
+            <li style="margin-bottom:12px;">Vì sao kiểm tra giới hạn mảng không thể luôn làm hoàn toàn ở compile-time?
+            </li>
+            <li style="margin-bottom:12px;">Vì sao ADT <span class="inline-code">LittleUse</span> vô dụng nếu không có
+              constructor?</li>
+            <li style="margin-bottom:12px;">Khi nào Stop &amp; Copy đặc biệt hiệu quả?</li>
+          </ol>
+        </section>
+      </section>
+
+      <div class="footer">
+        Phương pháp luận lập trình (Học kỳ 2 2025-2026) §4: Tổ chức và trừu tượng hóa dữ liệu
+      </div>
+    </div>
+  </div>
+  <script src="revealjs/dist/reveal.js"></script>
+  <script src="plugin/notes/notes.js"></script>
+  <script src="plugin/markdown/markdown.js"></script>
+  <script src="plugin/highlight/highlight.js"></script>
+  <script src="plugin/math/math.js"></script>
+  <script>
+    Reveal.initialize({
+      controlsLayout: "edges",
+      slideNumber: true,
+      hashOneBasedIndex: true,
+      hash: true,
+      plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX],
+    });
+  </script>
+</body>
+
+</html>
