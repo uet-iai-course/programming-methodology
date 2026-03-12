@@ -414,9 +414,11 @@ struct Hall {
 
         <section style="font-size:0.8em;" data-auto-animate>
           <h2>Dope Vector</h2>
-          <div class="placeholder" style="border:1px dashed #999;padding:12px;border-radius:8px;margin-top:12px;">
-            <em>[Figure placeholder: img/lec-04/dope-vector.png]</em><br />
-            <strong>Mô tả:</strong> Activation record gồm phần cố định và phần biến đổi; dope vector trỏ tới mảng.
+          <div style="text-align: center;">
+            <img src="img/lec-04/dope-vector.png" alt="Dope Vector" style="max-width: 70%; height: auto;" />
+            <div style="margin-top: 12px; color: #555; font-size: 0.7em;">
+              <em>Activation record gồm phần cố định và phần biến đổi; dope vector trỏ tới mảng.</em>
+            </div>
           </div>
         </section>
 
@@ -1164,9 +1166,9 @@ p = NULL;   // con trỏ duy nhất tới đối tượng mất đi
           <p style="margin-top:8px;">❌ Đắt hơn vì phải di chuyển đối tượng.</p>
         </section>
 
-        <section style="font-size:0.9em;">
+        <section style="font-size:0.9em;" data-auto-animate="">
           <h2>Stop and Copy</h2>
-          <ul style="font-size:0.9em;">
+          <ul>
             <li>Heap chia hai nửa: <span class="keyword">fromspace</span> và <span class="keyword">tospace</span>.</li>
             <li>Cấp phát trong fromspace bằng cách tăng pointer.</li>
             <li>Khi đầy, sao chép các đối tượng còn sống sang tospace.</li>
@@ -1174,17 +1176,22 @@ p = NULL;   // con trỏ duy nhất tới đối tượng mất đi
           </ul>
           <p style="margin-top:16px;">✅ Chi phí theo số đối tượng còn sống, không phân mảnh.</p>
           <p style="margin-top:8px;">❌ Tốn gấp đôi bộ nhớ và vẫn phải dừng chương trình.</p>
-          <div class="placeholder"
-            style="border:1px dashed #999;padding:10px;border-radius:8px;margin-top:14px;font-size:0.82em;">
-            <em>[Figure placeholder: img/lec-04/gc-copying.png]</em><br />
-            <strong>Mô tả:</strong> Từ fromspace, các đối tượng còn sống được sao chép sang tospace và nén lại.
+        </section>
+
+        <section style="font-size:0.9em;" data-auto-animate="">
+          <h2>Stop and Copy</h2>
+          <div style="text-align: center;">
+            <img src="img/lec-04/gc-copying.png" alt="GC Copying" style="max-width: 70%; height: auto;" />
+            <div style="margin-top:10px;color:#555;font-size: .7em;">
+              <em>Từ fromspace, các đối tượng còn sống được sao chép sang tospace và nén lại.</em>
+            </div>
           </div>
         </section>
 
         <!-- NEW: GC comparison table -->
         <section style="font-size:0.8em;">
           <h2>So sánh các kỹ thuật GC</h2>
-          <table class="comparison-table" style="font-size:0.84em;">
+          <table class="comparison-table" style="font-size:0.8em;">
             <thead>
               <tr>
                 <th>Kỹ thuật</th>
