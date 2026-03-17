@@ -719,7 +719,11 @@ f(new { def b = 100 })              // LỖI compile — x.a không có
         </section>
 
         <section style="font-size:0.9em;">
-          <h2>Duck Typing</h2>
+          <h2>Duck Typing
+            <span style="font-size:0.55em;font-weight:normal;color:#e07000;vertical-align:middle;margin-left:10px;">
+              ⚠ ngoài giáo trình
+            </span>
+          </h2>
           <p>Kiểm tra ở <strong>run-time</strong>: có thao tác cần thiết thì dùng được.</p>
           <pre><code class="language-python" data-trim>
 def f(x):
@@ -738,7 +742,7 @@ f(42)        # → AttributeError tại run-time (int không có .a)
           </code></pre>
           <ul style="font-size:0.95em;margin-top:8px;">
             <li><em>"Nếu nó đi như vịt và kêu như vịt, thì đó là vịt."</em></li>
-            <li>Linh hoạt, nhưng lỗi xuất hiện muộn.</li>
+            <li>Linh hoạt, nhưng lỗi xuất hiện muộn (không trong giáo trình).</li>
           </ul>
         </section>
       </section>
@@ -989,7 +993,7 @@ abstype Int_Stack {
           </div>
         </section>
 
-        <section style="font-size:0.75em;">
+        <section style="font-size:0.75em;" data-auto-animate>
           <h2>Che giấu thông tin và Độc lập biểu diễn</h2>
           <ul>
             <li><span class="keyword">Che giấu thông tin</span>: client không truy cập trực tiếp biểu diễn.</li>
@@ -1000,6 +1004,46 @@ abstype Int_Stack {
             <div class="question-title">Mệnh đề kiểm chứng được</div>
             Thay một ADT bằng ADT khác cùng <em>signature</em> sẽ không gây lỗi kiểu.
           </div>
+        </section>
+
+        <!-- NEW: Representation independence concrete example -->
+        <section style="font-size:0.72em;" data-auto-animate>
+          <h2>Độc lập biểu diễn — Ví dụ cụ thể</h2>
+          <p>Hai cài đặt khác nhau, cùng <em>signature</em> → client không đổi một dòng:</p>
+          <div style="display:flex;gap:16px;margin-top:8px;">
+            <div style="flex:1;">
+              <div style="font-size:0.85em;font-weight:bold;margin-bottom:4px;color:#555;">Cài đặt 1: mảng</div>
+              <pre><code class="language-plaintext" data-trim>
+abstype Int_Stack {
+  type Int_Stack = struct {
+    int P[100];
+    int top;
+  };
+  -- ... push, pop, top, empty
+}
+              </code></pre>
+            </div>
+            <div style="flex:1;">
+              <div style="font-size:0.85em;font-weight:bold;margin-bottom:4px;color:#555;">Cài đặt 2: danh sách liên kết</div>
+              <pre><code class="language-plaintext" data-trim>
+abstype Int_Stack {
+  type Node = { int val; Node* next; };
+  type Int_Stack = Node*;
+  -- ... push, pop, top, empty
+}
+              </code></pre>
+            </div>
+          </div>
+          <div class="question-box" style="margin-top:12px;">
+            <div class="question-title">Mã client — không thay đổi</div>
+            <pre style="margin:0;"><code class="language-plaintext" data-trim>
+Int_Stack s = create_stack();
+s = push(1, s);
+s = push(2, s);
+print(top(s));    -- → 2  (đúng với cả hai cài đặt)
+            </code></pre>
+          </div>
+          <p style="margin-top:8px;color:#555;">Đây chính là mục tiêu của ADT: client chỉ thấy <em>hành vi</em>, không thấy <em>biểu diễn</em>.</p>
         </section>
 
         <section>
@@ -1014,13 +1058,12 @@ abstype Int_Stack {
           <p><strong>Lưu ý:</strong> module và biên dịch riêng biệt là hai khái niệm khác nhau.</p>
         </section>
 
-        <section style="font-size:0.8em;">
+        <section style="font-size:0.8em;" data-auto-animate>
           <h2>Module tổng quát <br /> (Generic Module)</h2>
-          <p>Module có thể nhận <strong>tham số kiểu</strong>.</p>
+          <p>Module có thể nhận <strong>tham số kiểu</strong> — viết một lần, dùng cho mọi kiểu.</p>
           <pre><code class="language-plaintext" data-trim>
 module Buffer[T] {
   -- Buffer kiểu T tổng quát
-  -- Không phải chỉ Buffer of int
   import Queue[T];
 
   public:
@@ -1034,7 +1077,47 @@ module Buffer[T] {
 Buffer[int]    buf_int;
 Buffer[string] buf_str;
           </code></pre>
-          <p style="font-size:0.95em;margin-top:8px;">Ý tưởng gần template C++, nhưng ở cấp module.</p>
+        </section>
+
+        <!-- NEW: Generic module real-language equivalents -->
+        <section style="font-size:0.78em;" data-auto-animate>
+          <h2>Module tổng quát — Trong ngôn ngữ thực</h2>
+          <p>Cùng ý tưởng, cú pháp khác nhau:</p>
+          <div style="display:flex;gap:16px;margin-top:8px;">
+            <div style="flex:1;">
+              <div style="font-size:0.85em;font-weight:bold;margin-bottom:4px;color:#555;">Java (Generics)</div>
+              <pre><code class="language-java" data-trim>
+class Stack&lt;T&gt; {
+    private List&lt;T&gt; items = new ArrayList&lt;&gt;();
+    public void push(T x) { items.add(x); }
+    public T    pop()     { ... }
+}
+
+Stack&lt;Integer&gt; si = new Stack&lt;&gt;();
+Stack&lt;String&gt;  ss = new Stack&lt;&gt;();
+              </code></pre>
+            </div>
+            <div style="flex:1;">
+              <div style="font-size:0.85em;font-weight:bold;margin-bottom:4px;color:#555;">C++ (Templates)</div>
+              <pre><code class="language-cpp" data-trim>
+template &lt;typename T&gt;
+class Stack {
+    vector&lt;T&gt; items;
+public:
+    void push(T x) { items.push_back(x); }
+    T    pop()     { ... }
+};
+
+Stack&lt;int&gt;    si;
+Stack&lt;string&gt; ss;
+              </code></pre>
+            </div>
+          </div>
+          <div class="question-box" style="margin-top:10px;">
+            <div class="question-title">Điểm khác biệt</div>
+            Java: kiểm tra kiểu tham số lúc <strong>biên dịch</strong>, một bản bytecode.<br />
+            C++: sinh mã riêng cho từng kiểu — nhanh hơn nhưng có thể <em>code bloat</em>.
+          </div>
         </section>
       </section>
 
@@ -1176,16 +1259,6 @@ p = NULL;   // con trỏ duy nhất tới đối tượng mất đi
           </ul>
           <p style="margin-top:16px;">✅ Chi phí theo số đối tượng còn sống, không phân mảnh.</p>
           <p style="margin-top:8px;">❌ Tốn gấp đôi bộ nhớ và vẫn phải dừng chương trình.</p>
-        </section>
-
-        <section style="font-size:0.9em;" data-auto-animate="">
-          <h2>Stop and Copy</h2>
-          <div style="text-align: center;">
-            <img src="img/lec-04/gc-copying.png" alt="GC Copying" style="max-width: 70%; height: auto;" />
-            <div style="margin-top:10px;color:#555;font-size: .7em;">
-              <em>Từ fromspace, các đối tượng còn sống được sao chép sang tospace và nén lại.</em>
-            </div>
-          </div>
         </section>
 
         <!-- NEW: GC comparison table -->
