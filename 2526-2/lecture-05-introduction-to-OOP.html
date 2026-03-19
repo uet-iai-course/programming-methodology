@@ -1,0 +1,1115 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Bài 5: Giới thiệu Lập trình hướng đối tượng</title>
+
+  <link rel="stylesheet" href="revealjs/dist/reset.css" />
+  <link rel="stylesheet" href="revealjs/dist/reveal.css" />
+  <link rel="stylesheet" href="revealjs/dist/theme/white.css" />
+  <link rel="stylesheet" href="plugin/highlight/monokai.css" />
+  <link rel="stylesheet" href="lecture-style.css" />
+</head>
+
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ================================================================
+           TITLE & TABLE OF CONTENTS
+           ================================================================ -->
+      <section>
+        <section>
+          <h1>Phương pháp luận lập trình</h1>
+          <h3>Bài 5: Giới thiệu <br /> Lập trình hướng đối tượng</h3>
+          <p>Trường ĐH Công nghệ – Đại học Quốc gia Hà Nội</p>
+        </section>
+
+        <section>
+          <h2>Nội dung</h2>
+          <ol start="0">
+            <li>Hạn chế của ADT &amp; Động lực OOP</li>
+            <li>Đóng gói (Encapsulation)</li>
+            <li>Kế thừa (Inheritance)</li>
+            <li>Trừu tượng hóa (Abstraction)</li>
+            <li>Đa hình (Polymorphism)</li>
+          </ol>
+        </section>
+
+        <section style="font-size: .8em;">
+          <h2>Lộ trình bài học</h2>
+
+          <!-- Horizontal timeline: circles + gradient connectors -->
+          <div style="display:flex; align-items:center; padding:0 0.4em; margin:1em 0 0.6em;">
+            <div
+              style="width:2.6em; height:2.6em; border-radius:50%; background:#888; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.1em; flex-shrink:0; box-shadow:0 2px 8px rgba(0,0,0,0.2);">
+              0</div>
+            <div style="flex:1; height:5px; background:linear-gradient(to right,#888,#1E93AB);"></div>
+            <div
+              style="width:2.6em; height:2.6em; border-radius:50%; background:#1E93AB; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.1em; flex-shrink:0; box-shadow:0 2px 8px rgba(0,0,0,0.2);">
+              1</div>
+            <div style="flex:1; height:5px; background:linear-gradient(to right,#1E93AB,#7B5EA7);"></div>
+            <div
+              style="width:2.6em; height:2.6em; border-radius:50%; background:#7B5EA7; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.1em; flex-shrink:0; box-shadow:0 2px 8px rgba(0,0,0,0.2);">
+              2</div>
+            <div style="flex:1; height:5px; background:linear-gradient(to right,#7B5EA7,#C2610F);"></div>
+            <div
+              style="width:2.6em; height:2.6em; border-radius:50%; background:#C2610F; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.1em; flex-shrink:0; box-shadow:0 2px 8px rgba(0,0,0,0.2);">
+              3</div>
+            <div style="flex:1; height:5px; background:linear-gradient(to right,#C2610F,#2E7D32);"></div>
+            <div
+              style="width:2.6em; height:2.6em; border-radius:50%; background:#2E7D32; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.1em; flex-shrink:0; box-shadow:0 2px 8px rgba(0,0,0,0.2);">
+              4</div>
+          </div>
+
+          <!-- Cards below circles, each aligned under its circle -->
+          <div style="display:flex; gap:0.6em; font-size:0.82em;">
+            <div style="flex:1; border:2px solid #888; border-radius:8px; padding:0.65em 0.75em; background:#f5f5f5;">
+              <div style="font-weight:bold; color:#555; margin-bottom:0.25em;">Động lực</div>
+              <div style="font-style:italic; color:#444; margin-bottom:0.3em; font-size:0.92em;">"ADT <em>thiếu
+                  gì</em>?"</div>
+              <div style="color:#666; font-size:0.88em;">dư thừa mã · điều phối sai</div>
+            </div>
+            <div
+              style="flex:1; border:2px solid #1E93AB; border-radius:8px; padding:0.65em 0.75em; background:#e0f4f8;">
+              <div style="font-weight:bold; color:#1E93AB; margin-bottom:0.25em;">Đóng gói</div>
+              <div style="font-style:italic; color:#444; margin-bottom:0.3em; font-size:0.92em;">"Đối tượng <em>là
+                  gì</em>?"</div>
+              <div style="color:#555; font-size:0.88em;">Object · Class · public/private</div>
+            </div>
+            <div
+              style="flex:1; border:2px solid #7B5EA7; border-radius:8px; padding:0.65em 0.75em; background:#ede7f6;">
+              <div style="font-weight:bold; color:#7B5EA7; margin-bottom:0.25em;">Kế thừa</div>
+              <div style="font-style:italic; color:#444; margin-bottom:0.3em; font-size:0.92em;">"Tương thích / tái
+                dùng?"</div>
+              <div style="color:#555; font-size:0.88em;">Kiểu con · Kế thừa · Ghi đè</div>
+            </div>
+            <div
+              style="flex:1; border:2px solid #C2610F; border-radius:8px; padding:0.65em 0.75em; background:#fff3e0;">
+              <div style="font-weight:bold; color:#C2610F; margin-bottom:0.25em;">Trừu tượng hóa</div>
+              <div style="font-style:italic; color:#444; margin-bottom:0.3em; font-size:0.92em;">"Tách <em>giao
+                  diện</em> khỏi <em>cài đặt</em>?"</div>
+              <div style="color:#555; font-size:0.88em;">Lớp trừu tượng · Interface</div>
+            </div>
+            <div
+              style="flex:1; border:2px solid #2E7D32; border-radius:8px; padding:0.65em 0.75em; background:#e8f5e9;">
+              <div style="font-weight:bold; color:#2E7D32; margin-bottom:0.25em;">Đa hình</div>
+              <div style="font-style:italic; color:#444; margin-bottom:0.3em; font-size:0.92em;">"Phương thức
+                <em>nào</em> được gọi?"
+              </div>
+              <div style="color:#555; font-size:0.88em;">Điều phối động · Liên kết muộn</div>
+            </div>
+          </div>
+        </section>
+
+      </section>
+
+      <!-- ================================================================
+           SECTION 1 – HẠN CHẾ CỦA ADT & ĐỘNG LỰC OOP
+           ================================================================ -->
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">0.</span><br />
+            Hạn chế của ADT &amp;<br />Động lực OOP
+          </h1>
+        </section>
+
+        <!-- Recap ADT – cầu nối từ Bài 4 -->
+        <section style="font-size:0.85em;">
+          <h2>Ôn lại: ADT <span class="text-light" style="font-size:0.7em;">(Bài 4)</span></h2>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8em; font-size:0.78em; margin-top:0.5em;">
+            <div style="background:#e8f5e9; border-left:4px solid #2E7D32; padding:0.6em 0.8em; border-radius:4px;">
+              <div style="font-weight:bold; color:#2E7D32; margin-bottom:0.35em;">✓ ADT giải quyết được</div>
+              <ul style="margin:0; line-height:1.55;">
+                <li>Ẩn biểu diễn nội tại</li>
+                <li>Tách giao diện khỏi cài đặt</li>
+                <li>Thay thế cài đặt tự do</li>
+              </ul>
+            </div>
+            <div style="background:#fce4ec; border-left:4px solid #E62727; padding:0.6em 0.8em; border-radius:4px;">
+              <div style="font-weight:bold; color:#E62727; margin-bottom:0.35em;">✗ ADT không có</div>
+              <ul style="margin:0; line-height:1.55;">
+                <li>Tái dùng mã giữa các kiểu</li>
+                <li>Tương thích kiểu (lưu chung)</li>
+                <li>Điều phối đúng theo kiểu thực tế</li>
+              </ul>
+            </div>
+          </div>
+          <div class="question-box" style="margin-top:0.65em; font-size:0.82em;">
+            <div class="question-title">Bài này</div>
+            Lần lượt giải quyết từng thiếu sót — mỗi thiếu sót dẫn đến một trụ cột OOP
+          </div>
+        </section>
+
+
+        <!-- Slide A: Counter is-an ADT -->
+        <section style="font-size:0.85em;">
+          <h2>Counter — một ADT quen thuộc</h2>
+          <pre><code class="language-cpp" data-trim>
+class Counter {
+public:
+    void reset() { value = 0; }      // giao diện
+    int  get()   { return value; }   //   (signature
+    void inc()   { value++; }        //    + operations)
+private:
+    int value = 0;                   // biểu diễn — thực sự ẩn
+};
+
+// Client chỉ nhìn thấy giao diện — value không truy cập được:
+Counter c;
+c.inc();  c.inc();  c.inc();
+c.get();  // → 3     // c.value = 99; → LỖI biên dịch ✓
+          </code></pre>
+          <p style="margin-top:0.5em; color:#555;">
+            Counter hoạt động tốt — nhưng <em>điều gì xảy ra khi ta cần mở rộng nó?</em>
+          </p>
+        </section>
+
+        <!-- Slide B: the extension problem -->
+        <section style="font-size:0.8em;">
+          <h2>Bài toán mở rộng</h2>
+          <div class="question-box">
+            <div class="question-title">Yêu cầu</div>
+            Tạo <span class="inline-code">NewCounter</span>: hoạt động như <span class="inline-code">Counter</span>,
+            nhưng còn đếm thêm <em>số lần <span class="inline-code">reset()</span> được gọi</em>.
+          </div>
+          <ul style="margin-top:0.8em;">
+            <li class="fragment"><strong>Không</strong> được sửa <span class="inline-code">Counter</span> gốc</li>
+            <li class="fragment"><span class="inline-code">get()</span> và <span class="inline-code">inc()</span> giữ
+              nguyên — chỉ <span class="inline-code">reset()</span> thêm logic</li>
+            <li class="fragment">Lý tưởng: dùng <span class="inline-code">NewCounter</span> ở <em>mọi nơi</em> đang dùng
+              <span class="inline-code">Counter</span> — không phá vỡ code cũ
+            </li>
+          </ul>
+          <p class="fragment" style="margin-top:0.7em; color:#888; font-style:italic;">
+            ADT thuần không có cơ chế cho điều này → cần mở rộng mô hình
+          </p>
+        </section>
+
+        <!-- Cách 1 -->
+        <section>
+          <h2>Cách 1: Sao chép toàn bộ</h2>
+          <pre><code class="language-cpp" data-trim>
+class NewCounter1 {
+public:
+    void reset() { value = 0; numReset++; } // ← thêm logic đếm reset
+    int  get()   { return value; }   // ← chép từ Counter
+    void inc()   { value++; }        // ← chép từ Counter
+private:
+    int value    = 0;
+    int numReset = 0;
+};
+          </code></pre>
+          <ul style="margin-top:0.6em;">
+            <li>&#10006; <strong>Dư thừa mã</strong> — <span class="inline-code">get</span>, <span
+                class="inline-code">inc</span> giống hệt Counter</li>
+            <li>&#10006; <strong>Bảo trì khó</strong> — sửa lỗi Counter gốc phải sửa tay ở mọi bản sao</li>
+          </ul>
+        </section>
+
+        <!-- Cách 2 -->
+        <section>
+          <h2>Cách 2: Nhúng Counter</h2>
+          <pre><code class="language-cpp" data-trim>
+class NewCounter2 {
+public:
+    void reset() { inner.reset(); numReset++; } // ← dùng Counter, thêm logic đếm reset
+    int  get()   { return inner.get(); }  // ← dùng Counter
+    void inc()   { inner.inc(); }         // ← dùng Counter
+private:
+    Counter inner;
+    int     numReset = 0;
+};
+          </code></pre>
+          <ul style="margin-top:0.6em;">
+            <li>&#10006; <strong>Không tương thích kiểu</strong> — không lưu chung <span
+                class="inline-code">Counter[]</span> được</li>
+            <li>&#10006; <strong>Điều phối tĩnh</strong> — dù ép tương thích, vẫn gọi sai phương thức</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Tương thích &amp; Điều phối sai</h2>
+          <pre><code class="language-cpp" data-trim>
+Counter arr[10];
+NewCounter2 nc;
+arr[0] = nc;    // ① LỖI biên dịch: NewCounter2 không phải Counter
+
+// Giả sử ép con trỏ cho "tương thích":
+Counter* p = reinterpret_cast&lt;Counter*&gt;(&amp;nc);
+p->reset();     // ② Counter::reset() được gọi
+                //   numReset KHÔNG bao giờ tăng!
+          </code></pre>
+          <ul style="font-size:0.85em; margin-top:0.4em;">
+            <li class="fragment">Kiểu con trỏ tĩnh là <span class="inline-code">Counter*</span> → trình biên dịch gọi
+              <span class="inline-code">Counter::reset()</span>
+            </li>
+            <li class="fragment">Cần <span class="keyword">điều phối động</span>: chọn phương thức theo <em>kiểu thực
+                tế</em> lúc chạy</li>
+          </ul>
+        </section>
+
+        <section style="font-size:0.82em;">
+          <h2>Bốn trụ cột OOP</h2>
+          <p style="font-size:0.8em; color:#555; margin:0.2em 0 0.6em;">
+            Ví dụ Counter ADT dẫn đến <strong>Kế thừa</strong> và <strong>Đa hình</strong>.
+            Cùng với <strong>Đóng gói</strong> và <strong>Trừu tượng hóa</strong>, OOP có 4 trụ cột kinh điển:
+          </p>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.7em; font-size:0.9em;">
+            <div style="border:2px solid #1E93AB; border-radius:8px; overflow:hidden;">
+              <div style="background:#1E93AB; color:#fff; padding:5px 12px; font-weight:bold;">
+                Đóng gói <span style="font-weight:normal; font-size:0.85em;">(Encapsulation)</span>
+              </div>
+              <div style="padding:0.45em 0.7em; background:#e0f4f8;">
+                Data + phương thức gói trong một <strong>đối tượng</strong>.<br />
+                <em style="color:#555; font-size:0.88em;">→ Object, Class, public/private</em>
+              </div>
+            </div>
+            <div style="border:2px solid #7B5EA7; border-radius:8px; overflow:hidden;">
+              <div style="background:#7B5EA7; color:#fff; padding:5px 12px; font-weight:bold;">
+                Kế thừa <span style="font-weight:normal; font-size:0.85em;">(Inheritance)</span>
+              </div>
+              <div style="padding:0.45em 0.7em; background:#ede7f6;">
+                Tái dùng + mở rộng lớp cha — không chép mã<br />
+                <em style="color:#555; font-size:0.88em;">→ Kiểu con, Ghi đè</em>
+              </div>
+            </div>
+            <div style="border:2px solid #C2610F; border-radius:8px; overflow:hidden;">
+              <div style="background:#C2610F; color:#fff; padding:5px 12px; font-weight:bold;">
+                Trừu tượng hóa <span style="font-weight:normal; font-size:0.85em;">(Abstraction)</span>
+              </div>
+              <div style="padding:0.45em 0.7em; background:#fff3e0;">
+                Tách <em>giao diện</em> khỏi <em>cài đặt</em> — ẩn độ phức tạp<br />
+                <em style="color:#555; font-size:0.88em;">→ Lớp trừu tượng, Interface</em>
+              </div>
+            </div>
+            <div style="border:2px solid #2E7D32; border-radius:8px; overflow:hidden;">
+              <div style="background:#2E7D32; color:#fff; padding:5px 12px; font-weight:bold;">
+                Đa hình <span style="font-weight:normal; font-size:0.85em;">(Polymorphism)</span>
+              </div>
+              <div style="padding:0.45em 0.7em; background:#e8f5e9;">
+                Một giao diện, nhiều hành vi — chọn theo kiểu thực tế<br />
+                <em style="color:#555; font-size:0.88em;">→ Điều phối động, Liên kết muộn</em>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ================================================================
+           SECTION 2 – ĐÓNG GÓI: ĐỐI TƯỢNG & LỚP
+           ================================================================ -->
+      <section>
+        <!-- title -->
+        <section>
+          <h1>
+            <span class="text-light">1.</span><br />
+            Đóng gói<br />(Encapsulation)
+          </h1>
+        </section>
+
+        <!-- slide 1: motivation — what breaks without private -->
+        <section style="font-size:0.9em;">
+          <h2>Đặt vấn đề</h2>
+          <pre><code class="language-cpp" data-trim>
+struct Counter {   // struct: mọi thành viên public mặc định
+    int value = 0; // ← PUBLIC — ai cũng ghi được!
+    void reset() { value = 0; }
+    int  get()   { return value; }
+    void inc()   { value++; }
+};
+Counter c;
+c.inc();  c.inc(); // value = 2
+c.value = -99;     // hợp lệ — không lỗi biên dịch!
+c.get();           // → -99
+          </code></pre>
+          <ul>
+            <li><span class="keyword">Bất biến bị vi phạm</span>: <span class="inline-code">value &lt; 0</span> — không
+              có gì ngăn cản</li>
+            <li><strong>Giải pháp:</strong> <span class="inline-code">value</span> chỉ được sửa qua <span
+                class="inline-code">reset()</span> và <span class="inline-code">inc()</span></li>
+          </ul>
+        </section>
+
+        <!-- Encapsulation -->
+        <section style="font-size:0.9em;" data-auto-animate="">
+          <h2>Đóng gói (Encapsulation)</h2>
+          <div class="question-box" style="margin-bottom:0.6em;">
+            <div class="question-title">Định nghĩa</div>
+            Gom <strong>dữ liệu</strong> và <strong>phương thức</strong> vào một đơn vị (đối tượng),
+            và <strong>kiểm soát quyền truy cập</strong> từ bên ngoài.
+          </div>
+          <ul>
+            <li><strong>Kiểm soát truy cập</strong> bằng <span class="inline-code">public</span> / <span
+                class="inline-code">private</span> / <span class="inline-code">protected</span>.</li>
+            <li><strong>Đối tượng</strong> = dữ liệu + phương thức — dữ liệu chỉ thay đổi qua phương thức</li>
+          </ul>
+        </section>
+
+        <!-- Encapsulation -->
+        <section style="font-size:0.9em;" data-auto-animate="">
+          <h2>Đóng gói (Encapsulation)</h2>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.9em; align-items:start;">
+            <div>
+              <div style="font-weight:bold; color:#E62727;">✗ Không có private</div>
+              <pre style="margin:0;"><code class="language-cpp no-line-numbers" data-trim>
+struct Counter {
+    int value = 0;  // public!
+    // ...
+    // ...
+};
+c.value = -99;  // OK — no error
+              </code></pre>
+            </div>
+            <div>
+              <div style="font-weight:bold; color:#2E7D32;">✓ Có private</div>
+              <pre style="margin:0;"><code class="language-cpp no-line-numbers" data-trim>
+class Counter {
+private:
+    int value = 0;  // hidden
+    // ...
+};
+c.value = -99;  // COMPILE ERROR
+              </code></pre>
+            </div>
+          </div>
+          <ul>
+            <li><strong>Bất biến (invariant)</strong>: điều kiện luôn đúng về trạng thái</li>
+            <li><em>Counter: <span class="inline-code">value &ge; 0</span> tại mọi thời điểm</em></li>
+            <li><span class="inline-code">private</span> để ngôn ngữ <strong>ép</strong> bất biến
+            </li>
+          </ul>
+        </section>
+
+        <!-- Encapsulation -->
+        <section style="font-size:0.85em;" data-auto-animate="">
+          <h2>Đóng gói (Encapsulation)</h2>
+          <p>Các mức độ truy cập:</p>
+          <ul>
+            <li><span class="inline-code">private</span>: chỉ trong lớp — ẩn hoàn toàn</li>
+            <li><span class="inline-code">public</span>: mọi client — giao diện</li>
+            <li><span class="inline-code">protected</span>: lớp + lớp con — dùng khi kế thừa</li>
+          </ul>
+          <pre><code class="language-cpp no-line-numbers" data-trim>
+class Counter {
+public:
+    void reset() { x = 0; }  int get() { return x; }  void inc() { x++; }
+protected:
+    int x = 0;   // lớp con truy cập được, client thì không
+};
+class NewCounter : public Counter {
+    int nr = 0;
+public:
+    void reset() override { x = 0; nr++; }  // x là protected, dùng trực tiếp
+};
+          </code></pre>
+        </section>
+
+        <!-- slide 2: object -->
+        <section style="font-size:0.8em;">
+          <h2>Đối tượng (Object)</h2>
+          <div class="question-box" style="margin-bottom:0.75em;">
+            <div class="question-title">Định nghĩa</div>
+            "Vỏ bọc" (<em>capsule</em>) gói <strong>dữ liệu</strong> và <strong>thao tác</strong> trên dữ liệu đó.
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 0.5fr; gap:1.2em; align-items:center;">
+            <div>
+              <ul>
+                <li>Dữ liệu: <span class="keyword">biến thực thể</span> <em>(instance variables)</em></li>
+                <li>Thao tác: <span class="keyword">phương thức</span> <em>(methods)</em></li>
+                <li>Giao tiếp: <span class="inline-code">object.method(args)</span>
+                  — <span class="inline-code">this</span> trỏ tới đối tượng nhận</li>
+              </ul>
+            </div>
+            <div
+              style="font-size: .65em; border:2px solid #1E93AB; border-radius:10px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,0.12);">
+              <div style="background:#1E93AB; color:white; padding:6px 14px; font-weight:bold; text-align:center;">
+                Counter (đối tượng)
+              </div>
+              <table style="border-collapse:collapse; width:100%;">
+                <tr style="background:#fff3e0;">
+                  <td style="border:1px solid #ddd; padding:6px 10px; font-weight:bold;">x</td>
+                  <td style="border:1px solid #ddd; padding:6px 10px; color:#888; font-style:italic;">dữ liệu (private)
+                  </td>
+                </tr>
+                <tr style="background:#e8f5e9;">
+                  <td style="border:1px solid #ddd; padding:6px 10px; font-family:monospace;">reset</td>
+                  <td style="border:1px solid #ddd; padding:6px 10px; font-family:monospace;">this.x = 0</td>
+                </tr>
+                <tr style="background:#e8f5e9;">
+                  <td style="border:1px solid #ddd; padding:6px 10px; font-family:monospace;">get</td>
+                  <td style="border:1px solid #ddd; padding:6px 10px; font-family:monospace;">return this.x</td>
+                </tr>
+                <tr style="background:#e8f5e9;">
+                  <td style="border:1px solid #ddd; padding:6px 10px; font-family:monospace;">inc</td>
+                  <td style="border:1px solid #ddd; padding:6px 10px; font-family:monospace;">this.x++</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- slide 3: class -->
+        <section style="font-size:0.8em;">
+          <h2>Lớp (Class) — Khuôn mẫu tạo Đối tượng</h2>
+          <div style="display:grid; grid-template-columns:1fr 0.6fr; gap:1.2em; align-items:center;">
+            <pre><code class="language-cpp no-line-numbers" data-trim>
+class Counter {
+public:
+    void reset() { x = 0; }
+    int  get()   { return x; }
+    void inc()   { x++; }
+private:
+    int x = 0;
+};
+
+Counter c;    // mỗi đối tượng có x riêng
+Counter d;
+c.inc();      // c.x = 1, d.x vẫn = 0
+            </code></pre>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:0.6em; font-size:0.85em;">
+              <div style="display:flex; gap:1em;">
+                <div
+                  style="border:2px solid #C2610F; border-radius:8px; padding:6px 14px; text-align:center; background:#fff3e0;">
+                  <div style="font-weight:bold; color:#C2610F;">c</div>
+                  <div style="font-family:monospace;">x = 1</div>
+                </div>
+                <div
+                  style="border:2px solid #C2610F; border-radius:8px; padding:6px 14px; text-align:center; background:#fff3e0;">
+                  <div style="font-weight:bold; color:#C2610F;">d</div>
+                  <div style="font-family:monospace;">x = 0</div>
+                </div>
+              </div>
+              <div style="color:#aaa; font-size:1.2em;">↓</div>
+              <div
+                style="border:2px solid #1E93AB; border-radius:8px; padding:8px 16px; background:#e0f4f8; text-align:center;">
+                <div style="font-weight:bold; color:#1E93AB;">Counter (lớp)</div>
+                <div style="font-family:monospace; font-size:0.88em; margin-top:3px;">reset · get · inc</div>
+                <div style="font-size:0.8em; color:#888; margin-top:2px;">mã dùng chung</div>
+              </div>
+              <div style="font-size:0.8em; color:#555; font-style:italic; text-align:center;">biến riêng — mã chung
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- slide 5: constructors — C++ only, plain Counter -->
+        <section data-auto-animate="">
+          <h2>Hàm khởi tạo (Constructors)</h2>
+          <pre><code class="language-cpp" data-trim>
+class Counter {
+public:
+    Counter()          : value(0)     {} // mặc định
+    Counter(int init)  : value(init)  {} // có tham số
+
+    void reset() { value = 0; }
+    int  get()   { return value; }
+    void inc()   { value++; }
+private:
+    int value;  // không tự khởi tạo trong C++!
+};
+
+Counter c;      // value = 0
+Counter d(5);   // value = 5
+          </code></pre>
+        </section>
+
+        <!-- slide 5: constructors — C++ only, plain Counter -->
+        <section data-auto-animate="">
+          <h2>Hàm khởi tạo (Constructors)</h2>
+          <ul style="margin-top:0.6em;">
+            <li>Tên constructor = tên lớp, không có kiểu trả về</li>
+            <li><span class="keyword">Initializer list</span> (<span class="inline-code">: value(0)</span>) — khởi tạo
+              trước khi thân hàm chạy</li>
+            <li>Đảm bảo <strong>bất biến ngay từ lúc tạo</strong> — không có đối tượng ở trạng thái không hợp lệ</li>
+          </ul>
+        </section>
+
+        <!-- slide 6: interface design — what goes public vs private -->
+        <section style="font-size:0.8em;">
+          <h2>Cái gì nên public?</h2>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1em;">
+            <div>
+              <div style="font-weight:bold; color:#E62727; margin-bottom:0.3em;">✗ Thiết kế xấu</div>
+              <pre><code class="language-cpp no-line-numbers" data-trim>
+class Counter {
+public:
+    int value;   // lộ trạng thái ra ngoài
+    void reset() { value = 0; }
+    void inc()   { value++; }
+    void clamp(int lo, int hi); // lộ nội bộ
+};
+              </code></pre>
+            </div>
+            <div>
+              <div style="font-weight:bold; color:#2E7D32; margin-bottom:0.3em;">✓ Thiết kế tốt</div>
+              <pre><code class="language-cpp no-line-numbers" data-trim>
+class Counter {
+public:          // giao diện: "làm gì"
+    void reset();
+    int  get();
+    void inc();
+private:         // chi tiết: "làm thế nào"
+    int  value;
+    void clamp(int lo, int hi);
+};
+              </code></pre>
+            </div>
+          </div>
+          <ul style="margin-top:0.6em;">
+            <li><strong>Nguyên tắc:</strong> public = <em>what</em> (hành vi) · private = <em>how</em> (cài đặt)</li>
+            <li><strong>Lợi ích:</strong> đổi cài đặt tự do mà client không hay biết</li>
+          </ul>
+        </section>
+
+      </section>
+
+      <!-- ================================================================
+           SECTION 2 – KẾ THỪA
+           ================================================================ -->
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">2.</span><br />
+            Kế thừa<br />(Inheritance)
+          </h1>
+        </section>
+
+        <!-- Kế thừa: definition -->
+        <section style="font-size:0.8em;">
+          <h2>Kế thừa (Inheritance)</h2>
+          <div class="question-box" style="margin-bottom:0.6em;">
+            <div class="question-title">Định nghĩa</div>
+            Lớp con (<em>subclass</em>) nhận toàn bộ thuộc tính và phương thức của lớp cha
+            (<em>superclass</em>), rồi có thể <strong>mở rộng</strong> hoặc
+            <strong>ghi đè</strong> theo nhu cầu riêng.
+          </div>
+          <ul>
+            <li><strong>Tái sử dụng</strong> — không viết lại cài đặt đã có</li>
+            <li><strong>Mở rộng</strong> — thêm thuộc tính / phương thức mới vào lớp con</li>
+            <li><strong>Ghi đè</strong> — thay thế phương thức lớp cha bằng cài đặt chuyên biệt hơn</li>
+          </ul>
+        </section>
+
+        <!-- Kế thừa concept: what / why -->
+        <section style="font-size:0.85em;">
+          <h2>Ví dụ: Kế thừa</h2>
+          <p><span class="inline-code">Counter</span> → <span class="inline-code">NewCounter</span>: hoạt động như
+            Counter, nhưng đếm thêm số lần reset được gọi</p>
+          <pre><code class="language-cpp" data-trim>
+class NewCounter : public Counter {
+    int num_reset = 0;
+public:
+    // KẾ THỪA: get() và inc() lấy từ Counter
+    // GHI ĐÈ: reset() viết lại
+    void reset() override {
+        Counter::reset();   // gọi lớp cha
+        num_reset++;
+    }
+    // MỞ RỘNG: thêm phương thức mới
+    int howmanyResets() const { return num_reset; }
+};
+          </code></pre>
+        </section>
+
+        <!-- Ghi đè part 1: class definitions -->
+        <section style="font-size:0.85em;" data-auto-animate="">
+          <h2>Ghi đè (Method Overriding)</h2>
+          <p>Lớp con định nghĩa lại phương thức <span class="inline-code">virtual</span> của lớp cha:</p>
+          <pre><code class="language-cpp" data-trim>
+class Counter {
+public:
+    virtual void reset() { x = 0; }  // virtual → cho phép lớp con ghi đè
+    int  get() { return x; }
+    void inc() { x++; }
+private: int x = 0;
+};
+
+class NewCounter : public Counter {
+    int nr = 0;
+public:
+    void reset() override {   // override → kiểm tra tại biên dịch
+        Counter::reset();     // gọi phiên bản lớp cha
+        nr++;
+    }
+    int howMany() const { return nr; }
+};
+          </code></pre>
+        </section>
+
+        <!-- Ghi đè part 2: runtime dispatch -->
+        <section style="font-size:0.85em;" data-auto-animate="">
+          <h2>Ghi đè (Method Overriding)</h2>
+          <p>Phương thức được chọn theo <strong>kiểu thực tế</strong> lúc chạy:</p>
+          <pre><code class="language-cpp" data-trim>
+Counter*  p1 = new Counter();     // kiểu thực tế: Counter
+Counter*  p2 = new NewCounter();  // kiểu thực tế: NewCounter
+
+p1->reset();  // → Counter::reset()
+p2->reset();  // → NewCounter::reset()  ← nhờ virtual
+          </code></pre>
+          <ul style="margin-top:0.5em;">
+            <li><span class="inline-code">virtual</span> — trình biên dịch trì hoãn việc chọn phương thức đến
+              <strong>thời điểm chạy</strong>
+            </li>
+            <li><span class="inline-code">override</span> — kiểm tra tại biên dịch: xác nhận đang ghi đè đúng phương
+              thức ảo</li>
+          </ul>
+        </section>
+
+        <!-- Shadowing pitfall -->
+        <section style="font-size:0.7em;">
+          <h2>Cạm bẫy: Che mờ (Shadowing)</h2>
+          <p>Bỏ <span class="inline-code">virtual</span> — lớp con <em>che mờ</em> phương thức, không ghi đè:</p>
+          <pre><code class="language-cpp" data-trim>
+class Counter {
+public:
+    void reset() { x = 0; }   // KHÔNG có virtual
+private: int x = 0;
+};
+
+class NewCounter : public Counter {
+    int nr = 0;
+public:
+    void reset() {             // che mờ Counter::reset — KHÔNG phải ghi đè
+        Counter::reset();
+        nr++;
+    }
+};
+
+Counter* p = new NewCounter();
+p->reset();   // → Counter::reset()  ← NewCounter::reset() bị bỏ qua!
+          </code></pre>
+          <ul>
+            <li>Kiểu tĩnh của con trỏ là <span class="inline-code">Counter*</span> → trình biên dịch gọi <span
+                class="inline-code">Counter::reset()</span></li>
+            <li>→ Luôn dùng <span class="inline-code">virtual</span> + <span class="inline-code">override</span> khi
+              muốn ghi đè</li>
+          </ul>
+        </section>
+
+        <!-- Kiểu con: formal definition -->
+        <section>
+          <h2>Kiểu con (Subtypes)</h2>
+          <div class="question-box">
+            <div class="question-title">Định nghĩa</div>
+            \(T\) là kiểu con của \(S\)
+            (<span>\(T <: S\)</span>)
+                nếu mọi thao tác của \(S\) đều có trong \(T\).<br />
+                <em style="font-size:0.85em;">Giao diện của \(S\) ⊆ giao diện của \(T\).</em>
+          </div>
+          <ul style="margin-top:0.6em;">
+            <li>Tương thích theo <em>chức năng</em>, không phải tên</li>
+          </ul>
+        </section>
+
+        <!-- Kiểu con: Counter bridge example -->
+        <section style="font-size:0.8em;">
+          <h2>Kiểu con — Ví dụ với Counter</h2>
+          <pre><code class="language-cpp" data-trim>
+class Counter {                       // S
+public:
+    virtual void reset() { x = 0; }
+    int  get() { return x; }
+    void inc() { x++; }
+private: int x = 0;
+};
+
+class NewCounter : public Counter {   // T
+public:
+    void reset() override { Counter::reset(); nr++; }
+    int  howMany() const  { return nr; }  // thêm thao tác mới
+private: int nr = 0;
+};
+          </code></pre>
+          <ul>
+            <li><span class="inline-code">NewCounter</span> có đủ thao tác của <span class="inline-code">Counter</span>
+              (reset · get · inc) → <strong>NewCounter \(<:\) Counter</strong>
+            </li>
+            <li>Dùng được ở mọi nơi cần <span class="inline-code">Counter</span>:</li>
+          </ul>
+          <pre><code class="language-cpp no-line-numbers" data-trim>
+Counter* p = new NewCounter();  // OK — NewCounter là kiểu con của Counter
+p->reset();  p->inc();  p->get();
+          </code></pre>
+        </section>
+
+        <!-- Phân biệt: subtype vs inheritance -->
+        <section style="font-size:0.8em;">
+          <h2>Kiểu con ≠ Kế thừa</h2>
+
+          <p style="margin:0.4em 0 0.1em;">
+            <strong>Kế thừa</strong> hỏi: <em>"Lấy code từ đâu?"</em>
+          </p>
+          <ul style="margin-top:0; margin-bottom:0.7em;">
+            <li><span class="inline-code">NewCounter</span> <em>lấy</em>
+              <span class="inline-code">get()</span>, <span class="inline-code">inc()</span>
+              từ <span class="inline-code">Counter</span>, không viết lại
+            </li>
+          </ul>
+
+          <p style="margin:0.4em 0 0.1em;">
+            <strong>Kiểu con</strong> hỏi: <em>"Thay thế được không?"</em>
+          </p>
+          <ul style="margin-top:0; margin-bottom:0.7em;">
+            <li><span class="inline-code">NewCounter</span> dùng được ở mọi nơi cần
+              <span class="inline-code">Counter</span>
+            </li>
+          </ul>
+
+          <pre><code class="language-cpp no-line-numbers" data-trim>
+Counter* p = new NewCounter(); // NewCounter vừa kế thừa, vừa là kiểu con của Counter
+          </code></pre>
+
+          <ul>
+            <li>C++ <span class="inline-code">public</span> inheritance → tạo ra cả hai cùng lúc</li>
+            <li>Nhưng là hai câu hỏi <em>độc lập</em> — kế thừa không tự động là kiểu con</li>
+          </ul>
+        </section>
+
+        <!-- C++: multiple inheritance — A/B/C conflict -->
+        <section style="font-size:0.75em;" data-auto-animate="">
+          <h2>C++: Đa kế thừa</h2>
+          <ul style="margin-bottom:0.4em;">
+            <li>C++ cho phép <span class="keyword">đa kế thừa</span> từ nhiều lớp cha</li>
+            <li>Tiềm ẩn <strong>mâu thuẫn</strong> nếu lớp cha có thành viên cùng tên</li>
+          </ul>
+          <pre><code class="language-cpp no-line-numbers" data-trim>
+class A { public: void f() { std::cout &lt;&lt; "A::f\n"; } };
+class B { public: void f() { std::cout &lt;&lt; "B::f\n"; } };
+class C : public A, public B {
+public:
+    void g() {
+        A::f();  // gọi f() của A
+        B::f();  // gọi f() của B
+    }
+};
+          </code></pre>
+          <ul>
+            <li>Nếu gọi <span class="inline-code">f()</span> từ đối tượng <span class="inline-code">C</span>: không biết
+              gọi <span class="inline-code">A::f()</span> hay <span class="inline-code">B::f()</span> → lỗi biên dịch
+            </li>
+            <li>→ Giải pháp an toàn: kế thừa từ lớp <em>all-pure-virtual</em> (interface) — xem Phần 3</li>
+          </ul>
+        </section>
+
+      </section>
+
+      <!-- ================================================================
+           SECTION 3 – TRỪU TƯỢNG HÓA
+           ================================================================ -->
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">3.</span><br />
+            Trừu tượng hóa<br />(Abstraction)
+          </h1>
+        </section>
+
+        <!-- slide 1a: definition -->
+        <section style="font-size: .85em;">
+          <h2>Trừu tượng hóa là gì?</h2>
+          <div class="question-box" style="margin-bottom:0.6em;">
+            <div class="question-title">Định nghĩa</div>
+            Tách <strong>giao diện</strong> (<em>what</em>) khỏi <strong>cài đặt</strong> (<em>how</em>) —
+            client biết phương thức <em>làm gì</em>, không cần biết <em>làm thế nào</em>.
+          </div>
+          <ul>
+            <li><span class="keyword">Đóng gói</span> ẩn <em>dữ liệu</em> — Trừu tượng hóa ẩn <em>độ phức tạp cài
+                đặt</em></li>
+            <li>Thay đổi cài đặt tự do — client không biết, không bị ảnh hưởng</li>
+          </ul>
+        </section>
+
+        <!-- slide 1b: Counter as abstraction example -->
+        <section style="font-size:0.85em;">
+          <h2>Ví dụ: Counter</h2>
+          <pre><code class="language-cpp" data-trim>
+Counter c;
+c.inc();  c.inc();
+int v = c.get();  // client dùng inc/get/reset — không biết value lưu thế nào
+          </code></pre>
+          <ul style="margin-top:0.6em;">
+            <li><strong>Giao diện</strong>: <span class="inline-code">reset()</span> · <span
+                class="inline-code">get()</span> · <span class="inline-code">inc()</span> — ổn định, không đổi</li>
+            <li><strong>Cài đặt</strong>: <span class="inline-code">int value</span> — có thể thay bằng bất kỳ cách lưu
+              trữ nào mà client không hay biết</li>
+          </ul>
+        </section>
+
+        <!-- slide 2: abstract class with Shape -->
+        <section style="font-size:0.7em;">
+          <h2>Lớp trừu tượng (Abstract Class)</h2>
+          <ul style="margin-bottom:0.5em;">
+            <li><span class="inline-code">virtual f() = 0</span> — <strong>pure virtual</strong>: không có thân,
+              lớp con <strong>bắt buộc</strong> cài</li>
+            <li>Lớp có ít nhất một pure virtual → <strong>lớp trừu tượng</strong>
+              <ul>
+                <li>Không thể thực thể hóa trực tiếp</li>
+              </ul>
+            </li>
+          </ul>
+          <pre><code class="language-cpp" data-trim>
+class Shape {                              // lớp trừu tượng
+public:
+    virtual double area()      = 0;        // pure virtual
+    virtual double perimeter() = 0;        // pure virtual
+    virtual ~Shape() = default;
+    void describe() {                      // phương thức thường — có thân
+        std::cout &lt;&lt; "area = " &lt;&lt; area() &lt;&lt; "\n";
+    }
+};
+class Circle : public Shape {
+    double r;
+public:
+    Circle(double r) : r(r) {}
+    double area()      override { return 3.14159 * r * r; }
+    double perimeter() override { return 2 * 3.14159 * r; }
+};
+// Shape s;          ← COMPILE ERROR: không thể thực thể hóa
+Shape* s = new Circle(5);   // OK — con trỏ Shape, đối tượng Circle
+          </code></pre>
+        </section>
+
+        <!-- slide 3: benefit — open for extension -->
+        <section style="font-size:0.85em;">
+          <h2>Lợi ích: mở rộng không sửa client</h2>
+          <pre><code class="language-cpp" data-trim>
+// Code client — chỉ biết Shape*, không biết Circle hay Rectangle
+void printAll(std::vector&lt;Shape*&gt;& shapes) {
+    for (Shape* s : shapes)
+        s->describe();    // area() đúng cho từng hình — nhờ virtual
+}
+          </code></pre>
+          <div style="font-weight:bold; margin-top:0.5em;">Thêm hình mới — <span class="inline-code">printAll</span>
+            không thay đổi:</div>
+          <pre><code class="language-cpp" data-trim>
+class Rectangle : public Shape {
+    double b, h;
+public:
+    Rectangle(double b, double h) : b(b), h(h) {}
+    double area()      override { return b * h; }
+    double perimeter() override { return 2 * (b + h); }
+};
+
+std::vector&lt;Shape*&gt; v = { new Circle(3), new Rectangle(4, 5) };
+printAll(v);   // Circle::area(), Rectangle::area() — không sửa printAll
+          </code></pre>
+        </section>
+
+        <!-- slide 4: interface (all-pure-virtual) -->
+        <section style="font-size:0.75em;">
+          <h2>Interface</h2>
+          <div style="font-weight:bold; margin-bottom:0.3em;">Interface = lớp trừu tượng mà <em>toàn bộ</em> thành viên
+            đều pure virtual:</div>
+          <pre><code class="language-cpp" data-trim>
+// Ví dụ: interface Drawable và Saveable            
+class Drawable {
+public:
+    virtual void draw()        = 0;
+    virtual void resize(int f) = 0;
+    virtual ~Drawable() = default;
+};
+class Saveable {
+public:
+    virtual void save(const std::string& path) = 0;
+    virtual ~Saveable() = default;
+};
+// Một lớp implement nhiều interface — "mix-in"
+class Icon : public Drawable, public Saveable {
+public:
+    void draw()                        override { /* ... */ }
+    void resize(int f)                 override { /* ... */ }
+    void save(const std::string& path) override { /* ... */ }
+};
+          </code></pre>
+        </section>
+
+      </section>
+
+      <!-- ================================================================
+           SECTION 5 – ĐA HÌNH
+           ================================================================ -->
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">4.</span><br />
+            Đa hình<br />(Polymorphism)
+          </h1>
+        </section>
+
+        <!-- Definition -->
+        <section style="font-size:0.75em;">
+          <h2>Đa hình là gì?</h2>
+          <div class="question-box" style="margin-bottom:0.6em;">
+            <div class="question-title">Định nghĩa</div>
+            Cùng một lời gọi phương thức → <strong>hành vi khác nhau</strong> tùy đối tượng nhận.<br />
+            Phiên bản nào được chọn — quyết định tại <em>thời điểm chạy</em>, không phải biên dịch.
+          </div>
+          <ul>
+            <li><strong>Điều phối động</strong>: chọn phương thức theo <em>kiểu thực tế</em> của đối tượng</li>
+            <li><strong>Liên kết muộn</strong>: <span class="inline-code">this</span> liên kết với đối tượng thực tế
+              khi chạy</li>
+            <li>Nền tảng: kiểu con + ghi đè (<span class="inline-code">virtual</span>) → điều phối tự động</li>
+          </ul>
+        </section>
+
+        <!-- Dynamic dispatch -->
+        <section style="font-size:0.9em;">
+          <h2>Điều phối động</h2>
+          <p>Điều phối động là cơ chế cốt lõi của OOP.</p>
+          <p>
+            <strong>Nguyên lý</strong>:
+            Chọn phiên bản phương thức theo <span class="keyword">kiểu thực tế</span> (<em>dynamic type</em>) —
+            <strong>không phải</strong> kiểu tĩnh của tham chiếu.
+          </p>
+          <pre><code class="language-cpp" data-trim>
+Counter* c = new NewCounter(); // kiểu tĩnh: Counter*; kiểu thực tế: NewCounter
+c->reset();  // → NewCounter::reset()  (nhờ virtual và override)
+
+Counter* V[3] = { new Counter(), new NewCounter(), new NewCounter() };
+for (Counter* v : V)
+    v->reset(); // → mỗi đối tượng gọi đúng phiên bản reset() của mình
+          </code></pre>
+        </section>
+
+        <!-- Late binding of this -->
+        <section style="font-size:0.7em;">
+          <h2>Liên kết muộn của <span class="inline-code">this</span> (Late Binding)</h2>
+          <ul>
+            <li><span class="inline-code">this</span> / <span class="inline-code">self</span>: liên kết
+              <span class="keyword">động</span> với đối tượng nhận thông điệp
+            </li>
+            <li>Phương thức lớp cha gọi được phương thức đã ghi đè ở lớp con</li>
+          </ul>
+          <pre style="margin-top:0.6em;"><code class="language-cpp" data-trim>
+class Animal {
+public:
+    virtual void speak() { std::cout &lt;&lt; "...\n"; }
+    void introduce() {
+        std::cout &lt;&lt; "Hi, I say: ";
+        this->speak();  // this liên kết động → gọi đúng phiên bản
+    }
+};
+class Dog : public Animal {
+public:
+    void speak() override { std::cout &lt;&lt; "Woof!\n"; }
+};
+Animal* a = new Dog();
+a->introduce();  // in ra: "Hi, I say: Woof!"
+          </code></pre>
+          <ul>
+            <li>Nếu <span class="inline-code">speak()</span> <strong>không</strong> có <span
+                class="inline-code">virtual</span> → <span class="inline-code">Animal::speak()</span> được gọi, không
+              phải <span class="inline-code">Dog::speak()</span></li>
+          </ul>
+        </section>
+        <!-- Overloading vs. Dynamic Dispatch -->
+        <section style="font-size:0.82em;">
+          <h2>Overloading vs. Điều phối động</h2>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8em; margin-bottom:0.5em;">
+            <div>
+              <div style="font-weight:bold; color:#555; margin-bottom:0.3em;">Overloading — biên dịch</div>
+              <pre><code class="language-cpp no-line-numbers" data-trim>
+void print(int x);
+void print(double x);
+// Chọn theo kiểu tĩnh của đối số:
+print(3);     // → print(int)
+print(3.14);  // → print(double)
+              </code></pre>
+            </div>
+            <div>
+              <div style="font-weight:bold; color:#2E7D32; margin-bottom:0.3em;">Dynamic dispatch — runtime</div>
+              <pre><code class="language-cpp no-line-numbers" data-trim>
+Counter* p = new NewCounter();
+// Chọn theo kiểu thực tế của đối tượng:
+p->reset(); // → NewCounter::reset()
+              </code></pre>
+            </div>
+          </div>
+          <ul>
+            <li><strong>Overloading</strong>: kiểu tĩnh của <em>đối số</em> → quyết định tại biên dịch</li>
+            <li><strong>Virtual dispatch</strong>: kiểu thực tế của <em>đối tượng</em> → quyết định khi chạy</li>
+          </ul>
+        </section>
+
+      </section>
+
+      <!-- ================================================================
+           TỔNG KẾT
+           ================================================================ -->
+      <section>
+        <h2 style="margin-bottom:0.3em;">Tổng kết — Bốn trụ cột OOP</h2>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.4em; font-size:0.68em; margin-bottom:0.4em;">
+          <div style="border:2px solid #1E93AB; border-radius:7px; overflow:hidden;">
+            <div style="background:#1E93AB; color:#fff; padding:3px 10px; font-weight:bold;">Đóng gói (Encapsulation)
+            </div>
+            <div style="padding:0.3em 0.7em; background:#e0f4f8; line-height:1.45;">
+              Gom dữ liệu + phương thức; ẩn chi tiết nội bộ qua <em>private</em>.<br />
+              <span style="color:#666;">→ Object · Class · Constructor</span>
+            </div>
+          </div>
+          <div style="border:2px solid #7B5EA7; border-radius:7px; overflow:hidden;">
+            <div style="background:#7B5EA7; color:#fff; padding:3px 10px; font-weight:bold;">Kế thừa (Inheritance)</div>
+            <div style="padding:0.3em 0.7em; background:#ede7f6; line-height:1.45;">
+              Tái dùng cài đặt (kế thừa) ≠ tương thích giao diện (kiểu con).<br />
+              <span style="color:#666;">→ Subtype · Ghi đè · Đa kế thừa</span>
+            </div>
+          </div>
+          <div style="border:2px solid #C2610F; border-radius:7px; overflow:hidden;">
+            <div style="background:#C2610F; color:#fff; padding:3px 10px; font-weight:bold;">Trừu tượng hóa
+              (Abstraction)</div>
+            <div style="padding:0.3em 0.7em; background:#fff3e0; line-height:1.45;">
+              Tách giao diện (<em>what</em>) khỏi cài đặt (<em>how</em>).<br />
+              <span style="color:#666;">→ Lớp trừu tượng · Interface</span>
+            </div>
+          </div>
+          <div style="border:2px solid #2E7D32; border-radius:7px; overflow:hidden;">
+            <div style="background:#2E7D32; color:#fff; padding:3px 10px; font-weight:bold;">Đa hình (Polymorphism)
+            </div>
+            <div style="padding:0.3em 0.7em; background:#e8f5e9; line-height:1.45;">
+              Cùng lời gọi → hành vi khác nhau theo kiểu thực tế khi chạy.<br />
+              <span style="color:#666;">→ Điều phối động · Late binding</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.4em; font-size:0.66em;">
+          <div style="background:#f0f0f0; border-left:3px solid #888; border-radius:4px; padding:0.3em 0.7em;">
+            <strong>← Bài 4: ADT</strong> — OOP mở rộng ADT bằng kế thừa &amp; đa hình
+          </div>
+          <div
+            style="background:#eef2ff; border-right:3px solid #5C7FCC; border-radius:4px; padding:0.3em 0.7em; text-align:right;">
+            <strong>Bài 6: SOLID →</strong> — dùng bốn trụ cột <em>đúng cách</em>
+          </div>
+        </div>
+      </section>
+
+
+      <div class="footer">
+        Phương pháp luận lập trình (Học kỳ 2 2025-2026) §5: Lập trình hướng đối tượng
+      </div>
+    </div>
+  </div>
+  <script src="revealjs/dist/reveal.js"></script>
+  <script src="plugin/notes/notes.js"></script>
+  <script src="plugin/markdown/markdown.js"></script>
+  <script src="plugin/highlight/highlight.js"></script>
+  <script src="plugin/math/math.js"></script>
+  <script>
+    Reveal.initialize({
+      controlsLayout: "edges",
+      slideNumber: true,
+      hashOneBasedIndex: true,
+      hash: true,
+      plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX],
+    });
+  </script>
+</body>
+
+</html>
