@@ -27,10 +27,12 @@
         </section>
 
         <section>
-          <h2>Nội dung</h2>
+          <h2>Nội dung bài học</h2>
           <ol>
-            <li>Nội dung 1</li>
-            <li>Nội dung 2</li>
+            <li>Lập trình hàm (FP) và hướng đối tượng (OOP)</li>
+            <li>Các mẫu xử lý dữ liệu đặc trưng trong FP</li>
+            <li>Ứng dụng Lambda và STL Algorithms trong C++</li>
+            <li>Thực hành xây dựng pipeline và tổ hợp hàm</li>
           </ol>
         </section>
       </section>
@@ -39,12 +41,53 @@
         <section>
           <h1>
             <span class="text-light">1.</span><br />
-            Nội dung 1
+            Lập trình hàm (FP) và hướng đối tượng (OOP)
           </h1>
         </section>
         <section>
-          <h2>Nội dung chi tiết 1</h2>
-          <p>Chi tiết về nội dung 1...</p>
+          <h2>Bản chất của Tính toán (Section 11.1)</h2>
+          <div style="display: flex; gap: 20px;">
+            <div style="flex: 1; font-size: 0.6em;">
+              <h4 style="color: #d32f2f;">Mô hình Mệnh lệnh (Imperative/OOP)</h4>
+              <ul>
+                <li><strong>Computing with State:</strong> Dựa trên thay đổi nội dung ô nhớ qua phép gán ($Assignment$).
+                </li>
+                <li><strong>Trạng thái (State):</strong> Giá trị biến phụ thuộc vào trình tự thời gian thực thi.</li>
+                <li><strong>Đơn vị:</strong> Đối tượng = Dữ liệu + Hành vi.</li>
+              </ul>
+            </div>
+            <div style="flex: 1; font-size: 0.6em;">
+              <h4 style="color: #2e7d32;">Mô hình Hàm (Functional)</h4>
+              <ul>
+                <li><strong>Computing without State:</strong> Tính toán là việc đánh giá các biểu thức toán học.</li>
+                <li><strong>Môi trường (Environment):</strong> Giá trị biểu thức chỉ phụ thuộc vào ngữ cảnh định nghĩa,
+                  không phụ thuộc thời gian.</li>
+                <li><strong>Đơn vị:</strong> Hàm thuần khiết (Pure Function).</li>
+              </ul>
+            </div>
+          </div>
+
+
+          [Image of functional programming vs object oriented programming]
+
+        </section>
+        <section>
+          <h2>Tính minh bạch tham chiếu (Referential Transparency)</h2>
+          <p style="font-size: 0.7em;">Đây là đặc điểm quan trọng nhất của FP được nêu trong sách:</p>
+          <blockquote style="font-size: 0.65em;">
+            "Một biểu thức được gọi là minh bạch tham chiếu nếu giá trị của nó chỉ phụ thuộc vào giá trị các tham số
+            truyền vào và môi trường cố định, không tạo ra hiệu ứng lề (side effects)."
+          </blockquote>
+          <div style="display: flex; gap: 10px; margin-top: 20px; font-size: 0.6em;">
+            <div style="flex: 1; background: #ffebee; padding: 10px; border-radius: 8px;">
+              <strong>OOP:</strong> <code>obj.increment()</code><br>Kết quả trả về khác nhau tùy vào giá trị hiện tại
+              của <code>obj</code>.
+            </div>
+            <div style="flex: 1; background: #e8f5e9; padding: 10px; border-radius: 8px;">
+              <strong>FP:</strong> <code>add(5, 10)</code><br>Luôn trả về 15 dù gọi ở bất kỳ thời điểm nào trong chương
+              trình.
+            </div>
+          </div>
         </section>
       </section>
 
@@ -52,12 +95,193 @@
         <section>
           <h1>
             <span class="text-light">2.</span><br />
-            Nội dung 2
+            Các mẫu xử lý dữ liệu đặc trưng trong FP
           </h1>
         </section>
         <section>
-          <h2>Nội dung chi tiết 2</h2>
-          <p>Chi tiết về nội dung 2...</p>
+          <h2>Higher-order Schemata (Section 11.3.4)</h2>
+          <p style="font-size: 0.7em;">Lập trình hàm thay thế vòng lặp thủ công bằng các lược đồ bậc cao để quản lý sự
+            phức tạp:</p>
+
+
+
+          <div style="font-size: 0.6em; margin-top: 20px;">
+            <table style="width: 100%;">
+              <tr style="background: #f5f5f5;">
+                <th>Mẫu (Pattern)</th>
+                <th>Mô tả toán học</th>
+                <th>Mục đích</th>
+              </tr>
+              <tr>
+                <td><strong>Map</strong></td>
+                <td>$L' = [f(x) \mid x \in L]$</td>
+                <td>Biến đổi dữ liệu gốc sang dạng mới ($1:1$).</td>
+              </tr>
+              <tr>
+                <td><strong>Filter</strong></td>
+                <td>$L' = [x \in L \mid P(x)]$</td>
+                <td>Giữ lại các phần tử thỏa mãn điều kiện $P$.</td>
+              </tr>
+              <tr>
+                <td><strong>Fold (Reduce)</strong></td>
+                <td>$res = f(...f(f(init, x_1), x_2)...)$</td>
+                <td>Tích lũy danh sách thành một giá trị duy nhất.</td>
+              </tr>
+            </table>
+          </div>
+        </section>
+        <section>
+          <h2>Tại sao không dùng vòng lặp?</h2>
+          <div style="display: flex; gap: 20px; font-size: 0.65em;">
+            <div style="flex: 1; border-right: 1px solid #ccc;">
+              <strong>Vòng lặp (Imperative):</strong>
+              <ul>
+                <li>Phải quản lý biến đếm $i$.</li>
+                <li>Dễ lỗi "Off-by-one" (truy cập ngoài vùng nhớ).</li>
+                <li>Mô tả <b>Cách làm</b> (How).</li>
+              </ul>
+            </div>
+            <div style="flex: 1;">
+              <strong>Patterns (Functional):</strong>
+              <ul>
+                <li>Tự động hóa việc duyệt (Abstraction).</li>
+                <li>An toàn với dữ liệu bất biến.</li>
+                <li>Mô tả <b>Cái muốn đạt được</b> (What).</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">3.</span><br />
+            Ứng dụng Lambda và STL Algorithms trong C++
+          </h1>
+        </section>
+        <section>
+          <h2>Ánh xạ lý thuyết vào C++ STL</h2>
+          <p style="font-size: 0.75em;">Thư viện chuẩn C++ hiện thực hóa các Schemata thông qua các Generic Algorithms:
+          </p>
+          <div style="margin-top: 10px;">
+            <table style="font-size: 0.55em; width: 100%;">
+              <thead>
+                <tr style="background: #eee;">
+                  <th>FP Pattern</th>
+                  <th>C++ STL Function</th>
+                  <th>Ghi chú chuyên sâu</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Map</strong></td>
+                  <td><code>std::transform</code></td>
+                  <td>Yêu cầu Output Iterator.</td>
+                </tr>
+                <tr>
+                  <td><strong>Filter</strong></td>
+                  <td><code>std::copy_if</code></td>
+                  <td>Sử dụng Predicate để quyết định sao chép.</td>
+                </tr>
+                <tr>
+                  <td><strong>Fold / Reduce</strong></td>
+                  <td><code>std::accumulate</code></td>
+                  <td>Nằm trong thư viện <code>&lt;numeric&gt;</code>.</td>
+                </tr>
+                <tr>
+                  <td><strong>Traverse</strong></td>
+                  <td><code>std::for_each</code></td>
+                  <td>Thực thi side effect có kiểm soát.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <section>
+          <h2>Sức mạnh của Closure trong Algorithms</h2>
+          <p style="font-size: 0.7em;">Sử dụng Lambda để "đóng gói" môi trường khi thực thi Algorithm:</p>
+          <pre style="width: 100%;"><code class="language-cpp" data-trim style="font-size: 0.5em;">
+int limit = 100;
+std::vector&lt;int&gt; results;
+
+// Filter: Chỉ lấy các giá trị > limit (capture limit từ môi trường)
+std::copy_if(input.begin(), input.end(), 
+             std::back_inserter(results), 
+             [limit](int x) { return x > limit; });
+
+// Fold: Tính tổng với một giá trị khởi tạo (init)
+int total = std::accumulate(results.begin(), results.end(), 0);
+          </code></pre>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">4.</span><br />
+            Thực hành xây dựng pipeline và tổ hợp hàm
+          </h1>
+        </section>
+        <section>
+          <h2>Tổ hợp hàm (Function Composition)</h2>
+          <p style="font-size: 0.7em;">Thay vì viết $f(g(h(x)))$ lồng nhau khó đọc, FP hướng tới việc nối chuỗi:</p>
+          <div style="background: #f9f9f9; padding: 15px; border-radius: 10px; font-size: 0.7em; text-align: center;">
+            <b>Input</b> $\rightarrow$ Filter $\rightarrow$ Map $\rightarrow$ Reduce $\rightarrow$ <b>Output</b>
+          </div>
+          <pre style="width: 100%; margin-top: 20px;"><code class="language-cpp" data-trim style="font-size: 0.45em; line-height: 1.3;">
+#include &lt;ranges&gt; 
+
+auto results = numbers 
+             | std::views::filter([](int n) { return n % 2 == 0; }) 
+             | std::views::transform([](int n) { return n * n; });
+
+// Kết quả chỉ được tính toán khi ta thực sự duyệt kết thúc (Lazy Evaluation)
+          </code></pre>
+        </section>
+        <section>
+          <h2>Lazy Evaluation (Đánh giá trì hoãn)</h2>
+          <p style="font-size: 0.7em;">Một khái niệm then chốt trong FP hiện đại giúp tối ưu hóa hiệu năng:</p>
+          <ul style="font-size: 0.65em;">
+            <li>Các thao tác trong Pipeline không thực hiện ngay lập tức.</li>
+            <li>Dữ liệu chỉ "chảy" qua các bộ lọc khi có yêu cầu truy xuất (ví dụ: vòng lặp <code>for</code>).</li>
+            <li><b>Lợi ích:</b> Có thể làm việc với các dãy số vô tận hoặc tập dữ liệu cực lớn mà không tốn bộ nhớ tạm.
+            </li>
+          </ul>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h1>Tổng kết và Đánh giá</h1>
+        </section>
+        <section>
+          <h2>Đánh giá mô hình FP</h2>
+          <div style="font-size: 0.65em;">
+            <p><strong>Ưu điểm:</strong></p>
+            <ul>
+              <li><b>Readability:</b> Code ngắn gọn, gần với ngôn ngữ tự nhiên/toán học.</li>
+              <li><b>Dependability:</b> Dễ dàng chứng minh tính đúng đắn toán học do không có state mutation.</li>
+              <li><b>Concurrency:</b> An toàn tuyệt đối khi chạy đa luồng (không lo Data Race).</li>
+            </ul>
+            <p style="margin-top: 15px;"><strong>Thách thức:</strong></p>
+            <ul>
+              <li>Yêu cầu tư duy trừu tượng cao hơn.</li>
+              <li>Hiệu năng có thể bị ảnh hưởng do cấp phát bộ nhớ cho các bản sao dữ liệu (tuy nhiên C++ hiện đại đã
+                tối ưu hóa bằng Move Semantics).</li>
+            </ul>
+          </div>
+        </section>
+        <section>
+          <h2>Lời kết: Đa mô hình (Multi-paradigm)</h2>
+          <p style="font-size: 0.75em;">C++ không bắt buộc bạn phải chọn giữa FP hay OOP:</p>
+          <div
+            style="background: #fff3e0; padding: 20px; border-radius: 10px; font-size: 0.7em; border-left: 5px solid #ff9800;">
+            "Hãy dùng <b>OOP</b> để xây dựng kiến trúc hệ thống, quản lý tài nguyên và trạng thái lớn.
+            Hãy dùng <b>FP</b> để thực thi các thuật toán biến đổi dữ liệu một cách an toàn và minh bạch."
+          </div>
+          <p style="text-align: center; margin-top: 30px; font-weight: bold; color: #1565c0;">Trân trọng cảm ơn các em
+            đã theo dõi!</p>
         </section>
       </section>
 
