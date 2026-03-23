@@ -284,9 +284,6 @@
             <li><strong>Bằng phần mềm (software)</strong>: linh hoạt, chậm hơn</li>
             <li><strong>Bằng phần sụn (firmware)</strong>: trung gian</li>
           </ul>
-          <aside class="notes">
-            Slide này là “khung”. Các slide sau sẽ làm rõ cơ chế và hệ quả của từng cách.
-          </aside>
         </section>
 
         <section>
@@ -301,9 +298,6 @@
               </ul>
             </li>
           </ul>
-          <aside class="notes">
-            Có thể liên hệ: tập lệnh của CPU là một “ngôn ngữ” được hiện thực bằng phần cứng.
-          </aside>
         </section>
 
         <section>
@@ -313,9 +307,6 @@
             <li>Chức năng ít thay đổi, cần xử lý với tần suất rất cao.</li>
             <li>Ví dụ: lệnh số học cơ bản, điều khiển luồng cơ bản.</li>
           </ul>
-          <aside class="notes">
-            Nhấn mạnh “ít thay đổi” là điều kiện quan trọng; nếu thay đổi nhiều thì chi phí bảo trì sẽ rất lớn.
-          </aside>
         </section>
 
         <section>
@@ -336,9 +327,6 @@
               </ul>
             </li>
           </ul>
-          <aside class="notes">
-            Liên hệ Python: phổ biến nhất là hiện thực bằng phần mềm thông qua môi trường thực thi.
-          </aside>
         </section>
 
         <section>
@@ -348,13 +336,10 @@
             <li>Cần tương tác tốt (thử nghiệm nhanh, gỡ lỗi thuận tiện).</li>
             <li>Chấp nhận đánh đổi hiệu năng, hoặc sẽ tối ưu dần về sau.</li>
           </ul>
-          <aside class="notes">
-            Có thể gợi ý: về sau có thể thêm biên dịch, mã trung gian, hoặc tối ưu hóa để tăng tốc.
-          </aside>
         </section>
 
         <section style="font-size: .8em;">
-          <h2>Hiện thực bằng phần sụn (vi chương trình)</h2>
+          <h2>bằng phần sụn (vi chương trình)</h2>
           <ul>
             <li><strong>Ý tưởng</strong>: thay vì mạch cứng hoàn toàn, một phần điều khiển được thực hiện bằng
               <strong>vi lệnh</strong> (microcode).
@@ -367,10 +352,6 @@
               </ul>
             </li>
           </ul>
-          <aside class="notes">
-            Nói ngắn: vi chương trình là tầng trung gian giữa phần cứng và phần mềm, dùng để điều khiển cách thực hiện
-            lệnh.
-          </aside>
         </section>
 
         <section>
@@ -387,7 +368,7 @@
         </section>
 
         <section>
-          <h2>So sánh nhanh</h2>
+          <h2>So sánh</h2>
           <table>
             <thead>
               <tr>
@@ -418,10 +399,6 @@
               </tr>
             </tbody>
           </table>
-          <aside class="notes">
-            Nhấn mạnh: đây là so sánh định tính. Mục tiêu là giúp sinh viên hiểu bản chất đánh đổi, không phải số liệu
-            cụ thể.
-          </aside>
         </section>
 
         <section>
@@ -439,12 +416,8 @@
           <p>Có hai cách “thuần” để hiện thực hoá ngôn ngữ <strong>bằng phần mềm</strong>:</p>
 
           <ul>
-            <li><strong>Hiện thực theo hướng thông dịch</strong>: chương trình \(\mathscr{L}\) được chạy trực tiếp bởi
-              trình
-              thông dịch.</li>
-            <li><strong>Hiện thực theo hướng biên dịch</strong>: chương trình \(\mathscr{L}\) được dịch sang chương
-              trình ở ngôn
-              ngữ của máy chủ, rồi chạy chương trình đã dịch.</li>
+            <li>Hiện thực hoá theo hướng <strong>thông dịch</strong>.</li>
+            <li>Hiện thực hoá theo hướng <strong>biên dịch</strong>.</li>
           </ul>
         </section>
 
@@ -523,7 +496,7 @@
         </section>
 
         <section>
-          <h2>Ví dụ: vòng lặp và chi phí giải mã lặp lại</h2>
+          <h2>Ví dụ: vòng lặp</h2>
           <ul>
             <li>Nếu cấu trúc lặp ở mức cao, bộ thông dịch có thể “mô phỏng” lặp trong thời gian chạy</li>
             <li>Câu lệnh bên trong vòng lặp có thể bị giải mã nhiều lần → kém hiệu quả</li>
@@ -545,12 +518,13 @@ for i in [1..N] {
         </section>
 
         <section>
-          <h2>Thực tế: Sử dụng ngôn ngữ trung gian</h2>
+          <h2>Thực tế</h2>
+          <h4>Sử dụng ngôn ngữ trung gian</h4>
           <ul>
             <li>Thực tế thường không “thuần” thông dịch hoặc “thuần” biên dịch</li>
             <li>Chương trình nguồn thường được chuyển sang một dạng <strong>mã trung gian</strong></li>
-            <li>Mã trung gian được thực thi bởi bộ thông dịch trung gian hoặc môi trường hỗ trợ thực thi (runtime
-              support)</li>
+            <li>Mã trung gian được thực thi bởi bộ thông dịch trung gian hoặc môi trường <span class="keyword">hỗ trợ
+                thực thi (runtime support)</span></li>
           </ul>
         </section>
 
@@ -578,9 +552,6 @@ for i in [1..N] {
             <li><strong>Thư viện &amp; hệ thống</strong>: I/O, collection, import/loader.</li>
             <li><strong>Tối ưu (tuỳ hệ)</strong>: profiling, JIT.</li>
           </ul>
-          <aside class="notes">
-            RTS là “hậu trường” để ngôn ngữ chạy đúng cam kết. C++ thường mỏng hơn; Java/Python dày hơn.
-          </aside>
         </section>
 
         <section>
@@ -590,11 +561,10 @@ for i in [1..N] {
         <section>
           <h2>Tận dụng máy chủ thế nào?</h2>
           <ul>
-            <li>Máy chủ (phần cứng + hệ điều hành) đã có sẵn: thực thi mã máy, quản lý tiến trình, bộ nhớ ảo, hệ tệp,
+            <li>Máy chủ (phần cứng + OS) đã có: thực thi mã máy, quản lý tiến trình, bộ nhớ ảo, hệ tệp,
               mạng.</li>
-            <li>Hỗ trợ thực thi <strong>không làm lại từ đầu</strong>, mà <strong>gọi (call) và bao bọc (wrap)</strong>
-              dịch vụ của hệ
-              điều hành.</li>
+            <li>RTS <strong>không làm lại từ đầu</strong>, mà <strong>gọi (call) và bao bọc (wrap)</strong>
+              dịch vụ của OS.</li>
             <li>Ví dụ: thao tác “in ra màn hình” của ngôn ngữ → cuối cùng gọi dịch vụ ghi dữ liệu của hệ điều hành.</li>
           </ul>
         </section>
@@ -627,10 +597,6 @@ for i in [1..N] {
             </li>
             <li>Hệ điều hành nhận dãy byte và điều khiển thiết bị xuất để hiển thị</li>
           </ol>
-          <aside class="notes">
-            Nhấn mạnh khác biệt: Python đi qua runtime/VM + đối tượng string; C++ thường đi qua iostream/ABI.
-            Nhưng cuối cùng đều về OS nhận byte và hiển thị.
-          </aside>
         </section>
 
         <section>
@@ -688,10 +654,11 @@ for i in [1..N] {
               </ul>
             </li>
           </ul>
-          <aside class="notes">
-            Mục tiêu: thay vì nhìn “một máy”, ta nhìn “một chuỗi máy”. Mỗi tầng che giấu chi tiết và nâng mức trừu
-            tượng.
-          </aside>
+        </section>
+
+        <section>
+          <h2>Hệ phân cấp máy trừu tượng</h2>
+          <img src="img/lec-01b/layered-machines.png" alt="Hình 1.10: Hệ phân cấp máy trừu tượng" style="width: 100%" />
         </section>
 
         <section>
@@ -704,7 +671,7 @@ for i in [1..N] {
           </ul>
         </section>
 
-        <section>
+        <section style="font-size: .9em;">
           <h2>“ngôn ngữ” của mỗi tầng</h2>
           <ul>
             <li>“Ngôn ngữ”:<strong> tập thao tác + quy tắc sử dụng</strong>.</li>
@@ -717,10 +684,6 @@ for i in [1..N] {
               </ul>
             </li>
           </ul>
-          <aside class="notes">
-            Nhấn mạnh: không nhất thiết chỉ là “ngôn ngữ lập trình”; giao diện lập trình và lời gọi hệ thống cũng là
-            “ngôn ngữ”.
-          </aside>
         </section>
 
         <section>
@@ -748,18 +711,10 @@ for i in [1..N] {
               </ul>
             </li>
           </ul>
-          <aside class="notes">
-            Có thể hỏi sinh viên: “Nếu đổi hệ điều hành, dòng Python mở tệp có cần đổi không?” (thường là không).
-          </aside>
         </section>
 
         <section>
-          <h2>Hệ phân cấp máy trừu tượng</h2>
-          <img src="img/lec-01b/layered-machines.png" alt="Hình 1.10: Hệ phân cấp máy trừu tượng" style="width: 100%" />
-        </section>
-
-        <section>
-          <h2>Tính di động nhờ hệ phân cấp</h2>
+          <h2>Tính di động</h2>
           <ul>
             <li>Đổi phần cứng: thường chỉ cần đổi/biên dịch lại các tầng thấp, tầng trên ít đổi.</li>
             <li>Đổi hệ điều hành: nếu giao diện ổn định, chương trình tầng trên vẫn chạy.</li>
@@ -768,7 +723,7 @@ for i in [1..N] {
         </section>
 
         <section>
-          <h2>Tính bảo trì nhờ hệ phân cấp</h2>
+          <h2>Tính bảo trì</h2>
           <ul>
             <li>Mỗi tầng có <strong>ranh giới trách nhiệm</strong> rõ ràng.</li>
             <li>Sửa lỗi/tối ưu ở tầng dưới có thể mang lợi ích cho nhiều tầng trên.</li>
@@ -777,22 +732,18 @@ for i in [1..N] {
         </section>
 
         <section>
-          <h2>Đánh đổi khi phân tầng</h2>
+          <h2>Đánh đổi khi phân cấp</h2>
           <ul>
             <li><strong>Chi phí phụ trội</strong>: gọi qua nhiều tầng có thể tốn thời gian.</li>
             <li><strong>Độ khó chẩn đoán</strong>: lỗi có thể xuất hiện ở tầng dưới nhưng biểu hiện ở tầng trên.</li>
             <li>Cần công cụ: ghi nhật ký, gỡ lỗi, theo dõi hiệu năng theo tầng.</li>
           </ul>
-          <aside class="notes">
-            Đây là điểm tốt để liên hệ: vì sao đôi khi tối ưu phải “đi xuống tầng dưới”.
-          </aside>
         </section>
 
         <section>
           <h2>Câu hỏi nhanh</h2>
           <ul>
             <li>Nêu một ví dụ “che giấu tầng dưới” mà bạn gặp hằng ngày khi lập trình.</li>
-            <li>Nếu thay phần cứng từ máy cá nhân sang máy chủ, tầng nào thay đổi nhiều nhất?</li>
             <li>Theo bạn, phân tầng giúp hay làm giảm hiệu năng? Vì sao?</li>
           </ul>
         </section>

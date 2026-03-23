@@ -1,0 +1,891 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Bài 2b: Quản lý bộ nhớ</title>
+
+  <link rel="stylesheet" href="revealjs/dist/reset.css" />
+  <link rel="stylesheet" href="revealjs/dist/reveal.css" />
+  <link rel="stylesheet" href="revealjs/dist/theme/white.css" />
+  <link rel="stylesheet" href="plugin/highlight/monokai.css" />
+  <link rel="stylesheet" href="lecture-style.css" />
+</head>
+
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <section>
+        <section>
+          <h1>Phương pháp luận lập trình</h1>
+          <h3>Bài 2c: Quản lý bộ nhớ</h3>
+          <p>Trường ĐH Công nghệ – Đại học Quốc gia Hà Nội</p>
+        </section>
+
+        <section>
+          <h2>Nội dung</h2>
+          <ol>
+            <li>Các kỹ thuật quản lý bộ nhớ</li>
+            <li>Quản lý bộ nhớ tĩnh</li>
+            <li>Quản lý bộ nhớ động bằng Ngăn xếp (Stack)</li>
+            <li>Quản lý bộ nhớ động bằng Vùng nhớ Heap</li>
+            <li>Hiện thực hóa quy tắc phạm vi (Scope Rules)</li>
+          </ol>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">1.</span><br />
+            Các kỹ thuật <br /> quản lý bộ nhớ
+          </h1>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Vai trò của quản lý bộ nhớ</h2>
+          <ul>
+            <li>Là một thành phần quan trọng của bộ thông dịch (<span class="keyword">interpreter</span>) trong máy trừu
+              tượng.</li>
+            <li>Nhiệm vụ chính:
+              <ul>
+                <li><strong>Cấp phát bộ nhớ</strong> cho chương trình và dữ liệu.</li>
+                <li><strong>Xác định cách sắp xếp</strong>, <strong>thời gian tồn tại</strong> của dữ liệu.</li>
+                <li><strong>Sử dụng các cấu trúc phụ trợ</strong> để truy xuất thông tin.</li>
+              </ul>
+            </li>
+            <li>Độ phức tạp phụ thuộc vào mức độ của ngôn ngữ.
+              <ul>
+                <li>Ngôn ngữ bậc cao thường có quản lý bộ nhớ phức tạp hơn.</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Các kỹ thuật quản lý bộ nhớ chính</h2>
+          <div class="question-box">
+            <div class="question-title">Phân loại</div>
+            <ul>
+              <li><strong>Quản lý tĩnh (Static management):</strong> Thực hiện trước khi thực thi chương trình.</li>
+              <li><strong>Quản lý động (Dynamic management):</strong> Thực hiện trong quá trình thực thi. Có hai cách
+                chính:
+                <ul>
+                  <li>Dùng ngăn xếp (<span class="keyword">Stack</span>).</li>
+                  <li>Dùng vùng nhớ <span class="keyword">Heap</span>.</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <p>Bao gồm cả các kỹ thuật <span class="keyword">dọn rác</span> (garbage collection) để tự động thu hồi bộ nhớ
+            trên heap (không nói kỹ trong chương này).</p>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">2.</span><br />
+            Quản lý bộ nhớ tĩnh
+          </h1>
+        </section>
+
+        <section style="font-size: 0.85em;" data-auto-animate="">
+          <h2>Đặc điểm của quản lý tĩnh</h2>
+          <ul>
+            <li>Thực hiện trước khi chạy</li>
+            <li>Trình biên dịch (<span class="keyword">compiler</span>) thực hiện</li>
+            <li>Các đối tượng nằm ở vùng nhớ cố định suốt thời gian chạy</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.85em;" data-auto-animate="">
+          <h2>Đặc điểm của quản lý tĩnh</h2>
+          <ul>
+            <li><strong>Các thành phần thường được cấp phát tĩnh:</strong>
+              <ul>
+                <li>Biến toàn cục (<span class="keyword">global variables</span>).</li>
+                <li>Mã lệnh của chương trình (Object code instructions).</li>
+                <li>Các hằng số (biết giá trị khi biên dịch).</li>
+                <li>Các bảng hỗ trợ runtime (xử lý tên, kiểm tra kiểu, dọn rác).</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.85em;" data-auto-animate="">
+          <h2>Hạn chế của quản lý tĩnh</h2>
+          <p>Không đáp ứng khi ngôn ngữ hỗ trợ <span class="keyword">đệ quy</span> (recursion).</p>
+          <p>Trong đệ quy:
+          <ul>
+            <li>Mỗi lần gọi: Hàm tạo ra <strong>bản sao mới</strong> của các biến cục bộ và tham số.</li>
+            <li>Địa chỉ trả về cần được lưu lại cho mỗi lần gọi.</li>
+          </ul>
+          </p>
+        </section>
+
+        <section style="font-size: 0.85em;" data-auto-animate="">
+          <h2>Hạn chế của quản lý tĩnh</h2>
+
+          <div>
+            <pre><code class="language-cpp" data-trim data-line-numbers="">
+int fib (int n) {
+    if (n == 0) return 1;
+    else if (n == 1) return 1;
+    else return fib(n-1) + fib(n-2);
+}</code></pre>
+          </div>
+          <ul>
+            <li>Số lời gọi cần để tính <span class="inline-code">fib(n)</span>: \(C(0)=C(1)=1\),
+              \(C(n)=C(n-1)+C(n-2)\).</li>
+            <li class="fragment">Dãy Fibonacci tăng nhanh ⇒ số lời gọi đồng thời có thể rất lớn theo <span
+                class="keyword">n</span> (không cố định trước khi chạy).</li>
+            <li class="fragment">Không thể xác định <strong>số lượng bộ nhớ cần thiết</strong> cho các biến cục bộ và tham số của mỗi lời
+              gọi.</li>
+            <li class="fragment">\(\Rightarrow\) Không thể dùng quản lý tĩnh.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.85em;" data-auto-animate="">
+          <h2>Hạn chế của quản lý tĩnh</h2>
+          <div class="question-box">
+            <div class="question-title">Ghi nhớ</div>
+            Nếu ngôn ngữ <strong>không</strong> hỗ trợ đệ quy, mọi thông tin cục bộ (biến, tham số, địa chỉ trả về) có
+            thể được cấp phát tĩnh cho từng chương trình con.
+          </div>
+        </section>
+
+        <section>
+          <h2>Cấu trúc bộ nhớ tĩnh</h2>
+          <div style="text-align: center;">
+            <img src="img/lec-02c/static-memory-management.png" alt="Static Memory Layout"
+              style="max-width: 55%; height: auto;" />
+          </div>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">3.</span><br />
+            Quản lý bộ nhớ động bằng Ngăn xếp (Stack)
+          </h1>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Đặc điểm của quản lý bằng ngăn xếp</h2>
+          <ul>
+            <li>Hầu hết ngôn ngữ hiện đại cho phép cấu trúc khối (<span class="keyword">block structuring</span>).</li>
+            <li>Các khối được vào và thoát theo cơ chế <span class="keyword">LIFO</span> (Last In First Out).</li>
+            <li><strong>Nguyên tắc:</strong> Một khối mở sau cùng sẽ phải được đóng trước tiên.</li>
+            <li>Tối ưu hóa việc cấp phát và thu hồi theo đúng
+              trình tự thực thi.</li>
+          </ul>
+        </section>
+
+        <section style="font-size:.85em" data-auto-animate>
+          <h2>Ví dụ: cấp phát khối lồng nhau</h2>
+          <div>
+            <pre><code class="language-cpp" data-trim>
+A: { 
+    int a = 1; 
+    int b = 0;
+    B: { 
+        int c = 3;
+        int b = 3; // b này che khuất b bên ngoài
+    }
+    b = a + 1; // Sử dụng b của khối A
+}</code></pre>
+          </div>
+          <ul style="font-size: 0.8em;">
+            <li><strong>Vào khối A:</strong> Thực hiện lệnh <span class="keyword">push</span> để cấp phát không gian cho
+              <span class="inline-code">a</span> và <span class="inline-code">b</span>.
+            </li>
+            <li><strong>Vào khối B:</strong> Cấp phát thêm không gian cho <span class="inline-code">c</span> và <span
+                class="inline-code">b</span> mới.</li>
+            <li><strong>Thoát khối B:</strong> Thực hiện lệnh <span class="keyword">pop</span> để giải phóng không gian
+              của B; <span class="inline-code">b</span> của A được kích hoạt lại.</li>
+          </ul>
+        </section>
+
+        <section style="font-size:.85em" data-auto-animate>
+          <h2>Ví dụ: cấp phát khối lồng nhau</h2>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; text-align: center;">
+            <div>
+              <strong>Vào khối A</strong>
+              <img src="img/lec-02c/stack-enter-A.png" alt="Stack after entering block A"
+                style="max-width: 100%; height: auto;" />
+            </div>
+            <div>
+              <strong>Vào khối B</strong>
+              <img src="img/lec-02c/stack-enter-B.png" alt="Stack after entering block B"
+                style="max-width: 100%; height: auto;" />
+            </div>
+            <div>
+              <strong>Thoát khối B</strong>
+              <img src="img/lec-02c/stack-exit-B.png" alt="Stack after exiting block B"
+                style="max-width: 100%; height: auto;" />
+            </div>
+          </div>
+          <div style="text-align: center;">
+            <div style="font-size: .7em; color: #555;">
+              <em>Cấu trúc ngăn xếp khi thực hiện các khối lồng nhau.</em>
+            </div>
+          </div>
+        </section>
+
+        <section data-auto-animate style="font-size: 0.85em;">
+          <h2>Bản ghi kích hoạt</h2>
+          <div class="question-box">
+            <div class="question-title">Định nghĩa</div>
+            <span class="keyword">Bản ghi kích hoạt</span> (activation record) hoặc <span class="keyword">khung</span>
+            (frame) là vùng nhớ trên ngăn xếp dành riêng cho một lần kích hoạt cụ thể của một khối hoặc một thủ tục.
+          </div>
+        </section>
+
+        <section data-auto-animate style="font-size: 0.85em;">
+          <h2>Bản ghi kích hoạt</h2>
+          <ul>
+            <li>Được tạo <strong>mỗi khi</strong> thủ tục được gọi, không phải khi khai báo.</li>
+            <li>Các giá trị lưu trữ (biến cục bộ, biến tạm...) là khác nhau giữa các lần gọi khác nhau của cùng một thủ
+              tục.</li>
+            <li>Ngăn xếp lưu trữ các bản ghi này gọi là <span class="keyword">runtime stack</span> (hoặc system stack).
+            </li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.75em;">
+          <h2>Bản ghi kích hoạt cho khối nội tuyến</h2>
+          <div class="question-box">
+            <div class="question-title">Cấu trúc cơ bản</div>
+            Một bản ghi cho khối nội tuyến (in-line block) thường gồm:
+            <ul>
+              <li><strong>Con trỏ chuỗi động</strong> (Dynamic chain pointer): Con trỏ tới bản ghi kích hoạt trước đó
+                trên stack.</li>
+              <li><strong>Biến cục bộ</strong> (Local variables): Các biến được khai báo bên trong khối.</li>
+              <li><strong>Kết quả trung gian</strong> (Intermediate results): Các kết quả trung gian của các phép tính.
+              </li>
+            </ul>
+          </div>
+          <p class="fragment">⭐️ <span class="keyword">Chuỗi động</span> là tập hợp các liên kết giúp quản lý các bản
+            ghi có kích
+            thước khác nhau trên ngăn xếp.</p>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Ví dụ: Kết quả trung gian</h2>
+          <ul>
+            <li>Dùng để lưu các giá trị chưa có tên định danh trong các biểu thức phức tạp.</li>
+          </ul>
+          <div>
+            <pre><code class="language-cpp" data-trim>
+{ 
+    int a = 3;
+    int b = (a + x) / (x + y);
+}</code></pre>
+          </div>
+          <ul>
+            <li><span class="inline-code">(a + x)</span> và <span class="inline-code">(x + y)</span>
+              được lưu trên ngăn xếp trước khi thực hiện phép chia.</li>
+            <li>Trên nhiều kiến trúc hiện đại, các giá trị này có thể được tối ưu hóa để lưu trong các thanh ghi (<span
+                class="keyword">registers</span>).</li>
+          </ul>
+        </section>
+
+        <section data-auto-animate style="font-size: 0.8em;">
+          <h2>Bản ghi kích hoạt cho thủ tục/hàm</h2>
+          <p>Phức tạp hơn khối nội tuyến do cần thêm thông tin điều khiển luồng.</p>
+          <div class="question-box">
+            <div class="question-title">Các trường bổ sung</div>
+            <ul>
+              <li><strong>Con trỏ chuỗi tĩnh</strong> (Static chain pointer): Hỗ trợ quy tắc phạm vi tĩnh.</li>
+              <li><strong>Địa chỉ trả về</strong> (Return address): Địa chỉ lệnh tiếp theo sau khi thủ tục kết thúc.
+              </li>
+              <li><strong>Tham số</strong> (Parameters): Giá trị của các tham số thực tế khi gọi.</li>
+              <li><strong>Kết quả trả về</strong> (Returned result): (Chỉ có ở hàm) Vị trí lưu giá trị trả về cho bên
+                gọi.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section data-auto-animate style="font-size: 0.8em;">
+          <h2>Bản ghi kích hoạt cho thủ tục/hàm</h2>
+          <ul>
+            <li><strong>Địa chỉ trả về (Result):</strong> Thường nằm trong bản ghi kích hoạt của bên gọi (<span
+                class="keyword">caller</span>).</li>
+            <li><strong>Truy cập biến:</strong> Compiler thay thế tên biến bằng <span class="keyword">offset</span>
+              (khoảng cách) tương đối so với một vị trí cố định trong bản ghi.</li>
+            <li><strong>Tối ưu hóa:</strong> Các compiler hiện đại thường lưu thông tin trong thanh ghi thay vì bản ghi
+              kích hoạt để tăng tốc độ.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.85em;" data-auto-animate>
+          <h2>Quản lý Ngăn xếp: Con trỏ khung</h2>
+          <ul>
+            <li><span class="keyword">Activation record pointer</span> (còn gọi là <span class="keyword">frame
+                pointer</span>): Trỏ tới bản ghi kích hoạt hiện tại trên stack.</li>
+            <li>Đây là mốc để tính toán các <span class="keyword">offset</span> truy cập các biến cục bộ.</li>
+            <li>Một con trỏ khác thường trỏ tới vị trí tự do đầu tiên (<span class="keyword">top of stack</span>).</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.85em;" data-auto-animate>
+          <h2>Quản lý Ngăn xếp: Con trỏ khung</h2>
+          <div style="text-align: center;">
+            <img src="img/lec-02c/stack-frame-pointer.png" alt="Stack Frame Pointer"
+              style="max-width: 80%; height: auto;" />
+          </div>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Cơ chế Quản lý lời gọi</h2>
+          <div class="question-box">
+            <div class="question-title">Thành phần tham gia</div>
+            Việc quản lý ngăn xếp được thực hiện bởi các đoạn mã do chính trình biên dịch chèn vào:
+            <ul>
+              <li><strong>Calling sequence:</strong> Nằm ở phía hàm gọi (<span class="keyword">caller</span>).</li>
+              <li><strong>Prologue:</strong> Đoạn mã mở đầu ở phía hàm được gọi (<span class="keyword">callee</span>).
+              </li>
+              <li><strong>Epilogue:</strong> Đoạn mã kết thúc ở phía hàm được gọi.</li>
+            </ul>
+          </div>
+          <p class="fragment">⭐️ Trình biên dịch thường ưu tiên đưa nhiều việc cho <span class="keyword">hàm được
+              gọi</span> để giảm kích
+            thước mã
+            nguồn (mã chỉ xuất hiện 1 lần thay vì nhiều lần ở các điểm gọi).</p>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Các thao tác khi gọi và kết thúc</h2>
+          <table style="width: 100%;">
+            <thead>
+              <tr>
+                <th>Giai đoạn</th>
+                <th>Các thao tác chính</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Khi gọi (Prologue)</strong></td>
+                <td>Thay đổi PC, cấp phát không gian stack, lưu con trỏ cũ vào chuỗi động, truyền tham số, lưu giá trị
+                  thanh ghi.</td>
+              </tr>
+              <tr>
+                <td><strong>Khi kết thúc (Epilogue)</strong></td>
+                <td>Trả kết quả về caller, khôi phục các thanh ghi, giải phóng không gian stack (thu hồi bản ghi), cập
+                  nhật PC.</td>
+              </tr>
+            </tbody>
+          </table>
+          <ul>
+            <li class="fragment">Một số ngôn ngữ cần chạy thêm mã <span class="keyword">khởi tạo</span> (initialisation)
+              hoặc <span class="keyword">kết thúc</span> (finalisation) cho các đối tượng cục bộ.</li>
+          </ul>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">4.</span><br />
+            Quản lý bộ nhớ động bằng Vùng nhớ Heap
+          </h1>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Khi Ngăn xếp là không đủ</h2>
+          <ul>
+            <li>Ngăn xếp chỉ hoạt động tốt khi việc giải phóng bộ nhớ tuân theo LIFO.</li>
+            <li>Nhiều ngôn ngữ (C, Pascal, Java...) cho phép cấp phát và thu hồi tại <strong>bất kỳ thời
+                điểm nào</strong>.</li>
+          </ul>
+          <div>
+            <pre><code class="language-cpp" data-trim data-line-numbers="">
+int *p, *q;
+p = malloc(sizeof(int)); // Cấp phát p
+q = malloc(sizeof(int)); // Cấp phát q
+// ... sử dụng p, q ...
+free(p);                 // Thu hồi p trước q -> Vi phạm LIFO
+free(q);</code></pre>
+          </div>
+          <p>⭐️ Để quản lý việc cấp phát/thu hồi tự do này, ta cần một vùng nhớ gọi là <span
+              class="keyword">Heap</span>.</p>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Bản chất của Heap</h2>
+          <div class="question-box">
+            <div class="question-title">Định nghĩa</div>
+            Trong thuật ngữ của ngôn ngữ lập trình, <span class="keyword">Heap</span> là một vùng nhớ nơi các khối bộ
+            nhớ có
+            thể được cấp phát và giải phóng tương đối tự do.
+          </div>
+          <ul>
+            <li><strong>Phân biệt:</strong> Khái niệm này <strong>không</strong> liên quan đến cấu trúc dữ liệu "heap"
+              (cây nhị phân) dùng trong thuật toán sắp xếp Heap Sort.</li>
+            <li>Quản lý Heap phức tạp hơn Stack vì phải theo dõi các vùng nhớ trống nằm rải rác.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Các kỹ thuật quản lý Heap</h2>
+          <div class="question-box">
+            <div class="question-title">Phân loại</div>
+            Dựa trên kích thước các khối bộ nhớ:
+            <ul>
+              <li><strong>Khối cố định (Fixed-length blocks):</strong> Heap được chia thành các phần bằng nhau.</li>
+              <li><strong>Khối biến đổi (Variable-length blocks):</strong> Cấp phát kích thước linh hoạt theo yêu cầu.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section style="font-size: 0.85em;" data-auto-animate>
+          <h2>Quản lý khối cố định</h2>
+          <ul>
+            <li>Toàn bộ Heap được chia thành các khối nhỏ có kích thước bằng nhau.</li>
+            <li>Các khối nhàn rỗi được nối với nhau thành một danh sách liên kết gọi là <span class="keyword">danh sách
+                rỗi</span> (free list).</li>
+            <li><strong>Thao tác:</strong>
+              <ul>
+                <li><strong>Cấp phát:</strong> Lấy khối đầu tiên từ danh sách rỗi.</li>
+                <li><strong>Thu hồi:</strong> Nối khối vừa giải phóng vào đầu danh sách rỗi.</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.85em;" data-auto-animate>
+          <h2>Quản lý khối cố định</h2>
+          <div style="text-align: center;">
+            <img src="img/lec-02c/free-list-1.png" alt="Fixed-length Blocks and Free List"
+              style="max-width: 50%; height: auto;" />
+            <div style="font-size: .7em; color: #555;">
+              <em>Quản lý khối cố định bằng danh sách rỗi (FL).</em>
+            </div>
+          </div>
+        </section>
+
+        <section style="font-size: 0.85em;" data-auto-animate>
+          <h2>Quản lý khối cố định</h2>
+          <div style="text-align: center;">
+            <img src="img/lec-02c/free-list-2.png" alt="Fixed-length Blocks and Free List after allocation"
+              style="max-width: 50%; height: auto;" />
+            <div style="font-size: .7em; color: #555;">
+              <em>Quản lý khối cố định bằng danh sách rỗi (FL) sau khi cấp phát (các khối màu xám đã được cấp
+                phát).</em>
+            </div>
+          </div>
+        </section>
+
+        <section style="font-size: 0.85em;" data-auto-animate>
+          <h2>Quản lý khối biến đổi</h2>
+          <p>Vấn đề lớn nhất: <span class="keyword">phân mảnh</span>
+            (fragmentation).</p>
+          <div class="question-box">
+            <div class="question-title">Định nghĩa</div>
+            <ul>
+              <li><strong>Phân mảnh nội (Internal):</strong> Cấp phát khối lớn hơn mức yêu cầu, phần dư bên trong bị
+                lãng phí.</li>
+              <li><strong>Phân mảnh ngoại (External):</strong> Tổng bộ nhớ trống đủ đáp ứng, nhưng bị chia nhỏ thành
+                nhiều khối không liên tục.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section style="font-size: 0.85em;" data-auto-animate>
+          <h2>Quản lý khối biến đổi</h2>
+          <div style="text-align: center;">
+            <img src="img/lec-02c/external-fragmentation.png" alt="External Fragmentation in Variable-length Blocks"
+              style="max-width: 60%; height: auto;" />
+            <div style="font-size: .6em; color: #555;">
+              <em>Phân mảnh ngoại trong quản lý khối biến đổi.
+                <br />
+                Bộ nhớ chứa các khối rỗi (\(x\) và \(y\)).
+                Tuy tổng bộ nhớ trống đủ đáp ứng yêu cầu (\(x + y > z\)), nhưng không thể cấp phát do \(x\) và \(y\)
+                không
+                liên tục.</em>
+            </div>
+          </div>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Kỹ thuật Danh sách rỗi đơn</h2>
+          <ul>
+            <li><strong>Ban đầu:</strong> Toàn bộ vùng nhớ Heap được coi là một khối trống duy nhất.</li>
+            <li class="fragment"><strong>Cấp phát sơ khởi:</strong> Khi yêu cầu \(n\) đơn vị nhớ, hệ thống cắt \(n\) đơn
+              vị từ đầu Heap
+              và
+              tăng con trỏ Heap lên tương ứng.</li>
+            <li class="fragment"><strong>Thu hồi bộ nhớ:</strong> Các khối bộ nhớ sau khi giải phóng không trả về đầu
+              Heap mà được thu
+              gom vào một danh sách rỗi.</li>
+            <li class="fragment"><strong>Tái sử dụng:</strong> Khi vùng nhớ Heap mới đã dùng hết, hệ thống sẽ duyệt tìm
+              trong
+              danh sách rỗi một khối có kích thước \(k \ge n\) để tái cấp phát.
+            </li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.75em;">
+          <h2>Chiến lược tìm kiếm khối rỗi</h2>
+          <div class="question-box">
+            <div class="question-title">Phân loại</div>
+            Để tìm khối rỗi kích thước \(k \ge n\):
+            <ul>
+              <li><strong>Vị trí đầu tiên:</strong> Chọn khối rỗi đầu tiên đủ lớn (ưu tiên tốc độ).</li>
+              <li><strong>Vị trí khớp nhất:</strong> Chọn khối rỗi có kích thước gần nhất với yêu cầu (ưu tiên tiết kiệm
+                bộ
+                nhớ).</li>
+            </ul>
+          </div>
+          <ul>
+            <li><strong>Gộp khối (Compaction):</strong> Khi thu hồi, kiểm tra các khối liền kề để gộp lại thành khối lớn
+              hơn nhằm giảm phân mảnh ngoại.</li>
+            <li class="fragment">Nếu phần dư \(k - n\) lớn hơn một ngưỡng, nó sẽ được tách thành khối rỗi mới.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Kỹ thuật Nén bộ nhớ (Compaction)</h2>
+          <ul>
+            <li>Khi không còn khối nào đủ lớn, ta thực hiện di chuyển toàn bộ các khối đang sử dụng về một đầu của Heap.
+            </li>
+            <li>Kết quả: Toàn bộ bộ nhớ trống được dồn lại thành một khối liên tục duy nhất.</li>
+          </ul>
+          <div class="question-box">
+            <div class="question-title">Nhận xét</div>
+            Kỹ thuật này yêu cầu các khối bộ nhớ phải có khả năng <strong>di chuyển được</strong> (movable).
+          </div>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Sử dụng nhiều danh sách rỗi</h2>
+          <ul>
+            <li>Để giảm chi phí tìm kiếm, ta phân loại khối rỗi theo kích thước.</li>
+            <li>Khi cần khối kích thước \(n\), chỉ tìm trong danh sách có khối \(\ge n\).</li>
+            <li>Hai phương pháp phổ biến:
+              <ul>
+                <li><strong>Buddy System:</strong> Kích thước các khối là lũy thừa của 2 (\(2^k\)).</li>
+                <li><strong>Fibonacci Heap:</strong> Sử dụng các số Fibonacci làm kích thước khối.</li>
+              </ul>
+            </li>
+          </ul>
+          <div class="question-box">
+            <div class="question-title">So sánh</div>
+            Phương pháp Fibonacci tăng trưởng chậm hơn lũy thừa 2, giúp giảm hiện tượng <span class="keyword">phân mảnh
+              nội</span> hiệu quả hơn.
+          </div>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">5.</span><br />
+            Hiện thực hóa quy tắc phạm vi
+          </h1>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Môi trường \(\rightarrow\) Bản ghi kích hoạt</h2>
+          <ul>
+            <li><strong>Bản ghi kích hoạt</strong> chứa không gian nhớ cho các tên cục
+              bộ.</li>
+            <li>Khi gặp một tham chiếu <strong>không-cục-bộ</strong>, hệ thống kiểm tra các
+              bản ghi kích hoạt còn hoạt động trên ngăn xếp.</li>
+            <li>Mục tiêu: Tìm đúng khối nơi tên đó được định nghĩa để lấy liên kết.</li>
+            <li>Thứ tự kiểm tra phụ thuộc vào quy tắc phạm vi (tĩnh hoặc động) của ngôn ngữ lập trình.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Phạm vi tĩnh: Chuỗi tĩnh</h2>
+          <div class="question-box">
+            <div class="question-title">Định nghĩa</div>
+            <span class="keyword">Chuỗi tĩnh</span> (static chain) là tập hợp các con trỏ liên kết một bản ghi kích hoạt
+            với bản ghi của khối bao ngoài gần nhất về mặt văn bản (textual nesting).
+          </div>
+          <ul>
+            <li><span class="keyword">Chuỗi động</span> (dynamic chain) trỏ theo thứ tự lời gọi hàm trên ngăn xếp.</li>
+            <li>Trong quy tắc phạm vi tĩnh, chuỗi động <strong>không</strong> phản ánh đúng môi trường cần tìm kiếm.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Ví dụ về Chuỗi tĩnh</h2>
+          <div style="font-size: 0.75em;">
+            <pre><code class="language-cpp" data-trim>
+A: {
+    int y = 0;
+    B: { 
+        int x = 0;
+        void fie(int n) {
+            x = n + 1; // x thuộc khối B
+            y = n + 2; // y thuộc khối A
+        }
+        C: { 
+            int x = 1;
+            fie(2);
+            write(x);
+        }
+    }
+  write(y);
+}</code></pre>
+          </div>
+          <ul style="font-size: 0.85em;">
+            <li>Khi gọi <span class="inline-code">fie</span>, mặc dù khối C nằm ngay trước nó trên ngăn xếp, nhưng <span
+                class="inline-code">fie</span> phải dùng <span class="inline-code">x</span> của B.</li>
+            <li class="fragment">Con trỏ chuỗi tĩnh của <span class="inline-code">fie</span> sẽ trỏ thẳng tới bản ghi
+              của B để truy cập đúng biến.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Chuỗi tĩnh trên Ngăn xếp</h2>
+
+          <div style="text-align: center;">
+            <img src="img/lec-02c/activation-stack-w-static-chain.png" alt="Activation Stack with Static Chain"
+              style="max-width: 60%; height: auto;" />
+            <div style="font-size: 0.7em; color: #555;">
+              <em> Các bản ghi A, B, C, fie được nối bởi chuỗi
+                động (nét liền) và chuỗi tĩnh (nét đứt).</em>
+            </div>
+          </div>
+        </section>
+
+        <section style="font-size: 0.7em;">
+          <h2>Tính toán con trỏ chuỗi tĩnh</h2>
+          <p>Hàm gọi tính toán con trỏ chuỗi tĩnh và chuyển cho hàm được gọi khi bắt đầu lời gọi.</p>
+          <div class="question-box">
+            <div class="question-title">Phân loại</div>
+            <ul>
+              <li><strong>Hàm được gọi nằm ngoài hàm gọi:</strong> Nếu chênh lệch mức lồng là \(k\) thì hàm gọi lần theo
+                chuỗi tĩnh
+                của mình \(k\) bước để tìm bản ghi bao ngoài hàm được gọi.</li>
+              <li><strong>Hàm được gọi nằm trong hàm gọi:</strong> Con trỏ chuỗi tĩnh của hàm được gọi trỏ thẳng tới bản
+                ghi của
+                hàm gọi.</li>
+            </ul>
+          </div>
+          <p>⭐️ Giá trị \(k\) được trình biên dịch xác định tĩnh dựa trên cấu trúc chương trình.</p>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Truy cập biến qua Chuỗi tĩnh</h2>
+          <ul>
+            <li>Trình biên dịch dùng <span class="keyword">bảng ký hiệu</span> (symbol table) để lưu mức lồng của từng
+              tên.
+            </li>
+            <li>Tại thời điểm thực thi, để truy cập biến không-cục-bộ:
+              <ul>
+                <li>Lần theo con trỏ tĩnh \(d\) bước (với \(d\) là khoảng cách mức lồng).</li>
+                <li>Sử dụng <span class="keyword">offset</span> cố định bên trong bản ghi để lấy dữ liệu.</li>
+              </ul>
+            </li>
+            <li class="fragment"><strong>Ưu điểm:</strong> Không cần tìm kiếm theo tên tại thời điểm thực thi, chỉ cần
+              giải tham chiếu (dereference) con trỏ.</li>
+          </ul>
+        </section>
+
+        <section data-auto-animate style="font-size: 0.85em;">
+          <h2>Cải tiến: Kỹ thuật Display</h2>
+          <div class="question-box">
+            <div class="question-title">Định nghĩa</div>
+            <span class="keyword">Display</span> là một vector (mảng) chứa các con trỏ tới các bản ghi kích hoạt đang
+            hoạt động ở từng mức lồng nhau tương ứng.
+          </div>
+          <ul>
+            <li>Mục tiêu: Truy cập biến không-cục-bộ ở mức \(k\) chỉ với 2 lần truy cập bộ nhớ (hằng số).</li>
+            <li>Tránh việc phải lần theo chuỗi tĩnh nhiều bước nếu mức lồng quá sâu.</li>
+          </ul>
+        </section>
+
+        <section data-auto-animate style="font-size: 0.85em;">
+          <h2>Display khi chuyển môi trường</h2>
+          <ul>
+            <li>Khi vào một khối/thủ tục ở mức lồng \(k\):
+              <ul>
+                <li>Lưu giá trị cũ của <span class="inline-code">display[k]</span> vào bản ghi kích hoạt mới.</li>
+                <li>Cập nhật <span class="inline-code">display[k]</span> trỏ tới bản ghi hiện tại.</li>
+              </ul>
+            </li>
+            <li class="fragment">Khi thoát khối: Khôi phục lại giá trị cũ từ bản ghi để trả lại trạng thái môi trường
+              trước đó.</li>
+          </ul>
+        </section>
+
+        <section data-auto-animate style="font-size: 0.85em;">
+          <h2>Display khi chuyển môi trường</h2>
+          <div style="display: grid; grid-template-columns: 0.25fr 1fr; gap: 20px;">
+            <div style="text-align: center;">
+              <img src="img/lec-02c/display-block-structure.png" alt="A block structure"
+                style="max-width: 80%; height: auto;" />
+              <div style="font-size: 0.7em; color: #555;">
+                <em>Một cấu trúc khối lồng nhau.</em>
+              </div>
+            </div>
+            <div style="text-align: center;">
+              <img src="img/lec-02c/display-technique.png" alt="Display Management"
+                style="max-width: 30%; height: auto;" />
+              <div style="font-size: 0.7em; color: #555;">
+                <em>Cách lưu trữ các con trỏ display cũ (mũi tên
+                  bên trái stack). Thứ tự gọi: A, B, C, D, E, C.</em>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section data-auto-animate style="font-size: 0.85em;">
+          <h2>Hiện thực hóa Phạm vi động</h2>
+          <div class="question-box">
+            <div class="question-title">Nguyên tắc</div>
+            Phân giải tên bằng cách quét ngược theo <strong>thứ tự kích hoạt</strong> (chuỗi động) trên ngăn xếp cho đến
+            khi tìm thấy khai báo gần nhất.
+          </div>
+          <ul>
+            <li>Môi trường được quản lý hoàn toàn tại runtime.</li>
+            <li class="fragment"><strong>Khó khăn:</strong> Phải lưu trữ <strong>tên</strong> biến thực tế tại thời gian
+              thực thi
+              để thực hiện so khớp, do vị trí (offset) của cùng một tên có thể thay đổi.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Cấu trúc lưu trữ trong Phạm vi động</h2>
+          <ul>
+            <li><strong>Lưu trong bản ghi kích hoạt:</strong>
+              <ul>
+                <li>Lưu tên và đối tượng trực tiếp trên ngăn xếp</li>
+                <li>Quét ngược ngăn xếp để tìm kiếm</li>
+              </ul>
+            </li>
+            <li><strong>Lưu trong danh sách liên kết (Association List, A-list):</strong> Danh sách riêng biệt
+              hoạt động như ngăn xếp, chứa các cặp (tên, thông tin đối tượng).
+              <ul>
+                <li>Khi vào môi trường mới: Push liên kết mới vào A-list.</li>
+                <li>Khi thoát môi trường: Pop các liên kết đó ra.</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Hạn chế của A-list và Quét ngăn xếp</h2>
+          <ul>
+            <li><strong>Chi phí tìm kiếm:</strong> Có thể phải quét qua toàn bộ danh sách để tìm các tên "toàn cục".
+            </li>
+            <li><strong>Hiệu năng:</strong> Không thể tối ưu hóa bằng offset như phạm vi tĩnh.</li>
+          </ul>
+          <div class="question-box">
+            <div class="question-title">Nhận xét</div>
+            Phạm vi động đơn giản về ý tưởng nhưng kém hiệu quả trong thực thi so với phạm vi tĩnh.
+          </div>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Bảng tham chiếu trung tâm (CRT)</h2>
+          <div class="question-box">
+            <div class="question-title">Định nghĩa</div>
+            <span class="keyword">CRT</span> (Central Referencing environment Table) là một bảng duy nhất chứa mọi tên
+            dùng trong chương trình để truy cập liên kết trong thời gian hằng số.
+          </div>
+          <ul>
+            <li>Mỗi tên có một mục (entry) cố định trong bảng, kèm cờ hiệu (active/inactive) và con trỏ tới dữ liệu.
+            </li>
+            <li>Tránh tìm kiếm tốn kém trong thời gian thực thi của A-list.</li>
+          </ul>
+        </section>
+
+        <section data-auto-animate style="font-size: 0.85em;">
+          <h2>Quản lý CRT khi vào/ra khối</h2>
+          <ul>
+            <li>Khi vào khối mới: Cập nhật mục tương ứng trong CRT; các liên kết cũ bị che khuất phải được cất đi.</li>
+            <li>Các phương pháp lưu trữ liên kết cũ:
+              <ul>
+                <li><strong>Stack riêng cho mỗi tên:</strong> Đỉnh stack luôn là liên kết đang hoạt động.</li>
+                <li><strong>Hidden Stack chung:</strong> Một ngăn xếp ẩn lưu mọi liên kết bị vô hiệu hóa để khôi phục
+                  sau.</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section data-auto-animate style="font-size: 0.85em;">
+          <h2>Quản lý CRT khi vào/ra khối</h2>
+          <h4>Ví dụ</h4>
+          <div style="text-align: center;">
+            <img src="img/lec-02c/CRT-blocks-example.png" alt="An example of blocks and their declarations"
+              style="max-width: 30%; height: auto;" />
+            <div style="font-size: 0.7em; color: #555;">
+              <em>Ví dụ về các khối và khai báo của chúng.</em>
+            </div>
+          </div>
+        </section>
+
+        <section data-auto-animate style="font-size: 0.85em;">
+          <h2>Quản lý CRT khi vào/ra khối</h2>
+          <h4>Ví dụ</h4>
+          <div style="text-align: center;">
+            <img src="img/lec-02c/CRT.png" alt="Dynamic scope with CRT" style="max-width: 70%; height: auto;" />
+            <div style="font-size: 0.7em; color: #555;">
+              <em>Môi trường cho khối D sau khi gọi A, B, C, D với quy tắc phạm vi động được hiện thực hoá bằng
+                CRT với ngăn xếp riêng cho mỗi tên.</em>
+            </div>
+          </div>
+        </section>
+
+        <section data-auto-animate style="font-size: 0.85em;">
+          <h2>Quản lý CRT khi vào/ra khối</h2>
+          <h4>Ví dụ</h4>
+          <div style="text-align: center;">
+            <img src="img/lec-02c/CRT-hidden-stack.png" alt="Dynamic scope with CRT and hidden stack"
+              style="max-width: 70%; height: auto;" />
+            <div style="font-size: 0.7em; color: #555;">
+              <em>Môi trường cho khối D sau khi gọi A, B, C, D với quy tắc phạm vi động được hiện thực hoá bằng CRT và
+                hidden stack.</em>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section style="font-size: 0.85em;">
+        <h2>Tổng kết</h2>
+        <ul>
+          <li>Quản lý bộ nhớ là nhiệm vụ cốt lõi của máy trừu tượng.</li>
+          <li><strong>Cấp phát tĩnh:</strong> Dùng cho biến toàn cục, hằng số; không hỗ trợ đệ quy.</li>
+          <li><strong>Ngăn xếp (Stack):</strong> Hỗ trợ đệ quy và cấu trúc khối qua Bản ghi kích hoạt (Activation
+            Record).</li>
+          <li><strong>Vùng nhớ Heap:</strong> Cho phép cấp phát động tự do; đối mặt với vấn đề phân mảnh.</li>
+          <li><strong>Phạm vi tĩnh:</strong> Hiện thực bằng Static Chain hoặc Display.</li>
+          <li><strong>Phạm vi động:</strong> Hiện thực bằng Association List hoặc Central Table (CRT).</li>
+        </ul>
+      </section>
+
+      <div class="footer">
+        Phương pháp luận lập trình (Học kỳ 2 2025-2026) §2b: Quản lý bộ nhớ
+      </div>
+    </div>
+  </div>
+  <script src="revealjs/dist/reveal.js"></script>
+  <script src="plugin/notes/notes.js"></script>
+  <script src="plugin/markdown/markdown.js"></script>
+  <script src="plugin/highlight/highlight.js"></script>
+  <script src="plugin/math/math.js"></script>
+  <script>
+    Reveal.initialize({
+      controlsLayout: "edges",
+      slideNumber: true,
+      hashOneBasedIndex: true,
+      hash: true,
+      plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX],
+    });
+  </script>
+</body>
+
+</html>

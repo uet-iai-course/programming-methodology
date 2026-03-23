@@ -1,0 +1,3025 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Bài 4: Tổ chức và trừu tượng hóa dữ liệu</title>
+
+  <link rel="stylesheet" href="revealjs/dist/reset.css" />
+  <link rel="stylesheet" href="revealjs/dist/reveal.css" />
+  <link rel="stylesheet" href="revealjs/dist/theme/white.css" />
+  <link rel="stylesheet" href="plugin/highlight/monokai.css" />
+  <link rel="stylesheet" href="lecture-style.css" />
+</head>
+
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ========================================================
+           TITLE & TABLE OF CONTENTS
+           ======================================================== -->
+      <section>
+        <section>
+          <h1>Phương pháp luận lập trình</h1>
+          <h3>Bài 4: Tổ chức &amp; trừu tượng hoá <br /> dữ liệu</h3>
+          <p>Trường ĐH Công nghệ – Đại học Quốc gia Hà Nội</p>
+        </section>
+
+        <section>
+          <h2>Nội dung</h2>
+          <ol>
+            <li>Kiểu dữ liệu và Hệ thống kiểu</li>
+            <li>Các kiểu vô hướng và phức hợp</li>
+            <li>Tương đương và Tương thích kiểu</li>
+            <li>Tính đa hình</li>
+            <li>Trừu tượng hóa dữ liệu và Module</li>
+            <li>Tham chiếu treo &amp; Thu gom rác</li>
+          </ol>
+        </section>
+
+        <section style="font-size:0.6em;">
+          <h2>Lộ trình bài học</h2>
+          <p style="color:#555;margin-bottom:14px;font-size:0.95em;">Mỗi phần trả lời một câu hỏi — các câu hỏi xây dựng
+            ở phần sau sẽ dựa trên phần trước.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+
+            <div
+              style="background:#e0f4f8;border:2px solid #1E93AB;border-radius:8px;padding:12px 14px;position:relative;">
+              <div
+                style="font-size:1.6em;font-weight:bold;color:#1E93AB;opacity:0.25;position:absolute;top:8px;right:12px;line-height:1;">
+                1</div>
+              <div style="font-weight:bold;color:#1E93AB;margin-bottom:5px;">Kiểu dữ liệu &amp; Hệ thống kiểu</div>
+              <div style="color:#333;font-style:italic;margin-bottom:6px;">"Dữ liệu này <em>là gì</em>?"</div>
+              <div style="color:#555;font-size:0.9em;">Tại sao cần kiểu? Kiểm tra kiểu tĩnh vs động. An toàn kiểu.</div>
+            </div>
+
+            <div
+              style="background:#fff8e1;border:2px solid #F59E0B;border-radius:8px;padding:12px 14px;position:relative;">
+              <div
+                style="font-size:1.6em;font-weight:bold;color:#F59E0B;opacity:0.25;position:absolute;top:8px;right:12px;line-height:1;">
+                2</div>
+              <div style="font-weight:bold;color:#B45309;margin-bottom:5px;">Các kiểu vô hướng &amp; phức hợp</div>
+              <div style="color:#333;font-style:italic;margin-bottom:6px;">"Dữ liệu được <em>lưu</em> như thế nào?"
+              </div>
+              <div style="color:#555;font-size:0.9em;">Mảng, record, union, con trỏ — bố cục trong bộ nhớ.</div>
+            </div>
+
+            <div
+              style="background:#ede7f6;border:2px solid #7B5EA7;border-radius:8px;padding:12px 14px;position:relative;">
+              <div
+                style="font-size:1.6em;font-weight:bold;color:#7B5EA7;opacity:0.25;position:absolute;top:8px;right:12px;line-height:1;">
+                3</div>
+              <div style="font-weight:bold;color:#7B5EA7;margin-bottom:5px;">Tương đương &amp; Tương thích kiểu</div>
+              <div style="color:#333;font-style:italic;margin-bottom:6px;">"Hai kiểu có <em>hoán đổi</em> được không?"
+              </div>
+              <div style="color:#555;font-size:0.9em;">Name vs Structural. Coercion vs Cast. Duck typing.</div>
+            </div>
+
+            <div
+              style="background:#fff3e0;border:2px solid #C2610F;border-radius:8px;padding:12px 14px;position:relative;">
+              <div
+                style="font-size:1.6em;font-weight:bold;color:#C2610F;opacity:0.25;position:absolute;top:8px;right:12px;line-height:1;">
+                4</div>
+              <div style="font-weight:bold;color:#C2610F;margin-bottom:5px;">Tính đa hình</div>
+              <div style="color:#333;font-style:italic;margin-bottom:6px;">"Code có thể <em>dùng lại</em> cho nhiều kiểu
+                không?"</div>
+              <div style="color:#555;font-size:0.9em;">Overloading, templates, virtual dispatch, type inference.</div>
+            </div>
+
+            <div
+              style="background:#e8f5e9;border:2px solid #2E7D32;border-radius:8px;padding:12px 14px;position:relative;">
+              <div
+                style="font-size:1.6em;font-weight:bold;color:#2E7D32;opacity:0.25;position:absolute;top:8px;right:12px;line-height:1;">
+                5</div>
+              <div style="font-weight:bold;color:#2E7D32;margin-bottom:5px;">Trừu tượng hóa &amp; Module</div>
+              <div style="color:#333;font-style:italic;margin-bottom:6px;">"Ai được phép <em>biết</em> gì về dữ liệu?"
+              </div>
+              <div style="color:#555;font-size:0.9em;">ADT, che giấu biểu diễn, độc lập biểu diễn, generic module.</div>
+            </div>
+
+            <div
+              style="background:#fce4ec;border:2px solid #E62727;border-radius:8px;padding:12px 14px;position:relative;">
+              <div
+                style="font-size:1.6em;font-weight:bold;color:#E62727;opacity:0.25;position:absolute;top:8px;right:12px;line-height:1;">
+                6</div>
+              <div style="font-weight:bold;color:#E62727;margin-bottom:5px;">Tham chiếu treo &amp; GC</div>
+              <div style="color:#333;font-style:italic;margin-bottom:6px;">"Bộ nhớ được <em>thu hồi</em> khi nào và bởi
+                ai?"</div>
+              <div style="color:#555;font-size:0.9em;">Dangling ref, Tombstone, Locks &amp; Keys, 4 kỹ thuật GC.</div>
+            </div>
+
+          </div>
+        </section>
+      </section>
+
+      <!-- ========================================================
+           SECTION 1 – KIỂU DỮ LIỆU VÀ HỆ THỐNG KIỂU
+           ======================================================== -->
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">1.</span><br />
+            Kiểu dữ liệu và <br /> Hệ thống kiểu
+          </h1>
+        </section>
+
+        <section style="font-size: 0.65em;">
+          <h2>Tổng quan</h2>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:0; margin-top:0.3em;">
+
+            <!-- Layer 1: Hardware — gray -->
+            <div style="background:#f5f5f5; border:2px solid #888; border-radius:8px;
+                        padding:0.35em 1.2em; width:68%; text-align:center;">
+              <strong style="color:#555;">Phần cứng</strong>
+              &mdash; chỉ thấy bit: <span class="inline-code">01001101&thinsp;…</span>
+            </div>
+
+            <div style="text-align:center; color:#888; line-height:1.5;">
+              ↓ <span style="font-style:italic; font-size:0.85em;">gắn ý nghĩa</span>
+            </div>
+
+            <!-- Layer 2: Data type — teal -->
+            <div style="background:#e8f7fa; border:2px solid #1E93AB; border-radius:8px;
+                        padding:0.35em 1.2em; width:68%; text-align:center;">
+              <strong style="color:#1E93AB;">Kiểu dữ liệu</strong>
+              &mdash; tập giá trị &thinsp;·&thinsp; biểu diễn &thinsp;·&thinsp; thao tác
+            </div>
+
+            <div style="text-align:center; color:#1E93AB; line-height:1.5;">
+              ↓ <span style="color:#888; font-style:italic; font-size:0.85em;">quản lý bằng quy tắc</span>
+            </div>
+
+            <!-- Layer 3: Type system — purple -->
+            <div style="background:#f0ebf8; border:2px solid #7B5EA7; border-radius:8px;
+                        padding:0.35em 1.2em; width:68%; text-align:center;">
+              <strong style="color:#7B5EA7;">Hệ thống kiểu</strong>
+              &mdash; tương đương &thinsp;·&thinsp; tương thích &thinsp;·&thinsp; suy diễn
+            </div>
+
+            <div style="text-align:center; color:#7B5EA7; line-height:1.5;">
+              ↓ <span style="color:#888; font-style:italic; font-size:0.85em;">thực thi qua</span>
+            </div>
+
+            <!-- Layer 4: Type checking — orange -->
+            <div style="background:#fef3e2; border:2px solid #C2610F; border-radius:8px;
+                        padding:0.35em 1.2em; width:68%; text-align:center;">
+              <strong style="color:#C2610F;">Kiểm tra kiểu</strong>
+              &mdash; tĩnh (C++, Java) &thinsp;·&thinsp; động (Python, JS)
+            </div>
+
+            <div style="text-align:center; color:#C2610F; line-height:1.5;">
+              ↓ <span style="color:#888; font-style:italic; font-size:0.85em;">mục tiêu</span>
+            </div>
+
+            <!-- Layer 5: Type safety — green -->
+            <div style="background:#e8f5e9; border:2px solid #2E7D32; border-radius:8px;
+                        padding:0.35em 1.2em; width:68%; text-align:center;">
+              <strong style="color:#2E7D32;">An toàn kiểu</strong> (Type Safety)
+            </div>
+
+          </div>
+        </section>
+
+        <section style="font-size: 1em;" data-auto-animate>
+          <h2>Tại sao cần kiểu dữ liệu?</h2>
+          <ul>
+            <li>Phần cứng chỉ thấy bit.</li>
+            <li>Lập trình viên cần khái niệm gần bài toán hơn.</li>
+            <li><span class="keyword">Kiểu dữ liệu</span> gắn bit với ý nghĩa.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 1em;" data-auto-animate>
+          <h2>Tại sao cần kiểu dữ liệu?</h2>
+          <ul>
+            <li><strong>Thiết kế</strong>: mô hình hoá bài toán bằng kiểu — <span class="inline-code">SinhVien</span>,
+              <span class="inline-code">KhoaHoc</span>, <span class="inline-code">DiemThi</span> — thay vì chỉ dùng
+              <span class="inline-code">int</span> hay <span class="inline-code">string</span> thuần.
+            </li>
+            <li><strong>Kiểm tra</strong>: trình biên dịch bắt lỗi gán nhầm kiểu trước khi chạy.</li>
+            <li><strong>Cài đặt</strong>: hỗ trợ cấp phát và tối ưu bộ nhớ.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.9em;">
+          <h2>Kiểu dữ liệu là gì?</h2>
+          <div class="question-box">
+            <div class="question-title">Định nghĩa</div>
+            <span class="keyword">Kiểu dữ liệu</span> = tập giá trị + cách biểu diễn + các thao tác.
+          </div>
+          <ul>
+            <li><strong>Đồng nhất</strong>: các giá trị trong kiểu phải cùng bản chất.</li>
+            <li><strong>Biểu diễn hiệu quả</strong>: lưu được trong bộ nhớ hữu hạn.</li>
+            <li><strong>Thao tác hiệu quả</strong>: tính toán được trên biểu diễn đó.</li>
+          </ul>
+        </section>
+
+        <section data-auto-animate>
+          <h2>Ba tính chất của giá trị</h2>
+          <table class="comparison-table" style="font-size:0.8em;width:100%;">
+            <thead>
+              <tr>
+                <th>Tính chất</th>
+                <th>Ý nghĩa</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="keyword">Denotable</span></td>
+                <td>Giá trị có thể <strong>đặt tên</strong> (khai báo, tham số, …)</td>
+              </tr>
+              <tr>
+                <td><span class="keyword">Expressible</span></td>
+                <td>Giá trị có thể là <strong>kết quả biểu thức</strong> (không cần tên)</td>
+              </tr>
+              <tr>
+                <td><span class="keyword">Storable</span></td>
+                <td>Giá trị có thể <strong>gán vào biến</strong> hoặc truyền như tham số</td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="margin-top:0.6em;">Câu hỏi: <em>hàm</em> có thỏa cả 3 tính chất?</p>
+        </section>
+
+        <section data-auto-animate>
+          <h2>Ba tính chất của giá trị</h2>
+          <div>
+            <p style="margin:0 0 0.3em;"><strong>Python</strong> — hàm thỏa <em>cả 3</em></p>
+            <pre><code class="language-python" data-trim>
+# Denotable — có thể đặt tên
+def double(x):
+    return x * 2
+
+# Expressible — tồn tại như biểu thức, không cần tên
+# lambda TẠO RA hàm tại chỗ và dùng luôn
+print((lambda x: x * 2)(5))   # 10
+#     |_______________|
+#     biểu thức → hàm, không có tên
+
+# Storable — gán vào biến, bỏ vào danh sách
+f = double
+ops = [double, abs, len]
+              </code></pre>
+          </div>
+          <p style="margin-top:0.6em;">
+            → Hàm trong Python <em>là</em> giá trị hạng nhất (first-class value).
+          </p>
+        </section>
+
+        <section data-auto-animate>
+          <h2>Ba tính chất của giá trị</h2>
+          <div>
+            <p style="margin:0 0 0.3em;"><strong>C</strong> — hàm chỉ là <em>denotable</em>:</p>
+            <pre><code class="language-c" data-trim>
+// Denotable — hàm phải có tên
+int double(int x) { return x * 2; }
+
+// KHÔNG expressible — không thể tạo hàm tại chỗ
+// Muốn dùng hàm, phải khai báo có tên trước
+
+// Storable chỉ qua con trỏ hàm
+int (*f)(int) = double;  // lưu địa chỉ, không phải giá trị
+              </code></pre>
+            <p style="margin-top:0.5em;">
+              → Hàm trong C <em>không phải</em> giá trị hạng nhất.
+            </p>
+          </div>
+        </section>
+
+        <section style="font-size: 0.8em;" data-auto-animate>
+          <h2>Hệ thống kiểu (Type System)</h2>
+          <div>Thành phần của hệ thống kiểu:</div>
+          <ul>
+            <li>Kiểu tiền định.</li>
+            <li>Cách tạo kiểu mới.</li>
+            <li>Quy tắc <strong>tương đương</strong>.</li>
+            <li>Quy tắc <strong>tương thích</strong>.</li>
+            <li>Quy tắc <strong>suy diễn kiểu</strong>.</li>
+            <li>Kiểm tra <strong>tĩnh</strong> hay <strong>động</strong>.</li>
+          </ul>
+          <p>Hệ thống kiểu <span class="keyword">an toàn</span> nếu lỗi kiểu không thể lọt qua mà không bị phát hiện.
+          </p>
+        </section>
+
+        <section style="font-size: 0.8em;" data-auto-animate>
+          <h2>Hệ thống kiểu (Type System)</h2>
+          <p>Ví dụ — C++ minh họa từng thành phần:</p>
+          <pre><code class="language-cpp" data-trim>
+// Kiểu tiền định
+int x = 5;
+bool flag = true;
+
+// Kiểu mới do người dùng tạo
+struct Point { int x, y; };
+Point p = {1, 2};
+
+// Tương thích: int → double (coercion ngầm)
+double d = x;           // hợp lệ — int tương thích double
+
+// Suy diễn kiểu (C++11)
+std::map&lt;std::string, std::vector&lt;int&gt;&gt; m;
+auto it = m.begin();   // kiểu thật: std::map&lt;...&gt;::iterator — quá dài!
+
+// Kiểm tra tĩnh — lỗi xảy ra trong lúc biên dịch
+std::string s = x;      // LỖI: int không tương thích std::string
+p = "hello";            // LỖI: const char* không tương thích Point
+          </code></pre>
+        </section>
+
+        <section style="font-size:0.8em;" data-auto-animate>
+          <h2>Kiểm tra kiểu: Tĩnh vs Động</h2>
+          <div>
+            <table class="comparison-table" style="width:100%;font-size:0.9em;">
+              <thead>
+                <tr>
+                  <th>Đặc điểm</th>
+                  <th>Kiểm tra Tĩnh (Static)</th>
+                  <th>Kiểm tra Động (Dynamic)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Thời điểm</strong></td>
+                  <td>Lúc biên dịch</td>
+                  <td>Lúc chạy</td>
+                </tr>
+                <tr>
+                  <td><strong>Hiệu năng</strong></td>
+                  <td>Thường nhanh hơn khi chạy</td>
+                  <td>Tốn kiểm tra lúc chạy</td>
+                </tr>
+                <tr>
+                  <td><strong>Tính linh hoạt</strong></td>
+                  <td>Chặt chẽ hơn</td>
+                  <td>Linh hoạt hơn</td>
+                </tr>
+                <tr>
+                  <td><strong>Phát hiện lỗi</strong></td>
+                  <td>Sớm</td>
+                  <td>Muộn</td>
+                </tr>
+                <tr>
+                  <td><strong>Ví dụ</strong></td>
+                  <td>Java, C, ML, Haskell</td>
+                  <td>Python, Lisp, Scheme</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section style="font-size:0.8em;" data-auto-animate>
+          <h2>Kiểm tra kiểu: Tĩnh vs Động</h2>
+          <div>
+            <p style="margin:0 0 0.3em;">
+              <strong style="color:#1E93AB;">Java</strong> — tĩnh: lỗi bắt tại
+              <span class="keyword">thời gian biên dịch</span> (compile-time)
+            </p>
+            <pre><code class="language-java" data-trim>
+String name = "Alice";
+
+// Trình biên dịch báo lỗi NGAY — không chạy được
+int x = name;  // LỖI: incompatible types
+
+System.out.println(x);  // không bao giờ chạy đến đây
+              </code></pre>
+            <p style="color:#2E7D32; margin-top:0.4em;">
+              ✓ Lỗi bị chặn trước khi deploy
+            </p>
+          </div>
+        </section>
+
+        <section style="font-size:0.8em;" data-auto-animate>
+          <h2>Kiểm tra kiểu: Tĩnh vs Động</h2>
+          <div>
+            <p style="margin:0 0 0.3em;">
+              <strong style="color:#C2610F;">Python</strong> — động: lỗi chỉ xảy ra tại
+              <span class="keyword">thời gian chạy</span> (runtime)
+            </p>
+            <pre><code class="language-python" data-trim>
+name = "Alice"
+
+if some_rare_condition:  # Không có lỗi... cho đến khi chạy đến đây
+    x = name + 5  # TypeError — nhưng chỉ khi nhánh này được kích hoạt!
+              </code></pre>
+            <p style="color:#E62727; margin-top:0.4em;">
+              ✗ Lỗi có thể lọt qua test, xuất hiện trên production
+            </p>
+          </div>
+        </section>
+
+        <section style="font-size:0.75em;" data-auto-animate>
+          <h2>Phân loại độ an toàn kiểu</h2>
+          <p style="color:#666; margin-bottom:0.6em;">Đây là một <em>phổ</em>, không phải 3 hộp rời nhau:</p>
+
+          <!-- Spectrum bar -->
+          <div style="display:flex; height:2.4em; border-radius:8px; overflow:hidden;
+                      margin-bottom:0.7em; font-size:0.95em;">
+            <div style="flex:1; background:#fff0f0; border:2px solid #E62727;
+                        display:flex; align-items:center; justify-content:center;">
+              <strong style="color:#E62727;">Không an toàn</strong>
+            </div>
+            <div style="flex:1; background:#fef3e2; border:2px solid #C2610F; border-left:none;
+                        display:flex; align-items:center; justify-content:center;">
+              <strong style="color:#C2610F;">An toàn cục bộ</strong>
+            </div>
+            <div style="flex:1; background:#e8f5e9; border:2px solid #2E7D32; border-left:none;
+                        display:flex; align-items:center; justify-content:center;">
+              <strong style="color:#2E7D32;">An toàn</strong>
+            </div>
+          </div>
+
+          <!-- Three columns -->
+          <div style="display:flex; gap:0.8em; font-size:0.92em;">
+            <div style="flex:1; border-left:3px solid #E62727; padding-left:0.6em;">
+              <div>Lỗi kiểu có thể lọt qua hoàn toàn.</div>
+              <div style="color:#888; margin-top:0.3em;">C, C++</div>
+              <div style="color:#aaa; font-size:0.88em;">số học con trỏ, kiểu hợp nhất</div>
+            </div>
+            <div style="flex:1; border-left:3px solid #C2610F; padding-left:0.6em;">
+              <div>Đa số an toàn, còn vài điểm nguy hiểm.</div>
+              <div style="color:#888; margin-top:0.3em;">Pascal, Ada</div>
+              <div style="color:#aaa; font-size:0.88em;">bản ghi biến thể không nhãn</div>
+            </div>
+            <div style="flex:1; border-left:3px solid #2E7D32; padding-left:0.6em;">
+              <div>Chương trình đúng kiểu không gây lỗi kiểu ẩn.</div>
+              <div style="color:#888; margin-top:0.3em;">ML, Haskell, Java, Python</div>
+              <div style="color:#aaa; font-size:0.88em;">tĩnh hoặc động hoặc cả hai</div>
+            </div>
+          </div>
+
+          <div class="question-box" style="margin-top:0.8em; padding:0.5em 0.9em;">
+            An toàn kiểu thường cần cả kiểm tra <strong>tĩnh</strong> lẫn <strong>động</strong>.
+          </div>
+        </section>
+
+        <section style="font-size:0.7em;" data-auto-animate>
+          <h2>Phân loại độ an toàn kiểu</h2>
+          <p>Ví dụ — tại sao C bị xếp <strong style="color:#E62727;">không an toàn</strong>:</p>
+          <div style="display:flex; gap:1.2em; margin-top:0.3em;">
+
+            <div style="flex:1;">
+              <p style="margin:0 0 0.3em;"><strong>Union: đọc sai trường</strong></p>
+              <pre><code class="language-c" data-trim>
+union Data { int i; float f; };
+
+union Data d;
+d.f = 3.14f;  // ghi vào trường float
+
+// Đọc ra trường int — KHÔNG bị báo lỗi
+printf("%d\n", d.i);
+// → in ra số ngẫu nhiên vô nghĩa
+              </code></pre>
+            </div>
+
+            <div style="flex:1;">
+              <p style="margin:0 0 0.3em;"><strong>Ép kiểu con trỏ tùy tiện</strong></p>
+              <pre><code class="language-c" data-trim>
+int x = 42;
+
+// Ép kiểu tùy tiện, biên dịch không cản
+float *p = (float *)&amp;x;
+
+// Đọc bits của int như float
+printf("%f\n", *p);
+// → không xác định, kết quả vô nghĩa
+              </code></pre>
+            </div>
+
+          </div>
+          <p style="margin-top:0.6em; color:#555;">
+            → Cả hai lỗi trên đều <strong>hợp lệ về cú pháp</strong>,
+            trình biên dịch không cảnh báo — lỗi chỉ lộ ra lúc chạy hoặc không bao giờ.
+          </p>
+        </section>
+      </section>
+
+      <!-- ========================================================
+           SECTION 2 – CÁC KIỂU VÔ HƯỚNG VÀ PHỨC HỢP
+           ======================================================== -->
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">2.</span><br />
+            Các kiểu vô hướng <br /> và phức hợp
+          </h1>
+        </section>
+
+        <!-- Overview: taxonomy -->
+        <section style="font-size:0.7em;">
+          <h2>Phân loại kiểu dữ liệu</h2>
+          <div style="display:flex; gap:1.2em; margin-top:0.5em;">
+
+            <div style="flex:1; border:2px solid #1E93AB; border-radius:8px;
+                        background:#e8f7fa; padding:0.6em 1em;">
+              <div style="color:#1E93AB; font-weight:bold; margin-bottom:0.4em; font-size:1.05em;">
+                Kiểu vô hướng
+              </div>
+              <div style="color:#555; font-size:0.88em; margin-bottom:0.5em;">
+                Giá trị <strong>nguyên tử</strong> — không ghép từ giá trị khác
+              </div>
+              <ul style="margin:0; line-height:1.7em;">
+                <li>Boolean</li>
+                <li>Character</li>
+                <li>Integer</li>
+                <li>Real</li>
+                <li>Unit / Void</li>
+                <li>Liệt kê (Enumeration)</li>
+                <li>Khoảng (Interval)</li>
+              </ul>
+            </div>
+
+            <div style="flex:1; border:2px solid #7B5EA7; border-radius:8px;
+                        background:#f0ebf8; padding:0.6em 1em;">
+              <div style="color:#7B5EA7; font-weight:bold; margin-bottom:0.4em; font-size:1.05em;">
+                Kiểu phức hợp
+              </div>
+              <div style="color:#555; font-size:0.88em; margin-bottom:0.5em;">
+                <strong>Ghép</strong> từ các kiểu thành phần khác
+              </div>
+              <ul style="margin:0; line-height:1.7em;">
+                <li>Bản ghi (Record)</li>
+                <li>Mảng (Array)</li>
+                <li>Hợp (Union)</li>
+                <li>Tập hợp (Set)</li>
+                <li>Con trỏ (Pointer)</li>
+                <li>Dãy (Sequence)</li>
+                <li>Kiểu đệ quy</li>
+                <li>Kiểu hàm</li>
+              </ul>
+            </div>
+
+          </div>
+        </section>
+
+        <section style="font-size:0.85em;">
+          <h2>Kiểu vô hướng (Scalar Types)</h2>
+          <p>Giá trị không ghép từ giá trị khác.</p>
+          <table class="comparison-table" style="width:100%;font-size:.8em;">
+            <thead>
+              <tr>
+                <th>Kiểu</th>
+                <th>Giá trị</th>
+                <th>Hệ quả thực tế</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Boolean</strong></td>
+                <td>true, false</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><strong>Character</strong></td>
+                <td>Mã ký tự</td>
+                <td>ASCII (1 byte) hoặc Unicode (2–4 bytes)</td>
+              </tr>
+              <tr>
+                <td><strong>Integer</strong></td>
+                <td>Tập con hữu hạn của ℤ</td>
+                <td>Hữu hạn → có thể tràn số (overflow)</td>
+              </tr>
+              <tr>
+                <td><strong>Real</strong></td>
+                <td>Tập con hữu hạn của ℚ</td>
+                <td>Xấp xỉ → <span class="inline-code">0.1 + 0.2 ≠ 0.3</span></td>
+              </tr>
+              <tr>
+                <td><strong>Unit / Void</strong></td>
+                <td>Một giá trị <span class="inline-code">()</span></td>
+                <td>Biểu diễn "không có kết quả"</td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="margin-top:14px;">
+            <span><strong>Lưu ý:</strong> <span class="inline-code">void</span> là kiểu có đúng một giá trị, không phải
+              tập rỗng.</span>
+          </div>
+        </section>
+
+        <section style="font-size:0.9em;" data-auto-animate>
+          <h2>Kiểu liệt kê (Enumeration)</h2>
+          <p>Tập hữu hạn các <strong>hằng số có tên</strong> — thay cho số nguyên thô.</p>
+          <ul style="margin-top:0.4em;">
+            <li>Dễ đọc, dễ bảo trì hơn so với số nguyên thô.</li>
+            <li>Là <span class="keyword">kiểu có thứ tự</span> — có thể so sánh, lặp.</li>
+            <li>C: <span class="inline-code">enum</span> vẫn là <span class="inline-code">int</span> — không an toàn
+              kiểu.</li>
+            <li>C++: <span class="inline-code">enum class</span> — an toàn kiểu.</li>
+            <li>Python: <span class="inline-code">Enum</span> — mỗi enum là
+              kiểu riêng biệt.</li>
+          </ul>
+        </section>
+
+        <section style="font-size:0.9em;" data-auto-animate>
+          <h2>Kiểu liệt kê (Enumeration)</h2>
+          <p>Ví dụ C++ <span class="inline-code">enum class</span>:</p>
+          <pre><code class="language-cpp" data-trim>
+// ❌ Dùng số nguyên thô, không an toàn kiểu
+void capNhat(int trangThai) {
+    if (trangThai == 2)  // 2 là gì? Ai nhớ?
+        guiThongBao();
+}
+capNhat(999);            // Hợp lệ! Trình biên dịch không cản
+// --------------------------------
+// ✅ Dùng enum class — rõ ràng, an toàn
+enum class TrangThai { ChoXuLy, DangGiao, DaGiao, DaHuy };
+
+void capNhat(TrangThai t) {
+    if (t == TrangThai::DaGiao)
+        guiThongBao();
+}
+capNhat(999);            // LỖI biên dịch — an toàn!
+          </code></pre>
+        </section>
+
+        <section style="font-size:0.9em;" data-auto-animate>
+          <div
+            style="position:absolute;top:10px;right:10px;background:#546E7A;color:white;font-size:0.5em;padding:4px 14px;border-radius:20px;font-weight:bold;z-index:10;">
+            📖 Tự học</div>
+          <h2>Kiểu liệt kê (Enumeration)</h2>
+          <p>Ví dụ Python <span class="inline-code">Enum</span>:</p>
+          <pre><code class="language-python" data-trim>
+from enum import Enum
+
+class MauDen(Enum):
+    DO   = 1
+    VANG = 2
+    XANH = 3
+
+den = MauDen.DO
+
+# Rõ nghĩa hơn so với dùng số nguyên thô
+if den == MauDen.DO:
+    print("Dừng lại")       # thay vì: if den == 1
+
+# Enum hỗ trợ lặp và so sánh thứ tự
+for mau in MauDen:
+    print(mau.name, mau.value)
+          </code></pre>
+        </section>
+
+        <section style="font-size:0.9em;" data-auto-animate>
+          <div
+            style="position:absolute;top:10px;right:10px;background:#546E7A;color:white;font-size:0.5em;padding:4px 14px;border-radius:20px;font-weight:bold;z-index:10;">
+            📖 Tự học</div>
+          <h2>Kiểu khoảng (Interval)</h2>
+          <p><span class="keyword">Tập con liên tục</span> của một <strong>kiểu cơ sở</strong> — ràng buộc miền ghi
+            thẳng vào kiểu.</p>
+          <pre><code class="language-plaintext" data-trim>
+type DiemThi    = 0..100;       -- kiểu cơ sở: Integer
+type Thang      = 1..12;        -- kiểu cơ sở: Integer
+type GioLamViec = 9..17;        -- kiểu cơ sở: Integer
+          </code></pre>
+          <ul style="margin-top:0.5em;">
+            <li>Dùng được như kiểu cơ sở — nhưng không ngược lại.</li>
+            <li>Lỗi vượt cận thường phát hiện <strong>động</strong> (lúc chạy).</li>
+            <li>Ràng buộc nằm trong kiểu → không thể quên kiểm tra.</li>
+          </ul>
+        </section>
+
+        <section style="font-size:0.82em;" data-auto-animate>
+          <div
+            style="position:absolute;top:10px;right:10px;background:#546E7A;color:white;font-size:0.5em;padding:4px 14px;border-radius:20px;font-weight:bold;z-index:10;">
+            📖 Tự học</div>
+          <h2>Kiểu khoảng (Interval)</h2>
+          <p>Tại sao kiểu khoảng có giá trị — đối chiếu Ada vs C++:</p>
+          <pre><code class="language-ada" data-trim>
+-- Ada: ràng buộc nằm trong kiểu, kiểm tra tự động
+subtype DiemThi    is Integer range 0..100;
+subtype GioLamViec is Integer range 9..17;
+
+diem : DiemThi    := 150;  -- Constraint_Error tự động!
+gio  : GioLamViec := 25;   -- Constraint_Error tự động!
+          </code></pre>
+          <pre><code class="language-cpp" data-trim>
+// C++: không có kiểu khoảng — lập trình viên tự lo
+int diem = 150;   // hợp lệ, không ai cản
+int gio  = 25;    // hợp lệ, không ai cản
+
+// Phải tự nhớ kiểm tra — dễ bỏ sót
+assert(diem >= 0 && diem <= 100);
+assert(gio  >= 9 && gio  <= 17);
+          </code></pre>
+          <p style="margin-top:0.5em; color:#555;">
+            → Kiểu khoảng chuyển ràng buộc từ
+            <span style="color:#E62727;">"lập trình viên tự nhớ"</span> sang
+            <span style="color:#2E7D32;">"hệ thống kiểu tự kiểm tra"</span>.
+          </p>
+        </section>
+
+        <section style="font-size:0.9em;">
+          <h2>Bản ghi (Record)</h2>
+          <p><span class="keyword">Tập hữu hạn các trường</span> có tên — mỗi trường có kiểu riêng.</p>
+          <pre><code class="language-cpp" data-trim>
+// C++ struct — bản ghi đơn giản
+struct SinhVien {
+    int  maSV;
+    char hoTen[32];
+    float diemTB;
+};
+
+SinhVien sv = {20210001, "Nguyen Van A", 3.5f};
+std::cout << sv.hoTen << ": " << sv.diemTB;
+          </code></pre>
+        </section>
+
+        <section style="font-size:0.82em;">
+          <h2>Bản ghi — Offset hằng số</h2>
+          <p style="margin-bottom:0.3em;">
+            Mỗi trường có một <span class="keyword">offset</span> cố định (byte) tính từ đầu struct —
+            trình biên dịch biết con số này <strong>tại thời gian biên dịch</strong>.
+          </p>
+          <pre><code class="language-cpp" data-trim>
+struct SinhVien {
+    int   maSV;      // offset  0  (4 bytes)
+    char  hoTen[32]; // offset  4  (32 bytes)
+    float diemTB;    // offset 36  (4 bytes)
+};
+          </code></pre>
+          <p style="margin:0.4em 0 0.2em;">Khi bạn viết <span class="inline-code">sv.diemTB = 3.5f;</span>, trình biên
+            dịch dịch thành:</p>
+          <pre><code class="language-cpp" data-trim>
+// Mã nguồn:
+sv.diemTB = 3.5f;
+// Trình biên dịch tạo ra (tương đương):
+*( float* )( (char*)&sv + 36 ) = 3.5f;
+//                         ↑ con số này đã biết từ lúc biên dịch!
+          </code></pre>
+          <p style="margin-top:0.5em; color:#555;">
+            → Truy cập trường chỉ là <strong>1 phép cộng + 1 lần đọc bộ nhớ</strong> — O(1).
+          </p>
+        </section>
+
+        <section style="font-size:0.7em;">
+          <div
+            style="position:absolute;top:10px;right:10px;background:#546E7A;color:white;font-size:0.5em;padding:4px 14px;border-radius:20px;font-weight:bold;z-index:10;">
+            📖 Tự học</div>
+          <h2>Bản ghi — Vấn đề căn biên (Alignment)</h2>
+          <p style="margin-bottom:0.4em;">
+            <span class="inline-code">int</span> (4 bytes) cần địa chỉ chia hết cho 4.
+            Đôi khi ta cần padding:
+          </p>
+          <pre><code class="language-cpp" data-trim>
+struct A {
+    char  c;    // offset 0 — 1 byte
+                // [pad][pad][pad] — 3 byte rỗng, đẩy i xuống offset 4
+    int   i;    // offset 4 — 4 bytes (4 chia hết cho 4 ✓)
+    char  d;    // offset 8 — 1 byte
+                // [pad][pad][pad] — 3 byte rỗng, struct size phải chia hết cho 4
+};
+// Layout: [c][...][...][...][i ][i ][i ][i ][d][...][...][...]
+// sizeof(A) = 12,  không phải 6!
+
+struct B {       // sắp xếp lại: lớn trước, nhỏ sau
+    int   i;    // offset 0 — 4 bytes
+    char  c;    // offset 4 — 1 byte
+    char  d;    // offset 5 — 1 byte
+                // [pad][pad] — chỉ 2 byte padding cuối
+};
+// Layout: [i ][i ][i ][i ][c][d][..][..]
+// sizeof(B) = 8  — tiết kiệm hơn A!
+          </code></pre>
+          <p style="margin-top:0.4em; color:#555;">
+            → Nên khai báo trường <strong>từ lớn đến nhỏ</strong> để giảm padding.
+          </p>
+        </section>
+
+        <section>
+          <h2>Mảng (Array)</h2>
+          <p>Các phần tử <strong>cùng kiểu</strong>, truy cập bằng chỉ số.</p>
+          <pre><code class="language-cpp" data-trim>
+// Mảng 1 chiều
+int diem[30];             // 30 phần tử int, chỉ số 0..29
+diem[0] = 95;
+
+// Mảng 2 chiều (ma trận)
+double maTran[3][4];      // 3 hàng, 4 cột
+maTran[1][2] = 3.14;
+
+// Mảng ký tự — chuỗi trong C
+char ten[32] = "Nguyen Van A";
+          </code></pre>
+          <ul style="margin-top:0.3em;">
+            <li>Kích thước mỗi phần tử bằng nhau → có thể tính địa chỉ phần tử bất kỳ — O(1).</li>
+          </ul>
+        </section>
+
+        <section style="font-size:0.7em;">
+          <h2>Mảng 2 chiều — Row-major order</h2>
+          <p>
+            Bộ nhớ máy tính là <strong>1 chiều</strong> (dãy byte liên tiếp).
+            Khi lưu mảng 2 chiều, cần chọn thứ tự: C/C++ dùng <span class="keyword">row-major</span>
+            — lưu <em>hết hàng này rồi mới sang hàng sau</em>.
+          </p>
+          <div style="display:flex; gap:2em; align-items:flex-start; margin-top:0.6em;">
+            <div style="flex:0 0 auto;">
+              <p style="margin:0 0 0.3em; font-weight:bold;">Ma trận <span class="inline-code">int A[2][3]</span>:</p>
+              <table style="border-collapse:collapse; font-size:0.9em; text-align:center;">
+                <tr>
+                  <td style="border:2px solid #1E93AB; padding:0.3em 0.7em; background:#e8f7fa;">A[0][0]</td>
+                  <td style="border:2px solid #1E93AB; padding:0.3em 0.7em; background:#e8f7fa;">A[0][1]</td>
+                  <td style="border:2px solid #1E93AB; padding:0.3em 0.7em; background:#e8f7fa;">A[0][2]</td>
+                </tr>
+                <tr>
+                  <td style="border:2px solid #7B5EA7; padding:0.3em 0.7em; background:#f0ebf8;">A[1][0]</td>
+                  <td style="border:2px solid #7B5EA7; padding:0.3em 0.7em; background:#f0ebf8;">A[1][1]</td>
+                  <td style="border:2px solid #7B5EA7; padding:0.3em 0.7em; background:#f0ebf8;">A[1][2]</td>
+                </tr>
+              </table>
+            </div>
+            <div style="flex:1;">
+              <p style="margin:0 0 0.3em; font-weight:bold;">Trong bộ nhớ (địa chỉ tăng dần →):</p>
+              <table style="border-collapse:collapse; font-size:0.8em; text-align:center; width:100%;">
+                <tr>
+                  <td style="border:2px solid #1E93AB; padding:0.25em 0.5em; background:#e8f7fa;">A[0][0]</td>
+                  <td style="border:2px solid #1E93AB; padding:0.25em 0.5em; background:#e8f7fa;">A[0][1]</td>
+                  <td style="border:2px solid #1E93AB; padding:0.25em 0.5em; background:#e8f7fa;">A[0][2]</td>
+                  <td style="border:2px solid #7B5EA7; padding:0.25em 0.5em; background:#f0ebf8;">A[1][0]</td>
+                  <td style="border:2px solid #7B5EA7; padding:0.25em 0.5em; background:#f0ebf8;">A[1][1]</td>
+                  <td style="border:2px solid #7B5EA7; padding:0.25em 0.5em; background:#f0ebf8;">A[1][2]</td>
+                </tr>
+                <tr>
+                  <td colspan="3" style="font-size:0.85em; color:#1E93AB; padding-top:0.2em;">← hàng 0 →</td>
+                  <td colspan="3" style="font-size:0.85em; color:#7B5EA7; padding-top:0.2em;">← hàng 1 →</td>
+                </tr>
+              </table>
+              <p style="margin-top:0.5em; color:#555;">
+                Offset của <span class="inline-code">A[i][j]</span>
+                = <span class="inline-code">(i × 3 + j) × sizeof(int)</span>
+              </p>
+            </div>
+          </div>
+          <p style="margin-top:0.6em; color:#555; font-size:0.9em;">
+            ⚠️ <strong>Hệ quả thực tế:</strong> duyệt theo hàng
+            nhanh hơn theo cột vì phần tử liền kề nằm liền kề trong bộ nhớ
+            → cache thân thiện hơn.
+          </p>
+        </section>
+
+        <section style="font-size:0.9em;">
+          <h2>Hình dạng mảng (Array Shape)</h2>
+          <p><strong>Hình dạng</strong> = số chiều + miền chỉ số mỗi chiều.</p>
+          <pre><code class="language-cpp" data-trim>
+// Tĩnh — hình dạng biết tại compile-time, truy cập nhanh nhất
+int a[10];
+double maTran[3][4];
+
+// Cố định khi khai báo — biết lúc chạy, không thay đổi sau đó
+int n;
+std::cin >> n;
+int b[n];              // C99 VLA — kích thước từ runtime, stack
+
+// Động hoàn toàn — có thể thay đổi kích thước bất kỳ lúc nào
+std::vector&lt;int&gt; v;
+v.push_back(1);        // tự cấp phát lại khi đầy — heap
+v.push_back(2);
+          </code></pre>
+        </section>
+
+        <section style="font-size:0.7em;" data-auto-animate>
+          <h2>Dope Vector</h2>
+          <p>Để truy cập phần tử mảng động, hệ thống kiểu cần lưu <strong>metadata</strong> về hình dạng mảng — thường
+            là một cấu trúc gọi là
+            <span class="keyword">dope vector</span>.
+          </p>
+          <div style="display:flex; gap:1.2em; align-items:flex-start; margin-top:0.5em;">
+            <div style="flex:1;">
+              <p style="margin:0 0 0.4em;"><strong>Mảng tĩnh</strong> — hình dạng biết lúc biên dịch:</p>
+              <pre><code class="language-cpp" data-trim>
+double a[3][4];
+// a[i][j] → trình biên dịch viết thẳng:
+// base+i*32+j*8  (hằng số trong mã máy)
+              </code></pre>
+              <p style="margin:0.6em 0 0.4em;"><strong>Mảng động</strong> — hình dạng chỉ biết lúc chạy:</p>
+              <pre><code class="language-cpp" data-trim>
+int n, m;
+std::cin >> n >> m;
+// Lúc compile chưa biết n, m
+// → phải lưu metadata ở đâu đó khi chạy
+              </code></pre>
+            </div>
+            <div style="flex:0 0 auto; background:#e8f7fa; border:2px solid #1E93AB;
+                        border-radius:8px; padding:0.6em 1em; font-size:0.92em;">
+              <p style="margin:0 0 0.4em; color:#1E93AB; font-weight:bold;">Dope vector</p>
+              <table style="border-collapse:collapse; width:100%;">
+                <tr>
+                  <td style="padding:0.2em 0.6em 0.2em 0; color:#555; white-space:nowrap;"><span
+                      class="inline-code">base</span></td>
+                  <td style="padding:0.2em 0;">địa chỉ khối dữ liệu</td>
+                </tr>
+                <tr>
+                  <td style="padding:0.2em 0.6em 0.2em 0; color:#555;"><span class="inline-code">ndim</span></td>
+                  <td style="padding:0.2em 0;">số chiều</td>
+                </tr>
+                <tr>
+                  <td style="padding:0.2em 0.6em 0.2em 0; color:#555;"><span class="inline-code">lb[k]</span></td>
+                  <td style="padding:0.2em 0;">biên dưới chiều k</td>
+                </tr>
+                <tr>
+                  <td style="padding:0.2em 0.6em 0.2em 0; color:#555;"><span class="inline-code">stride[k]</span></td>
+                  <td style="padding:0.2em 0;">số byte / bước chiều k</td>
+                </tr>
+              </table>
+              <p style="margin:0.5em 0 0; font-size:0.7em; color:#555;">
+                Cấu trúc này được tạo lúc chạy, lưu trong stack frame <br /> của hàm.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section style="font-size:0.65em;" data-auto-animate>
+          <h2>Dope Vector</h2>
+          <p style="margin-bottom:0.5em;">
+            <span class="inline-code">float b[n][m]</span> khai báo lúc chạy với <span class="inline-code">n=3</span>,
+            <span class="inline-code">m=4</span>:
+          </p>
+          <div style="display:flex; gap:1.2em; align-items:flex-start;">
+            <div style="background:#e8f7fa; border:2px solid #1E93AB; border-radius:8px;
+                        padding:0.6em 1em; flex:0 0 auto; font-size:0.95em;">
+              <p style="margin:0 0 0.3em; color:#1E93AB; font-weight:bold;">Dope vector của b</p>
+              <table style="border-collapse:collapse;">
+                <tr>
+                  <td style="padding:0.15em 0.8em 0.15em 0; color:#555;"><code>base</code></td>
+                  <td>→ &nbsp;[khối 48 byte trên heap]</td>
+                </tr>
+                <tr>
+                  <td style="padding:0.15em 0.8em 0.15em 0; color:#555;"><code>ndim</code></td>
+                  <td>= 2</td>
+                </tr>
+                <tr>
+                  <td style="padding:0.15em 0.8em 0.15em 0; color:#555;"><code>lb</code></td>
+                  <td>= [0, 0]</td>
+                </tr>
+                <tr>
+                  <td style="padding:0.15em 0.8em 0.15em 0; color:#555;"><code>stride</code></td>
+                  <td>= [<span class="text-teal"><strong>16</strong></span>, <span
+                      class="text-purple"><strong>4</strong></span>]
+                    &nbsp;<span style="color:#888; font-size:0.88em;">(byte)</span></td>
+                </tr>
+              </table>
+              <p style="margin:0.4em 0 0; font-size:0.85em; color:#888;">
+                stride[0] = m × sizeof(float) = 4×4 = <span class="text-teal">16</span><br>
+                stride[1] = sizeof(float) = <span class="text-purple">4</span>
+              </p>
+            </div>
+            <div style="flex:1;">
+              <p style="margin:0 0 0.3em;">Truy cập <span class="inline-code">b[i][j]</span>:</p>
+              <div style="background:#f8f8f8; border-left:4px solid #1E93AB;
+                          padding:0.5em 0.8em; font-family:monospace; font-size:0.95em; line-height:1.7;">
+                addr = base<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + i × <span class="text-teal"><strong>stride[0]</strong></span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + j × <span class="text-purple"><strong>stride[1]</strong></span>
+              </div>
+              <div style="background:#f8f8f8; border-left:4px solid #7B5EA7;
+                          padding:0.5em 0.8em; font-family:monospace; font-size:0.95em;
+                          line-height:1.7; margin-top:0.5em;">
+                <span style="color:#888;">// b[2][3] =</span><br>
+                addr = base + 2×<span class="text-teal"><strong>16</strong></span> + 3×<span
+                  class="text-purple"><strong>4</strong></span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= base + <strong>44</strong>
+              </div>
+              <p style="margin:0.5em 0 0; color:#555; font-size:0.9em;">
+                ✅ Vẫn là O(1) — chỉ đọc stride từ bộ nhớ (thay vì dùng hằng số mà trình biên dịch tính trước).
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section data-auto-animate>
+          <div
+            style="position:absolute;top:10px;right:10px;background:#546E7A;color:white;font-size:0.5em;padding:4px 14px;border-radius:20px;font-weight:bold;z-index:10;">
+            📖 Tự học</div>
+          <h2>Hợp không gắn thẻ <br /> (Untagged Union)</h2>
+          <p>Một vùng nhớ dùng chung cho nhiều kiểu, nhưng không có thẻ biến thể.</p>
+          <pre><code class="language-c" data-trim>
+union Example {
+  int   lastyear;
+  struct {
+    float height;
+    int   year;
+  } student;
+};
+// Ai theo dõi biến thể hiện hành?
+// → Lập trình viên. Ngôn ngữ không bảo vệ.
+          </code></pre>
+        </section>
+
+        <section style="font-size:0.82em;" data-auto-animate>
+          <div
+            style="position:absolute;top:10px;right:10px;background:#546E7A;color:white;font-size:0.5em;padding:4px 14px;border-radius:20px;font-weight:bold;z-index:10;">
+            📖 Tự học</div>
+          <h2>Hợp có gắn thẻ (Tagged Union)</h2>
+          <p>Mỗi giá trị kèm <span class="keyword">thẻ</span> chỉ biến thể hợp lệ — truy cập sai biến thể báo lỗi.</p>
+          <pre><code class="language-cpp" data-trim>
+#include &lt;variant&gt;
+#include &lt;string&gt;
+
+// C++17: std::variant — tagged union an toàn kiểu
+using GiaTri = std::variant&lt;int, double, std::string&gt;;
+
+GiaTri v = 42;              // biến thể int
+v = 3.14;                   // biến thể double
+v = std::string("hello");   // biến thể string
+
+// Truy cập — tự động chọn đúng biến thể
+std::visit([](auto val) {
+    std::cout &lt;&lt; val &lt;&lt; "\n";
+}, v);
+
+// Truy cập sai biến thể → throw std::bad_variant_access
+int n = std::get&lt;int&gt;(v);   // LỖI runtime: v đang là string!
+          </code></pre>
+        </section>
+
+        <section style="font-size:0.82em;" data-auto-animate>
+          <div
+            style="position:absolute;top:10px;right:10px;background:#546E7A;color:white;font-size:0.5em;padding:4px 14px;border-radius:20px;font-weight:bold;z-index:10;">
+            📖 Tự học</div>
+          <h2>Hợp có gắn thẻ (Tagged Union)</h2>
+          <pre><code class="language-python" data-trim>
+# Python 3.10+: match/case — tương đương tagged union
+def xu_ly(gia_tri: int | float | str) -> str:
+    match gia_tri:
+        case int(n):
+            return f"Số nguyên: {n}"
+        case float(f):
+            return f"Số thực: {f:.2f}"
+        case str(s):
+            return f"Chuỗi: '{s}'"
+
+print(xu_ly(42))       # Số nguyên: 42
+print(xu_ly(3.14))     # Số thực: 3.14
+print(xu_ly("hello"))  # Chuỗi: 'hello'
+          </code></pre>
+          <ul style="margin-top:0.4em;">
+            <li>Truy cập sai biến thể → báo lỗi lúc chạy.</li>
+          </ul>
+        </section>
+
+        <section data-auto-animate>
+          <h2>Con trỏ (Pointer)</h2>
+          <p>Con trỏ là địa chỉ của đối tượng kiểu <span class="inline-code">T</span>.</p>
+          <pre><code class="language-c" data-trim>
+int* p = malloc(sizeof(int));
+*p = 33;           // ghi qua dereference
+
+float r = 3.14;
+float* q = &r;     // con trỏ vào stack
+r = *q + 1;        // đọc qua dereference
+          </code></pre>
+        </section>
+
+        <section style="font-size:0.82em;" data-auto-animate>
+          <h2>Con trỏ (Pointer)</h2>
+          <p>Hai mối nguy hiểm chính của con trỏ:</p>
+          <pre><code class="language-cpp" data-trim>
+// ⚠ Tham chiếu treo (dangling reference)
+int* p;
+{
+    int x = 42;
+    p = &x;
+}   // x bị hủy ở đây!
+*p = 10;   // hành vi không xác định — p trỏ vào vùng đã giải phóng
+
+// ⚠ Số học con trỏ (pointer arithmetic) — dễ vượt biên mảng
+int arr[5] = {1, 2, 3, 4, 5};
+int* q = arr;
+q += 10;   // q trỏ ra ngoài mảng
+*q = 99;   // hành vi không xác định — có thể ghi đè dữ liệu khác!
+          </code></pre>
+          <p style="margin-top:0.5em; color:#555;">
+            → C++ hiện đại dùng <span class="inline-code">std::unique_ptr</span> /
+            <span class="inline-code">std::shared_ptr</span> để tránh tham chiếu treo;
+            dùng <span class="inline-code">std::vector</span> thay mảng thô để tránh vượt biên.
+          </p>
+        </section>
+
+        <section style="font-size:0.85em;">
+          <h2>Kiểu đệ quy (Recursive Types)</h2>
+          <p>Giá trị có thể chứa <em>tham chiếu</em> tới chính kiểu đó — nền tảng của danh sách liên kết (linked list),
+            cây (tree).</p>
+          <pre><code class="language-cpp" data-trim>
+// C++: kiểu đệ quy qua con trỏ
+struct Node {
+    int   val;
+    Node* next;   // con trỏ đệ quy — cùng kiểu!
+};
+
+// Xây dựng danh sách [1 → 2 → 3 → null]
+Node* l = new Node{1, new Node{2, new Node{3, nullptr}}};
+
+// Duyệt danh sách
+for (Node* cur = l; cur != nullptr; cur = cur->next)
+    std::cout << cur->val << " ";
+          </code></pre>
+          <ul style="margin-top:0.4em; font-size:0.9em;">
+            <li>Các node trên <strong>heap</strong>, nối nhau qua con trỏ.</li>
+            <li>C++: phải tự giải phóng (<span class="inline-code">delete</span>) hoặc dùng <span
+                class="inline-code">unique_ptr</span>.</li>
+          </ul>
+        </section>
+
+        <!-- NEW: Sequences -->
+        <section data-auto-animate>
+          <div
+            style="position:absolute;top:10px;right:10px;background:#546E7A;color:white;font-size:0.5em;padding:4px 14px;border-radius:20px;font-weight:bold;z-index:10;">
+            📖 Tự học</div>
+          <h2>Dãy (Sequence) — Python list/tuple</h2>
+          <ul>
+            <li>Độ dài <strong>thay đổi</strong>; phần tử có thể <strong>khác kiểu</strong>.</li>
+            <li>Truy cập theo chỉ số, hỗ trợ thêm/xóa.</li>
+          </ul>
+        </section>
+
+        <section data-auto-animate>
+          <div
+            style="position:absolute;top:10px;right:10px;background:#546E7A;color:white;font-size:0.5em;padding:4px 14px;border-radius:20px;font-weight:bold;z-index:10;">
+            📖 Tự học</div>
+          <h2>Dãy (Sequence) — Python list/tuple</h2>
+          <div class="question-box" style="margin-top:10px;">
+            <div class="question-title">Cách lưu trữ</div>
+            Thường là <strong>vector con trỏ</strong> tới phần tử thực.
+            <br />
+            <span class="inline-code">A = [[10,[2,3],'bob'], 'foo', 1]</span>: mỗi ô là một con trỏ.
+          </div>
+          <ul style="margin-top:10px;font-size:0.92em;">
+            <li><em>Append</em>: <strong>O(1) khấu hao</strong>.</li>
+            <li>Chèn/xóa ở giữa: <strong>O(n)</strong>.</li>
+          </ul>
+        </section>
+      </section>
+
+      <!-- ========================================================
+           SECTION 3 – TƯƠNG ĐƯƠNG VÀ TƯƠNG THÍCH KIỂU
+           ======================================================== -->
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">3.</span><br />
+            Tương đương và <br /> Tương thích kiểu
+          </h1>
+        </section>
+
+        <!-- Overview slide -->
+        <section style="font-size:0.65em;">
+          <h2>Ba câu hỏi cốt lõi</h2>
+          <p>Cho hai kiểu T và S, ta quan tâm:</p>
+          <div style="display:flex; gap:1em; margin-top:0.7em;">
+            <div style="flex:1; background:#e8f7fa; border:2px solid #1E93AB; border-radius:8px; padding:0.8em 1em;">
+              <p style="margin:0 0 0.3em; color:#1E93AB; font-weight:bold;">① Tương đương kiểu</p>
+              <p style="margin:0 0 0.4em; font-style:italic; color:#444; font-size:0.92em;">Khi nào T ≡ S?</p>
+              <ul style="margin:0; padding-left:1.2em; font-size:0.92em;">
+                <li><strong>Theo tên</strong>: khai báo khác → kiểu khác</li>
+                <li><strong>Theo cấu trúc</strong>: hình dạng giống → tương đương</li>
+              </ul>
+            </div>
+            <div style="flex:1; background:#f0ebf8; border:2px solid #7B5EA7; border-radius:8px; padding:0.8em 1em;">
+              <p style="margin:0 0 0.3em; color:#7B5EA7; font-weight:bold;">② Tương thích kiểu</p>
+              <p style="margin:0 0 0.4em; font-style:italic; color:#444; font-size:0.92em;">Khi nào T dùng được ở chỗ
+                cần S?</p>
+              <ul style="margin:0; padding-left:1.2em; font-size:0.92em;">
+                <li>T ≡ S &nbsp;hoặc&nbsp; T ⊆ S</li>
+                <li>Có chuyển đổi (chuẩn / tự định nghĩa)</li>
+                <li>Cùng tập thao tác (duck typing)</li>
+              </ul>
+            </div>
+            <div style="flex:1; background:#fff3e0; border:2px solid #C2610F; border-radius:8px; padding:0.8em 1em;">
+              <p style="margin:0 0 0.3em; color:#C2610F; font-weight:bold;">③ Chuyển đổi kiểu</p>
+              <p style="margin:0 0 0.4em; font-style:italic; color:#444; font-size:0.92em;">Ai thực hiện, ai chịu trách
+                nhiệm?</p>
+              <ul style="margin:0; padding-left:1.2em; font-size:0.92em;">
+                <li><strong>Coercion</strong>: ngôn ngữ tự chèn (ngầm)</li>
+                <li><strong>Cast</strong>: lập trình viên viết tường minh</li>
+              </ul>
+            </div>
+          </div>
+          <p style="margin-top:0.7em; color:#666; text-align:center; font-size:0.9em;">
+            Nhiều ngôn ngữ pha trộn cả ba — hiểu rõ giúp đọc và viết mã chính xác hơn.
+          </p>
+        </section>
+
+        <!-- Name Equivalence -->
+        <section style="font-size:0.8em;" data-auto-animate>
+          <h2>Tương đương tên <br /> (Name Equivalence)</h2>
+          <p>Mỗi khai báo <span class="inline-code">struct</span> / <span class="inline-code">type</span>
+            tạo ra một kiểu <strong>riêng biệt</strong> — dù cấu trúc bên trong giống hệt.</p>
+          <pre><code class="language-cpp" data-trim>
+struct Room  { int value; };   // số phòng
+struct Price { int value; };   // giá tiền (VND)
+
+Room  r{101};
+Price p{250000};
+
+r = p;   // ❌ lỗi biên dịch: cannot convert 'Price' to 'Room'
+         //   dù cả hai đều chỉ có một trường int
+          </code></pre>
+          <p>
+            ✅ <strong>Lợi ích thiết kế:</strong> trình biên dịch tự phát hiện khi gán nhầm số phòng vào
+            giá tiền.
+          </p>
+        </section>
+
+        <!-- Structural Equivalence -->
+        <section style="font-size:0.8em;" data-auto-animate>
+          <h2>Tương đương cấu trúc <br /> (Structural Equivalence)</h2>
+          <p>Hai kiểu tương đương nếu có <strong>cùng cấu trúc</strong> khi mở rộng hoàn toàn.</p>
+          <div style="display:flex; gap:1em; margin-top:0.5em;">
+            <div style="flex:1;">
+              <p style="margin:0 0 0.3em; font-size:0.9em; color:#1E93AB;"><strong>C — <span
+                    class="inline-code">typedef</span> là alias thuần túy:</strong></p>
+              <pre><code class="language-c" data-trim>
+typedef int Meters;
+typedef int Pixels;
+
+Meters  m  = 100;
+Pixels  px = m;   // ✅ hợp lệ!
+// C không phân biệt Meters vs Pixels
+// — cả hai đều mở rộng thành int
+              </code></pre>
+            </div>
+            <div style="flex:1;">
+              <p style="margin:0 0 0.3em; font-size:0.9em; color:#7B5EA7;"><strong>C++ — struct tạo kiểu mới:</strong>
+              </p>
+              <pre><code class="language-cpp" data-trim>
+struct Meters { int v; };
+struct Pixels { int v; };
+
+Meters m{100};
+Pixels px = m;   // ❌ lỗi biên dịch
+// Name equivalence: Meters ≠ Pixels
+              </code></pre>
+            </div>
+          </div>
+          <p style="color:#888; margin-top:0.5em; font-size:0.88em;">
+            ⚠ Kiểu đệ quy (<span class="inline-code">struct Node { Node* next; }</span>)
+            không thể dùng structural equivalence — mở rộng sẽ không dừng.
+          </p>
+        </section>
+
+        <!-- Language comparison - simplified -->
+        <section style="font-size:0.82em;">
+          <div
+            style="position:absolute;top:10px;right:10px;background:#546E7A;color:white;font-size:0.5em;padding:4px 14px;border-radius:20px;font-weight:bold;z-index:10;">
+            📖 Tự học</div>
+          <h2>Ngôn ngữ dùng quy tắc nào?</h2>
+          <table class="comparison-table" style="width:100%;">
+            <thead>
+              <tr>
+                <th>Ngôn ngữ</th>
+                <th>Struct / Record</th>
+                <th>Array</th>
+                <th>Type alias</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>C</strong></td>
+                <td class="text-teal">Tên</td>
+                <td class="text-purple">Cấu trúc</td>
+                <td class="text-purple">Cấu trúc (<span class="inline-code">typedef</span>)</td>
+              </tr>
+              <tr>
+                <td><strong>C++</strong></td>
+                <td class="text-teal">Tên</td>
+                <td class="text-purple">Cấu trúc</td>
+                <td class="text-teal">Tên (<span class="inline-code">using</span>)</td>
+              </tr>
+              <tr>
+                <td><strong>Java</strong></td>
+                <td class="text-teal">Tên</td>
+                <td class="text-purple">Cấu trúc</td>
+                <td class="text-teal">Tên</td>
+              </tr>
+              <tr>
+                <td><strong>TypeScript</strong></td>
+                <td class="text-purple">Cấu trúc</td>
+                <td class="text-purple">Cấu trúc</td>
+                <td class="text-purple">Cấu trúc</td>
+              </tr>
+              <tr>
+                <td><strong>Python</strong></td>
+                <td colspan="3" style="color:#888; font-style:italic; text-align:left;">
+                  Kiểm tra lúc chạy (duck typing) — không áp dụng quy tắc tĩnh
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="margin-top:0.6em; color:#555; font-size:0.92em;">
+            Hầu hết ngôn ngữ pha trộn: tương đương tên cho struct, tương đương cấu trúc cho array.
+          </p>
+        </section>
+
+        <!-- Type Compatibility with examples -->
+        <section style="font-size:0.7em;">
+          <h2>Tương thích kiểu <br /> (Type Compatibility)</h2>
+          <p><span class="keyword">Tương thích</span>: giá trị kiểu T dùng được ở nơi cần kiểu S.</p>
+          <div style="display:flex; gap:1em; margin-top:0.5em;">
+            <div style="flex:1;">
+              <p style="margin:0 0 0.3em; font-weight:bold; color:#1E93AB;">① T ≡ S &nbsp;—&nbsp; cùng kiểu</p>
+              <pre><code class="language-cpp" data-trim>
+// C++: cùng kiểu → tương thích
+int x = 5;
+int y = x;   // ✅ hiển nhiên
+              </code></pre>
+              <p style="margin:0.5em 0 0.3em; font-weight:bold; color:#1E93AB;">② T ⊆ S &nbsp;—&nbsp; kiểu con</p>
+              <pre><code class="language-ada" data-trim>
+-- Ada: subtype — tạo kiểu con của kiểu cơ sở
+subtype Score is Integer range 0..100;
+Score   s := 85;
+Integer i := s;  -- ✅ Score ⊆ Integer
+              </code></pre>
+            </div>
+            <div style="flex:1;">
+              <p style="margin:0 0 0.3em; font-weight:bold; color:#7B5EA7;">③ Chuyển đổi chuẩn</p>
+              <pre><code class="language-cpp" data-trim>
+// C++: chuyển đổi chuẩn qua coercion
+int    i = 42;
+long   l = i;   // ✅ int → long
+double d = i;   // ✅ int → double
+              </code></pre>
+              <p style="margin:0.5em 0 0.3em; font-weight:bold; color:#7B5EA7;">④ Chuyển đổi tự định nghĩa</p>
+              <pre><code class="language-cpp" data-trim>
+// C++: chuyển đổi tự định nghĩa qua operator
+struct Celsius {
+  double val;
+  operator double() { return val; }
+};
+Celsius c{36.6};
+double  t = c;  // ✅ gọi operator double()
+              </code></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- Coercion và Cast - improved with pitfall -->
+        <section style="font-size:0.75em;">
+          <h2>Coercion và Cast</h2>
+          <p>Cả hai đều chuyển đổi giá trị — khác ở <strong>ai quyết định</strong> và <strong>ai chịu trách
+              nhiệm</strong>.</p>
+          <div style="display:flex; gap:1em; margin-top:0.5em;">
+            <div style="flex:1; background:#e8f7fa; border:2px solid #1E93AB;
+                        border-radius:8px; padding:0.6em 0.8em;">
+              <p style="margin:0 0 0.4em; color:#1E93AB; font-weight:bold;">Coercion — ngầm định</p>
+              <pre><code class="language-cpp" data-trim>
+// C++
+double d = 3 + 2.5;
+// Trình biên dịch tự chèn:
+//   (double)3 + 2.5  →  5.5  ✅
+
+// ⚠ Bẫy thường gặp:
+int x = 5, y = 2;
+double r = x / y;
+// → 2.0, không phải 2.5!
+// Phép chia int xảy ra TRƯỚC coercion
+              </code></pre>
+            </div>
+            <div style="flex:1; background:#f0ebf8; border:2px solid #7B5EA7;
+                        border-radius:8px; padding:0.6em 0.8em;">
+              <p style="margin:0 0 0.4em; color:#7B5EA7; font-weight:bold;">Cast — tường minh</p>
+              <pre><code class="language-cpp" data-trim>
+// C++
+int x = 5, y = 2;
+double r = (double)x / y;  // → 2.5 ✅
+
+// ⚠ Cast không kiểm tra giá trị:
+double pi = 3.14159;
+int n = (int)pi;     // → 3  (mất 0.14159)
+
+long big = 3000000000L;
+int  sm  = (int)big; // → tràn số, kết quả sai
+              </code></pre>
+            </div>
+          </div>
+          <p style="margin-top:0.5em; color:#555; font-size:0.9em;">
+            💡 Ưu tiên cast tường minh: ý định rõ ràng trong mã, dễ review và debug hơn.
+          </p>
+        </section>
+
+        <!-- Structural compatibility static — TypeScript -->
+        <section style="font-size:0.75em;">
+          <div
+            style="position:absolute;top:10px;right:10px;background:#546E7A;color:white;font-size:0.5em;padding:4px 14px;border-radius:20px;font-weight:bold;z-index:10;">
+            📖 Tự học</div>
+          <h2>Tương thích cấu trúc tĩnh</h2>
+          <p>Kiểm tra lúc <strong>biên dịch</strong> xem kiểu có đủ trường / phương thức cần dùng.</p>
+          <pre><code class="language-typescript" data-trim>
+// TypeScript: structural typing — kiểm tra ở compile-time
+function printArea(shape: { width: number; height: number }): void {
+    console.log(shape.width * shape.height);
+}
+
+printArea({ width: 5, height: 3 });               // ✅ đủ trường
+printArea({ width: 5, height: 3, color: "red" }); // ✅ thêm trường cũng được
+printArea({ width: 5 });                          // ❌ lỗi compile: thiếu height
+          </code></pre>
+          <div class="question-box" style="margin-top:0.6em;">
+            <div class="question-title">So sánh với name equivalence (Java/C++)</div>
+            TypeScript không cần khai báo <span class="inline-code">implements</span> —
+            chỉ cần <em>có đủ trường là được</em>.
+            Java/C++ yêu cầu khai báo quan hệ kiểu tường minh.
+          </div>
+        </section>
+
+        <!-- Duck Typing -->
+        <section style="font-size:0.7em;">
+          <div
+            style="position:absolute;top:10px;right:10px;background:#546E7A;color:white;font-size:0.5em;padding:4px 14px;border-radius:20px;font-weight:bold;z-index:10;">
+            📖 Tự học</div>
+          <h2>Duck Typing
+            <span style="font-size:0.55em; font-weight:normal; color:#C2610F;
+                         vertical-align:middle; margin-left:10px;">⚠ ngoài giáo trình</span>
+          </h2>
+          <p>Tương thích cấu trúc kiểm tra lúc <strong>chạy</strong>: có thao tác cần thiết thì dùng được.</p>
+          <div style="display:flex; gap:1em;">
+            <div style="flex:1;">
+              <pre><code class="language-python" data-trim>
+def make_sound(animal):
+    animal.speak()   # không khai báo kiểu
+
+class Dog:
+    def speak(self): print("Gâu!")
+
+class Cat:
+    def speak(self): print("Meo!")
+
+class Car:
+    def drive(self): print("Vroom!")
+
+make_sound(Dog())  # ✅ Gâu!
+make_sound(Cat())  # ✅ Meo!
+make_sound(Car())  # ❌ AttributeError lúc chạy
+              </code></pre>
+            </div>
+            <div style="flex:1; display:flex; flex-direction:column; gap:0.6em; justify-content:center;">
+              <div style="background:#e8f7fa; border-left:4px solid #1E93AB;
+                          padding:0.5em 0.8em; font-size:0.92em;">
+                <em>"Nếu nó đi như vịt và kêu như vịt — đó là vịt."</em>
+              </div>
+              <div style="background:#f0ebf8; border-left:4px solid #7B5EA7;
+                          padding:0.5em 0.8em; font-size:0.92em;">
+                ✅ <strong>Linh hoạt tối đa</strong> — không cần khai báo quan hệ kiểu
+              </div>
+              <div style="background:#fff3e0; border-left:4px solid #C2610F;
+                          padding:0.5em 0.8em; font-size:0.92em;">
+                ⚠ <strong>Lỗi xuất hiện muộn</strong> — chỉ bắt được lúc chạy,
+                không phải lúc biên dịch
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ========================================================
+           SECTION 4 – TÍNH ĐA HÌNH
+           ======================================================== -->
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">4.</span><br />
+            Tính đa hình <br /> (Polymorphism)
+          </h1>
+        </section>
+
+        <!-- Khái niệm + động lực -->
+        <section style="font-size:0.85em;">
+          <h2>Tại sao cần đa hình?</h2>
+          <div style="display:flex; gap:1em; margin-top:0.5em;">
+            <div style="flex:1;">
+              <p style="margin:0 0 0.3em; color:#E62727; font-weight:bold;">❌ Không có đa hình:</p>
+              <pre><code class="language-cpp" data-trim>
+void sort_int(int a[], int n);
+void sort_float(float a[], int n);
+void sort_str(string a[], int n);
+
+// Cùng thuật toán, viết 3 lần
+
+// Thêm kiểu mới → thêm hàm mới
+              </code></pre>
+            </div>
+            <div style="flex:1;">
+              <p style="margin:0 0 0.3em; color:#2E7D32; font-weight:bold;">✅ Có đa hình:</p>
+              <pre><code class="language-cpp" data-trim>
+template &lt;typename T&gt;
+void sort(T a[], int n);
+
+// Một hàm, dùng với mọi kiểu
+sort(diem, 30);     // int[]
+sort(gpa, 5);       // float[]
+sort(ten, 100);     // string[]
+              </code></pre>
+            </div>
+          </div>
+          <div class="question-box" style="margin-top:0.6em;">
+            <div class="question-title">Định nghĩa</div>
+            Hệ thống kiểu là <span class="keyword">đa hình</span> nếu một đoạn mã dùng được
+            với <strong>nhiều kiểu khác nhau</strong>.
+          </div>
+        </section>
+
+        <!-- Tổng quan 3 loại -->
+        <section data-auto-animate>
+          <h2>Ba loại đa hình</h2>
+          <div style="background:#e8f7fa; border:2px solid #1E93AB;
+                        border-radius:8px; padding:0.8em 1em;">
+            <p style="margin:0 0 0.3em; color:#1E93AB; font-weight:bold;">① Ad-hoc</p>
+            <p style="margin:0 0 0.4em; color:#444; font-size:0.92em;">
+              Một <strong>tên</strong>, nhiều cài đặt khác nhau.
+            </p>
+            <pre><code class="language-cpp" data-trim>
+// Hai hàm riêng biệt, cùng tên
+int    abs(int x);
+double abs(double x);
+              </code></pre>
+            <p style="margin:0.4em 0 0; font-size:0.85em; color:#555;">
+              → Trình biên dịch chọn phiên bản phù hợp.
+            </p>
+          </div>
+        </section>
+
+        <!-- Tổng quan 3 loại -->
+        <section data-auto-animate>
+          <h2>Ba loại đa hình</h2>
+          <div style="background:#f0ebf8; border:2px solid #7B5EA7;
+                        border-radius:8px; padding:0.8em 1em;">
+            <p style="margin:0 0 0.3em; color:#7B5EA7; font-weight:bold;">② Parametric</p>
+            <p style="margin:0 0 0.4em; color:#444; font-size:0.92em;">
+              Một <strong>đoạn mã</strong>, tham số kiểu T.
+            </p>
+            <pre><code class="language-cpp" data-trim>
+template &lt;typename T&gt;
+T max(T a, T b) {
+    return a > b ? a : b;
+}
+              </code></pre>
+            <p style="margin:0.4em 0 0; font-size:0.85em; color:#555;">
+              → Trình biên dịch sinh mã cho từng T.
+            </p>
+          </div>
+        </section>
+
+        <!-- Tổng quan 3 loại -->
+        <section data-auto-animate>
+          <h2>Ba loại đa hình</h2>
+          <div style="background:#f1f8e9; border:2px solid #2E7D32;
+                        border-radius:8px; padding:0.8em 1em;">
+            <p style="margin:0 0 0.3em; color:#2E7D32; font-weight:bold;">③ Subtype</p>
+            <p style="margin:0 0 0.4em; color:#444; font-size:0.92em;">
+              Kiểu con dùng được ở chỗ cần kiểu cha.
+            </p>
+            <pre><code class="language-cpp" data-trim>
+void makeSound(Animal* a);
+
+makeSound(new Dog()); // ✅
+makeSound(new Cat()); // ✅
+              </code></pre>
+            <p style="margin:0.4em 0 0; font-size:0.85em; color:#555;">
+              → Quyết định lúc chạy (dynamic dispatch).
+            </p>
+          </div>
+        </section>
+
+        <!-- Ad-hoc: Overloading -->
+        <section style="font-size:0.8em;">
+          <h2>Ad-hoc — Overloading</h2>
+          <p>Cùng tên hàm, trình biên dịch chọn phiên bản dựa trên <strong>kiểu đối số</strong>.</p>
+          <div style="display:flex; gap:1em; margin-top:0.5em;">
+            <div style="flex:1;">
+              <p style="margin:0 0 0.3em; font-size:0.9em; color:#1E93AB;"><strong>Function overloading:</strong></p>
+              <pre><code class="language-cpp" data-trim>
+void print(int x)    { cout &lt;&lt; x; }
+void print(double x) { cout &lt;&lt; x; }
+void print(string x) { cout &lt;&lt; x; }
+
+print(42);       // → print(int)
+print(3.14);     // → print(double)
+print("hello");  // → print(string)
+              </code></pre>
+            </div>
+            <div style="flex:1;">
+              <p style="margin:0 0 0.3em; font-size:0.9em; color:#7B5EA7;"><strong>Operator overloading:</strong></p>
+              <pre><code class="language-cpp" data-trim>
+// + cho int:    cộng số nguyên
+// + cho double: cộng số thực
+// + cho string: nối chuỗi
+int    r1 = 1   + 2;     // → 3
+double r2 = 1.0 + 2.0;   // → 3.0
+string r3 = "ab" + "cd"; // → "abcd"
+// Ba phép toán KHÁC NHAU, cùng ký hiệu +
+              </code></pre>
+            </div>
+          </div>
+          <p style="margin-top:0.5em; color:#555; font-size:0.9em;">
+            ⚠ Việc chọn hàm xảy ra khi <strong>biên dịch</strong> — không có chi phí lúc chạy.
+          </p>
+        </section>
+
+        <!-- Overloading vs Coercion -->
+        <section style="font-size:0.7em;">
+          <div
+            style="position:absolute;top:10px;right:10px;background:#546E7A;color:white;font-size:0.5em;padding:4px 14px;border-radius:20px;font-weight:bold;z-index:10;">
+            📖 Tự học</div>
+          <h2>Overloading vs Coercion</h2>
+          <p>Cùng biểu thức <span class="inline-code">1 + 2.0</span> — hai ngôn ngữ xử lý <strong>khác nhau hoàn
+              toàn</strong>:</p>
+          <div style="display:flex; gap:1em; margin-top:0.5em;">
+            <div style="flex:1; background:#e8f7fa; border:2px solid #1E93AB;
+                        border-radius:8px; padding:0.6em 0.8em;">
+              <p style="margin:0 0 0.4em; color:#1E93AB; font-weight:bold;">C++ — Overloading + Coercion</p>
+              <pre><code class="language-cpp" data-trim>
+double r = 1 + 2.0;
+// Bước 1 (coercion): 1 → 1.0
+// Bước 2 (overload): chọn +(double, double)
+// → r = 3.0
+              </code></pre>
+              <p style="margin:0.4em 0 0; font-size:0.88em; color:#555;">
+                C++ dùng cả hai: coercion chuyển kiểu,
+                sau đó overloading chọn hàm phù hợp.
+              </p>
+            </div>
+            <div style="flex:1; background:#f0ebf8; border:2px solid #7B5EA7;
+                        border-radius:8px; padding:0.6em 0.8em;">
+              <p style="margin:0 0 0.4em; color:#7B5EA7; font-weight:bold;">Ada — Chỉ Overloading, không Coercion</p>
+              <pre><code class="language-ada" data-trim>
+-- Ada không tự chuyển đổi kiểu
+X : Integer := 1;
+Y : Float   := 2.0;
+Z : Float   := X + Y;  -- ❌ lỗi compile!
+
+-- Phải viết tường minh:
+Z := Float(X) + Y;     -- ✅
+              </code></pre>
+              <p style="margin:0.4em 0 0; font-size:0.88em; color:#555;">
+                Ada chỉ dùng overloading — không có coercion ngầm → an toàn hơn.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Parametric: C++ Templates -->
+        <section style="font-size:0.65em;">
+          <h2>Parametric — C++ Templates</h2>
+          <p>Viết một lần với <span class="inline-code">&lt;typename T&gt;</span>.
+            Trình biên dịch <strong>sinh mã riêng</strong> cho mỗi kiểu được dùng.</p>
+          <div style="display:flex; gap:1em; margin-top:0.5em;">
+            <div style="flex:1;">
+              <pre><code class="language-cpp" data-trim>
+template &lt;typename T&gt;
+T max(T a, T b) {
+    return a > b ? a : b;
+}
+
+int    m1 = max(3, 7);          // → 7
+double m2 = max(1.5, 2.3);     // → 2.3
+string m3 = max("cat","dog");  // → "dog"
+              </code></pre>
+            </div>
+            <div style="flex:1; display:flex; flex-direction:column; gap:0.5em; justify-content:center;">
+              <div style="background:#e8f7fa; border-left:4px solid #1E93AB;
+                          padding:0.5em 0.8em; font-size:0.92em;">
+                ✅ <strong>Hiệu năng tối đa</strong> — mã được tối ưu riêng cho từng kiểu,
+                không có chi phí runtime
+              </div>
+              <div style="background:#fff3e0; border-left:4px solid #C2610F;
+                          padding:0.5em 0.8em; font-size:0.92em;">
+                ⚠ <strong>Code bloat</strong> — mỗi kiểu sinh thêm một bản mã máy
+                (<span class="inline-code">max&lt;int&gt;</span>,
+                <span class="inline-code">max&lt;double&gt;</span>,
+                <span class="inline-code">max&lt;string&gt;</span>…)
+              </div>
+              <div style="background:#f0ebf8; border-left:4px solid #7B5EA7;
+                          padding:0.5em 0.8em; font-size:0.92em;">
+                📌 Python <span class="inline-code">def max(a, b)</span> cũng parametric
+                — nhưng kiểm tra lúc chạy, không phải lúc biên dịch
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Subtype Polymorphism — NEW -->
+        <section style="font-size:0.7em;">
+          <div
+            style="position:absolute;top:10px;right:10px;background:#546E7A;color:white;font-size:0.5em;padding:4px 14px;border-radius:20px;font-weight:bold;z-index:10;">
+            📖 Tự học</div>
+          <h2>Subtype — Đa hình kiểu con</h2>
+          <p>Kiểu con dùng được ở mọi nơi cần kiểu cha —
+            hàm nào chạy được quyết định <strong>lúc chạy</strong>.</p>
+          <div style="display:flex; gap:1em; margin-top:0.5em;">
+            <div style="flex:1;">
+              <p style="margin:0 0 0.3em; font-size:0.9em; color:#1E93AB;"><strong>C++ — virtual:</strong></p>
+              <pre><code class="language-cpp" data-trim>
+struct Animal {
+    virtual void speak() = 0;
+};
+struct Dog : Animal {
+    void speak() { cout &lt;&lt; "Gâu!\n"; }
+};
+struct Cat : Animal {
+    void speak() { cout &lt;&lt; "Meo!\n"; }
+};
+
+void makeSound(Animal* a) { a->speak(); }
+
+makeSound(new Dog()); // → Gâu!
+makeSound(new Cat()); // → Meo!
+              </code></pre>
+            </div>
+            <div style="flex:1;">
+              <p style="margin:0 0 0.3em; font-size:0.9em; color:#7B5EA7;"><strong>Python — kế thừa:</strong></p>
+              <pre><code class="language-python" data-trim>
+class Animal:
+    def speak(self): pass
+
+class Dog(Animal):
+    def speak(self): print("Gâu!")
+
+class Cat(Animal):
+    def speak(self): print("Meo!")
+
+def make_sound(a: Animal):
+    a.speak()
+
+make_sound(Dog())  # → Gâu!
+make_sound(Cat())  # → Meo!
+              </code></pre>
+            </div>
+          </div>
+          <div style="margin-top:0.5em; color:#555; font-size:0.9em;">
+            Sẽ học chi tiết hơn ở bài Lập trình hướng đối tượng (OOP).
+          </div>
+        </section>
+
+        <!-- Type Inference - redesigned -->
+        <section style="font-size:0.65em;" data-auto-animate>
+          <h2>Suy diễn kiểu (Type Inference)</h2>
+          <p>Trình biên dịch có thể <strong>đọc code và tự giải ra kiểu</strong>.</p>
+
+          <div style="display:flex; gap:0.5em; margin-top:0.6em; align-items:flex-start;">
+
+            <!-- Bên trái: ví dụ auto từng bước -->
+            <div style="flex:1;">
+              <p style="margin:0 0 0.3em; color:#1E93AB; font-weight:bold; font-size:0.92em;">
+                Ví dụ — trình biên dịch suy ra từng bước:
+              </p>
+              <pre><code class="language-cpp" data-trim>
+// C++: auto cho phép suy diễn kiểu từ biểu thức
+auto x = 5;           // 5 là int        → x : int
+auto y = x + 1.5;     // int + double    → y : double
+auto z = y > 3.0;     // double > double → z : bool
+              </code></pre>
+              <p style="margin:0.5em 0 0.3em; color:#7B5EA7; font-weight:bold; font-size:0.92em;">
+                Template — T được "giải" từ đối số:
+              </p>
+              <pre><code class="language-cpp" data-trim>
+// C++: T được suy ra từ đối số khi gọi hàm template
+template &lt;typename T&gt;
+T max(T a, T b) { return a > b ? a : b; }
+
+max(3, 7);        // đối số là int    → T = int
+max(1.5, 2.3);    // đối số là double → T = double
+max("a", "b");    // đối số là string → T = string
+// Lập trình viên không cần viết max&lt;int&gt;(3, 7)
+              </code></pre>
+            </div>
+
+            <!-- Bên phải: hai trường hợp kết quả -->
+            <div style="flex:0 0 360px; display:flex; flex-direction:column; gap:0.6em;">
+              <div style="background:#e8f7fa; border:2px solid #1E93AB;
+                          border-radius:8px; padding:0.6em 0.8em; font-size:0.8em;">
+                <p style="margin:0 0 0.3em; color:#1E93AB; font-weight:bold;">
+                  Kiểu cụ thể
+                </p>
+                <p style="margin:0; color:#444;">
+                  Có đủ ràng buộc → trình biên dịch suy ra một kiểu duy nhất.
+                </p>
+                <p style="margin:0.4em 0 0; font-family:monospace; font-size:0.92em;">
+                  <span class="inline-code">n + 1</span>
+                  &nbsp;→&nbsp; <span class="text-teal">n : int</span>
+                </p>
+              </div>
+              <div style="background:#f0ebf8; border:2px solid #7B5EA7;
+                          border-radius:8px; padding:0.6em 0.8em; font-size:0.8em;">
+                <p style="margin:0 0 0.3em; color:#7B5EA7; font-weight:bold;">
+                  Biến kiểu tự do
+                </p>
+                <p style="margin:0; color:#444;">
+                  Không có ràng buộc → T có thể là <em>bất kỳ kiểu nào</em>
+                  → cùng một đoạn mã chạy cho tất cả.
+                </p>
+                <p style="margin:0.4em 0 0; font-family:monospace; font-size:0.92em;">
+                  <span class="inline-code">id(x){return x}</span>
+                  &nbsp;→&nbsp; <span class="text-purple">T → T</span>
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Unification Algorithm - connected to previous slide -->
+        <section style="font-size:0.5em;">
+          <div
+            style="position:absolute;top:10px;right:10px;background:#546E7A;color:white;font-size:0.5em;padding:4px 14px;border-radius:20px;font-weight:bold;z-index:10;">
+            📖 Tự học</div>
+          <h2>Suy diễn kiểu</h2>
+          <h4>Thuật toán Unification</h4>
+          <p style="color:#555;">
+            Slide trước cho thấy <em>kết quả</em> suy diễn.
+            Câu hỏi: trình biên dịch <strong>làm thế nào</strong> để tìm ra
+            <span class="inline-code">y : double</span> từ
+            <span class="inline-code">auto y = x + 1.5</span>?
+          </p>
+
+          <div style="display:flex; gap:1em; margin-top:0.6em; align-items:flex-start;">
+
+            <!-- 3 bước -->
+            <div style="flex:0 0 auto; background:#e8f7fa; border:2px solid #1E93AB;
+                        border-radius:8px; padding:0.6em 1em; min-width:200px;">
+              <p style="margin:0 0 0.4em; color:#1E93AB; font-weight:bold;">3 bước</p>
+              <ol style="margin:0; padding-left:1.2em; line-height:2;">
+                <li><strong>Gán biến kiểu</strong><br>
+                  <span style="font-size:0.88em; color:#555;">mỗi biểu thức → <span class="inline-code">τ?</span></span>
+                </li>
+                <li><strong>Sinh ràng buộc</strong><br>
+                  <span style="font-size:0.88em; color:#555;">từ ngữ nghĩa phép toán → phương trình</span>
+                </li>
+                <li><strong>Giải (Unify)</strong><br>
+                  <span style="font-size:0.88em; color:#555;">tìm kiểu thỏa tất cả phương trình</span>
+                </li>
+              </ol>
+            </div>
+
+            <!-- Trace cùng ví dụ với slide trước -->
+            <div style="flex:1;">
+              <p style="margin:0 0 0.4em; color:#555;">
+                <strong>Trace:</strong>
+                <span class="inline-code">auto y = x + 1.5</span>
+                &nbsp;(biết trước: <span class="inline-code">x : int</span>)
+              </p>
+              <table style="border-collapse:collapse; width:100%; font-size:0.9em;">
+                <thead>
+                  <tr style="background:#f5f5f5;">
+                    <th style="padding:0.3em 0.7em; border:1px solid #ddd; text-align:left;">Bước</th>
+                    <th style="padding:0.3em 0.7em; border:1px solid #ddd; text-align:left;">Kết quả</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding:0.35em 0.7em; border:1px solid #ddd;">① Gán biến kiểu</td>
+                    <td style="padding:0.35em 0.7em; border:1px solid #ddd;">
+                      <span class="inline-code">x : int</span> (đã biết),&nbsp;
+                      <span class="inline-code">1.5 : double</span>,&nbsp;
+                      <span class="inline-code">x+1.5 : τ₁</span>,&nbsp;
+                      <span class="inline-code">y : τ₂</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:0.35em 0.7em; border:1px solid #ddd;">② Sinh ràng buộc</td>
+                    <td style="padding:0.35em 0.7em; border:1px solid #ddd;">
+                      <span class="inline-code">+</span> với
+                      <span class="inline-code">(int, double)</span> trả về
+                      <span class="inline-code">double</span>
+                      &nbsp;→&nbsp; <span class="inline-code">τ₁ = double</span><br>
+                      phép gán: <span class="inline-code">τ₂ = τ₁</span>
+                    </td>
+                  </tr>
+                  <tr style="background:#f0fbf0;">
+                    <td style="padding:0.35em 0.7em; border:1px solid #ddd;">③ Giải</td>
+                    <td style="padding:0.35em 0.7em; border:1px solid #ddd;">
+                      <span class="inline-code">τ₁ = double</span>,&nbsp;
+                      <span class="inline-code">τ₂ = double</span>
+                      &nbsp;→&nbsp;
+                      <span class="text-green"><strong>y : double</strong></span> ✅
+                      &nbsp;&nbsp;<span style="color:#888; font-size:0.9em;">← kết quả đúng như slide trước</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <p style="margin-top:0.5em; color:#555; font-size:0.9em;">
+                Cơ chế này chạy tự động cho toàn bộ chương trình
+                — lập trình viên chỉ cần viết <span class="inline-code">auto</span>,
+                trình biên dịch làm phần còn lại.
+              </p>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ========================================================
+           SECTION 5 – TRỪU TƯỢNG HÓA DỮ LIỆU & MODULE
+           ======================================================== -->
+      <section>
+        <!-- 5.0 Title -->
+        <section>
+          <h1>
+            <span class="text-light">5.</span><br />
+            Trừu tượng hóa <br /> dữ liệu và Module
+          </h1>
+        </section>
+
+        <!-- 5.1 Overview -->
+        <section style="font-size:0.75em;">
+          <h2>Tổng quan</h2>
+          <div style="display:flex;gap:20px;margin-top:18px;">
+            <div style="flex:1;background:#e0f4f8;border-left:5px solid #1E93AB;border-radius:8px;padding:16px;">
+              <div style="font-weight:bold;color:#1E93AB;margin-bottom:8px;">🔒 ADT</div>
+              <div style="font-size:0.9em;">Kiểu dữ liệu trừu tượng (ADT) — ẩn biểu diễn, chỉ lộ thao tác.<br />
+                <span style="color:#555;font-size:0.88em;">C++ <span class="inline-code">class</span> với <span
+                    class="inline-code">private</span>/<span class="inline-code">public</span></span>
+              </div>
+            </div>
+            <div style="flex:1;background:#ede7f6;border-left:5px solid #7B5EA7;border-radius:8px;padding:16px;">
+              <div style="font-weight:bold;color:#7B5EA7;margin-bottom:8px;">📦 Module</div>
+              <div style="font-size:0.9em;">Đóng gói nhiều kiểu & hàm liên quan — giao diện tách cài đặt.<br />
+                <span style="color:#555;font-size:0.88em;">Python module / C++ <span class="inline-code">.h</span> +
+                  <span class="inline-code">.cpp</span></span>
+              </div>
+            </div>
+            <div style="flex:1;background:#e8f5e9;border-left:5px solid #2E7D32;border-radius:8px;padding:16px;">
+              <div style="font-weight:bold;color:#2E7D32;margin-bottom:8px;">⚙️ Generic Module</div>
+              <div style="font-size:0.9em;">Module nhận tham số kiểu — viết một lần, dùng cho mọi kiểu.<br />
+                <span style="color:#555;font-size:0.88em;">C++ templates / Java generics</span>
+              </div>
+            </div>
+          </div>
+          <div class="question-box" style="margin-top:20px;">
+            <div class="question-title">Mục tiêu chung</div>
+            Tách <strong>giao diện</strong> (interface) khỏi <strong>cài đặt</strong> (implementation) — client chỉ thấy
+            <em>hành vi</em> (operations), không thấy
+            <em>biểu diễn</em> (representation).
+          </div>
+        </section>
+
+        <!-- 5.2 Vấn đề: struct vs class -->
+        <section style="font-size:0.7em;">
+          <h2>Vấn đề — <span class="inline-code">struct</span> không che giấu biểu diễn</h2>
+          <div style="display:flex;gap:16px;margin-top:10px;">
+            <div style="flex:1;">
+              <div style="font-weight:bold;color:#E62727;margin-bottom:6px;">❌ struct — mọi thứ đều công khai</div>
+              <pre><code class="language-cpp" data-trim>
+struct Stack {
+    int data[100];
+    int top = 0;
+};
+
+Stack s;
+s.top = -5;          // hợp lệ!
+s.data[99] = 42;     // hợp lệ!
+
+
+// Client "biết" biểu diễn
+// → phụ thuộc vào chi tiết cài đặt
+              </code></pre>
+            </div>
+            <div style="flex:1;">
+              <div style="font-weight:bold;color:#2E7D32;margin-bottom:6px;">✅ class — ẩn biểu diễn</div>
+              <pre><code class="language-cpp" data-trim>
+class Stack {
+    int data[100]; // private (mặc định)
+    int top = 0;
+public:
+    void push(int x) { data[top++] = x; }
+    int  peek() { return data[top-1]; }
+    bool empty() { return top == 0; }
+};
+
+Stack s;
+s.push(42);        // ✓ thao tác hợp lệ
+s.top = -5;        // ✗ lỗi biên dịch!
+              </code></pre>
+            </div>
+          </div>
+          <p style="margin-top:10px;color:#555;font-size:0.9em;">
+            <span class="keyword">ADT</span> = cho phép định nghĩa kiểu có cơ chế che giấu biểu diễn, chỉ lộ thao tác.
+          </p>
+        </section>
+
+        <!-- 5.3a ADT: 5 thành phần — table -->
+        <section style="font-size:0.82em;">
+          <h2>5 thành phần của ADT <em style="font-size:0.75em;color:#888;">— ví dụ: Stack</em></h2>
+          <table style="width:100%;border-collapse:collapse;margin-top:0.5em;line-height:1.5;">
+            <colgroup>
+              <col style="width:5%">
+              <col style="width:28%">
+              <col style="width:67%">
+            </colgroup>
+            <thead>
+              <tr style="background:#1E93AB;color:#fff;font-size:0.95em;">
+                <th style="padding:6px 10px;text-align:center;">#</th>
+                <th style="padding:6px 10px;text-align:left;">Thành phần</th>
+                <th style="padding:6px 10px;text-align:left;">Ví dụ — ADT Stack</th>
+              </tr>
+            </thead>
+            <tbody style="font-size:0.93em;">
+              <tr style="background:#e0f4f8;">
+                <td style="padding:6px 10px;text-align:center;font-size:1.1em;">①</td>
+                <td style="padding:6px 10px;font-weight:bold;">Tên kiểu</td>
+                <td style="padding:6px 10px;"><code>Stack</code></td>
+              </tr>
+              <tr style="background:#fff;">
+                <td style="padding:6px 10px;text-align:center;font-size:1.1em;">②</td>
+                <td style="padding:6px 10px;font-weight:bold;">Biểu diễn <span
+                    style="color:#c00;font-weight:normal;">(ẩn)</span></td>
+                <td style="padding:6px 10px;"><code>data: int[100]</code> · <code>top: int</code></td>
+              </tr>
+              <tr style="background:#e0f4f8;">
+                <td style="padding:6px 10px;text-align:center;font-size:1.1em;">③</td>
+                <td style="padding:6px 10px;font-weight:bold;">Chữ ký <span style="color:#555;font-weight:normal;">(giao
+                    diện)</span></td>
+                <td style="padding:6px 10px;">
+                  <code>push(x)</code> · <code>pop()</code> · <code>peek()→int</code> · <code>empty()→bool</code>
+                </td>
+              </tr>
+              <tr style="background:#fff;">
+                <td style="padding:6px 10px;text-align:center;font-size:1.1em;">④</td>
+                <td style="padding:6px 10px;font-weight:bold;">Cài đặt <span
+                    style="color:#555;font-weight:normal;">(logic)</span></td>
+                <td style="padding:6px 10px;">
+                  <code>push</code>: data[top++]=x &nbsp;·&nbsp;
+                  <code>peek</code>: data[top−1] &nbsp;·&nbsp;
+                  <code>pop</code>: top−−
+                </td>
+              </tr>
+              <tr style="background:#e0f4f8;">
+                <td style="padding:6px 10px;text-align:center;font-size:1.1em;">⑤</td>
+                <td style="padding:6px 10px;font-weight:bold;">Vỏ bảo mật</td>
+                <td style="padding:6px 10px;">② ẩn hoàn toàn với client · ③ là giao diện duy nhất ra ngoài</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- 5.3b ADT: 5 thành phần — C (stack.h / stack.c) -->
+        <section style="font-size:0.6em;">
+          <h2>5 thành phần của ADT — trong C</h2>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5em;">
+            <div>
+              <div style="font-size:0.82em;font-weight:bold;color:#1E93AB;margin-bottom:3px;">stack.h — giao diện công
+                khai ⑤</div>
+              <pre style="margin:0;"><code class="language-c" data-trim>
+// ① Tên kiểu (opaque — client không thấy nội dung)
+typedef struct Stack Stack;
+
+
+// ③ Chữ ký — giao diện công khai
+Stack* stack_new   (void);
+
+void   stack_push  (Stack* s, int x);
+int    stack_peek  (Stack* s);
+void   stack_pop   (Stack* s);
+int    stack_empty (Stack* s);
+              </code></pre>
+            </div>
+            <div>
+              <div style="font-size:0.82em;font-weight:bold;color:#C2610F;margin-bottom:3px;">stack.c — cài đặt ẩn</div>
+              <pre style="margin:0;"><code class="language-c" data-trim>
+#include "stack.h"
+// ② Biểu diễn — ẩn hoàn toàn với client
+struct Stack { int data[100]; int top; };
+
+// ④ Cài đặt thao tác
+Stack* stack_new   (void)            { Stack* s = malloc(sizeof(Stack));
+                                       s->top = 0; return s; }
+void   stack_push  (Stack* s, int x) { s->data[s->top++] = x; }
+int    stack_peek  (Stack* s)        { return s->data[s->top - 1]; }
+void   stack_pop   (Stack* s)        { s->top--; }
+int    stack_empty (Stack* s)        { return s->top == 0; }
+              </code></pre>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:8px;align-items:flex-start;font-size:0.68em;">
+            <div style="flex:1;background:#e0f4f8;border-left:4px solid #1E93AB;padding:7px 10px;border-radius:6px;">
+              <strong class="text-teal">① Tên kiểu</strong><br />
+              <span class="inline-code">Stack</span> — opaque, client chỉ biết tên
+            </div>
+            <div style="flex:1;background:#fff3e0;border-left:4px solid #C2610F;padding:7px 10px;border-radius:6px;">
+              <strong style="color:#C2610F;">② Biểu diễn</strong><br />
+              <span class="inline-code">struct Stack</span> — ẩn trong <em>.c</em>
+            </div>
+            <div style="flex:1;background:#ede7f6;border-left:4px solid #7B5EA7;padding:7px 10px;border-radius:6px;">
+              <strong class="text-purple">③ Chữ ký</strong><br />
+              Khai báo hàm trong <br /> <em>.h</em>
+            </div>
+            <div style="flex:1;background:#e8f5e9;border-left:4px solid #2E7D32;padding:7px 10px;border-radius:6px;">
+              <strong class="text-green">④ Cài đặt</strong><br />
+              Thân hàm trong <br /> <em>.c</em>
+            </div>
+            <div style="flex:1;background:#fce4ec;border-left:4px solid #E62727;padding:7px 10px;border-radius:6px;">
+              <strong style="color:#E62727;">⑤ Vỏ bảo mật</strong><br />
+              Client chỉ thấy <em>.h</em> — <span class="inline-code">struct</span> được ẩn
+            </div>
+          </div>
+        </section>
+
+        <!-- 5.4 Constructors / Transformers / Observers -->
+        <section style="font-size:0.7em;">
+          <h2>Phân loại thao tác trong ADT</h2>
+          <table class="comparison-table" style="margin-top:10px;">
+            <thead>
+              <tr>
+                <th>Loại</th>
+                <th>Mô tả</th>
+                <th>Ví dụ — <span class="inline-code">Stack</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="keyword">Constructors</span></td>
+                <td>Tạo giá trị mới kiểu T</td>
+                <td>
+                  <span class="inline-code">Stack()</span> — tạo stack rỗng<br />
+                </td>
+              </tr>
+              <tr>
+                <td><span class="keyword">Transformers</span></td>
+                <td>Biến đổi T → T mới</td>
+                <td>
+                  <span class="inline-code">push(x)</span> — thêm phần tử<br />
+                  <span class="inline-code">pop()</span> — xóa phần tử đầu
+                </td>
+              </tr>
+              <tr>
+                <td><span class="keyword">Observers</span></td>
+                <td>Quan sát T → kiểu khác</td>
+                <td>
+                  <span class="inline-code">peek() → int</span><br />
+                  <span class="inline-code">empty() → bool</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- 5.5a Độc lập biểu diễn — 2 cài đặt -->
+        <section style="font-size:0.6em;" data-auto-animate>
+          <h2>Độc lập biểu diễn</h2>
+          <p style="margin-bottom:10px;">Hai cài đặt khác nhau, cùng <em>giao diện</em> (<span
+              class="inline-code">push</span> / <span class="inline-code">pop</span> / <span
+              class="inline-code">peek</span> / <span class="inline-code">empty</span>):</p>
+          <div style="display:flex;gap:16px;">
+            <div style="flex:1;">
+              <div style="font-weight:bold;color:#1E93AB;margin-bottom:6px;">Cài đặt 1 — mảng tĩnh</div>
+              <pre style="margin:0;"><code class="language-cpp" data-trim>
+class Stack {
+    int data[100];
+    int top = 0;
+public:
+    void push(int x)   { data[top++] = x; }
+    int  peek() const  { return data[top-1]; }
+    void pop()         { --top; }
+    bool empty() const { return top == 0; }
+};
+              </code></pre>
+            </div>
+            <div style="flex:1;">
+              <div style="font-weight:bold;color:#7B5EA7;margin-bottom:6px;">Cài đặt 2 — vector động</div>
+              <pre style="margin:0;"><code class="language-cpp" data-trim>
+class Stack {
+    vector&lt;int&gt; data;
+
+public:
+    void push(int x)   { data.push_back(x); }
+    int  peek() const  { return data.back(); }
+    void pop()         { data.pop_back(); }
+    bool empty() const { return data.empty(); }
+};
+              </code></pre>
+            </div>
+          </div>
+          <p style="margin-top:14px;color:#555;text-align:center;">
+            ↓ Vậy <strong>mã dùng</strong> hai cài đặt này trông như thế nào?
+          </p>
+        </section>
+
+        <!-- 5.5b Độc lập biểu diễn — client code -->
+        <section style="font-size:0.7em;" data-auto-animate>
+          <h2>Độc lập biểu diễn</h2>
+          <div>
+            <div style="font-weight:bold;color:#2E7D32;margin-bottom:6px;">Mã client — giống hệt cho cả hai cài đặt
+            </div>
+            <pre style="margin:0;"><code class="language-cpp" data-trim>
+Stack s;
+s.push(10);
+s.push(20);
+s.push(30);
+
+cout &lt;&lt; s.peek();  // 30
+s.pop();
+cout &lt;&lt; s.peek();  // 20
+              </code></pre>
+          </div>
+          <div>
+            <div class="question-box" style="margin-top:1em;">
+              <div class="question-title">Che giấu thông tin → Độc lập biểu diễn</div>
+              Client chỉ thấy <em>hành vi</em> qua giao diện —<br />
+              không thấy <span class="inline-code">data[]</span> hay <span
+                class="inline-code">vector</span>.<br /><br />
+              Muốn đổi cài đặt? Chỉ cần <strong>compile lại</strong>.<br />
+              Mã client <strong>không cần sửa gì</strong>.
+            </div>
+          </div>
+        </section>
+
+        <!-- 5.6 Module -->
+        <section style="font-size:0.75em;">
+          <h2>Module</h2>
+          <p style="margin-bottom:8px;"><strong>ADT</strong> đóng gói một kiểu. <strong>Module</strong> đóng gói nhiều
+            kiểu &amp; hàm liên quan.</p>
+          <div style="display:flex;gap:16px;">
+            <div style="flex:1;">
+              <div style="font-weight:bold;color:#7B5EA7;margin-bottom:6px;">📄 stack.py — module</div>
+              <pre style="margin:0;"><code class="language-python" data-trim>
+_data = []  # "private" (quy ước _)
+
+def push(x): _data.append(x)
+
+def pop():   return _data.pop()
+
+def peek():  return _data[-1]
+
+def empty(): return len(_data) == 0
+              </code></pre>
+            </div>
+            <div style="flex:1;">
+              <div style="font-weight:bold;color:#1E93AB;margin-bottom:6px;">📄 main.py — client</div>
+              <pre style="margin:0;"><code class="language-python" data-trim>
+import stack
+
+stack.push(10)
+stack.push(20)
+print(stack.peek())   # 20
+stack.pop()
+print(stack.empty())  # False
+
+# stack._data  ← không nên truy cập
+              </code></pre>
+            </div>
+          </div>
+          <div style="background:#f5f5f5;border-radius:6px;padding:10px 14px;margin-top:14px;font-size:0.88em;">
+            <strong>C++:</strong> module = <span class="inline-code">stack.h</span> (chữ ký — <em>public</em>) +
+            <span class="inline-code">stack.cpp</span> (cài đặt — <em>private</em>).
+            Đổi <span class="inline-code">.cpp</span> → không cần recompile client (<strong>biên dịch riêng
+              biệt</strong>).
+          </div>
+        </section>
+
+        <!-- 5.7 Generic Module -->
+        <section style="font-size:0.65em;">
+          <div
+            style="position:absolute;top:10px;right:10px;background:#546E7A;color:white;font-size:0.5em;padding:4px 14px;border-radius:20px;font-weight:bold;z-index:10;">
+            📖 Tự học</div>
+          <h2>Module tổng quát (Generic Module)</h2>
+          <p style="margin-bottom:8px;">Module nhận <strong>tham số kiểu</strong> — viết một lần, dùng cho mọi kiểu:</p>
+          <div style="display:flex;gap:16px;">
+            <div style="flex:1;">
+              <div style="font-weight:bold;color:#1E93AB;margin-bottom:6px;">C++ — Templates</div>
+              <pre style="margin:0;"><code class="language-cpp" data-trim>
+template &lt;typename T&gt;
+class Stack {
+    vector&lt;T&gt; data;
+public:
+    void push(T x)     { data.push_back(x); }
+    T    peek() const  { return data.back(); }
+    void pop()         { data.pop_back(); }
+    bool empty() const { return data.empty(); }
+};
+Stack&lt;int&gt;    si;  si.push(42);
+Stack&lt;string&gt; ss;  ss.push("hello");
+              </code></pre>
+            </div>
+            <div style="flex:1;">
+              <div style="font-weight:bold;color:#7B5EA7;margin-bottom:6px;">Java — Generics</div>
+              <pre style="margin:0;"><code class="language-java" data-trim>
+class Stack&lt;T&gt; {
+    private List&lt;T&gt; data = new ArrayList&lt;&gt;();
+
+    public void push(T x)  { data.add(x); }
+    public T    peek()     { return data.get(data.size()-1); }
+    public void pop()      { data.remove(data.size()-1); }
+    public boolean empty() { return data.isEmpty(); }
+}
+
+Stack&lt;Integer&gt; si = new Stack&lt;&gt;();  si.push(42);
+Stack&lt;String&gt;  ss = new Stack&lt;&gt;();  ss.push("hello");
+              </code></pre>
+            </div>
+          </div>
+          <div class="question-box" style="margin-top:14px;">
+            <div class="question-title">C++ vs Java</div>
+            <strong>C++:</strong> sinh mã riêng cho từng kiểu T → nhanh hơn, nhưng có thể <em>code bloat</em>.<br />
+            <strong>Java:</strong> một bản bytecode dùng chung (<em>type erasure</em>) → nhỏ gọn hơn.
+          </div>
+        </section>
+      </section>
+
+      <!-- ========================================================
+           SECTION 6 – THAM CHIẾU TREO & GARBAGE COLLECTION
+           ======================================================== -->
+      <section>
+        <!-- 6.0 Title -->
+        <section>
+          <h1>
+            <span class="text-light">6.</span><br />
+            Tham chiếu treo &amp; <br /> Thu gom rác
+          </h1>
+        </section>
+
+        <!-- 6.1 Overview -->
+        <section style="font-size:0.75em;">
+          <h2>Tổng quan</h2>
+          <div style="display:flex;gap:20px;margin-top:16px;">
+            <div style="flex:1;background:#fce4ec;border-left:5px solid #E62727;border-radius:8px;padding:16px;">
+              <div style="font-weight:bold;color:#E62727;margin-bottom:10px;">⚠️ Tham chiếu treo</div>
+              <div style="font-size:0.9em;">Con trỏ còn sống sau khi vùng nhớ đã <span class="inline-code">free</span> —
+                trỏ vào "hư không"</div>
+              <div style="margin-top:10px;font-size:0.75em;color:#666;">
+                <strong>Phát hiện:</strong><br />
+                🪦 Tombstone — gián tiếp qua bia mộ<br />
+                🔑 Locks &amp; Keys — kiểm tra cặp khóa
+              </div>
+            </div>
+            <div style="flex:1;background:#e0f4f8;border-left:5px solid #1E93AB;border-radius:8px;padding:16px;">
+              <div style="font-weight:bold;color:#1E93AB;margin-bottom:10px;">♻️ Thu gom rác</div>
+              <div style="font-size:0.9em;">Tự động thu hồi vùng nhớ không còn dùng — không cần <span
+                  class="inline-code">free</span> thủ công</div>
+              <div style="margin-top:10px;font-size:0.75em;color:#666;">
+                <strong>4 kỹ thuật:</strong><br />
+                Reference Counting · Mark &amp; Sweep<br />
+                Mark &amp; Compact · Stop &amp; Copy
+              </div>
+            </div>
+          </div>
+          <div class="question-box" style="margin-top:18px;">
+            <div class="question-title">Hai vấn đề đối lập</div>
+            <strong>Tham chiếu treo</strong> (Dangling reference): giải phóng <em>quá sớm</em> — con trỏ trỏ vào vùng đã
+            tái sử
+            dụng.<br />
+            <strong>Rò rỉ bộ nhớ</strong> (Memory leak): <em>không giải phóng</em> — vùng nhớ chiếm mãi dù không dùng
+            nữa.
+          </div>
+        </section>
+
+        <!-- 6.2 Dangling reference -->
+        <section style="font-size:0.8em;">
+          <h2>Tham chiếu treo</h2>
+          <div style="display:flex;gap:18px;align-items:flex-start;margin-top:10px;">
+            <div style="flex:1.5;">
+              <pre style="margin:0;"><code class="language-c" data-trim>
+// ví dụ C — con trỏ treo sau khi free
+// cấp phát vùng nhớ cho một int
+int* p = malloc(sizeof(int));
+*p = 5;     // gán giá trị qua con trỏ
+int* q = p; // q và p cùng trỏ một vùng
+
+free(p);    // giải phóng vùng nhớ
+p = NULL;   // p được đặt NULL — an toàn
+
+*q = 10;    // ⚠️ NGUY HIỂM!
+            // q vẫn giữ địa chỉ cũ
+            // vùng đó đã được tái sử dụng!
+            // q là một tham chiếu treo
+              </code></pre>
+            </div>
+            <div style="flex:1;">
+              <div style="font-size:0.88em;font-weight:bold;color:#555;margin-bottom:10px;">Trạng thái sau <span
+                  class="inline-code">free(p)</span>:</div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                <div
+                  style="background:#e8f5e9;border:2px solid #2E7D32;padding:6px 14px;border-radius:6px;font-weight:bold;">
+                  p = NULL</div>
+                <div style="color:#2E7D32;font-weight:bold;">✓ an toàn</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+                <div
+                  style="background:#ffcdd2;border:2px solid #E62727;padding:6px 14px;border-radius:6px;font-weight:bold;">
+                  q → 0x100</div>
+                <div
+                  style="background:#ffcdd2;border:2px dashed #E62727;padding:6px 10px;border-radius:6px;color:#E62727;">
+                  freed!</div>
+              </div>
+            </div>
+          </div>
+          <div
+            style="background:#fff3e0;border-left:4px solid #C2610F;padding:8px 10px;border-radius:4px;font-size:0.88em;margin-top:1em;">
+            <strong style="color:#C2610F;">Vấn đề:</strong> <span class="inline-code">q</span> đúng kiểu con trỏ, không
+            NULL —
+            nhưng trỏ vào vùng đã tái sử dụng. Lỗi không bị bắt lúc biên dịch.
+          </div>
+        </section>
+
+        <!-- 6.3 Tombstone -->
+        <section style="font-size:0.8em;">
+          <h2>Phát hiện tham chiếu treo <br /> Kỹ thuật Tombstone 🪦</h2>
+          <p style="margin-bottom:14px;">Con trỏ không trỏ thẳng vào đối tượng — trỏ qua trung gian:</p>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 200"
+            style="width:100%;max-height:200px;display:block;margin:8px auto;">
+            <defs>
+              <marker id="arr-g" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                <polygon points="0 0,8 3,0 6" fill="#2E7D32" />
+              </marker>
+              <marker id="arr-r" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                <polygon points="0 0,8 3,0 6" fill="#E62727" />
+              </marker>
+              <marker id="arr-gray" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                <polygon points="0 0,8 3,0 6" fill="#999" />
+              </marker>
+            </defs>
+
+            <!-- ══ BEFORE ══ -->
+            <text x="145" y="20" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="20"
+              fill="#2E7D32">Trước free</text>
+
+            <!-- p -->
+            <rect x="15" y="50" width="44" height="30" rx="4" fill="#e8f5e9" stroke="#2E7D32" stroke-width="2" />
+            <text x="37" y="70" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="14"
+              fill="#2E7D32">p</text>
+
+            <!-- q -->
+            <rect x="15" y="118" width="44" height="30" rx="4" fill="#e8f5e9" stroke="#2E7D32" stroke-width="2" />
+            <text x="37" y="138" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="14"
+              fill="#2E7D32">q</text>
+
+            <!-- single shared ✓ tomb -->
+            <rect x="120" y="72" width="96" height="54" rx="6" fill="#c8e6c9" stroke="#2E7D32" stroke-width="2.5" />
+            <text x="168" y="95" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="15"
+              fill="#1B5E20">✓ tomb</text>
+            <text x="168" y="113" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#388E3C">(dùng
+              chung)</text>
+
+            <!-- obj -->
+            <rect x="252" y="80" width="56" height="38" rx="4" fill="#e3f2fd" stroke="#1E93AB" stroke-width="2" />
+            <text x="280" y="103" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#1565C0">obj</text>
+
+            <!-- p → tomb (curve down) -->
+            <path d="M59 65 C92 65,92 88,120 88" fill="none" stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arr-g)" />
+            <!-- q → tomb (curve up) -->
+            <path d="M59 133 C92 133,92 112,120 112" fill="none" stroke="#2E7D32" stroke-width="2"
+              marker-end="url(#arr-g)" />
+            <!-- tomb → obj -->
+            <line x1="216" y1="99" x2="250" y2="99" stroke="#2E7D32" stroke-width="2" marker-end="url(#arr-g)" />
+
+            <!-- caption -->
+            <text x="155" y="180" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#555">p, q cùng trỏ
+              vào một tombstone duy nhất</text>
+
+            <!-- ══ DIVIDER ══ -->
+            <line x1="335" y1="10" x2="335" y2="195" stroke="#ccc" stroke-width="1.5" stroke-dasharray="5,4" />
+
+            <!-- ══ AFTER ══ -->
+            <text x="510" y="20" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="20"
+              fill="#E62727">Sau free(p)</text>
+
+            <!-- p (red) -->
+            <rect x="355" y="50" width="44" height="30" rx="4" fill="#ffcdd2" stroke="#E62727" stroke-width="2" />
+            <text x="377" y="70" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="14"
+              fill="#E62727">p</text>
+
+            <!-- q (red) -->
+            <rect x="355" y="118" width="44" height="30" rx="4" fill="#ffcdd2" stroke="#E62727" stroke-width="2" />
+            <text x="377" y="138" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="14"
+              fill="#E62727">q</text>
+
+            <!-- single shared ✗ tomb (red) -->
+            <rect x="460" y="72" width="96" height="54" rx="6" fill="#ffcdd2" stroke="#E62727" stroke-width="2.5" />
+            <text x="508" y="95" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="15"
+              fill="#E62727">✗ tomb</text>
+            <text x="508" y="113" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#E62727">(dùng
+              chung)</text>
+
+            <!-- p → tomb -->
+            <path d="M399 65 C432 65,432 88,460 88" fill="none" stroke="#E62727" stroke-width="2"
+              marker-end="url(#arr-r)" />
+            <!-- q → tomb -->
+            <path d="M399 133 C432 133,432 112,460 112" fill="none" stroke="#E62727" stroke-width="2"
+              marker-end="url(#arr-r)" />
+
+            <!-- tomb → [freed] (dashed gray, above) -->
+            <line x1="556" y1="86" x2="618" y2="72" stroke="#999" stroke-width="1.5" stroke-dasharray="4,3"
+              marker-end="url(#arr-gray)" />
+            <text x="620" y="71" font-family="sans-serif" font-size="10.5" fill="#999">[freed]</text>
+
+            <!-- tomb → ERROR (solid red, below) -->
+            <line x1="556" y1="112" x2="618" y2="126" stroke="#E62727" stroke-width="2" marker-end="url(#arr-r)" />
+            <text x="620" y="131" font-family="sans-serif" font-weight="bold" font-size="12"
+              fill="#E62727">ERROR!</text>
+
+            <!-- caption -->
+            <text x="500" y="180" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#555">đánh ✗ một
+              lần → cả p lẫn q đều biết</text>
+          </svg>
+          <div style="margin-top:14px;">
+            <strong>Chi phí:</strong>
+            <br />
+            <strong>Không gian:</strong> tombstone riêng cho mỗi đối tượng heap.
+            <br />
+            <strong>Thời gian:</strong> mỗi lần dereference phải đi qua 2 bước gián tiếp.
+          </div>
+        </section>
+
+        <!-- 6.4 Locks & Keys -->
+        <section style="font-size:0.65em;">
+          <div
+            style="position:absolute;top:10px;right:10px;background:#546E7A;color:white;font-size:0.5em;padding:4px 14px;border-radius:20px;font-weight:bold;z-index:10;">
+            📖 Tự học</div>
+          <h2>Phát hiện tham chiếu treo: Locks &amp; Keys 🔑</h2>
+          <p style="margin-bottom:12px;">Không cần tầng gián tiếp — con trỏ mang <span class="keyword">key</span>, đối
+            tượng có <span class="keyword">lock</span>. Dereference kiểm tra <span class="inline-code">key ==
+              lock</span>:</p>
+          <div style="display:flex;gap:24px;justify-content:center;margin:8px 0;">
+            <!-- Valid -->
+            <div style="text-align:center;flex:1;">
+              <div style="font-weight:bold;color:#2E7D32;margin-bottom:10px;">Dereference hợp lệ</div>
+              <div style="display:flex;align-items:center;gap:8px;justify-content:center;">
+                <div
+                  style="background:#e8f5e9;border:2px solid #2E7D32;padding:8px 14px;border-radius:6px;font-size:0.9em;text-align:left;">
+                  <div style="font-weight:bold;">ptr p</div>
+                  <div style="color:#555;">addr = 0x100</div>
+                  <div style="color:#2E7D32;">key = <strong>42</strong></div>
+                </div>
+                <div style="font-size:1.3em;">→</div>
+                <div
+                  style="background:#e8f5e9;border:2px solid #2E7D32;padding:8px 14px;border-radius:6px;font-size:0.9em;text-align:left;">
+                  <div style="font-weight:bold;">heap[0x100]</div>
+                  <div style="color:#2E7D32;">lock = <strong>42</strong></div>
+                  <div style="color:#555;">data...</div>
+                </div>
+              </div>
+              <div style="color:#2E7D32;font-weight:bold;margin-top:10px;">key == lock ✓ OK</div>
+            </div>
+            <!-- Invalid -->
+            <div style="text-align:center;flex:1;">
+              <div style="font-weight:bold;color:#E62727;margin-bottom:10px;">Sau <span class="inline-code">free</span>
+                &amp; tái cấp phát</div>
+              <div style="display:flex;align-items:center;gap:8px;justify-content:center;">
+                <div
+                  style="background:#ffcdd2;border:2px solid #E62727;padding:8px 14px;border-radius:6px;font-size:0.9em;text-align:left;">
+                  <div style="font-weight:bold;">ptr p</div>
+                  <div style="color:#555;">addr = 0x100</div>
+                  <div style="color:#E62727;">key = <strong>42</strong></div>
+                </div>
+                <div style="font-size:1.3em;">→</div>
+                <div
+                  style="background:#ffcdd2;border:2px solid #E62727;padding:8px 14px;border-radius:6px;font-size:0.9em;text-align:left;">
+                  <div style="font-weight:bold;">heap[0x100]</div>
+                  <div style="color:#E62727;">lock = <strong>99</strong></div>
+                  <div style="color:#555;">new data</div>
+                </div>
+              </div>
+              <div style="color:#E62727;font-weight:bold;margin-top:10px;">key ≠ lock ✗ ERROR!</div>
+            </div>
+          </div>
+          <div class="question-box" style="margin-top:12px;">
+            <div class="question-title">So sánh với Tombstone</div>
+            <strong>Tombstone:</strong> cần bộ nhớ riêng cho tombstone, dereference 2 bước.<br />
+            <strong>Locks &amp; Keys:</strong> key tốn thêm bộ nhớ trong mỗi con trỏ, nhưng dereference chỉ 1 bước.
+          </div>
+        </section>
+
+        <!-- 6.5 Memory leak & GC intro -->
+        <section>
+          <h2>Rác bộ nhớ</h2>
+          <pre style="margin:0;"><code class="language-c" data-trim>
+int* p = malloc(sizeof(int));
+*p = 5;
+
+p = NULL;    // con trỏ DUY NHẤT tới đối tượng mất đi
+             // → đối tượng không tiếp cận được
+             // → "rác", nhưng vùng nhớ chưa thu hồi!
+              </code></pre>
+          <p>
+            <span class="keyword">Rò rỉ bộ nhớ:</span> nhiều đối tượng trở thành rác mà không được thu hồi — bộ nhớ bị
+            chiếm dù không còn dùng.
+          </p>
+        </section>
+
+        <section>
+          <h2>Thu gom rác</h2>
+          <p>
+            <strong>Root set</strong>: Tập tham chiếu mà chương trình <strong>trực tiếp giữ</strong> tại thời điểm hiện
+            tại.
+          </p>
+          <div>
+            <p><span class="keyword">Thu gom rác - Garbage Collection (GC)</span> lần theo con trỏ từ root set:</p>
+            <ul>
+              <li>lần theo được = <strong style="color:#2E7D32;">còn sống</strong></li>
+              <li>không lần theo được = <strong style="color:#E62727;">rác</strong></li>
+            </ul>
+            <p style="font-size:.9em;color:#555;">Java, Python, JavaScript, ... đều có GC tích hợp sẵn.</p>
+          </div>
+        </section>
+
+        <!-- 6.6 Reference Counting -->
+        <section style="font-size:0.75em;">
+          <h2>Đếm tham chiếu</h2>
+          <p style="margin-bottom:8px;">Mỗi đối tượng có bộ đếm số tham chiếu (RC - Reference Count) đến nó. <br />
+            RC = 0 → giải phóng ngay:</p>
+          <div>
+            <div style="font-weight:bold;color:#2E7D32;margin-bottom:6px;">✅ Trường hợp bình thường</div>
+            <pre style="margin:0;"><code class="language-python" data-trim>
+a = [1, 2, 3] # RC = 1
+b = a         # RC = 2
+b = None      # RC = 1
+a = None      # RC = 0 → freed ngay!
+              </code></pre>
+            <div style="font-size:0.85em;color:#555;margin-top:6px;">Python (CPython), Swift ARC dùng RC</div>
+          </div>
+          <div>
+            <div style="font-weight:bold;color:#E62727;margin-bottom:6px;">❌ Vấn đề: chu trình tham chiếu</div>
+            <pre style="margin:0;"><code class="language-python" data-trim>
+x = {}; y = {}
+x['y'] = y    # RC(y) = 2
+y['x'] = x    # RC(x) = 2
+
+del x         # RC(x) = 1  ≠ 0
+del y         # RC(y) = 1  ≠ 0
+# x, y → KHÔNG bao giờ freed!
+              </code></pre>
+            <div style="font-size:0.85em;color:#E62727;margin-top:6px;">Python bổ sung cycle detector riêng để xử lý
+            </div>
+          </div>
+        </section>
+
+        <!-- 6.7 Mark & Sweep -->
+        <section style="font-size:0.82em;">
+          <h2>Mark &amp; Sweep</h2>
+          <div style="display:flex;gap:18px;margin-top:10px;align-items:flex-start;">
+            <div style="flex:1;">
+              <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
+                <div style="background:#e0f4f8;border-left:4px solid #1E93AB;padding:8px 12px;border-radius:6px;">
+                  <strong class="text-teal">① Mark:</strong> lần theo <em>root set</em>, đánh dấu
+                  tất cả đối tượng còn tiếp cận được
+                </div>
+                <div style="background:#e0f4f8;border-left:4px solid #1E93AB;padding:8px 12px;border-radius:6px;">
+                  <strong class="text-teal">② Sweep:</strong> quét toàn heap — thu hồi mọi ô chưa được đánh dấu
+                </div>
+              </div>
+            </div>
+            <div style="flex:1;">
+              <div style="font-weight:bold;color:#555;margin-bottom:8px;">Heap sau Mark:</div>
+              <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:6px;">
+                <div style="background:#e8f5e9;border:2px solid #2E7D32;padding:5px 11px;border-radius:4px;">A ✓</div>
+                <div style="background:#e8f5e9;border:2px solid #2E7D32;padding:5px 11px;border-radius:4px;">B ✓</div>
+                <div style="background:#ffcdd2;border:2px solid #E62727;padding:5px 11px;border-radius:4px;">C ✗</div>
+                <div style="background:#e8f5e9;border:2px solid #2E7D32;padding:5px 11px;border-radius:4px;">D ✓</div>
+                <div style="background:#ffcdd2;border:2px solid #E62727;padding:5px 11px;border-radius:4px;">E ✗</div>
+              </div>
+              <div style="font-size:0.82em;color:#555;margin-bottom:10px;">✓ còn sống &nbsp;·&nbsp; ✗ rác → sweep</div>
+              <div style="font-weight:bold;color:#555;margin-bottom:8px;">Sau Sweep:</div>
+              <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:6px;">
+                <div style="background:#e8f5e9;border:2px solid #2E7D32;padding:5px 11px;border-radius:4px;">A</div>
+                <div style="background:#e8f5e9;border:2px solid #2E7D32;padding:5px 11px;border-radius:4px;">B</div>
+                <div style="background:#f5f5f5;border:2px dashed #aaa;padding:5px 11px;border-radius:4px;color:#aaa;">
+                  free</div>
+                <div style="background:#e8f5e9;border:2px solid #2E7D32;padding:5px 11px;border-radius:4px;">D</div>
+                <div style="background:#f5f5f5;border:2px dashed #aaa;padding:5px 11px;border-radius:4px;color:#aaa;">
+                  free</div>
+              </div>
+              <div style="font-size:0.82em;color:#C2610F;">⚠ Lỗ trống xen kẽ → phân mảnh bộ nhớ</div>
+            </div>
+          </div>
+          <div style="font-size:0.9em;line-height:1.8;">
+            ✅ Xử lý được chu trình<br />
+            ❌ O(heap size), gây phân mảnh<br />
+            ❌ Phải dừng chương trình (<em>stop-the-world</em>)
+          </div>
+        </section>
+
+        <!-- 6.8 Mark & Compact -->
+        <section style="font-size:0.82em;">
+          <div
+            style="position:absolute;top:10px;right:10px;background:#546E7A;color:white;font-size:0.5em;padding:4px 14px;border-radius:20px;font-weight:bold;z-index:10;">
+            📖 Tự học</div>
+          <h2>Mark &amp; Compact</h2>
+          <p style="margin-bottom:12px;">Cải tiến Mark &amp; Sweep: thay pha Sweep bằng pha <span
+              class="keyword">Compact</span> — dồn đối tượng còn sống về đầu heap:</p>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div>
+              <div style="font-weight:bold;color:#555;margin-bottom:6px;">Trước Compact:</div>
+              <div style="display:flex;align-items:center;gap:5px;">
+                <div style="background:#e8f5e9;border:2px solid #2E7D32;padding:6px 14px;border-radius:4px;">A ✓</div>
+                <div style="background:#e8f5e9;border:2px solid #2E7D32;padding:6px 14px;border-radius:4px;">B ✓</div>
+                <div style="background:#ffcdd2;border:2px solid #E62727;padding:6px 14px;border-radius:4px;">C ✗</div>
+                <div style="background:#ffcdd2;border:2px solid #E62727;padding:6px 14px;border-radius:4px;">D ✗</div>
+                <div style="background:#e8f5e9;border:2px solid #2E7D32;padding:6px 14px;border-radius:4px;">E ✓</div>
+                <div style="background:#f5f5f5;border:2px dashed #aaa;padding:6px 14px;border-radius:4px;color:#aaa;">
+                  free</div>
+                <div style="background:#e8f5e9;border:2px solid #2E7D32;padding:6px 14px;border-radius:4px;">F ✓</div>
+              </div>
+            </div>
+            <div style="color:#1E93AB;font-weight:bold;font-size:1.1em;">↓ dồn về đầu, cập nhật lại tất cả con trỏ</div>
+            <div>
+              <div style="font-weight:bold;color:#555;margin-bottom:6px;">Sau Compact:</div>
+              <div style="display:flex;align-items:center;gap:5px;">
+                <div style="background:#e8f5e9;border:2px solid #2E7D32;padding:6px 14px;border-radius:4px;">A</div>
+                <div style="background:#e8f5e9;border:2px solid #2E7D32;padding:6px 14px;border-radius:4px;">B</div>
+                <div style="background:#e8f5e9;border:2px solid #2E7D32;padding:6px 14px;border-radius:4px;">E</div>
+                <div style="background:#e8f5e9;border:2px solid #2E7D32;padding:6px 14px;border-radius:4px;">F</div>
+                <div
+                  style="background:#e0f4f8;border:2px dashed #1E93AB;padding:6px 60px;border-radius:4px;color:#1E93AB;font-size:0.88em;">
+                  ← vùng trống liên tục →</div>
+              </div>
+            </div>
+          </div>
+          <div style="font-size:0.9em;line-height:1.8;">
+            <div>✅ Không phân mảnh — cấp phát mới rất nhanh</div>
+            <div>❌ Phải cập nhật lại tất cả con trỏ sau khi di chuyển</div>
+          </div>
+        </section>
+
+        <!-- 6.9 Stop & Copy -->
+        <section style="font-size:0.82em;">
+          <div
+            style="position:absolute;top:10px;right:10px;background:#546E7A;color:white;font-size:0.5em;padding:4px 14px;border-radius:20px;font-weight:bold;z-index:10;">
+            📖 Tự học</div>
+          <h2>Stop &amp; Copy</h2>
+          <p style="margin-bottom:10px;">Heap chia đôi: <span class="keyword">fromspace</span> và <span
+              class="keyword">tospace</span>. Cấp phát trong fromspace — khi đầy thì copy đối tượng còn sống sang
+            tospace:</p>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:0.9em;">
+            <div>
+              <div style="font-weight:bold;color:#555;margin-bottom:5px;">Trước GC:</div>
+              <div style="display:flex;gap:5px;align-items:center;margin-bottom:4px;">
+                <div
+                  style="background:#fff3e0;border:2px solid #C2610F;padding:5px 10px;border-radius:4px;font-weight:bold;color:#C2610F;font-size:0.85em;">
+                  fromspace</div>
+                <div style="background:#e8f5e9;border:2px solid #2E7D32;padding:5px 12px;border-radius:4px;">A ✓</div>
+                <div style="background:#ffcdd2;border:2px solid #E62727;padding:5px 12px;border-radius:4px;">B ✗</div>
+                <div style="background:#e8f5e9;border:2px solid #2E7D32;padding:5px 12px;border-radius:4px;">C ✓</div>
+                <div style="background:#ffcdd2;border:2px solid #E62727;padding:5px 12px;border-radius:4px;">D ✗</div>
+                <div style="background:#e8f5e9;border:2px solid #2E7D32;padding:5px 12px;border-radius:4px;">E ✓</div>
+              </div>
+              <div style="display:flex;gap:5px;align-items:center;">
+                <div
+                  style="background:#e0f4f8;border:2px solid #1E93AB;padding:5px 12px;border-radius:4px;font-weight:bold;color:#1E93AB;font-size:0.85em;">
+                  tospace&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                <div
+                  style="background:#f5f5f5;border:2px dashed #aaa;padding:5px 140px;border-radius:4px;color:#aaa;font-size:0.85em;">
+                  trống</div>
+              </div>
+            </div>
+            <div style="color:#1E93AB;font-weight:bold;font-size:1.05em;">↓ copy A, C, E (còn sống) sang tospace — hai
+              vùng đổi vai trò</div>
+            <div>
+              <div style="font-weight:bold;color:#555;margin-bottom:5px;">Sau GC:</div>
+              <div style="display:flex;gap:5px;align-items:center;margin-bottom:4px;">
+                <div
+                  style="background:#fff3e0;border:2px solid #C2610F;padding:5px 10px;border-radius:4px;font-weight:bold;color:#C2610F;font-size:0.85em;">
+                  fromspace</div>
+                <div
+                  style="background:#f5f5f5;border:2px dashed #aaa;padding:5px 140px;border-radius:4px;color:#aaa;font-size:0.85em;">
+                  trống (sẵn sàng cấp phát)</div>
+              </div>
+              <div style="display:flex;gap:5px;align-items:center;">
+                <div
+                  style="background:#e0f4f8;border:2px solid #1E93AB;padding:5px 12px;border-radius:4px;font-weight:bold;color:#1E93AB;font-size:0.85em;">
+                  tospace&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                <div style="background:#e8f5e9;border:2px solid #2E7D32;padding:5px 12px;border-radius:4px;">A'</div>
+                <div style="background:#e8f5e9;border:2px solid #2E7D32;padding:5px 12px;border-radius:4px;">C'</div>
+                <div style="background:#e8f5e9;border:2px solid #2E7D32;padding:5px 12px;border-radius:4px;">E'</div>
+                <div
+                  style="background:#f5f5f5;border:2px dashed #aaa;padding:5px 60px;border-radius:4px;color:#aaa;font-size:0.85em;">
+                  trống</div>
+              </div>
+            </div>
+          </div>
+          <div style="font-size:0.9em;line-height:1.8;">
+            ✅ Chi phí ∝ số đối tượng còn sống, không phân mảnh <br />
+            ❌ Tốn gấp đôi bộ nhớ, vẫn phải <em>stop-the-world</em>
+          </div>
+        </section>
+
+        <!-- 6.10 GC comparison table -->
+        <section style="font-size:0.82em;">
+          <div
+            style="position:absolute;top:10px;right:10px;background:#546E7A;color:white;font-size:0.5em;padding:4px 14px;border-radius:20px;font-weight:bold;z-index:10;">
+            📖 Tự học</div>
+          <h2>So sánh các kỹ thuật GC</h2>
+          <table class="comparison-table" style="font-size:0.88em;margin-top:14px;">
+            <thead>
+              <tr>
+                <th>Kỹ thuật</th>
+                <th>Chi phí thời gian</th>
+                <th>Phân mảnh</th>
+                <th>Tăng dần?</th>
+                <th>Xử lý vòng?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Reference Counting</strong></td>
+                <td>O(chương trình)</td>
+                <td>Có</td>
+                <td>✅</td>
+                <td>❌</td>
+              </tr>
+              <tr>
+                <td><strong>Mark &amp; Sweep</strong></td>
+                <td>O(heap size)</td>
+                <td>Có</td>
+                <td>❌</td>
+                <td>✅</td>
+              </tr>
+              <tr>
+                <td><strong>Mark &amp; Compact</strong></td>
+                <td>O(heap size) × 2–3</td>
+                <td>Không</td>
+                <td>❌</td>
+                <td>✅</td>
+              </tr>
+              <tr>
+                <td><strong>Stop &amp; Copy</strong></td>
+                <td>O(live objects)</td>
+                <td>Không</td>
+                <td>❌</td>
+                <td>✅</td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="font-size:0.9em;margin-top:12px;color:#555;">
+            GC thực tế thường kết hợp nhiều kỹ thuật — ví dụ: <strong>GC phân thế hệ</strong> (generational GC) dùng
+            trong JVM, V8, CPython.
+          </p>
+        </section>
+      </section>
+
+      <!-- ========================================================
+           TỔNG KẾT
+           ======================================================== -->
+      <section>
+
+        <!-- TK.0 Title -->
+        <section>
+          <h1><span class="text-light">✦</span><br />Tổng kết</h1>
+        </section>
+
+        <!-- TK.1 Câu chuyện của Bài 4 -->
+        <section style="font-size:0.65em;">
+          <h2>Câu chuyện của Bài 4</h2>
+          <p style="color:#555;margin-bottom:16px;font-size:0.95em;">Một hành trình từ <em>bit thô</em> đến <em>phần mềm
+              có thể tin cậy được</em></p>
+
+          <!-- Flow: 3 columns top row, 3 columns bottom row, connected by arrows -->
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <!-- Row 1 -->
+            <div style="display:flex;align-items:center;gap:0;">
+              <div
+                style="flex:1;background:#e0f4f8;border:2px solid #1E93AB;border-radius:8px;padding:10px 12px;text-align:center;">
+                <div style="font-weight:bold;color:#1E93AB;font-size:1.05em;">1–2</div>
+                <div style="font-weight:bold;margin:4px 0;">Kiểu &amp; Cấu trúc</div>
+                <div style="color:#555;font-size:0.88em;">Gắn ý nghĩa cho bit.<br />Tổ chức dữ liệu trong bộ nhớ.</div>
+              </div>
+              <div style="color:#1E93AB;font-size:1.4em;padding:0 8px;">→</div>
+              <div
+                style="flex:1;background:#ede7f6;border:2px solid #7B5EA7;border-radius:8px;padding:10px 12px;text-align:center;">
+                <div style="font-weight:bold;color:#7B5EA7;font-size:1.05em;">3</div>
+                <div style="font-weight:bold;margin:4px 0;">Tương đương &amp; Tương thích</div>
+                <div style="color:#555;font-size:0.88em;">Khi nào hai kiểu có thể<br />dùng thay cho nhau?</div>
+              </div>
+              <div style="color:#7B5EA7;font-size:1.4em;padding:0 8px;">→</div>
+              <div
+                style="flex:1;background:#fff3e0;border:2px solid #C2610F;border-radius:8px;padding:10px 12px;text-align:center;">
+                <div style="font-weight:bold;color:#C2610F;font-size:1.05em;">4</div>
+                <div style="font-weight:bold;margin:4px 0;">Đa hình</div>
+                <div style="color:#555;font-size:0.88em;">Một giao diện —<br />nhiều cài đặt.</div>
+              </div>
+            </div>
+
+            <div style="text-align:center;color:#555;font-size:0.85em;font-style:italic;">↓ nền tảng
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              ↓ quy tắc
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              ↓ tái sử dụng</div>
+
+            <!-- Row 2 -->
+            <div style="display:flex;align-items:center;gap:0;">
+              <div
+                style="flex:1;background:#e8f5e9;border:2px solid #2E7D32;border-radius:8px;padding:10px 12px;text-align:center;">
+                <div style="font-weight:bold;color:#2E7D32;font-size:1.05em;">5</div>
+                <div style="font-weight:bold;margin:4px 0;">ADT &amp; Module</div>
+                <div style="color:#555;font-size:0.88em;">Ẩn biểu diễn —<br />chỉ lộ hành vi.</div>
+              </div>
+              <div style="color:#2E7D32;font-size:1.4em;padding:0 8px;">→</div>
+              <div
+                style="flex:1;background:#fce4ec;border:2px solid #E62727;border-radius:8px;padding:10px 12px;text-align:center;">
+                <div style="font-weight:bold;color:#E62727;font-size:1.05em;">6</div>
+                <div style="font-weight:bold;margin:4px 0;">Quản lý bộ nhớ</div>
+                <div style="color:#555;font-size:0.88em;">Giải phóng sai → lỗi.<br />GC → tự động nhưng có giá.</div>
+              </div>
+              <div style="color:#555;font-size:1.4em;padding:0 8px;">→</div>
+              <div
+                style="flex:1;background:#f5f5f5;border:2px solid #888;border-radius:8px;padding:10px 12px;text-align:center;">
+                <div style="font-weight:bold;color:#555;font-size:1.05em;">Mục tiêu</div>
+                <div style="font-weight:bold;margin:4px 0;">Phần mềm đáng tin cậy</div>
+                <div style="color:#555;font-size:0.88em;">An toàn kiểu ·<br />Tái sử dụng · Hiệu quả</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TK.2 6 điều cần nhớ -->
+        <section style="font-size:0.7em;">
+          <h2>6 điều cần nhớ</h2>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:14px;">
+
+            <div style="background:#e0f4f8;border-left:4px solid #1E93AB;border-radius:6px;padding:10px 12px;">
+              <div style="font-weight:bold;color:#1E93AB;margin-bottom:5px;">1 Kiểu dữ liệu</div>
+              <div>Kiểu không chỉ là bit — là <strong>hợp đồng</strong> về ý nghĩa, thao tác hợp lệ, và lỗi bị bắt sớm.
+              </div>
+            </div>
+
+            <div style="background:#e0f4f8;border-left:4px solid #1E93AB;border-radius:6px;padding:10px 12px;">
+              <div style="font-weight:bold;color:#1E93AB;margin-bottom:5px;">2 Cấu trúc dữ liệu</div>
+              <div>Row-major + Dope Vector: mảng đa chiều vừa <strong>hiệu quả cache</strong> vừa hỗ trợ hình dạng động.
+              </div>
+            </div>
+
+            <div style="background:#ede7f6;border-left:4px solid #7B5EA7;border-radius:6px;padding:10px 12px;">
+              <div style="font-weight:bold;color:#7B5EA7;margin-bottom:5px;">3 Tương đương kiểu</div>
+              <div>Name vs Structural: hai triết lý. Duck typing: nếu nó <em>hoạt động như</em> một kiểu — thì nó là
+                kiểu đó.</div>
+            </div>
+
+            <div style="background:#fff3e0;border-left:4px solid #C2610F;border-radius:6px;padding:10px 12px;">
+              <div style="font-weight:bold;color:#C2610F;margin-bottom:5px;">4 Đa hình</div>
+              <div>Ad-hoc, Parametric, Subtype — ba cách viết code dùng cho <strong>nhiều kiểu</strong> mà không lặp
+                lại.</div>
+            </div>
+
+            <div style="background:#e8f5e9;border-left:4px solid #2E7D32;border-radius:6px;padding:10px 12px;">
+              <div style="font-weight:bold;color:#2E7D32;margin-bottom:5px;">5 ADT &amp; Module</div>
+              <div>Ẩn biểu diễn → độc lập biểu diễn: đổi cài đặt thoải mái, client không cần sửa gì.</div>
+            </div>
+
+            <div style="background:#fce4ec;border-left:4px solid #E62727;border-radius:6px;padding:10px 12px;">
+              <div style="font-weight:bold;color:#E62727;margin-bottom:5px;">6 Bộ nhớ</div>
+              <div>Không có giải pháp miễn phí: thủ công → nguy hiểm; GC → an toàn nhưng đánh đổi thời gian &amp; bộ
+                nhớ.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TK.3 Discussion Q1 -->
+        <section style="font-size:0.5em;">
+          <h2>Câu hỏi thảo luận</h2>
+          <div style="display:flex;flex-direction:column;gap:14px;margin-top:14px;">
+
+            <div style="background:#f9f9f9;border-left:5px solid #1E93AB;border-radius:8px;padding:14px 18px;">
+              <div style="font-weight:bold;color:#1E93AB;margin-bottom:6px;">① 1–3 · Triết lý hệ thống kiểu</div>
+              <div style="margin-bottom:8px;">Python: <span class="inline-code">1 + "a"</span> → lỗi <em>runtime</em>.
+                JavaScript: <span class="inline-code">1 + "a"</span> → <span class="inline-code">"1a"</span> (hợp lệ!).
+                TypeScript: lỗi <em>compile-time</em>.</div>
+              <div>Ba ngôn ngữ, ba cách xử lý coercion. Cái nào <em>an toàn nhất</em>? Cái nào <em>tiện nhất</em>? Hai
+                tiêu chí này có mâu thuẫn không?</div>
+            </div>
+
+            <div style="background:#f9f9f9;border-left:5px solid #C2610F;border-radius:8px;padding:14px 18px;">
+              <div style="font-weight:bold;color:#C2610F;margin-bottom:6px;">② 4–5 · Đa hình và Abstraction</div>
+              <div style="margin-bottom:8px;"><span class="inline-code">std::vector&lt;int&gt;</span> trong C++ vừa là
+                Generic Module (template), vừa là ADT.</div>
+              <div>Hãy xác định <strong>5 thành phần ADT</strong> của <span class="inline-code">vector</span>. Tại sao
+                <span class="inline-code">vector</span> an toàn hơn mảng C thuần <span class="inline-code">int
+                  arr[]</span>?
+              </div>
+            </div>
+
+            <div style="background:#f9f9f9;border-left:5px solid #E62727;border-radius:8px;padding:14px 18px;">
+              <div style="font-weight:bold;color:#E62727;margin-bottom:6px;">③ 6 · Quản lý bộ nhớ không cần GC và không
+                cần <span class="inline-code">free</span></div>
+              <div style="margin-bottom:8px;">Rust <strong>không có GC</strong> và <strong>không có <span
+                    class="inline-code">free</span> thủ công</strong> — nhưng vẫn đảm bảo không có dangling reference và
+                memory leak.</div>
+              <div>Cơ chế nào có thể làm được điều đó? Đây có phải là Tombstone, Locks &amp; Keys, hay một hướng tiếp
+                cận hoàn toàn khác?</div>
+            </div>
+
+          </div>
+        </section>
+
+      </section>
+
+      <div class="footer">
+        Phương pháp luận lập trình (Học kỳ 2 2025-2026) §4: Tổ chức và trừu tượng hóa dữ liệu
+      </div>
+    </div>
+  </div>
+  <script src="revealjs/dist/reveal.js"></script>
+  <script src="plugin/notes/notes.js"></script>
+  <script src="plugin/markdown/markdown.js"></script>
+  <script src="plugin/highlight/highlight.js"></script>
+  <script src="plugin/math/math.js"></script>
+  <script>
+    Reveal.initialize({
+      controlsLayout: "edges",
+      slideNumber: true,
+      hashOneBasedIndex: true,
+      hash: true,
+      plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX],
+    });
+  </script>
+</body>
+
+</html>
