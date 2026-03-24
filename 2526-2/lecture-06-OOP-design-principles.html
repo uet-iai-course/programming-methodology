@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Bài 6: Các nguyên tắc thiết kế OOP</title>
+  <title>Bài 6: Các nguyên tắc thiết kế OOP (SOLID)</title>
 
   <link rel="stylesheet" href="revealjs/dist/reset.css" />
   <link rel="stylesheet" href="revealjs/dist/reveal.css" />
@@ -13,59 +13,1209 @@
   <link rel="stylesheet" href="lecture-style.css" />
 </head>
 
-
 <body>
   <div class="reveal">
     <div class="slides">
 
-      <!-- Trang bìa -->
+      <!-- ================================================================
+           COVER & TABLE OF CONTENTS
+           ================================================================ -->
       <section>
         <section>
           <h1>Phương pháp luận lập trình</h1>
-          <h3>Bài 6: Các nguyên tắc thiết kế OOP</h3>
+          <h3>Bài 6: Các nguyên tắc thiết kế OOP<br /></h3>
           <p>Trường ĐH Công nghệ – Đại học Quốc gia Hà Nội</p>
         </section>
 
-        <section>
+        <section style="font-size:0.85em;">
           <h2>Nội dung</h2>
-          <ol>
-            <li>Nội dung 1</li>
-            <li>Nội dung 2</li>
+          <ol start="0">
+            <li>Giới thiệu: Design Smells</li>
+            <li>Nguyên lý Đơn Nhiệm <span class="text-light">(Single Responsibility Principle)</span></li>
+            <li>Nguyên lý Mở Rộng / Hạn Chế <span class="text-light">(Open/Closed Principle)</span></li>
+            <li>Nguyên lý Thay Thế Liskov <span class="text-light">(Liskov Substitution Principle)</span></li>
+            <li>Nguyên lý Phân Tách Giao Tiếp <span class="text-light">(Interface Segregation Principle)</span></li>
+            <li>Nguyên lý Nghịch Đảo Phụ Thuộc <span class="text-light">(Dependency Inversion Principle)</span></li>
           </ol>
         </section>
       </section>
 
+      <!-- ================================================================
+           SECTION 0 – GIỚI THIỆU: DESIGN SMELLS
+           ================================================================ -->
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">0.</span><br />
+            Giới thiệu:<br />Design Smells
+          </h1>
+        </section>
+
+        <!-- Slide 3: image1 -->
+        <section>
+          <h2>Giới thiệu: Một vài <em>Design Smells</em></h2>
+          <img src="img/lec-06/image1.png" style="width:75%;" />
+        </section>
+
+        <!-- Slide 4: image2 — Bloaters -->
+        <section style="font-size:0.85em;">
+          <h2>"Bloaters" <span class="text-light">(Sự phình to)</span></h2>
+          <div style="display:grid; grid-template-columns:1fr 1.4fr; gap:0.8em; align-items:start;">
+            <div>
+              <img src="img/lec-06/image2.png" style="width:100%;" />
+            </div>
+            <div>
+              <pre><code class="language-java" data-trim>
+class SuperUserManager { // Large Class
+  // Long Parameter List
+  public void process(
+      User u, DB db, Email mail,
+      Log l, int flag, ...) {
+    // Long Method: hàng ngàn dòng!
+    // 1. Kiểm tra User (10 dòng)
+    // 2. Format HTML Email (20 dòng)
+    // 3. Lưu Database (100 dòng)
+    // 4. Ghi Log (15 dòng)
+    // ...
+  }
+}
+              </code></pre>
+
+              <div style="margin-top: 0.5em; padding: 0.5em 1em; border: 2px solid #ffcccc; border-radius: 5px; background-color: #fff5f5; font-size: 0.85em;">
+              <ul style="margin: 0; padding-left: 1em; color: #b94a48;">
+                <li>Sự mịt mờ (Opacity) : Không biết được ý định cốt lõi.</li>
+                <li>Dễ vỡ (Fragility) : Nếu sử thẻ HTML có thể làm hỏng logic ở Database</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 5: Change Preventers (no image) -->
+        <section style="font-size:0.85em;">
+          <h2>"Change Preventers" <span class="text-light">(Kẻ cản trở thay đổi)</span></h2>
+          
+          <pre style="margin-top:0.5em;"><code class="language-java" data-trim>
+class Person {
+    String name;
+    // ...
+    String officeAreaCode;
+    String officeNumber;
+    String getTelephoneNumber() {
+        return "(" + officeAreaCode + ") " + officeNumber;
+    }
+}
+          </code></pre>
+
+          <div class="question-box">
+            <!-- <div class="question-title">Nhận xét</div> -->
+            Một lớp đang làm việc của <strong style="color:#E62727;">hai lớp</strong>!
+          </div>
+
+          <ul style="margin-top:0.4em;font-size: 0.70em;">
+            <li><span class="keyword">Tính cứng nhắc (Rigidity)</span>: Nếu format số điện thoại thay đổi, bạn phải sửa lớp `Person`</li>
+            <li><span class="keyword">Tính bất động (Immobility)</span>: Nếu hệ thống cần quản lý SĐT cho cả công ty?</li>
+            <li><span class="keyword">Shotgun Surgery</span>: thay đổi nhỏ → phải sửa nhiều lớp</li>
+          </ul>
+        </section>
+
+        <!-- Slide 6: image4 — Couplers -->
+        <section style="font-size:0.85em;">
+          <h2>Couplers <span class="text-light">(Sự liên kết quá mức)</span></h2>
+          <div style="display:grid; grid-template-columns:1fr 1.6fr; gap:0.8em; align-items:start;">
+            <div>
+              <img src="img/lec-06/image4.png" style="width:100%;" />
+            </div>
+            <div>
+              <pre><code class="language-java" data-trim>
+// Lấy khu vực giao hàng của đơn hàng
+String region =
+  order.getCustomer()
+       .getAddress()
+       .getZipCode()
+       .getRegion();
+              </code></pre>
+              <ul style="margin-top:0.5em; font-size:0.9em;">
+                <li>Nếu lớp <code class="inline-code">Address</code> đổi cách lưu trữ? (Ví dụ không dùng `ZipCode` nữa)</li>
+                <li>Nếu muốn dùng <code class="inline-code">order</code> ở dự án khác?</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 7: image5 — Switch Statement -->
+        <section style="font-size:0.85em;">
+          <h2>"Switch Statement" <span class="text-light">(Tư duy thủ tục trong OOP)</span></h2>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8em; align-items:start;">
+            <div>
+              <img src="img/lec-06/image5.png" style="width:100%;" />
+            </div>
+            <div>
+              <pre><code class="language-java" data-trim>
+// Viết OOP nhưng tư duy Thủ tục!
+void readData(int deviceType) {
+    switch(deviceType) {
+        case KEYBOARD:
+            readKbd(); break;
+        case PAPER_TAPE:
+            readPt();  break;
+        // Thêm máy Scan?
+        // → Mở file và thêm case!
+    }
+}
+              </code></pre>
+              <ul style="margin-top:0.4em; font-size:0.9em;">
+                <li>Thêm thiết bị mới → phải sửa khối switch</li>
+                <li><span class="keyword">Needless Repetition</span>: switch bị copy-paste sang nhiều hàm</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </section>
+
+      <!-- ================================================================
+           SECTION 1 – SRP
+           ================================================================ -->
       <section>
         <section>
           <h1>
             <span class="text-light">1.</span><br />
-            Nội dung 1
+            Single Responsibility Principle<br />
+            <span style="font-size:0.65em;">Nguyên lý Đơn Nhiệm</span>
           </h1>
         </section>
+
+        <!-- Slide 9: image6 — SRP intro -->
         <section>
-          <h2>Nội dung chi tiết 1</h2>
-          <p>Chi tiết về nội dung 1...</p>
+          <h2>1. Single Responsibility Principle</h2>
+          <img src="img/lec-06/image6.png" style="width:60%; display:block; margin:0 auto;" />
+
+        <div style="margin-top: 0.8em; padding: 0.8em 1.2em; border-left: 5px solid #2e7d32; background-color: #f1f8e9; font-size: 0.65em; border-radius: 4px;">
+        <p style="margin: 0; color: #1b5e20; font-style: italic; font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.5; letter-spacing: 0.3px;">
+          <span style="font-size: 1.8em; color: #2e7d32; font-family: serif; font-weight: bold; line-height: 0; vertical-align: -0.4em;">“</span>
+          Chỉ vì bạn có thể làm điều đó, không có nghĩa là bạn nên làm!
+          <span style="font-size: 1.8em; color: #2e7d32; font-family: serif; font-weight: bold; line-height: 0; vertical-align: -0.4em;">”</span>
+        </p>
+      </div>
+
         </section>
+
+
+
+
+        <!-- Slide 10: Định nghĩa SRP -->
+        <section style="font-size:0.85em;">
+          <h2>Định nghĩa SRP</h2>
+          <div class="question-box">
+            <div class="question-title">Wikipedia</div>
+            <em>"…mỗi lớp nên chỉ có <strong>một trách nhiệm duy nhất</strong>, và trách nhiệm đó phải được đóng gói hoàn toàn trong lớp đó. Tất cả các chức năng của nó nên tập trung chặt chẽ vào trách nhiệm này."</em>
+          </div>
+          <div class="question-box" style="margin-top:0.5em;">
+            <div class="question-title">Clean Code</div>
+            <em>"Một class hoặc module nên chỉ có một, và chỉ một, <strong>lý do để thay đổi</strong>."</em>
+          </div>
+        </section>
+
+        <!-- Slide 11: Trách nhiệm là gì? -->
+        <section style="font-size:0.85em;">
+          <h2>Trách nhiệm (Responsibility) là gì?</h2>
+          <ul>
+            <li>Nếu bạn có <strong style="color:#E62727;">nhiều hơn một động cơ</strong> để thay đổi một lớp,
+              thì lớp đó đang có <strong style="color:#E62727;">nhiều hơn một trách nhiệm!</strong></li>
+          </ul>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8em; margin-top:0.5em;">
+            <pre><code class="language-java" data-trim>
+// Modem.java -- SRP Violation
+interface Modem {
+    void dial(String pno); // TN 1:
+    void hangup();         // Quản lý kết nối
+    void send(char c);     // TN 2:
+    char recv();           // Truyền tải dữ liệu
+}
+            </code></pre>
+            <div style="font-size:0.9em; padding-top:0.2em;">
+              <p>Có <strong>2 trách nhiệm</strong> bị gộp chung:</p>
+              <ul>
+                <li>Quản lý kết nối: <code class="inline-code">dial</code>, <code class="inline-code">hangup</code></li>
+                <li>Truyền tải dữ liệu: <code class="inline-code">send</code>, <code class="inline-code">recv</code></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 12: image7 — Khi nào nên tách? -->
+      <section style="font-size:0.65em;">
+        <h2>Khi nào nên tách trách nhiệm?</h2>
+        
+        <div style="display:grid; grid-template-columns: 1.2fr 1fr; gap: 1.2em; align-items: start; margin-top: 0.5em;">
+          
+          <div>
+            <ul style="margin: 0; padding-left: 1.2em;">
+              <li>
+                <strong style="color:#2E7D32;">NÊN TÁCH:</strong> Nếu ứng dụng thay đổi ở phần kết nối gây 
+                <span class="keyword" style="font-weight:bold;">Rigidity</span> — các lớp dùng phần truyền dữ liệu cũng phải biên dịch lại.
+                <br>→ Tách thành <code class="inline-code">DataChannel</code> và <code class="inline-code">Connection</code>.
+              </li>
+              <li style="margin-top:0.8em;">
+                <strong style="color:#E62727;">KHÔNG NÊN TÁCH:</strong> Nếu hai phần không bao giờ thay đổi vào những thời điểm khác nhau 
+                → cố tình tách sẽ tạo ra <span class="keyword" style="font-weight:bold;">Needless Complexity</span>.
+              </li>
+            </ul>
+          </div>
+
+          <div style="display:flex; flex-direction:column; align-items:center;">
+            <div style="text-align: center;">
+              <img src="img/lec-06/image7.png" style="width:100%; border: 1px solid #ddd; border-radius: 8px; box-shadow: 3px 3px 10px rgba(0,0,0,0.1);" />
+            </div>
+
+            <div style="margin-top: 1em; padding: 0.8em 1.2em; border: 1px solid #ffeeba; border-radius: 8px; background-color: #fff3cd; font-size: 0.9em; width: 90%; box-shadow: 2px 2px 5px rgba(0,0,0,0.05); text-align: left;">
+              <p style="margin: 0; color: #856404; font-weight: 500;">
+                💡 <strong>Không nên áp dụng SRP (hay bất kỳ nguyên tắc nào) nếu không có triệu chứng</strong> 
+              </p>
+            </div>
+            </div>
+
+        </div>
       </section>
 
+        <!-- Slide 13: image8 — Employee example -->
+        <section style="font-size:0.85em;">
+          <h2>Ví dụ điển hình: Employee</h2>
+
+          <div style="margin-top: 1em; padding: 0.8em 1.2em; border: 1px solid #ffeeba; border-radius: 8px; background-color: #f1f0ec; font-size: 0.7em; width: 90%; box-shadow: 2px 2px 5px rgba(0,0,0,0.05); text-align: left;">
+            <p style="margin: 0; color: #856404; font-weight: 500;">
+              <strong>"Việc gộp chung các trách nhiệm lại với nhau là điều mà chúng ta hay làm một cách tự nhiên".</strong> 
+              Khi thiết kế hệ thống, chúng ta thường nghĩ theo thực thể thực tế. Chúng ta hình dung: "Một Employee thì có tên, có lương. Vậy thì lớp Employee phải biết cách tính lương của nó, và nó cũng có thể biết tự lưu thông tin vào cơ sở dữ liệu.
+            </p>
+          </div>
+
+          <img src="img/lec-06/image8.png" style="width:65%; display:block; margin:0 auto 0.4em;" />
+          <div style="background:#fce4ec; border-left:4px solid #E62727; padding:0.5em 0.8em; border-radius:4px; font-size:0.9em;">
+            <strong style="color:#E62727;">Sai lầm:</strong> Lớp <code class="inline-code">Employee</code>
+            chứa cả <em>Quy tắc nghiệp vụ</em> (<code class="inline-code">CalculatePay</code>) lẫn
+            <em>Kiểm soát lưu trữ</em> (<code class="inline-code">Store</code>) —
+            hai thứ thay đổi vì những lý do hoàn toàn khác nhau.
+          </div>
+        </section>
+
+        <!-- Slide 14: Why SRP? -->
+        <section style="font-size:0.85em;">
+          <h2>Why SRP?</h2>
+          <ul>
+            <li><strong>Tổ chức code</strong> — một nơi cho mọi thứ ở đúng chỗ</li>
+            <li><strong>Dễ Refactor</strong> — <span class="keyword">Low coupling, High Cohesion</span></li>
+            <li><strong>Dễ đặt tên</strong> — lớp nhỏ, tập trung → tên tự nhiên, rõ ràng</li>
+            <li><strong>Khả năng bảo trì</strong> — thay đổi một chỗ không phá hỏng chỗ khác</li>
+            <li><strong>Dễ kiểm thử &amp; debug</strong> — phạm vi nhỏ, tách biệt rõ</li>
+          </ul>
+        </section>
+
+        <!-- Slide 15: Dấu hiệu vi phạm SRP -->
+        <section style="font-size:0.85em;">
+          <h2>Dấu hiệu nhận biết vi phạm SRP</h2>
+          <div class="question-box" style="margin-bottom:0.5em;">
+            <div class="question-title">Ghi nhớ</div>
+            <em>"SRP là một trong những nguyên lý đơn giản nhất, nhưng cũng là một trong những nguyên lý <strong>khó thực hiện đúng nhất</strong>."</em>
+          </div>
+          <ul>
+            <li>Class/Method quá dài; quá nhiều sự phụ thuộc</li>
+            <li>Tên cần từ <strong>"AND"</strong>: ví dụ <code class="inline-code">calculateAndSend()</code></li>
+            <li>Tên chung chung: ví dụ <code class="inline-code">EmployeeManager</code></li>
+            <li>Thay đổi một chỗ, nhưng <strong style="color:#E62727;">phá hỏng chỗ khác</strong></li>
+            <li>Module A biết rõ cách hoạt động bên trong của module B</li>
+          </ul>
+        </section>
+
+      </section>
+
+      <!-- ================================================================
+           SECTION 2 – OCP
+           ================================================================ -->
       <section>
         <section>
           <h1>
             <span class="text-light">2.</span><br />
-            Nội dung 2
+            Open / Closed Principle<br />
+            <span style="font-size:0.65em;">Nguyên lý Mở Rộng / Hạn Chế</span>
           </h1>
         </section>
+
+        <!-- Slide 17: image9 — OCP intro -->
         <section>
-          <h2>Nội dung chi tiết 2</h2>
-          <p>Chi tiết về nội dung 2...</p>
+          <h2>2. Open / Closed Principle</h2>
+          <img src="img/lec-06/image9.png" style="width:50%; display:block; margin:0 auto;" />
+
+       <div style="margin-top: 0.8em; padding: 0.8em 1.2em; border-left: 5px solid #2e7d32; background-color: #f1f8e9; font-size: 0.65em; border-radius: 4px;">
+        <p style="margin: 0; color: #1b5e20; font-style: italic; font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.5; letter-spacing: 0.3px;">
+          <span style="font-size: 1.8em; color: #2e7d32; font-family: serif; font-weight: bold; line-height: 0; vertical-align: -0.4em;">“</span>
+          Một cuộc phẫu thuật não là không cần thiết khi đội một chiếc mũ!
+          <span style="font-size: 1.8em; color: #2e7d32; font-family: serif; font-weight: bold; line-height: 0; vertical-align: -0.4em;">”</span>
+        </p>
+      </div>
+
+
         </section>
+
+        <!-- Slide 18: Định nghĩa OCP -->
+        <section style="font-size:0.85em;">
+          <h2>Định nghĩa OCP</h2>
+          <div style="background:#fff8e1; border-left:4px solid #F9A825; padding:0.5em 0.8em; border-radius:4px; font-size:0.9em; margin-bottom:0.5em;">
+            <em>"Tất cả các hệ thống đều thay đổi trong suốt vòng đời của chúng. Làm thế nào để tạo ra những thiết kế vừa ổn định trước những thay đổi, vừa có tuổi thọ dài hơn phiên bản đầu?"</em>
+          </div>
+          <div class="question-box">
+            <div class="question-title">Quy tắc</div>
+            Các thực thể phần mềm (lớp, gói, hàm) nên
+            <span class="keyword" style="color:#27AE60;"><strong>mở</strong></span> cho việc <strong>mở rộng</strong>,
+            nhưng <span class="keyword" style="color:#E62727;"><strong>đóng</strong></span> cho việc <strong>sửa đổi</strong>.
+          </div>
+          <ul style="margin-top:0.5em;">
+            <li><strong>Open:</strong> Có thể mở rộng hành vi qua kế thừa hoặc thêm lớp mới</li>
+            <li><strong>Closed:</strong> Việc mở rộng không đòi hỏi sửa mã nguồn hiện có</li>
+          </ul>
+        </section>
+
+        <!-- Slide 19: image10 -->
+        <section>
+          <h2>So sánh các cách làm</h2>
+          <img src="img/lec-06/image10.png" style="width:90%; display:block; margin:0 auto;" />
+        </section>
+
+        <!-- Slide 20: Abstraction explanation -->
+        <section style="font-size:0.85em;">
+          <h2>Chìa khóa là sự trừu tượng hóa (Abstraction)</h2>
+          <div class="question-box">
+            <!-- <div class="question-title">Đặt vấn đề</div> -->
+            <em>"Làm sao để thay đổi những gì một mô-đun làm mà <strong>không thay đổi chính mã nguồn</strong> của nó?"</em>
+          </div>
+          <ul style="margin-top:0.5em;">
+            <li>Sử dụng <span class="keyword">lớp cơ sở trừu tượng</span>: module phụ thuộc vào giao diện cố định → <strong>đóng để sửa đổi</strong></li>
+            <li>Tạo lớp kế thừa mới → <strong>mở để mở rộng</strong> hành vi</li>
+          </ul>
+        </section>
+
+        <!-- Slide 21: image11 — strategy intro -->
+        <section style="font-size:0.85em;">
+          <h2>Ví dụ: Ứng dụng chỉ đường</h2>
+          <img src="img/lec-06/image11.png" style="width:70%; display:block; margin:0 auto 0.4em;" />
+          <p style="text-align:center; font-size:0.9em;">
+            Tương tự như di chuyển đến sân bay — bạn có nhiều <span class="keyword">chiến lược</span>:
+            đi xe đạp, xe buýt, hoặc gọi taxi.
+            Bạn quyết định tạo một ứng dụng chỉ đường dành cho khách du lịch.
+          </p>
+        </section>
+
+        <!-- Slide 22: image12 — Navigator problem -->
+        <section style="font-size:0.85em;">
+          <h2>Vấn đề: Navigator App</h2>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8em; align-items:start;">
+            <div>
+              <img src="img/lec-06/image12.png" style="width:100%;" />
+              <p style="font-size:0.85em; margin-top:0.3em; font-style:italic;">Tính năng được yêu cầu nhiều nhất: lập kế hoạch lộ trình tự động.</p>
+            </div>
+            <div style="font-size:0.9em;">
+              <ul>
+                <li>Version 1: Bạn xây dựng lộ trình di chuyển bằng đường bộ → những người đi ô tô thích</li>
+                <li>Nhưng : Thêm xe buýt → sửa <code class="inline-code">Navigator</code></li>
+                <li>Thêm xe đạp → lại sửa <code class="inline-code">Navigator</code></li>
+              </ul>
+              <div style="background:#fce4ec; border-left:4px solid #E62727; padding:0.4em 0.7em; border-radius:4px; margin-top:0.4em;">
+                Mỗi thuật toán mới → <code class="inline-code">Navigator</code> lại tăng gấp đôi kích thước → đến một lúc quá to để bảo trì!
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 23: Navigator vi phạm OCP -->
+        <section style="font-size:0.85em;">
+          <h2>Code vi phạm OCP</h2>
+          <pre><code class="language-java" data-trim>
+public class Navigator {
+    public enum RouteType { ROAD, WALKING, PUBLIC_TRANSIT, BICYCLE }
+
+    public void buildRoute(String start, String end, RouteType type) {
+        if (type == RouteType.ROAD) {
+            // ...
+        } else if (type == RouteType.WALKING) {
+            // ...
+        } else if (type == RouteType.PUBLIC_TRANSIT) {
+            // ...
+        }
+        // Muốn thêm xe đạp? → Mở file này ra và thêm else if!
+        else if (type == RouteType.BICYCLE) {
+            // ...
+        }
+    }
+}
+          </code></pre>
+        </section>
+
+        <!-- Slide 24: image13 — Strategy solution -->
+        <section style="font-size:0.85em;">
+          <h2>Giải pháp: Strategy Pattern</h2>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8em; align-items:start;">
+            
+            <div style="display:flex; flex-direction:column;">
+              <img src="img/lec-06/image13.png" style="width:100%; border-radius: 4px;" />
+              
+              <div style="margin-top: 0.6em; padding: 0.6em 0.8em; background-color: #e3f2fd; border-left: 4px solid #2196f3; border-radius: 4px; font-size: 0.75em;">
+                <p style="margin: 0; color: #0d47a1; font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.4;">
+                  <strong>Hint:</strong> Bạn nên chọn một lớp thực hiện điều gì đó cụ thể theo nhiều cách khác nhau và trích xuất tất cả các thuật toán này thanh các lớp riêng biệt.
+                </p>
+              </div>
+            </div>
+
+            <div style="font-size:0.8em;">
+              <p>Trích xuất tất cả thuật toán thành các lớp riêng biệt gọi là <span class="keyword">chiến lược (strategy)</span>.</p>
+              <ul style="margin-top:0.3em;">
+                <li><code class="inline-code">Navigator</code> đóng vai trò <em>bối cảnh (context)</em></li>
+                <li>Lưu trữ tham chiếu đến một chiến lược và <em>ủy quyền</em> công việc</li>
+                <li>Chỉ giao tiếp qua interface chung <code class="inline-code">RouteStrategy</code>, nó không cần biết chi tiết các chiến lược cài đặt như nào.</li>
+              </ul>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Slide 25: Code giải pháp -->
+        <section style="font-size:0.82em;">
+          <h2>Code giải pháp OCP</h2>
+          <pre><code class="language-java" data-trim>
+public interface RouteStrategy {
+    void buildRoute(String start, String end);
+}
+public class RoadStrategy implements RouteStrategy {
+    public void buildRoute(String start, String end) {
+        System.out.println("Tìm đường đi nhanh nhất cho Ô tô...");
+    }
+}
+// Thêm phương tiện mới → chỉ tạo class mới, KHÔNG đụng Navigator!
+public class Navigator {
+    private RouteStrategy strategy;
+    public void setStrategy(RouteStrategy strategy) {
+        this.strategy = strategy;
+    }
+    public void executeRoute(String start, String end) {
+        strategy.buildRoute(start, end);
+    }
+}
+          </code></pre>
+        </section>
+
+        <!-- Slide 26: What Open? What Closed? -->
+        <section style="font-size:0.85em;">
+          <h2>What Open? What Closed?</h2>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8em; margin-top:0.4em;">
+            <div style="background:#e8f5e9; border-left:4px solid #2E7D32; padding:0.6em 0.8em; border-radius:4px;">
+              <div style="font-weight:bold; color:#2E7D32; margin-bottom:0.3em;">✓ Open (mở rộng)</div>
+              <ul style="margin:0; font-size:0.9em;">
+                <li>Thêm phương tiện mới: chỉ tạo class mới implement <code class="inline-code">RouteStrategy</code></li>
+                <li>Không đụng chạm code cũ</li>
+              </ul>
+            </div>
+            <div style="background:#e3f2fd; border-left:4px solid #1565C0; padding:0.6em 0.8em; border-radius:4px;">
+              <div style="font-weight:bold; color:#1565C0; margin-bottom:0.3em;">✓ Closed (không sửa đổi)</div>
+              <ul style="margin:0; font-size:0.9em;">
+                <li><code class="inline-code">Navigator</code>: không cần thêm <code class="inline-code">if/else</code></li>
+                <li>Các chiến lược cũ: an toàn trước thay đổi</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 27: Không có thiết kế nào đóng tuyệt đối -->
+        <section style="font-size:0.85em;">
+          <h2>Nhưng, Không có thiết kế nào "đóng" tuyệt đối!</h2>
+        
+          <ul style="margin-top:0.4em; font-size:0.7em;">
+            <li>Rồi một ngày đẹp trời, khách hàng yêu cầu: <em>"Tôi muốn tìm lộ trình tối ưu kết hợp: đi bộ → Bus → thuê ô tô, nhưng luôn phải có phương án tiết kiệm nhất"</em></li>
+            <li>Mỗi chiến lược (Car, Walking) chạy độc lập — không biết nhau.</li>
+            <li>Để kết hợp → buộc phải sửa <code class="inline-code">Navigator</code> hoặc interface → không còn "đóng"</li>
+          </ul>
+
+          <div class="question-box">
+            <div class="question-title">Ghi nhớ</div>
+            Một module có thể "đóng" với thay đổi này nhưng lại phải "mở" (phải sửa) với thay đổi khác.
+            Không có khuôn mẫu nào đúng cho mọi tình huống.
+          </div>
+
+        </section>
+
+        <!-- Slide 28: Hãy để bị lừa một lần -->
+        <section style="font-size:0.75em; padding: 10px !important;">
+          <h2 style="margin-bottom: 0.3em;">Hãy để bị lừa một lần!</h2>
+          
+          <div style="background:#fce4ec; border-left:3px solid #E62727; padding:0.4em 0.8em; border-radius:4px; margin-bottom:0.6em; font-family: 'Segoe UI', Tahoma, sans-serif;">
+            <strong style="color:#E62727; font-size: 0.85em;">"Fool me once, shame on you. Fool me twice, shame on me."</strong>
+            <span style="font-style:italic; font-size:0.85em; color: #880e4f; margin-left: 5px;">
+              — Lừa tôi một lần là lỗi bạn, lừa tôi lần hai là lỗi tôi rồi!
+            </span>
+          </div>
+
+          <p style="font-size: 0.85em; margin-bottom: 0.6em; font-weight: 500; color: #555;">
+            ⚠️ Đừng tạo Interface/Strategy khi chưa thấy sự thay đổi thực sự.
+          </p>
+
+          <div style="display: flex; justify-content: space-between; align-items: stretch; gap: 8px; font-family: 'Segoe UI', Tahoma, sans-serif;">
+            
+            <div style="flex: 1; background: #f5f5f5; border-radius: 6px; padding: 0.5em; border-top: 4px solid #9e9e9e; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+              <div style="font-weight: bold; color: #424242; margin-bottom: 3px; font-size: 0.8em;">📅 NGÀY 1</div>
+              <div style="font-size: 0.85em; line-height: 1.3;">
+                Code tìm đường cho ô tô đơn giản nhất, không Interface, không Strategy.
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; color: #bdbdbd; font-size: 0.8em;">➔</div>
+
+            <div style="flex: 1; background: #f5f5f5; border-radius: 6px; padding: 0.5em; border-top: 4px solid #9e9e9e; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+              <div style="font-weight: bold; color: #424242; margin-bottom: 3px; font-size: 0.8em;">📅 NGÀY 3</div>
+              <div style="font-size: 0.85em; line-height: 1.3;">
+                Khách hàng dùng thử, và yêu cầu "Tôi muốn đi xe đạp!".
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; color: #bdbdbd; font-size: 0.8em;">➔</div>
+
+            <div style="flex: 1; background: #fff3e0; border-radius: 6px; padding: 0.5em; border-top: 4px solid #ff9800; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+              <div style="font-weight: bold; color: #e65100; margin-bottom: 3px; font-size: 0.8em;">📅 NGÀY 4</div>
+              <div style="font-size: 0.85em; line-height: 1.3;">
+                <strong>Ăn viên đạn đầu tiên:</strong> Bạn hãy cứ code đơn giản, thậm chí dùng if-else, nó vẫn hiệu quả mà không rối.
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; color: #bdbdbd; font-size: 0.8em;">➔</div>
+
+            <div style="flex: 1; background: #e8f5e9; border-radius: 6px; padding: 0.5em; border-top: 4px solid #4caf50; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+              <div style="font-weight: bold; color: #1b5e20; margin-bottom: 3px; font-size: 0.8em;">📅 NGÀY 8</div>
+              <div style="font-size: 0.70em; line-height: 1.3;">
+                <strong>Phản kháng ở viên đạn 2:</strong> Khách lại bảo thêm phương tiện khác, bạn nhận ra loại xe là thứ thay đổi liên tục, bạn xóa if-else và dùng interface `RouteStrategy`.
+              </div>
+            </div>
+
+          </div>
+
+
+        </section>
+
+
+
+        <!-- Slide 29: Kích thích sự thay đổi sớm -->
+        <section style="font-size:0.85em;">
+          <h2>Kích thích sự thay đổi sớm</h2>
+          <div class="question-box">
+            <!-- <div class="question-title">Quan sát</div> -->
+            ⚠️ Nếu cứ ngồi đợi "viên đạn" bay đến sau 1 năm, cấu trúc code đã quá cứng nhắc —
+            việc refactor để áp dụng OCP sẽ rất khó. Hãy <strong>"làm cho đạn bay sớm hơn"</strong>.
+          </div>
+          <ul style="margin-top:0.5em; font-size:0.7em;">
+            <li><strong>Viết Test:</strong> Đóng vai người dùng — nếu viết test quá khó, code đang quá cứng nhắc và có thể thiếu abstraction</li>
+            <li><strong>Ví dụ:</strong> Test tổng thời gian đi giữa các chiến lược (Walk → Car). Nhưng khi test bạn gặp vấn đề <strong> "Ai là người gọi chúng, lấy đầu ra của chiến lược nào làm đầu vào cho cái khác, hay bất kỳ logic phức tạp nào tính thời gian giữa các chiến lược?" </strong> → Đương nhiên <code class="inline-code">Navigator</code> sẽ phải làm điều đó → vi phạm OCP</li>
+            <li class="fragment">→ Tạo interface <code class="inline-code">MultiModelStrategy</code> — test trở nên dễ viết hơn</li>
+          </ul>
+        </section>
+
+      </section>
+
+      <!-- ================================================================
+           SECTION 3 – LSP
+           ================================================================ -->
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">3.</span><br />
+            Liskov Substitution Principle<br />
+            <span style="font-size:0.65em;">Nguyên lý Thay Thế Liskov</span>
+          </h1>
+        </section>
+
+        <!-- Slide 31: image14 — LSP intro -->
+        <section>
+          <h2>3. Liskov Substitution Principle</h2>
+          <img src="img/lec-06/image14.png" style="width:45%; display:block; margin:0 auto;" />
+
+
+        <div style="margin-top: 0.8em; padding: 0.8em 1.2em; border-left: 5px solid #2e7d32; background-color: #f1f8e9; font-size: 0.65em; border-radius: 4px;">
+        <p style="margin: 0; color: #1b5e20; font-style: italic; font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.5; letter-spacing: 0.3px;">
+          <span style="font-size: 1.8em; color: #2e7d32; font-family: serif; font-weight: bold; line-height: 0; vertical-align: -0.4em;">“</span>
+          Nếu nó trông như con vịt, kêu như con vịt, nhưng lại cần pin - thì có lẽ bạn đã thiết kế trừu tượng sai!
+          <span style="font-size: 1.8em; color: #2e7d32; font-family: serif; font-weight: bold; line-height: 0; vertical-align: -0.4em;">”</span>
+        </p>
+      </div>
+
+        </section>
+
+        <!-- Slide 32: Định nghĩa LSP -->
+        <section style="font-size:0.80em;">
+          <h2>Định nghĩa LSP</h2>
+          <div class="question-box" >
+            <div class="question-title">Định nghĩa</div>
+            <strong>CÁC KIỂU CON PHẢI CÓ KHẢ NĂNG THAY THẾ CHO CÁC KIỂU CƠ SỞ CỦA CHÚNG.</strong>
+          </div>
+          <div class="question-box" style="margin-top:0.5em;">
+            <div class="question-title">Cụ thể</div>
+            <span style="font-size:0.9em;">Nếu S là kiểu con của T, thì với mọi chương trình P được định nghĩa dựa trên T, hành vi của P không đổi khi thay đối tượng T bằng đối tượng S.</span>
+          </div>
+
+            <ul style="margin-top:0.5em; font-size:0.8em;">
+            <li><strong>Mối liên hệ với OCP:</strong> Cơ chế chính của OCP là tính trừu tượng và đa hình</li>
+            <li><strong>Vai trò của LSP:</strong> Cung cấp quy tắc thiết kế để quản lý việc sử dụng kế thừa, giúp tạo cấu trúc phân cấp tốt và tránh vi phạm OCP</li>
+          </ul>
+
+        </section>
+
+        <!-- Slide 33: Vi phạm OCP + LSP — Shape -->
+        <section style="font-size:0.82em;">
+          <h2>Ví dụ vi phạm LSP</h2>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8em;">
+            <div>
+              <pre><code class="language-java" data-trim>
+class Shape {
+    enum Type { SQUARE, CIRCLE }
+    Type type;
+}
+class Circle extends Shape {
+    void draw() { }
+}
+class Square extends Shape {
+    void draw() { }
+}
+// Hàm vi phạm OCP và LSP:
+void drawShape(Shape s) {
+    if (s.type == Type.SQUARE)
+        ((Square) s).draw(); // ép kiểu!
+    else if (s.type == Type.CIRCLE)
+        ((Circle) s).draw();
+}
+              </code></pre>
+            </div>
+            <div style="font-size:0.9em;">
+              <ul>
+                <li><code class="inline-code">Circle</code> và <code class="inline-code">Square</code> không ghi đè phương thức chung nào từ <code class="inline-code">Shape</code></li>
+                <li>Hàm <code class="inline-code">drawShape()</code> phải tự kiểm tra loại hình → <strong style="color:#E62727;">vi phạm cả OCP lẫn LSP</strong></li>
+              </ul>
+              <!-- <div class="question-box" style="margin-top:0.5em;">
+                <div class="question-title">Giải pháp</div>
+                Thêm <code class="inline-code">abstract draw()</code> vào <code class="inline-code">Shape</code> — mỗi lớp con tự ghi đè.
+              </div> -->
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 34: Hình vuông là HCN? -->
+        <section style="font-size:0.82em;">
+          <h2>Ví dụ kinh điển: Hình vuông là Hình Chữ Nhật?</h2>
+          <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:0.8em;">
+            <div>
+              <ul style="font-size:0.9em;">
+                <li>Toán học: Hình vuông <strong>là một</strong> HCN ✓ Vì vậy thường cho HV kế thừa HCN?</li>
+                <li>Tuy nhiên, HCN: chiều rộng và cao <strong>độc lập</strong></li>
+                <li>Hình vuông: rộng phải <strong>luôn bằng</strong> cao</li>
+              </ul>
+              <div style="background:#fce4ec; border-left:4px solid #E62727; padding:0.4em 0.7em; border-radius:4px; margin-top:0.4em; font-size:0.85em;">
+                <strong> Vấn đề </strong> : Khi tính diện tích của một HCN nếu bạn truyền kiểu con <code class="inline-code">Square</code> vào hàm g thì diện tích sẽ tính theo HV chứ không phải HCV → <strong style="color:#E62727;">vi phạm LSP</strong>
+              </div>
+            </div>
+            <div>
+              <pre><code class="language-java" data-trim style="font-size:0.85em;">
+class Square extends Rectangle {
+  @Override
+  public void setWidth(double w) {
+    super.setWidth(w);
+    super.setHeight(w); // giữ w=h
+  }
+}
+void g(Rectangle r) {
+  r.setWidth(5);
+  r.setHeight(4);
+  // Mong đợi: 5 × 4 = 20
+  // Square: 4 × 4 = 16 → lỗi!
+  if (r.getWidth()*r.getHeight()!=20)
+    throw new RuntimeException(...);
+}
+              </code></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 35: IS-A về hành vi -->
+        <section style="font-size:0.85em;">
+          <h2>Tính hợp lệ không nằm ở chính nó</h2>
+          <ul>
+            <li>Khi nhìn <em>cô lập</em> <code class="inline-code">Rectangle</code>: chiều rộng và chiều cao độc lập → hợp lệ</li>
+            <li>Khi nhìn <em>cô lập</em> <code class="inline-code">Square</code>: ghi đè để đảm bảo w=h → hợp lệ</li>
+            <li style="color:#E62727;"><strong>Nhưng:</strong> Giả định của Client cho Rectangle — "nếu tôi thay đổi chiều rộng, chiều cao sẽ giữ nguyên" → Square phá vỡ giả định này</li>
+          </ul>
+          <div class="question-box" style="margin-top:0.6em; font-size:0.8em;">
+            <div class="question-title">IS-A is about Behavior</div>
+            Mối quan hệ <span class="keyword">IS-A</span> có thể không dựa trên định nghĩa toán học hay thực tế,
+            mà dựa trên <strong>hành vi (behavior)</strong>.
+            Ví dụ HV "là một" HCV, nhưng hành vi thay đổi độ dài cạnh của nó không giống nhau lớp cha.
+          </div>
+        </section>
+
+        <!-- Slide 36: Thiết kế theo hợp đồng -->
+        <section style="font-size:0.82em;">
+          <h2>Rules: Thiết kế theo hợp đồng</h2>
+          <ul>
+            <li><strong>Mục tiêu:</strong> Biến các giả định ngầm của client thành quy tắc rõ ràng để thực thi LSP</li>
+          </ul>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8em; margin-top:0.5em; font-size:0.9em;">
+            <div style="background:#e3f2fd; border-left:4px solid #1565C0; padding:0.5em 0.8em; border-radius:4px;">
+              <strong style="color:#1565C0;">Tiền điều kiện (Preconditions)</strong><br />
+              Điều kiện phải đúng để phương thức thực thi.<br />
+              → Lớp con <strong>chỉ được yếu hơn hoặc bằng</strong> lớp cha.
+            </div>
+            <div style="background:#e8f5e9; border-left:4px solid #2E7D32; padding:0.5em 0.8em; border-radius:4px;">
+              <strong style="color:#2E7D32;">Hậu điều kiện (Postconditions)</strong><br />
+              Cam kết sau khi phương thức hoàn tất.<br />
+              → Lớp con <strong>chỉ được mạnh hơn hoặc bằng</strong> lớp cha.
+            </div>
+          </div>
+          <div style="background:#fce4ec; border-left:4px solid #E62727; padding:0.4em 0.8em; border-radius:4px; margin-top:0.4em; font-size:0.88em;">
+            Ví dụ : Hậu điều kiện của <code class="inline-code">Rectangle.setWidth()</code>:
+            <code class="inline-code">width == w &amp;&amp; height == old.height</code>. Tuy nhiên hậu điều kiện của phương thức
+            <code class="inline-code">Square.setWidth()</code> <strong>không đảm bảo</strong> điều này → yếu hơn → không nên kế thừa.
+          </div>
+        </section>
+
+        <!-- Slide 37: image15 — Giải quyết Rectangle và Square -->
+        <section style="font-size:0.80em;">
+          <h2>Giải quyết vấn đề Rectangle và Square</h2>
+          <div style="display:grid; grid-template-columns:1.3fr 1fr; gap:0.8em; align-items:start;">
+            <div style="font-size:0.8em;">
+              <p>Thay vì ép Hình vuông <em>IS-A</em> Hình chữ nhật, thừa nhận chúng chỉ có chung một vài đặc tính (diện tích) và tách biệt hành vi gây xung đột.</p>
+              <ol style="margin-top:0.4em; font-size:0.9em;">
+                <li><strong>Tạo interface chung <code class="inline-code">Shape</code></strong>: Lớp này chỉ hứa : "Tôi có thể cung cấp diện tích thông qua area() cho bất kỳ hình nào" , nên tiền và hậu điều kiện đơn giản hơn.</li>
+                <li><strong>Triển khai riêng:</strong> <code class="inline-code">Rectangle</code> và <code class="inline-code">Square</code> implement <code class="inline-code">Shape</code>, không kế thừa nhau</li>
+              </ol>
+              <div style="background:#e8f5e9; border-left:4px solid #2E7D32; padding:0.4em 0.7em; border-radius:4px; margin-top:0.4em; font-size:0.88em;">
+                → Không vi phạm giả định của Client · Đúng bản chất hành vi · Tuân thủ OCP &amp; LSP
+              </div>
+            </div>
+            <div>
+              <img src="img/lec-06/image15.png" style="width:100%;" />
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 38: Vi phạm tiền điều kiện -->
+        <section style="font-size:0.82em;">
+          <h2>Ví dụ: Vi phạm tiền điều kiện</h2>
+          <pre><code class="language-java" data-trim>
+class TextDocument {
+    protected String content = "";
+    // Tiền điều kiện: 'text' không được null. Chấp nhận độ dài thoải mái!
+    public void addText(String text) {
+        if (text != null) { content += text; }
+    }
+}
+class SmsDocument extends TextDocument {
+    // Tiền điều kiện MẠNH HƠN: text không null VÀ độ dài phải <= 160 ký tự
+    @Override
+    public void addText(String text) {
+        if (text != null &amp;&amp; text.length() &lt;= 160) {
+            content += text;
+        }
+        // Nếu dài hơn 160 ký tự, hàm bỏ qua — không báo lỗi!
+    }
+}
+          </code></pre>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.6em; font-size:0.80em; margin-top:0.4em;">
+            <div style="background:#e3f2fd; border-left:4px solid #1565C0; padding:0.4em 0.7em; border-radius:4px;">
+              <strong>Lớp cha:</strong> "Đưa tôi bao nhiêu ký tự cũng được"
+            </div>
+            <div style="background:#fce4ec; border-left:4px solid #E62727; padding:0.4em 0.7em; border-radius:4px;">
+              <strong>Lớp con:</strong> "Tôi chỉ nhận tối đa 160 ký tự"<br />
+              <strong style="color:#E62727;">→ Tiền điều kiện mạnh hơn → vi phạm LSP!</strong>
+            </div>
+          </div>
+        </section>
+
+      </section>
+
+      <!-- ================================================================
+           SECTION 4 – ISP
+           ================================================================ -->
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">4.</span><br />
+            Interface Segregation Principle<br />
+            <span style="font-size:0.60em;">Nguyên lý Phân Tách Giao Tiếp</span>
+          </h1>
+        </section>
+
+        <!-- Slide 40: image16 — ISP intro -->
+        <section>
+          <h2>4. Interface Segregation Principle</h2>
+          <img src="img/lec-06/image16.png" style="width:50%; display:block; margin:0 auto;" />
+
+        <div style="margin-top: 0.8em; padding: 0.8em 1.2em; border-left: 5px solid #2e7d32; background-color: #f1f8e9; font-size: 0.65em; border-radius: 4px;">
+        <p style="margin: 0; color: #1b5e20; font-style: italic; font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.5; letter-spacing: 0.3px;">
+          <span style="font-size: 1.8em; color: #2e7d32; font-family: serif; font-weight: bold; line-height: 0; vertical-align: -0.4em;">“</span>
+          Clients không nên phụ thuộc vào giao tiếp (interface) mà chúng không sử dụng!
+          <span style="font-size: 1.8em; color: #2e7d32; font-family: serif; font-weight: bold; line-height: 0; vertical-align: -0.4em;">”</span>
+        </p>
+      </div>
+
+        </section>
+
+        <!-- Slide 41: image17 — Định nghĩa ISP -->
+        <section style="font-size:0.85em;">
+          <h2>Định nghĩa ISP</h2>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8em; align-items:start;">
+            <div>
+              <div class="question-box">
+                <div class="question-title">Định nghĩa</div>
+                <em>"Clients <strong>không nên bị ép buộc</strong> phải phụ thuộc vào các giao diện (interface) mà họ <strong>không sử dụng</strong>."</em>
+              </div>
+              <ul style="margin-top:0.5em; font-size:0.9em;">
+                <li><strong>Cám dỗ:</strong> Tạo một interface lớn duy nhất cho tất cả</li>
+                <li><strong>Hậu quả:</strong> <span class="keyword">Needless Redundancy</span> — các lớp buộc implement phương thức không liên quan</li>
+              </ul>
+            </div>
+            <div>
+              <img src="img/lec-06/image17.png" style="width:100%;" />
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 42: Code vi phạm ISP -->
+        <section style="font-size:0.78em; padding: 10px !important;">
+          <h2 style="margin-bottom: 0.4em;">Vấn đề: Door và TimerClient</h2>
+
+          <div style="display:grid; grid-template-columns: 1fr 1.3fr; gap: 1em; align-items: start; font-size: 0.8em;">
+            
+            <div style="font-family: 'Segoe UI', Tahoma, sans-serif; ">
+              <p style="margin-bottom: 0.8em; line-height: 1.4;">
+                <strong>Tình huống:</strong> <br>
+                Xét một hệ thống an ninh có lớp cơ sở Door (Cửa) chỉ xử lý các hành động cơ bản như khóa và mở khóa. Lớp triển khai TimedDoor cần thêm tính năng phát báo động khi cửa mở quá lâu, do đó nó cần giao tiếp với một đối tượng Timer.
+              </p>
+
+              <div style="background:#fce4ec; border-left:4px solid #E62727; padding:0.6em; border-radius:4px; line-height: 1.4;"">
+                <strong style="color:#E62727; font-size: 0.9em; display: block; margin-bottom: 3px;">⚠️ Hậu quả:</strong>
+                <ul style="margin: 0; padding-left: 1.2em; font-size: 0.85em; color: #880e4f;">
+                  <li><strong>Needless Redundancy:</strong> Thừa thãi code.</li>
+                  <li><strong>Coupling:</strong> Giao diện Door bị "dính" vào Timer.</li>
+                  <li><strong>Vi phạm LSP:</strong> Lớp con bị ép cài đặt hàm vô nghĩa.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div style="margin-top: -10px;">
+              <pre><code class="language-java" data-trim style="font-size:0.75em; line-height: 1.2;">
+        public interface TimerClient {
+            void timeOut();
+        }
+
+        // SAI: Ép Door kế thừa TimerClient
+        public interface Door extends TimerClient {
+            void lock();
+            void unlock();
+            boolean isDoorOpen();
+        }
+
+        public class NormalDoor implements Door {
+            public void lock() { /*...*/ }
+            public void unlock() { /*...*/ }
+            public boolean isDoorOpen() { return false; }
+            
+            @Override
+            public void timeOut() { 
+              // Bị ép buộc implement thừa thãi!
+            }
+        }
+              </code></pre>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Slide 43: image18 — ISP solution (TimedDoor) -->
+        <section style="font-size:0.85em;">
+          <h2>Giải pháp: Tách biệt qua Đa Kế Thừa</h2>
+          <img src="img/lec-06/image18.png" style="width:70%; display:block; margin:0 auto 0.4em;" />
+          <div class="question-box">
+            <div class="question-title">Kết quả</div>
+            <code class="inline-code">TimedDoor</code> kế thừa trực tiếp từ cả <code class="inline-code">Door</code> và <code class="inline-code">TimerClient</code>.
+            <code class="inline-code">NormalDoor</code> chỉ implement <code class="inline-code">Door</code> — không biết gì về timer.
+          </div>
+        </section>
+
+        <!-- Slide 44: image19 — ATM User -->
+        <section style="font-size:0.82em;">
+          <h2>Ví dụ khác: The ATM User Interface</h2>
+          <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:0.8em; align-items:start;">
+            <div>
+              <img src="img/lec-06/image19.png" style="width:100%;" />
+            </div>
+            <div style="font-size:0.9em;">
+              <ul>
+                <li>Các lớp con của <code class="inline-code">Transaction</code> dùng chung giao diện UI khổng lồ</li>
+                <li>Ví dụ, khi thêm <code class="inline-code">PayGasBillTransaction</code> → thêm method vào UI → <strong style="color:#E62727;">tất cả phải biên dịch lại</strong></li>
+                <li>Mỗi giao dịch phụ thuộc vào phương thức của UI mà không giao dịch nào khác sử dụng</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 45: image20 — ATM solution -->
+        <section style="font-size:0.82em;">
+          <h2>Giải pháp: Phân tách giao diện UI</h2>
+          <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:0.8em; align-items:start;">
+            <div>
+              <img src="img/lec-06/image20.png" style="width:100%;" />
+            </div>
+            <div style="font-size:0.9em;">
+              <p>Phân tách thành <code class="inline-code">DepositUI</code>, <code class="inline-code">WithdrawUI</code>, <code class="inline-code">TransferUI</code>,... rồi đa kế thừa vào UI tổng.</p>
+              <div style="background:#e8f5e9; border-left:4px solid #2E7D32; padding:0.4em 0.7em; border-radius:4px; margin-top:0.4em;">
+                <strong style="color:#2E7D32;">Lợi ích:</strong> Nếu thêm <code class="inline-code">IElectricBillUI</code>
+                → thì <code class="inline-code">DepositTransaction</code> không biết gì, không biên dịch lại. Thiệt hại chỉ ở phạm vi rất nhỏ — không gây hiệu ứng domino toàn hệ thống.
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </section>
+
+      <!-- ================================================================
+           SECTION 5 – DIP
+           ================================================================ -->
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">5.</span><br />
+            Dependency Inversion Principle<br />
+            <span style="font-size:0.55em;">Nguyên lý Nghịch Đảo Phụ Thuộc</span>
+          </h1>
+        </section>
+
+        <!-- Slide 47: image21 — DIP intro -->
+        <section>
+          <h2>5. Dependency Inversion Principle</h2>
+          <img src="img/lec-06/image21.png" style="width:50%; display:block; margin:0 auto;" />
+
+
+        <div style="margin-top: 0.8em; padding: 0.8em 1.2em; border-left: 5px solid #2e7d32; background-color: #f1f8e9; font-size: 0.65em; border-radius: 4px;">
+        <p style="margin: 0; color: #1b5e20; font-style: italic; font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.5; letter-spacing: 0.3px;">
+          <span style="font-size: 1.8em; color: #2e7d32; font-family: serif; font-weight: bold; line-height: 0; vertical-align: -0.4em;">“</span>
+          Bạn có hàn trực tiếp một chiếc bóng đèn vào dây diện trong tường không?
+          <span style="font-size: 1.8em; color: #2e7d32; font-family: serif; font-weight: bold; line-height: 0; vertical-align: -0.4em;">”</span>
+        </p>
+      </div>
+
+
+        </section>
+
+        <!-- Slide 48: Định nghĩa DIP -->
+        <section style="font-size:0.85em;">
+          <h2>Định nghĩa DIP</h2>
+          <div class="question-box" style="font-size:0.8em;">
+            <div class="question-title">Định nghĩa</div>
+            <ol>
+              <li>Các <span class="keyword">module cấp cao</span> không nên phụ thuộc vào <span class="keyword">module cấp thấp</span>.
+                Cả hai nên phụ thuộc vào <strong>sự trừu tượng (abstractions)</strong>.</li>
+              <li style="margin-top:0.3em;">Sự trừu tượng không nên phụ thuộc vào <strong>chi tiết</strong>.
+                Chi tiết nên phụ thuộc vào <strong>sự trừu tượng</strong>.</li>
+            </ol>
+          </div>
+          <h3 style="margin-top:0.6em; font-size:0.9em;">Tại sao gọi là "Đảo ngược"?</h3>
+          <ul style="font-size:0.9em;">
+            <li><strong>Phương pháp truyền thống:</strong> Module cấp cao phụ thuộc vào cấp thấp → chính sách phụ thuộc vào chi tiết</li>
+            <li><strong>Hậu quả:</strong> Thay đổi ở chi tiết → ảnh hưởng trực tiếp đến chính sách cấp cao · Khó tái sử dụng</li>
+          </ul>
+        </section>
+
+        <!-- Slide 49: image22 — Mô hình phân cấp ngây thơ -->
+        <section style="font-size:0.85em;">
+          <h2>Mô hình phân cấp ngây thơ</h2>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8em; align-items:start;">
+            <div>
+              <img src="img/lec-06/image22.png" style="width:100%;" />
+            </div>
+            <div style="font-size:0.9em;">
+              <p><span class="keyword">Policy</span> (cấp cao) → <span class="keyword">Mechanism</span> → <span class="keyword">Utility</span> (cấp chi tiết).</p>
+              <div style="background:#fce4ec; border-left:4px solid #E62727; padding:0.4em 0.7em; border-radius:4px; margin-top:0.4em;">
+                <strong style="color:#E62727;">Tuy nhiên:</strong> lấy ví dụ khi bạn nâng cấp SQL Driver ở Utility
+                → thay đổi Mechanism → buộc phải biên dịch lại Policy — dù logic nghiệp vụ không đổi!
+              </div>
+              <p style="margin-top:0.4em; font-size:0.9em;">Không thể mang logic nghiệp vụ sang dự án khác nếu không dùng đúng thư viện Utility.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 50: image23 — Đảo ngược quyền sở hữu -->
+        <section style="font-size:0.85em;">
+          <h2>Sự đảo ngược quyền sở hữu</h2>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8em; align-items:start;">
+            <div>
+              <img src="img/lec-06/image23.png" style="width:100%;" />
+            </div>
+            <div style="font-size:0.8em;">
+              <p><strong>Phá vỡ sự phụ thuộc bắc cầu:</strong></p>
+              <ul>
+                <li>Policy Layer không còn biết Mechanism Layer là ai</li>
+                <li>Chỉ làm việc với <code class="inline-code">Policy Service Interface</code></li>
+                <li>Thay đổi Utility hay Mechanism → <strong style="color:#2E7D32;">Policy vẫn không bị ảnh hưởng</strong></li>
+              </ul>
+              <div style="background:#e8f5e9; border-left:4px solid #2E7D32; padding:0.4em 0.7em; border-radius:4px; margin-top:0.4em; font-size:0.88em;">
+                <strong>Ví dụ Policy:</strong> <em>"Khi khách hàng đăng ký thành công, hãy gửi tin nhắn chào mừng."</em> — Lớp này không quan tâm gửi bằng email, SMS hay chim bồ câu mà nó thông qua giao diện để thông báo : <strong>"Tôi cần gửi 1 tin nhắn, ai có thể làm được?"</strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 51: Đảo ngược quyền sở hữu giao diện -->
+        <section style="font-size:0.85em;">
+          <h2>Đảo ngược quyền sở hữu giao diện</h2>
+          <div class="question-box">
+            <div class="question-title">Điểm quan trọng</div>
+            <strong>Ai sở hữu Interface thì người đó làm chủ.</strong>
+          </div>
+          <ul style="margin-top:0.5em;">
+            <li><strong>Cách cũ:</strong> Lớp cấp thấp cung cấp Interface, lớp cấp cao phải chạy theo</li>
+            <li><strong>Cách mới (DIP):</strong> Lớp cấp cao (<code class="inline-code">Policy</code>) đưa ra yêu cầu —
+              lớp cấp thấp (<code class="inline-code">Mechanism</code>) phải tự điều chỉnh để khớp</li>
+          </ul>
+          <div style="background:#fff8e1; border-left:4px solid #F9A825; padding:0.4em 0.8em; border-radius:4px; margin-top:0.5em; font-size:0.9em;">
+            <strong>Hollywood Principle:</strong> <em>"Don't call us, we'll call you"</em>
+          </div>
+          <ul style="margin-top:0.4em; font-size:0.9em;">
+            <li><strong>Ưu điểm:</strong> Policy có thể được tái sử dụng với bất kỳ cơ chế nào miễn là nó tuân thủ Interface</li>
+          </ul>
+        </section>
+
+        <!-- Slide 52: Cách 1 vs Cách 2 -->
+        <section style="font-size:0.76em;">
+          <h2>Client khai báo giao diện mà chúng cần</h2>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8em;">
+            <div>
+              <div style="font-weight:bold; color:#E62727; margin-bottom:0.3em;">Cách 1 — Interface của tầng dưới ✗ (Nếu bạn đổi sang NoSQL thì sao?)</div>
+              <pre><code class="language-java" data-trim>
+// Interface do tầng Database cung cấp
+public interface ISqlDatabase {
+    void OpenConnection();
+    void ExecuteNonQuery(String sqlCmd);
+    DataTable Query(String sqlQuery);
+}
+// OrderService bị ràng buộc với SQL!
+public class OrderService {
+    private final ISqlDatabase _db;
+    public void ProcessOrder(Order order) {
+        // Logic trộn lẫn với kiến thức SQL
+        String sql = "INSERT INTO Orders...";
+        _db.ExecuteNonQuery(sql);
+    }
+}
+              </code></pre>
+            </div>
+            <div>
+              <div style="font-weight:bold; color:#2E7D32; margin-bottom:0.3em;">Cách 2 — Interface của tầng trên (DIP) ✓</div>
+              <pre><code class="language-java" data-trim>
+// OrderService định nghĩa NHU CẦU của mình
+public interface IOrderRepository {
+    void Save(Order order); // nghiệp vụ
+}
+public class OrderService {
+    private final IOrderRepository _repo;
+    public void ProcessOrder(Order order) {
+        _repo.Save(order); // Không biết SQL là gì
+    }
+}
+public class SqlOrderRepository
+    implements IOrderRepository {
+    public void Save(Order order) {
+        // "INSERT INTO Orders..."
+    }
+}
+              </code></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 53: Tại sao Cách 2 hiệu quả? -->
+        <section style="font-size:0.85em;">
+          <h2>Tại sao Cách 2 hiệu quả hơn?</h2>
+          <ul style="font-size:0.8em;">
+            <li><strong>Sự biến động bị cô lập hoàn toàn:</strong>
+              Thay đổi cấu trúc bảng SQL → chỉ sửa <code class="inline-code">SqlOrderRepository</code>. Trong khi đó,
+              <code class="inline-code">OrderService</code> và <code class="inline-code">IOrderRepository</code>
+              <strong style="color:#2E7D32;">không hề thay đổi.</strong></li>
+            <li style="margin-top:0.3em;"><strong>Đảo ngược quyền sở hữu:</strong>
+              Cách 1: <code class="inline-code">OrderService</code> chạy theo <code class="inline-code">ISqlDatabase</code>.
+              Cách 2: <code class="inline-code">SqlOrderRepository</code> chạy theo <code class="inline-code">IOrderRepository</code>
+              (cái mà <code class="inline-code">OrderService</code> sở hữu).</li>
+          </ul>
+          <div class="question-box" style="margin-top:0.6em;">
+            <div class="question-title"></div>
+            Đừng tạo Interface dựa trên những gì <em>công cụ</em> (Database) có thể làm.
+            Hãy tạo Interface dựa trên những gì <em>nghiệp vụ</em> (Client) <strong>cần</strong>.
+          </div>
+        </section>
+
+      </section>
+
+      <!-- ================================================================
+           TỔNG KẾT
+           ================================================================ -->
+      <section>
+        <h2 style="margin-bottom:0.4em;">Tổng kết — SOLID Principles</h2>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.4em; font-size:0.65em; margin-bottom:0.4em;">
+          <div style="border:2px solid #1E93AB; border-radius:7px; overflow:hidden;">
+            <div style="background:#1E93AB; color:#fff; padding:3px 10px; font-weight:bold;">
+              S — Single Responsibility (SRP)
+            </div>
+            <div style="padding:0.3em 0.7em; background:#e0f4f8; line-height:1.5;">
+              Một lớp chỉ có một lý do để thay đổi.<br />
+              <span style="color:#666;">→ Low coupling, High Cohesion</span>
+            </div>
+          </div>
+          <div style="border:2px solid #7B5EA7; border-radius:7px; overflow:hidden;">
+            <div style="background:#7B5EA7; color:#fff; padding:3px 10px; font-weight:bold;">
+              O — Open / Closed (OCP)
+            </div>
+            <div style="padding:0.3em 0.7em; background:#ede7f6; line-height:1.5;">
+              Mở để mở rộng, đóng để sửa đổi.<br />
+              <span style="color:#666;">→ Abstraction · Strategy Pattern</span>
+            </div>
+          </div>
+          <div style="border:2px solid #C2610F; border-radius:7px; overflow:hidden;">
+            <div style="background:#C2610F; color:#fff; padding:3px 10px; font-weight:bold;">
+              L — Liskov Substitution (LSP)
+            </div>
+            <div style="padding:0.3em 0.7em; background:#fff3e0; line-height:1.5;">
+              Kiểu con phải thay thế được kiểu cha.<br />
+              <span style="color:#666;">→ IS-A về hành vi · Design by Contract</span>
+            </div>
+          </div>
+          <div style="border:2px solid #2E7D32; border-radius:7px; overflow:hidden;">
+            <div style="background:#2E7D32; color:#fff; padding:3px 10px; font-weight:bold;">
+              I — Interface Segregation (ISP)
+            </div>
+            <div style="padding:0.3em 0.7em; background:#e8f5e9; line-height:1.5;">
+              Client không dùng phương thức nào thì đừng ép implement.<br />
+              <span style="color:#666;">→ Interface nhỏ · tập trung</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="border:2px solid #5C7FCC; border-radius:7px; overflow:hidden; font-size:0.65em; margin-bottom:0.4em;">
+          <div style="background:#5C7FCC; color:#fff; padding:3px 10px; font-weight:bold;">
+            D — Dependency Inversion (DIP)
+          </div>
+          <div style="padding:0.3em 0.7em; background:#eef2ff; line-height:1.5;">
+            Phụ thuộc vào abstraction, không phụ thuộc vào cài đặt cụ thể. Lớp cấp cao sở hữu interface.<br />
+            <span style="color:#666;">→ Hollywood Principle · Inversion of Ownership</span>
+          </div>
+        </div>
       </section>
 
       <div class="footer">
-        Phương pháp luận lập trình (Học kỳ 2 2025-2026) §6: Các nguyên tắc thiết kế OOP
+        Phương pháp luận lập trình (Học kỳ 2 2025-2026) §6: Các nguyên tắc thiết kế OOP (SOLID)
       </div>
     </div>
   </div>
+
   <script src="revealjs/dist/reveal.js"></script>
   <script src="plugin/notes/notes.js"></script>
   <script src="plugin/markdown/markdown.js"></script>
