@@ -231,10 +231,6 @@ void readData(DeviceType deviceType) {
                 <td style="padding:0.28em 0.6em; border-bottom:1px solid #eee"><strong style="color:#E65100">L</strong>
                   — Liskov Substitution</td>
               </tr>
-              <tr>
-                <td style="padding:0.35em 0.6em">Chuỗi thông điệp (Message Chains)</td>
-                <td style="padding:0.35em 0.6em"><strong style="color:#B71C1C">D</strong> — Dependency Inversion</td>
-              </tr>
             </tbody>
           </table>
           <p style="margin-top:0.45em"><em>Đây là các nguyên lý thường liên quan, không phải ánh xạ một-một.</em>
@@ -610,7 +606,7 @@ public:
           <pre><code class="language-cpp" data-trim>
 struct RouteStrategy {
     virtual ~RouteStrategy() = default;
-    virtual void buildRoute(string start, string end) const = 0;
+    virtual void buildRoute(std::string start, std::string end) const = 0;
 };
 
 // Mỗi phương tiện = 1 lớp kế thừa RouteStrategy
@@ -621,7 +617,7 @@ class Navigator {
     RouteStrategy* strategy = nullptr;
 public:
     void setStrategy(RouteStrategy* s) { strategy = s; }
-    void buildRoute(string start, string end) const {
+    void buildRoute(std::string start, std::string end) const {
         strategy->buildRoute(start, end);
     }
 };
