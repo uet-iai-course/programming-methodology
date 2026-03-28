@@ -54,7 +54,10 @@
         <!-- Slide 3: image1 -->
         <section>
           <h2>Một vài <em>mùi thiết kế</em></h2>
-          <img src="img/lec-06/image1.png" style="width:75%" />
+          <img src="img/lec-06/tangled-wires.jpg" style="width:55%; display:block; margin:0 auto" />
+          <p style="margin-top:0.8em; font-style:italic; color:#1b5e20; line-height:1.5">
+            "Code cũng có thể rối rắm như thế này — mùi thiết kế là dấu hiệu sớm để nhận ra."
+          </p>
         </section>
 
         <!-- Slide 4: image2 — Bloaters -->
@@ -108,20 +111,23 @@ class Person {
 };
           </code></pre>
 
-          <p><strong>Nhận xét:</strong> Một lớp đang gánh công việc của hai lớp.</p>
+          <p><strong>Nhận xét:</strong> Logic số điện thoại nằm trong <span class="inline-code">Person</span> — nên tách
+            thành lớp <span class="inline-code">TelephoneNumber</span> riêng.</p>
 
           <ul>
-            <li><span class="keyword">Tính cứng nhắc</span> (Rigidity): Định dạng sđt thay đổi, phải
-              sửa <code class="inline-code">Person</code>.</li>
-            <li><span class="keyword">Tính bất động</span> (Immobility): Cần quản lý sđt cho cả
-              công ty thì sao?</li>
-            <li><span class="keyword">Sửa dây chuyền</span> (Shotgun Surgery): Thay đổi nhỏ, phải sửa nhiều lớp.
+            <li><span class="keyword">Tính cứng nhắc</span> (Rigidity): Định dạng sđt thay đổi → bắt buộc sửa <span
+                class="inline-code">Person</span>.</li>
+            <li><span class="keyword">Tính bất động</span> (Immobility): Muốn tái sử dụng logic sđt cho <span
+                class="inline-code">Employee</span>, <span class="inline-code">Supplier</span>... → không tách ra được.
             </li>
+            <li><span class="keyword">Sửa dây chuyền</span> (Shotgun Surgery): Định dạng sđt đổi → phải sửa <span
+                class="inline-code">Person</span>, <span class="inline-code">Employee</span>, <span
+                class="inline-code">Supplier</span>, ... cùng lúc.</li>
           </ul>
         </section>
 
         <!-- Slide 6: image4 — Couplers -->
-        <section style="font-size:0.9em;">
+        <section style="font-size:0.82em;">
           <h2>Sự liên kết quá mức <span class="text-light">(Couplers)</span></h2>
           <div style="display:grid; grid-template-columns:1fr 3fr; gap:0.5em; align-items:start">
             <div>
@@ -136,11 +142,16 @@ std::string region =
        .zipCode()
        .region();
               </code></pre>
+              <p style="margin:0.3em 0 0.2em 0">
+                <span class="keyword">Chuỗi thông điệp</span> (Message Chains) — vi phạm <strong>Luật Demeter</strong>:
+                <em>"Chỉ nói chuyện với bạn bè trực tiếp."</em>
+              </p>
               <ul>
-                <li>Nếu <code class="inline-code">Address</code> đổi cách lưu trữ? (Ví dụ không dùng <code
-                    class="inline-code">ZipCode</code> nữa)
-                </li>
-                <li>Nếu muốn dùng <code class="inline-code">order</code> ở dự án khác?</li>
+                <li><span class="inline-code">Address</span> bỏ <span class="inline-code">ZipCode</span> → phải sửa code
+                  gọi chuỗi này.</li>
+                <li>Dùng <span class="inline-code">order</span> ở dự án khác → kéo theo cả <span
+                    class="inline-code">Customer</span>, <span class="inline-code">Address</span>, <span
+                    class="inline-code">ZipCode</span>.</li>
               </ul>
             </div>
           </div>
@@ -148,7 +159,7 @@ std::string region =
 
         <!-- Slide 7: image5 — Switch Statement -->
         <section style="font-size:0.80em;">
-          <h2>Câu lệnh <code class="inline-code">switch</code> <span class="text-light">(Switch Statement)</span></h2>
+          <h2>Câu lệnh <span class="inline-code">switch</span> <span class="text-light">(Switch Statement)</span></h2>
           <div style="display:grid; grid-template-columns:1fr 1.5fr; gap:0.5em; align-items:start">
             <div>
               <img src="img/lec-06/image5.png" style="width:100%" />
@@ -170,49 +181,59 @@ void readData(DeviceType deviceType) {
             </div>
           </div>
           <ul>
-            <li>Thêm thiết bị mới → phải sửa khối <code class="inline-code">switch</code></li>
-            <li><span class="keyword">Lặp lại không cần thiết</span> (Needless Repetition): khối <code
-                class="inline-code">switch</code> bị copy-paste sang nhiều hàm</li>
+            <li>Thêm thiết bị mới → phải sửa khối <span class="inline-code">switch</span></li>
+            <li><span class="keyword">Lặp lại không cần thiết</span> (Needless Repetition): khối <span
+                class="inline-code">switch</span> bị copy-paste sang nhiều hàm</li>
           </ul>
         </section>
 
         <!-- Slide: Ánh xạ mùi thiết kế → nguyên lý SOLID -->
-        <section style="font-size:0.8em;">
+        <section style="font-size:0.75em;">
           <h2>Mùi thiết kế → Nguyên lý SOLID</h2>
-          <table style="width:100%; border-collapse:collapse; margin-top:0.4em">
+          <table style="width:100%; border-collapse:collapse; margin-top:0.3em">
             <thead>
               <tr style="background:#f0f0f0">
-                <th style="padding:0.4em 0.6em; text-align:left; border-bottom:2px solid #ccc">Mùi thiết kế</th>
-                <th style="padding:0.4em 0.6em; text-align:left; border-bottom:2px solid #ccc">Nguyên lý thường liên
-                  quan</th>
+                <th style="padding:0.3em 0.6em; text-align:left; border-bottom:2px solid #ccc">Mùi thiết kế</th>
+                <th style="padding:0.3em 0.6em; text-align:left; border-bottom:2px solid #ccc">Nguyên lý liên quan</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td style="padding:0.35em 0.6em; border-bottom:1px solid #eee">Sự phình to — Lớp/hàm quá lớn</td>
-                <td style="padding:0.35em 0.6em; border-bottom:1px solid #eee"><strong style="color:#1565C0">S</strong>
+                <td style="padding:0.28em 0.6em; border-bottom:1px solid #eee">Sự phình to — Lớp/hàm quá lớn</td>
+                <td style="padding:0.28em 0.6em; border-bottom:1px solid #eee"><strong style="color:#1565C0">S</strong>
                   — Single Responsibility</td>
               </tr>
               <tr style="background:#fafafa">
-                <td style="padding:0.35em 0.6em; border-bottom:1px solid #eee">Câu lệnh <span
+                <td style="padding:0.28em 0.6em; border-bottom:1px solid #eee">Câu lệnh <span
                     class="inline-code">switch</span> / Mã loại
                 </td>
-                <td style="padding:0.35em 0.6em; border-bottom:1px solid #eee"><strong style="color:#2E7D32">O</strong>
+                <td style="padding:0.28em 0.6em; border-bottom:1px solid #eee"><strong style="color:#2E7D32">O</strong>
                   — Open/Closed</td>
               </tr>
               <tr>
-                <td style="padding:0.35em 0.6em; border-bottom:1px solid #eee">Sửa dây chuyền (Shotgun Surgery)</td>
-                <td style="padding:0.35em 0.6em; border-bottom:1px solid #eee"><strong style="color:#1565C0">S</strong>
+                <td style="padding:0.28em 0.6em; border-bottom:1px solid #eee">Sửa dây chuyền (Shotgun Surgery)</td>
+                <td style="padding:0.28em 0.6em; border-bottom:1px solid #eee"><strong style="color:#1565C0">S</strong>
                   — Single Responsibility</td>
               </tr>
               <tr style="background:#fafafa">
-                <td style="padding:0.35em 0.6em; border-bottom:1px solid #eee">Phụ thuộc chặt vào chi tiết</td>
-                <td style="padding:0.35em 0.6em; border-bottom:1px solid #eee"><strong style="color:#B71C1C">D</strong>
+                <td style="padding:0.28em 0.6em; border-bottom:1px solid #eee">Phụ thuộc chặt vào chi tiết</td>
+                <td style="padding:0.28em 0.6em; border-bottom:1px solid #eee"><strong style="color:#B71C1C">D</strong>
                   — Dependency Inversion</td>
               </tr>
               <tr>
-                <td style="padding:0.35em 0.6em">Giao diện quá lớn (Fat Interface)</td>
-                <td style="padding:0.35em 0.6em"><strong style="color:#6A1B9A">I</strong> — Interface Segregation</td>
+                <td style="padding:0.28em 0.6em; border-bottom:1px solid #eee">Giao diện quá lớn (Fat Interface)</td>
+                <td style="padding:0.28em 0.6em; border-bottom:1px solid #eee"><strong style="color:#6A1B9A">I</strong>
+                  — Interface Segregation</td>
+              </tr>
+              <tr style="background:#fafafa">
+                <td style="padding:0.28em 0.6em; border-bottom:1px solid #eee">Ép kiểu / kiểm tra kiểu thay vì đa hình
+                </td>
+                <td style="padding:0.28em 0.6em; border-bottom:1px solid #eee"><strong style="color:#E65100">L</strong>
+                  — Liskov Substitution</td>
+              </tr>
+              <tr>
+                <td style="padding:0.35em 0.6em">Chuỗi thông điệp (Message Chains)</td>
+                <td style="padding:0.35em 0.6em"><strong style="color:#B71C1C">D</strong> — Dependency Inversion</td>
               </tr>
             </tbody>
           </table>
@@ -235,48 +256,61 @@ void readData(DeviceType deviceType) {
 
         <!-- Slide 9: image6 — SRP intro -->
         <section>
-          <h2>Một lớp ôm nhiều việc?</h2>
-          <img src="img/lec-06/image6.png" style="width:60%; display:block; margin:0 auto" />
-
-          <p style="margin-top:0.8em; font-style:italic; line-height:1.5">
+          <h2>Khi một lớp biết làm tất cả</h2>
+          <img src="img/lec-06/image6.png" style="width:50%; display:block; margin:0 auto" />
+          <p style="margin-top:0.8em; color:#1b5e20; font-style:italic; line-height:1.5">
             “Chỉ vì bạn có thể làm điều đó, không có nghĩa là bạn nên làm!”
           </p>
-
         </section>
 
         <!-- Slide 10: Định nghĩa SRP -->
         <section>
           <h2>Nguyên lý Đơn Nhiệm (SRP)</h2>
           <div class="question-box">
-            <div class="question-title">Quy tắc</div>
-            <em>Mỗi lớp chỉ nên <strong>làm một việc chính</strong>.</em>
+            <div class="question-title">Định nghĩa (Robert C. Martin)</div>
+            <em>"A class should have only <strong>one reason to change</strong>."</em>
           </div>
+          <p style="margin-top:0.7em">
+            → Mỗi lớp chỉ phục vụ <strong>một actor</strong> — người/bộ phận duy nhất có quyền yêu cầu thay đổi lớp đó.
+          </p>
         </section>
 
         <!-- Slide 11: Trách nhiệm là gì? -->
         <section>
-          <h2>Trách nhiệm là gì?</h2>
-          <ul>
-            <li>Trách nhiệm là một nhóm việc cùng bản chất.</li>
-            <li>Tính lương là một việc.</li>
-            <li>Lưu dữ liệu là một việc khác.</li>
+          <h2>Trách nhiệm = Lý do thay đổi</h2>
+          <ul style="margin-top:0.6em">
+            <li>Một <strong>trách nhiệm</strong> = một nhóm việc phục vụ <strong>cùng một actor</strong>.</li>
+            <li><strong>Actor</strong> = người/bộ phận có quyền yêu cầu thay đổi code.</li>
+            <li>Một lớp, nhiều actor → <strong>nhiều lý do thay đổi</strong> → vi phạm SRP.</li>
+          </ul>
+        </section>
+
+        <!-- Slide 14: Vì sao cần SRP? (moved up) -->
+        <section style="font-size:0.9em">
+          <h2>Vì sao cần SRP?</h2>
+          <ul style="margin-top:0.5em">
+            <li><strong>Thay đổi cô lập:</strong> thay đổi không lan dây chuyền.</li>
+            <li><strong>Dễ kiểm thử:</strong> ít phụ thuộc, dễ cô lập.</li>
+            <li><strong>Dễ đặt tên:</strong> tên lớp rõ, không cần chữ "AND".</li>
+            <li><strong>Dễ tái sử dụng:</strong> lớp chuyên biệt dùng được ở nhiều nơi.</li>
+            <li><strong>Cộng tác tốt hơn:</strong> các nhóm làm song song, ít xung đột.</li>
           </ul>
         </section>
 
         <!-- Slide 13: image8 — Employee example -->
-        <section style="font-size: .9em;">
+        <section style="font-size:0.85em;">
           <h2>Ví dụ: Employee</h2>
 
-          <ul style="margin-top:0.8em; padding-left:1.2em">
-            <li><code class="inline-code">Employee</code> đang ôm cả <code class="inline-code">calculatePay</code> và <code class="inline-code">store</code>.</li>
-            <li>Đó là nghiệp vụ và lưu trữ: hai việc khác nhau.</li>
+          <ul style="margin-top:0.5em; padding-left:1.2em">
+            <li><strong>CFO</strong> yêu cầu đổi quy tắc tính lương → sửa <span class="inline-code">calculatePay</span>.
+            </li>
+            <li><strong>CTO</strong> yêu cầu đổi database → sửa <span class="inline-code">store</span>.</li>
           </ul>
 
-          <img src="img/lec-06/image8.svg" style="width:65%; display:block; margin:0 auto 0.4em" />
-          <ul style="margin-top:0.4em; padding-left:1.2em">
-            <li><code class="inline-code">CalculatePay</code>: phần nghiệp vụ.</li>
-            <li><code class="inline-code">Store</code>: phần lưu trữ.</li>
-            <li>Gộp cả hai vào một lớp là ôm quá nhiều việc.</li>
+          <img src="img/lec-06/image8.svg" style="width:60%; display:block; margin:0.3em auto 0.3em" />
+          <ul style="margin-top:0.3em; padding-left:1.2em">
+            <li>Hai actor, một lớp → <strong>hai lý do thay đổi</strong>.</li>
+            <li>Đổi lương không nên bắt ta sửa cùng lớp đang lo lưu trữ.</li>
           </ul>
         </section>
 
@@ -291,8 +325,8 @@ void readData(DeviceType deviceType) {
                 <li>
                   <strong>NÊN TÁCH:</strong>
                   Một phần đổi, phần kia không phải đổi theo.
-                  <br />→ Tách 2 lớp <code class="inline-code">PayCalculator</code> và <code
-                    class="inline-code">EmployeeStore</code>.
+                  <br />→ Tách 2 lớp <span class="inline-code">PayCalculator</span> và <span
+                    class="inline-code">EmployeeStore</span>.
                 </li>
                 <li style="margin-top:0.8em">
                   <strong>CHƯA CẦN TÁCH:</strong>
@@ -337,32 +371,20 @@ public:
               <pre><code class="language-cpp" data-trim>
 class PayCalculator {
 public:
-    Money calcPay(Employee);
+    Money calcPay(const Employee&);
 };
 
 class EmployeeStore {
 public:
-    void save(Employee);
+    void save(const Employee&);
 };
               </code></pre>
             </div>
           </div>
           <p style="margin-top:0.4em">
-            Quy tắc nghiệp vụ thay đổi → chỉ sửa <code class="inline-code">PayCalculator</code>.<br />
-            Đổi database → chỉ sửa <code class="inline-code">EmployeeStore</code>.
+            Quy tắc nghiệp vụ thay đổi → chỉ sửa <span class="inline-code">PayCalculator</span>.<br />
+            Đổi database → chỉ sửa <span class="inline-code">EmployeeStore</span>.
           </p>
-        </section>
-
-        <!-- Slide 14: Vì sao SRP quan trọng? -->
-        <section>
-          <h2>Vì sao cần SRP?</h2>
-          <ul>
-            <li>Tổ chức mã rõ hơn.</li>
-            <li>Dễ tái cấu trúc.</li>
-            <li>Dễ đặt tên.</li>
-            <li>Dễ bảo trì.</li>
-            <li>Dễ kiểm thử và gỡ lỗi.</li>
-          </ul>
         </section>
 
         <!-- Slide 15: Dấu hiệu vi phạm SRP -->
@@ -381,18 +403,23 @@ public:
         <section>
           <h2>Ví dụ: Lớp quá dài</h2>
           <ul>
-            <li>Một lớp ôm quá nhiều việc.</li>
+            <li>Nhiều actor khác nhau cùng yêu cầu thay đổi.</li>
           </ul>
           <pre><code class="language-cpp" data-trim>
 class StudentService {
 public:
-    void validate();
-    void calculateScholarship();
-    void exportCsv();
-    void sendEmail();
-    void writeLog();
+    void validate();             // kiểm tra dữ liệu
+    void calculateScholarship(); // học vụ
+    void exportCsv();            // báo cáo
+    void sendEmail();            // thông báo
+    void writeLog();             // vận hành
 };
           </code></pre>
+          <p style="margin-top:0.4em; font-size:0.85em">
+            💡 Tách: <span class="inline-code">StudentValidator</span> · <span
+              class="inline-code">ScholarshipCalculator</span> · <span class="inline-code">CsvExporter</span> · <span
+              class="inline-code">EmailSender</span> · <span class="inline-code">Logger</span>
+          </p>
         </section>
 
         <section>
@@ -407,21 +434,29 @@ public:
     void send(const Report& r);
 };
           </code></pre>
+          <p style="margin-top:0.4em; font-size:0.85em">
+            💡 Tách: <span class="inline-code">ReportRepository</span> (lưu trữ) · <span
+              class="inline-code">ReportMailer</span> (gửi email)
+          </p>
         </section>
 
         <section>
           <h2>Ví dụ: Nghiệp vụ + kiểm tra + I/O</h2>
           <ul>
-            <li>Một lớp làm quá nhiều loại việc.</li>
+            <li>Ba loại việc → ba actor khác nhau.</li>
           </ul>
           <pre><code class="language-cpp" data-trim>
 class UserService {
 public:
-    bool validateEmail(std::string_view email);
-    void registerUser(const User& u);
-    void writeLog(const User& u);
+    bool validateEmail(std::string_view); // validation rules
+    void registerUser(const User& u);    // business logic
+    void writeLog(const User& u);        // logging / infra
 };
           </code></pre>
+          <p style="margin-top:0.4em; font-size:0.85em">
+            💡 Tách: <span class="inline-code">EmailValidator</span> · <span class="inline-code">UserRegistrar</span> ·
+            <span class="inline-code">AuditLogger</span>
+          </p>
         </section>
 
       </section>
@@ -439,47 +474,47 @@ public:
 
         <!-- Slide 17: image9 — OCP intro -->
         <section>
-          <h2>Thêm chức năng mà ít sửa mã cũ</h2>
-          <img src="img/lec-06/image9.png" style="width:50%; display:block; margin:0 auto" />
-
+          <h2>Mở rộng mà không sửa mã cũ</h2>
+          <img src="img/lec-06/image9.png" style="width:45%; display:block; margin:0 auto" />
           <p style="margin-top:0.8em; color:#1b5e20; font-style:italic; line-height:1.5">
-            “Một cuộc phẫu thuật não là không cần thiết khi đội một chiếc mũ!”
+            "Thêm tính năng bằng cách thêm code mới — không phải bằng cách sửa code cũ."
           </p>
-          <p style="margin-top:0.5em; color:#555">
-            <strong>Phẫu thuật não</strong> = mở code cũ ra sửa &nbsp;·&nbsp;
-            <strong>Đội mũ</strong> = thêm lớp/module mới bên ngoài, không chạm code cũ.
-          </p>
-
         </section>
 
         <!-- Slide 18: Định nghĩa OCP -->
         <section style="font-size:0.85em;">
           <h2>Định nghĩa OCP</h2>
-          <p><em>Bài toán: thêm chức năng mới mà ít phải sửa mã cũ nhất.</em></p>
           <div class="question-box">
-            <div class="question-title">Quy tắc</div>
-            <strong>Mở để thêm, đóng để sửa.</strong>
+            <div class="question-title">Định nghĩa (Bertrand Meyer)</div>
+            <em>"Software entities should be <strong>open for extension</strong>, but <strong>closed for
+                modification</strong>."</em>
           </div>
           <ul style="margin-top:0.5em">
-            <li><strong>Mở:</strong> Có thể thêm cách cài đặt mới qua sự trừu tượng và đa hình</li>
-            <li><strong>Đóng:</strong> Mở rộng hành vi mà không phải sửa phần mã ổn định hiện có</li>
+            <li><strong>Mở (extension):</strong> Có thể thêm hành vi mới, không sửa code cũ.</li>
+            <li><strong>Đóng (modification):</strong> Code đã ổn định thì không cần sửa.</li>
           </ul>
         </section>
 
         <!-- Slide 19: image10 -->
         <section>
           <h2>So sánh các cách làm</h2>
-          <img src="img/lec-06/image10.png" style="width:90%; display:block; margin:0 auto" />
+          <img src="img/lec-06/image10.png" style="width:80%; display:block; margin:0 auto" />
+          <p style="margin-top:0.5em; font-style:italic; color:#555">
+            Trên: sửa code cũ mỗi lần thêm <br />
+            Dưới: thêm module mới mà không đụng code cũ.
+          </p>
         </section>
 
         <!-- Slide 20: Abstraction explanation -->
-        <section style="font-size:0.85em;">
+        <section>
           <h2>Chìa khóa: trừu tượng hóa</h2>
           <p><em>"Làm sao để thay đổi những gì một mô-đun làm mà <strong>không thay đổi chính mã nguồn</strong> của
               nó?"</em></p>
           <ul style="margin-top:0.5em">
-            <li>Phụ thuộc vào <span class="keyword">giao diện / lớp trừu tượng</span>.</li>
-            <li>Thêm lớp mới để mở rộng hành vi.</li>
+            <li>Tách phần <strong>cố định</strong> (logic điều phối) khỏi phần <strong>thay đổi</strong> (cách làm cụ
+              thể).</li>
+            <li>Phần cố định phụ thuộc vào <span class="keyword">giao diện trừu tượng</span>.</li>
+            <li>Phần thay đổi = lớp con cài đặt giao diện đó.</li>
           </ul>
         </section>
 
@@ -488,16 +523,16 @@ public:
           <h2>Ví dụ: chỉ đường</h2>
           <img src="img/lec-06/image11.png" style="width:70%; display:block; margin:0 auto 0.4em" />
           <ul style="margin-top:0.5em">
-            <li>Cùng một mục tiêu: đi đến đích.</li>
-            <li>Nhiều cách đi: xe đạp, xe buýt, taxi.</li>
-            <li>Đây là chỗ phù hợp để tách <span class="keyword">chiến lược</span>.</li>
+            <li>Cùng mục tiêu (đi đến đích) nhưng <strong>cách làm khác nhau</strong>.</li>
+            <li>Phần cố định: <span class="inline-code">Navigator</span> điều phối lộ trình.</li>
+            <li>Phần thay đổi: thuật toán từng phương tiện → tách ra.</li>
           </ul>
         </section>
 
         <!-- Slide 22: image12 — Navigator problem -->
         <section style="font-size:0.85em;">
           <h2>Vấn đề của Navigator</h2>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8em; align-items:start">
+          <div style="display:grid; grid-template-columns:1fr 1.5fr; gap:0.8em; align-items:start">
             <div>
               <img src="img/lec-06/image12.png" style="width:100%" />
               <p style="margin-top:0.3em; font-style:italic">Yêu cầu chính: lập lộ trình tự động.</p>
@@ -505,11 +540,11 @@ public:
             <div>
               <ul>
                 <li>Phiên bản 1: chỉ có đường bộ.</li>
-                <li>Thêm xe buýt → sửa <code class="inline-code">Navigator</code>.</li>
-                <li>Thêm xe đạp → lại sửa <code class="inline-code">Navigator</code>.</li>
+                <li>Thêm xe buýt → sửa <span class="inline-code">Navigator</span>.</li>
+                <li>Thêm xe đạp → lại sửa <span class="inline-code">Navigator</span>.</li>
               </ul>
-              <p style="margin-top:0.4em; color:#E62727"><strong>Kết quả:</strong> Mỗi thuật toán mới → <code
-                  class="inline-code">Navigator</code> lại phình to.</p>
+              <p><strong>Kết quả:</strong> Mỗi thuật toán mới → <span class="inline-code">Navigator</span> lại phình to.
+              </p>
             </div>
           </div>
         </section>
@@ -539,26 +574,30 @@ public:
     }
 };
           </code></pre>
+          <p>
+            Mỗi phương tiện mới = thêm <span class="inline-code">if/else</span> = mở <span
+              class="inline-code">Navigator</span> ra sửa = <strong>vi phạm OCP</strong>.
+          </p>
         </section>
 
         <!-- Slide 24: image13 — Strategy solution -->
         <section style="font-size:0.85em;">
           <h2>Giải pháp: tách chiến lược</h2>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8em; align-items:start">
+          <div style="display:grid; grid-template-columns:1.5fr 1fr; gap:0.8em; align-items:start">
 
             <div style="display:flex; flex-direction:column">
               <img src="img/lec-06/image13.png" style="width:100%; border-radius: 4px" />
 
-              <p style="margin-top:0.6em; color:#0d47a1"><strong>Gợi ý:</strong> Nhiều cách làm khác nhau → tách thành
+              <p><strong>Gợi ý:</strong> Nhiều cách làm khác nhau → tách thành
                 nhiều lớp.</p>
             </div>
 
             <div>
               <ul style="margin-top:0.3em">
                 <li>Mỗi thuật toán là một <span class="keyword">chiến lược</span>.</li>
-                <li><code class="inline-code">Navigator</code> là <em>bối cảnh</em>.</li>
+                <li><span class="inline-code">Navigator</span> là <em>bối cảnh</em>.</li>
                 <li>Giữ tham chiếu đến một chiến lược.</li>
-                <li>Chỉ gọi qua <code class="inline-code">RouteStrategy</code>.</li>
+                <li>Chỉ gọi qua <span class="inline-code">RouteStrategy</span>.</li>
               </ul>
             </div>
 
@@ -566,36 +605,29 @@ public:
         </section>
 
         <!-- Slide 25: Code giải pháp -->
-        <section style="font-size:0.78em;">
+        <section style="font-size:0.85em;">
           <h2>Mã giải pháp OCP</h2>
           <pre><code class="language-cpp" data-trim>
 struct RouteStrategy {
     virtual ~RouteStrategy() = default;
-    virtual void buildRoute(const std::string& start,
-                            const std::string& end) const = 0;
+    virtual void buildRoute(string start, string end) const = 0;
 };
 
-class RoadStrategy : public RouteStrategy {
-public:
-    void buildRoute(const std::string& start,
-                    const std::string& end) const override {
-        std::cout << "Tìm đường đi nhanh nhất cho ô tô...\n";
-    }
-};
+// Mỗi phương tiện = 1 lớp kế thừa RouteStrategy
+class RoadStrategy    : public RouteStrategy { /* ... */ };
+class BicycleStrategy : public RouteStrategy { /* ... */ };
 
-// Thêm phương tiện mới → chỉ tạo lớp mới, KHÔNG đụng Navigator!
 class Navigator {
-    const RouteStrategy* strategy = nullptr;
+    RouteStrategy* strategy = nullptr;
 public:
-    void setStrategy(const RouteStrategy* s) { strategy = s; }
-
-    void executeRoute(const std::string& start,
-                      const std::string& end) const {
-        assert(strategy != nullptr && "Strategy chưa được thiết lập!");
+    void setStrategy(RouteStrategy* s) { strategy = s; }
+    void buildRoute(string start, string end) const {
         strategy->buildRoute(start, end);
     }
 };
           </code></pre>
+          <p style="margin-top:0.2em"><span class="inline-code">Navigator</span> đóng — thêm <span
+              class="inline-code">BicycleStrategy</span> chỉ cần tạo lớp mới.</p>
         </section>
 
         <!-- Slide 26: What Open? What Closed? -->
@@ -605,14 +637,14 @@ public:
             <div style="background:#e8f5e9; border-left:4px solid #2E7D32; padding:0.6em 0.8em; border-radius:4px">
               <div style="font-weight:bold; color:#2E7D32; margin-bottom:0.3em">✓ Mở (thêm hành vi)</div>
               <ul style="margin:0">
-                <li>Thêm phương tiện mới: chỉ tạo lớp mới kế thừa <code class="inline-code">RouteStrategy</code></li>
+                <li>Thêm phương tiện mới: chỉ tạo lớp mới kế thừa <span class="inline-code">RouteStrategy</span></li>
                 <li>Không đụng chạm mã cũ</li>
               </ul>
             </div>
             <div style="background:#e3f2fd; border-left:4px solid #1565C0; padding:0.6em 0.8em; border-radius:4px">
               <div style="font-weight:bold; color:#1565C0; margin-bottom:0.3em">✓ Đóng (không sửa mã cũ)</div>
               <ul style="margin:0">
-                <li><code class="inline-code">Navigator</code>: không cần thêm <code class="inline-code">if/else</code>
+                <li><span class="inline-code">Navigator</span>: không cần thêm <span class="inline-code">if/else</span>
                 </li>
                 <li>Các chiến lược cũ: an toàn trước thay đổi</li>
               </ul>
@@ -622,12 +654,12 @@ public:
 
         <!-- Slide 27: Không có thiết kế nào đóng tuyệt đối -->
         <section style="font-size:0.85em;">
-          <h2>OCP không tuyệt đối</h2>
+          <h2>OCP không đóng tuyệt đối</h2>
 
           <ul style="margin-top:0.4em">
             <li>Khách hàng đòi lộ trình kết hợp nhiều chặng.</li>
             <li>Các chiến lược hiện tại chạy độc lập.</li>
-            <li>Muốn ghép lại → phải sửa <code class="inline-code">Navigator</code> hoặc giao diện.</li>
+            <li>Muốn ghép lại → phải sửa <span class="inline-code">Navigator</span> hoặc giao diện.</li>
           </ul>
 
           <p><strong>Ghi nhớ:</strong> "Đóng" với thay đổi này chưa chắc "đóng" với thay đổi khác. Không có thiết kế nào
@@ -636,22 +668,21 @@ public:
         </section>
 
         <!-- Slide 28: Hãy để bị lừa một lần -->
-        <section style="font-size:0.75em; padding: 10px !important;">
-          <h2 style="margin-bottom: 0.3em">Đừng trừu tượng hóa quá sớm</h2>
+        <section style="font-size:0.7em">
+          <h2 style="margin-bottom: 0.3em">Không trừu tượng hóa quá sớm</h2>
 
           <ul style="margin-bottom:0.6em">
             <li>Chưa thấy thay đổi lặp lại → chưa cần tách.</li>
             <li>Thấy cùng một kiểu sửa lặp lại từ lần thứ hai → bắt đầu trừu tượng hóa.</li>
           </ul>
 
-          <div
-            style="display: flex; justify-content: space-between; align-items: stretch; gap: 8px; font-family: 'Segoe UI', Tahoma, sans-serif">
+          <div style="display: flex; justify-content: space-between; align-items: stretch; gap: 8px;">
 
             <div
               style="flex: 1; background: #f5f5f5; border-radius: 6px; padding: 0.5em; border-top: 4px solid #9e9e9e; box-shadow: 0 1px 3px rgba(0,0,0,0.1)">
-              <div style="font-weight: bold; color: #424242; margin-bottom: 3px">📅 NGÀY 1</div>
+              <div style="font-weight: bold; color: #424242; margin-bottom: 3px">Bước 1</div>
               <div style="line-height: 1.3">
-                Chỉ có ô tô.
+                Chỉ có ô tô. Viết thẳng, chưa cần tách.
               </div>
             </div>
 
@@ -659,9 +690,9 @@ public:
 
             <div
               style="flex: 1; background: #f5f5f5; border-radius: 6px; padding: 0.5em; border-top: 4px solid #9e9e9e; box-shadow: 0 1px 3px rgba(0,0,0,0.1)">
-              <div style="font-weight: bold; color: #424242; margin-bottom: 3px">📅 NGÀY 3</div>
+              <div style="font-weight: bold; color: #424242; margin-bottom: 3px">Bước 2</div>
               <div style="line-height: 1.3">
-                Thêm xe đạp.
+                Thêm xe đạp → thêm <span class="inline-code">if/else</span>. Chấp nhận được.
               </div>
             </div>
 
@@ -669,9 +700,9 @@ public:
 
             <div
               style="flex: 1; background: #fff3e0; border-radius: 6px; padding: 0.5em; border-top: 4px solid #ff9800; box-shadow: 0 1px 3px rgba(0,0,0,0.1)">
-              <div style="font-weight: bold; color: #e65100; margin-bottom: 3px">📅 NGÀY 4</div>
+              <div style="font-weight: bold; color: #e65100; margin-bottom: 3px">Bước 3</div>
               <div style="line-height: 1.3">
-                Sửa một lần bằng <code class="inline-code">if/else</code>.
+                Thêm xe buýt → lại sửa <span class="inline-code">if/else</span>. Thấy lặp lại!
               </div>
             </div>
 
@@ -679,9 +710,9 @@ public:
 
             <div
               style="flex: 1; background: #e8f5e9; border-radius: 6px; padding: 0.5em; border-top: 4px solid #4caf50; box-shadow: 0 1px 3px rgba(0,0,0,0.1)">
-              <div style="font-weight: bold; color: #1b5e20; margin-bottom: 3px">📅 NGÀY 8</div>
+              <div style="font-weight: bold; color: #1b5e20; margin-bottom: 3px">Bước 4</div>
               <div style="line-height: 1.3">
-                Thấy lặp lại → tách <code class="inline-code">RouteStrategy</code>.
+                Tái cấu trúc → tách <span class="inline-code">RouteStrategy</span>.
               </div>
             </div>
 
@@ -690,17 +721,15 @@ public:
 
         </section>
 
-
-
         <!-- Slide 29: Kích thích sự thay đổi sớm -->
         <section style="font-size:0.85em;">
-          <h2>Cho thay đổi đến sớm</h2>
-          <p><strong>Cảnh báo:</strong> Đợi quá lâu → mã cứng lại → khó tái cấu trúc.</p>
+          <h2>Kích thích thay đổi sớm</h2>
+          <p><strong>Lưu ý:</strong> Trì hoãn quá lâu → code cứng lại → tái cấu trúc rất tốn công.</p>
           <ul style="margin-top:0.5em">
-            <li>Viết kiểm thử để ép thay đổi đến sớm.</li>
-            <li>Nếu khó viết kiểm thử, thiết kế có thể đang quá cứng.</li>
-            <li class="fragment">Ví dụ: <code class="inline-code">Navigator</code> phải tự phối hợp nhiều chiến lược →
-              tách <code class="inline-code">MultiModalStrategy</code>.</li>
+            <li>Viết kiểm thử sớm giúp lộ ra những chỗ thiết kế còn cứng nhắc.</li>
+            <li>Khó viết kiểm thử = tín hiệu thiết kế cần cải thiện.</li>
+            <li>Ví dụ: <span class="inline-code">Navigator</span> cần kết hợp nhiều chiến lược →
+              tách thành <span class="inline-code">MultiModalStrategy</span>.</li>
           </ul>
         </section>
 
@@ -717,16 +746,13 @@ public:
           </h1>
         </section>
 
-        <!-- Slide 31: image14 — LSP intro -->
+        <!-- Slide 31: LSP intro -->
         <section>
           <h2>Thay vào có an toàn không?</h2>
           <img src="img/lec-06/image14.png" style="width:45%; display:block; margin:0 auto" />
-
-
-          <p style="margin-top:0.8em; color:#1b5e20; font-style:italic; line-height:1.5">
+          <p style="margin-top:0.8em; font-style:italic; line-height:1.5; color:#1b5e20">
             “Nếu nó trông như con vịt, kêu như con vịt, nhưng lại cần pin, thì có lẽ bạn đã thiết kế trừu tượng sai.”
           </p>
-
         </section>
 
         <!-- Slide 32: Định nghĩa LSP -->
@@ -735,55 +761,33 @@ public:
           <div class="question-box">
             <strong>Kiểu con phải thay thế được kiểu cha.</strong>
           </div>
-          <p style="margin-top:0.5em">Ở đâu dùng <code class="inline-code">T</code>, thay bằng <code
-              class="inline-code">S</code> thì chương trình vẫn đúng.</p>
-
+          <p style="margin-top:0.5em">Ở đâu dùng <span class="inline-code">T</span>, thay bằng <span
+              class="inline-code">S</span> thì chương trình vẫn đúng.</p>
           <ul style="margin-top:0.5em">
-            <li>OCP dựa vào trừu tượng hóa và đa hình.</li>
-            <li>LSP giúp cây kế thừa không phá OCP.</li>
+            <li><strong>Thay thế được</strong> = code gọi không cần biết đang dùng lớp cha hay lớp con.</li>
+            <li><strong>Vi phạm</strong> → lỗi lúc chạy thay vì lúc biên dịch, code gọi bị bất ngờ.</li>
           </ul>
-
         </section>
 
-        <!-- Slide 33: Vi phạm OCP + LSP — Shape -->
+        <!-- Slide 33: Thiết kế theo hợp đồng -->
         <section style="font-size:0.82em;">
-          <h2>Ép kiểu thay vì đa hình <span class="text-light">(Type Code Smell)</span></h2>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8em">
-            <div>
-              <pre><code class="language-cpp" data-trim>
-struct Shape {
-    enum class Type { Square, Circle };
-
-    explicit Shape(Type type) : type(type) {}
-    Type type;
-};
-
-struct Circle : Shape {
-    Circle() : Shape(Type::Circle) {}
-    void draw() const {}
-};
-
-struct Square : Shape {
-    Square() : Shape(Type::Square) {}
-    void draw() const {}
-};
-
-// Hàm vi phạm OCP: mã sử dụng phải tự phân loại kiểu
-void drawShape(const Shape& s) {
-    if (s.type == Shape::Type::Square)
-        static_cast<const Square&>(s).draw(); // ép kiểu xuống lớp con
-    else if (s.type == Shape::Type::Circle)
-        static_cast<const Circle&>(s).draw();
-}
-              </code></pre>
+          <h2>Công cụ: Thiết kế theo hợp đồng</h2>
+          <p>Biến giả định ngầm thành quy tắc rõ ràng.</p>
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.6em; margin-top:0.5em">
+            <div style="background:#e3f2fd; border-left:4px solid #1565C0; padding:0.5em 0.8em; border-radius:4px">
+              <strong style="color:#1565C0">Tiền điều kiện</strong><br />
+              Điều kiện để phương thức được gọi.<br />
+              → Lớp con <strong>không được đòi hỏi nhiều hơn</strong>.
             </div>
-            <div>
-              <ul>
-                <li><code class="inline-code">Shape</code> không có hành vi chung như <code
-                    class="inline-code">draw()</code>.</li>
-                <li>Mã sử dụng phải dựa vào <code class="inline-code">type</code> và ép kiểu.</li>
-                <li>Đây là <strong style="color:#E62727">vi phạm OCP</strong>.</li>
-              </ul>
+            <div style="background:#e8f5e9; border-left:4px solid #2E7D32; padding:0.5em 0.8em; border-radius:4px">
+              <strong style="color:#2E7D32">Hậu điều kiện</strong><br />
+              Cam kết sau khi phương thức chạy xong.<br />
+              → Lớp con <strong>không được cam kết ít hơn</strong>.
+            </div>
+            <div style="background:#f3e5f5; border-left:4px solid #6A1B9A; padding:0.5em 0.8em; border-radius:4px">
+              <strong style="color:#6A1B9A">Bất biến</strong><br />
+              Tính chất luôn đúng của đối tượng.<br />
+              → Lớp con <strong>phải duy trì bất biến của lớp cha</strong>.
             </div>
           </div>
         </section>
@@ -795,16 +799,18 @@ void drawShape(const Shape& s) {
             <div>
               <ul>
                 <li>Toán học: hình vuông là một hình chữ nhật.</li>
-                <li><code class="inline-code">Rectangle</code> cho phép đổi rộng và cao độc lập.</li>
-                <li><code class="inline-code">Square</code> thì không.</li>
+                <li><span class="inline-code">Rectangle</span> cho phép đổi rộng và cao độc lập.</li>
+                <li><span class="inline-code">Square</span> thì không.</li>
               </ul>
-              <p style="margin-top:0.4em"><strong>Vấn đề:</strong> Hàm <code class="inline-code">g</code> kỳ vọng <code
-                  class="inline-code">Rectangle</code> cho phép thay đổi chiều rộng và chiều cao <strong>độc
-                  lập</strong>. Khi truyền <code class="inline-code">Square</code> vào, kỳ vọng đó bị phá vỡ → <strong
-                  style="color:#E62727">vi phạm LSP</strong>.</p>
+              <p style="margin-top:0.4em"><strong>Hậu điều kiện bị phá:</strong>
+                <span class="inline-code">setWidth(w)</span> hứa <span class="inline-code">width == w</span>
+                và <span class="inline-code">height</span> giữ nguyên.
+                <span class="inline-code">Square</span> phá lời hứa đó
+                → <strong style="color:#E62727">vi phạm LSP</strong>.
+              </p>
             </div>
             <div>
-              <pre><code class="language-cpp" data-trim >
+              <pre><code class="language-cpp" data-trim>
 class Square : public Rectangle {
 public:
   void setWidth(double w) override {
@@ -823,7 +829,7 @@ void g(Rectangle& r) {
   r.setHeight(4);
   // Mong đợi: width = 5, height = 4
   if (r.getWidth() * r.getHeight() != 20)
-    throw std::runtime_error("Rectangle contract broken");
+    throw std::runtime_error(“Contract broken”);
 }
               </code></pre>
             </div>
@@ -832,61 +838,33 @@ void g(Rectangle& r) {
 
         <!-- Slide 35: IS-A về hành vi -->
         <section style="font-size:0.85em;">
-          <h2>Lỗi nằm ở hợp đồng</h2>
+          <h2>IS-A là về hành vi</h2>
           <ul>
-            <li><code class="inline-code">Rectangle</code> đứng riêng thì hợp lệ.</li>
-            <li><code class="inline-code">Square</code> đứng riêng cũng hợp lệ.</li>
-            <li style="color:#E62727"><strong>Nhưng:</strong> <code class="inline-code">Square</code> phá giả định của
-              mã dùng <code class="inline-code">Rectangle</code>.</li>
+            <li><span class="inline-code">Rectangle</span> đứng riêng thì hợp lệ.</li>
+            <li><span class="inline-code">Square</span> đứng riêng cũng hợp lệ.</li>
+            <li style="color:#E62727"><strong>Nhưng:</strong> <span class="inline-code">Square</span> phá giả định của
+              code dùng <span class="inline-code">Rectangle</span>.</li>
           </ul>
-          <p style="margin-top:0.6em"><strong>Quan hệ "là một" (IS-A):</strong> là về hành vi, không chỉ là tên gọi.
-            Đúng về toán học chưa chắc đúng về thiết kế.</p>
-        </section>
-
-        <!-- Slide 36: Thiết kế theo hợp đồng -->
-        <section style="font-size:0.82em;">
-          <h2>Quy tắc: Thiết kế theo hợp đồng</h2>
-          <ul>
-            <li>Biến giả định ngầm thành quy tắc rõ ràng.</li>
-          </ul>
-          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0.6em; margin-top:0.5em">
-            <div style="background:#e3f2fd; border-left:4px solid #1565C0; padding:0.5em 0.8em; border-radius:4px">
-              <strong style="color:#1565C0">Tiền điều kiện (Preconditions)</strong><br />
-              Điều kiện để phương thức được gọi.<br />
-              → Lớp con <strong>không được đòi hỏi nhiều hơn</strong>.
-            </div>
-            <div style="background:#e8f5e9; border-left:4px solid #2E7D32; padding:0.5em 0.8em; border-radius:4px">
-              <strong style="color:#2E7D32">Hậu điều kiện (Postconditions)</strong><br />
-              Cam kết sau khi phương thức chạy xong.<br />
-              → Lớp con <strong>không được cam kết ít hơn</strong>.
-            </div>
-            <div style="background:#f3e5f5; border-left:4px solid #6A1B9A; padding:0.5em 0.8em; border-radius:4px">
-              <strong style="color:#6A1B9A">Bất biến (Invariants)</strong><br />
-              Tính chất luôn đúng của đối tượng.<br />
-              → Lớp con <strong>phải duy trì bất biến của lớp cha</strong>.
-            </div>
+          <div class="question-box" style="margin-top:0.6em">
+            Quan hệ “là một” (IS-A) là về <strong>hành vi</strong>, không phải tên gọi.<br />
+            Đúng về toán học ≠ đúng về thiết kế.
           </div>
-          <ul style="margin-top:0.4em; padding-left:1.2em">
-            <li><code class="inline-code">Rectangle::setWidth(w)</code> hứa: <code class="inline-code">width == w</code>
-              và <code class="inline-code">height</code> giữ nguyên.</li>
-            <li><code class="inline-code">Square::setWidth(w)</code> phá lời hứa đó.</li>
-          </ul>
         </section>
 
-        <!-- Slide 37: image15 — Giải quyết Rectangle và Square -->
+        <!-- Slide 36: Cách sửa Rectangle/Square -->
         <section style="font-size:0.80em;">
           <h2>Cách sửa Rectangle/Square</h2>
           <div style="display:grid; grid-template-columns:1.3fr 1fr; gap:0.8em; align-items:start">
             <div>
               <ol style="margin-top:0.4em">
-                <li>Không cho <code class="inline-code">Square</code> kế thừa <code
-                    class="inline-code">Rectangle</code>.</li>
-                <li>Rút điểm chung lên <code class="inline-code">Shape</code>.</li>
-                <li><code class="inline-code">Rectangle</code> và <code class="inline-code">Square</code> kế thừa <code
-                    class="inline-code">Shape</code> riêng.</li>
+                <li>Không cho <span class="inline-code">Square</span> kế thừa <span
+                    class="inline-code">Rectangle</span>.</li>
+                <li>Rút điểm chung lên <span class="inline-code">Shape</span>.</li>
+                <li><span class="inline-code">Rectangle</span> và <span class="inline-code">Square</span> kế thừa <span
+                    class="inline-code">Shape</span> riêng.</li>
               </ol>
-              <p style="margin-top:0.4em; color:#2E7D32"><strong>Kết quả:</strong> Không phá hợp đồng · Đúng bản chất
-                hành vi.</p>
+              <p style="margin-top:0.4em; color:#2E7D32"><strong>Kết quả:</strong> Giữ đúng hợp đồng — mỗi lớp đúng bản
+                chất hành vi của nó.</p>
             </div>
             <div>
               <img src="img/lec-06/image15.png" style="width:100%" />
@@ -894,7 +872,38 @@ void g(Rectangle& r) {
           </div>
         </section>
 
-        <!-- Slide 37b: Câu hỏi thảo luận LSP -->
+        <!-- Slide 37: Vi phạm tiền điều kiện -->
+        <section style="font-size:0.72em;">
+          <h2>Ví dụ: vi phạm tiền điều kiện</h2>
+          <pre style="margin-top:0.1em"><code class="language-cpp" data-trim>
+class TextDocument {
+public:
+    virtual void addText(std::string_view text) { // TĐK: chuỗi bất kỳ độ dài
+        content += text;
+    }
+protected:
+    std::string content;
+};
+class SmsDocument : public TextDocument {
+public:
+    void addText(std::string_view text) override { // TĐK MẠNH HƠN → vi phạm LSP!
+        if (text.size() > 160) throw std::invalid_argument(“SMS too long”);
+        content += text;
+    }
+};
+          </code></pre>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5em; margin-top:0.2em">
+            <div style="background:#e3f2fd; border-left:4px solid #1565C0; padding:0.3em 0.7em; border-radius:4px">
+              <strong>Lớp cha:</strong> “Đưa tôi chuỗi dài bao nhiêu cũng được”
+            </div>
+            <div style="background:#fce4ec; border-left:4px solid #E62727; padding:0.3em 0.7em; border-radius:4px">
+              <strong>Lớp con:</strong> “Tôi chỉ nhận tối đa 160 ký tự”<br />
+              <strong style="color:#E62727">→ Tiền điều kiện mạnh hơn → vi phạm LSP!</strong>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 38: Câu hỏi thảo luận LSP -->
         <section style="font-size:0.85em;">
           <h2>🤔 Thảo luận</h2>
           <p><strong>Câu hỏi:</strong> Đoạn code này có vi phạm LSP không?</p>
@@ -907,49 +916,15 @@ public:
 class Penguin : public Bird {
 public:
     void fly() override {
-        throw std::logic_error("Chim cánh cụt không bay được!");
+        throw std::logic_error(“Chim cánh cụt không bay được!”);
     }
 };
           </code></pre>
           <p style="color:#666; margin-top:0.4em">
-            💡 <em>Gợi ý: hàm nhận <code>Bird&</code> gọi <code>fly()</code> có hoạt động đúng với <code>Penguin</code>
+            💡 <em>Gợi ý: hàm nhận <span class="inline-code">Bird&</span> gọi <span class="inline-code">fly()</span> có
+              hoạt động đúng với <span class="inline-code">Penguin</span>
               không?</em>
           </p>
-        </section>
-
-        <!-- Slide 38: Vi phạm tiền điều kiện -->
-        <section style="font-size:0.78em;">
-          <h2>Ví dụ: tiền điều kiện</h2>
-          <pre style="margin-top:0.2em"><code class="language-cpp" data-trim>
-class TextDocument {
-public:
-    // TĐK: chuỗi bất kỳ độ dài
-    virtual void addText(std::string_view text) {
-        content += text;
-    }
-protected:
-    std::string content;
-};
-
-class SmsDocument : public TextDocument {
-public:
-    // TĐK MẠNH HƠN: tối đa 160 ký tự → vi phạm LSP!
-    void addText(std::string_view text) override {
-        if (text.size() > 160)
-            throw std::invalid_argument("SMS too long");
-        content += text;
-    }
-};
-          </code></pre>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5em; margin-top:0.25em">
-            <div style="background:#e3f2fd; border-left:4px solid #1565C0; padding:0.4em 0.7em; border-radius:4px">
-              <strong>Lớp cha:</strong> "Đưa tôi chuỗi dài bao nhiêu cũng được"
-            </div>
-            <div style="background:#fce4ec; border-left:4px solid #E62727; padding:0.4em 0.7em; border-radius:4px">
-              <strong>Lớp con:</strong> "Tôi chỉ nhận tối đa 160 ký tự"<br />
-              <strong style="color:#E62727">→ Tiền điều kiện mạnh hơn → vi phạm LSP!</strong>
-            </div>
-          </div>
         </section>
 
       </section>
@@ -961,7 +936,7 @@ public:
         <section>
           <h1>
             <span class="text-light">4.</span><br />
-            Nguyên lý Phân Tách Giao Tiếp
+            Nguyên lý Phân Tách Giao Diện
           </h1>
         </section>
 
@@ -982,7 +957,6 @@ public:
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8em; align-items:start">
             <div>
               <div class="question-box">
-                <div class="question-title">Định nghĩa</div>
                 <em>Đừng ép mã sử dụng phụ thuộc vào những gì nó không dùng.</em>
               </div>
               <ul style="margin-top:0.5em">
@@ -1002,19 +976,19 @@ public:
 
           <div style="display:grid; grid-template-columns: 1fr 1.3fr; gap: 1em; align-items: start">
 
-            <div style="font-family: 'Segoe UI', Tahoma, sans-serif">
+            <div>
               <ul style="margin-bottom: 0.8em; line-height: 1.4; padding-left: 1.2em">
-                <li><code class="inline-code">Door</code>: khóa, mở khóa, kiểm tra mở.</li>
-                <li><code class="inline-code">TimedDoor</code>: thêm báo động khi mở quá lâu.</li>
+                <li><span class="inline-code">Door</span>: khóa, mở khóa, kiểm tra mở.</li>
+                <li><span class="inline-code">TimedDoor</span>: thêm báo động khi mở quá lâu.</li>
               </ul>
 
               <div
                 style="background:#fce4ec; border-left:4px solid #E62727; padding:0.6em; border-radius:4px; line-height: 1.4">
                 <strong style="color:#E62727; display: block; margin-bottom: 3px">Hậu quả</strong>
                 <ul style="margin: 0; padding-left: 1.2em; color: #880e4f">
-                  <li><code class="inline-code">NormalDoor</code> phải cài <code class="inline-code">timeout()</code> vô
+                  <li><span class="inline-code">NormalDoor</span> phải cài <span class="inline-code">timeout()</span> vô
                     nghĩa.</li>
-                  <li><code class="inline-code">Door</code> bị gắn chặt với bộ định thời.</li>
+                  <li><span class="inline-code">Door</span> bị gắn chặt với bộ định thời.</li>
                   <li>Mã sử dụng phụ thuộc nhiều hơn mức cần.</li>
                 </ul>
               </div>
@@ -1051,29 +1025,28 @@ public:
           </div>
         </section>
 
-        <!-- Slide 43: image18 — ISP solution (TimedDoor) -->
-        <section style="font-size:0.85em;">
+        <!-- Slide 43: Giải pháp Door/TimedDoor -->
+        <section style="font-size:0.68em;">
           <h2>Giải pháp: tách vai trò</h2>
-          <img src="img/lec-06/image18.png" style="width:70%; display:block; margin:0 auto 0.4em" />
-          <ul style="margin-top:0.4em; padding-left:1.2em">
-            <li><code class="inline-code">TimedDoor</code>: <code class="inline-code">Door</code> + <code
-                class="inline-code">TimerClient</code>.</li>
-            <li><code class="inline-code">NormalDoor</code>: chỉ <code class="inline-code">Door</code>.</li>
-          </ul>
-        </section>
-
-        <!-- Slide 43b: Code giải pháp Door/TimedDoor -->
-        <section style="font-size:0.72em;">
-          <h2>Giải pháp: code C++</h2>
-          <pre style="margin-top:0.3em"><code class="language-cpp" data-trim>
-// 1. Tách thành 2 giao diện nhỏ, độc lập
+          <div style="display:grid; grid-template-columns:1fr 1.2fr; gap:0.8em; align-items:start">
+            <div>
+              <img src="img/lec-06/image18.png" style="width:100%" />
+              <p style="margin-top:0.3em">
+                <span class="inline-code">NormalDoor</span> không còn bị ép cài <span
+                  class="inline-code">timeout()</span>.
+                Mỗi lớp chỉ phụ thuộc giao diện nó thực sự dùng.
+              </p>
+            </div>
+            <div>
+              <pre style="margin:0"><code class="language-cpp" data-trim>
+// Tách thành 2 giao diện nhỏ, độc lập
 struct Door {
     virtual void lock() = 0;
     virtual void unlock() = 0;
 };
 struct TimerClient { virtual void timeout() = 0; };
 
-// 2. Mỗi lớp chỉ kế thừa giao diện nó cần
+// Mỗi lớp chỉ kế thừa giao diện nó cần
 class TimedDoor : public Door, public TimerClient {
 public:
     void lock() override { /* ... */ }
@@ -1085,12 +1058,9 @@ public:
     void lock() override { /* ... */ }
     void unlock() override { /* ... */ }
 };
-          </code></pre>
-          <p style="margin-top:0.4em">
-            <code class="inline-code">NormalDoor</code> không còn bị ép cài <code class="inline-code">timeout()</code>
-            vô nghĩa.
-            Mỗi lớp chỉ phụ thuộc vào giao diện mà nó thực sự dùng.
-          </p>
+              </code></pre>
+            </div>
+          </div>
         </section>
 
         <!-- Slide 43c: Câu hỏi thảo luận ISP -->
@@ -1106,8 +1076,9 @@ struct Animal {
 };
           </code></pre>
           <p style="color:#666; margin-top:0.4em">
-            💡 <em>Gợi ý: <code>Dog</code> có cần implement <code>fly()</code>? <code>Eagle</code> có cần
-              <code>swim()</code>?</em>
+            💡 <em>Gợi ý: <span class="inline-code">Dog</span> có cần implement <span class="inline-code">fly()</span>?
+              <span class="inline-code">Eagle</span> có cần
+              <span class="inline-code">swim()</span>?</em>
           </p>
         </section>
 
@@ -1138,13 +1109,13 @@ struct Animal {
             </div>
             <div>
               <ul style="padding-left:1.2em; margin:0">
-                <li>Tách thành <code class="inline-code">DepositUI</code>, <code class="inline-code">WithdrawUI</code>,
-                  <code class="inline-code">TransferUI</code>, ...
+                <li>Tách thành <span class="inline-code">DepositUI</span>, <span class="inline-code">WithdrawUI</span>,
+                  <span class="inline-code">TransferUI</span>, ...
                 </li>
                 <li>Mỗi giao dịch chỉ phụ thuộc phần nó cần.</li>
               </ul>
-              <p style="margin-top:0.4em"><strong>Lợi ích:</strong> Thêm <code
-                  class="inline-code">IElectricBillUI</code> → chỉ ảnh hưởng phạm vi nhỏ.</p>
+              <p style="margin-top:0.4em"><strong>Lợi ích:</strong> Thêm <span
+                  class="inline-code">IElectricBillUI</span> → chỉ ảnh hưởng phạm vi nhỏ.</p>
             </div>
           </div>
         </section>
@@ -1179,7 +1150,6 @@ struct Animal {
         <section style="font-size:0.85em;">
           <h2>Định nghĩa DIP</h2>
           <div class="question-box">
-            <div class="question-title">Định nghĩa</div>
             <ul style="margin:0; padding-left:1.2em">
               <li>Mô-đun cấp cao và cấp thấp cùng phụ thuộc vào <strong>sự trừu tượng</strong>.</li>
               <li>Chi tiết phải phụ thuộc vào sự trừu tượng, không phải ngược lại.</li>
@@ -1224,10 +1194,11 @@ struct Animal {
             <div>
               <ul>
                 <li>Tầng chính sách không biết tầng cơ chế là ai.</li>
-                <li>Chỉ làm việc qua giao diện do <code class="inline-code">Policy</code> định nghĩa.</li>
+                <li>Chỉ làm việc qua giao diện do <span class="inline-code">Policy</span> định nghĩa.</li>
                 <li>Đổi tầng dưới → tầng chính sách vẫn ổn.</li>
               </ul>
-              <p style="margin-top:0.4em"><strong>Ví dụ:</strong> "Tôi cần gửi tin nhắn chào mừng."</p>
+              <p style="margin-top:0.4em"><strong>Kết quả:</strong> Đổi tầng cơ chế (ví dụ thay SQL bằng NoSQL) mà tầng
+                chính sách không cần sửa.</p>
             </div>
           </div>
         </section>
@@ -1240,7 +1211,7 @@ struct Animal {
             <li><strong>Cách cũ:</strong> Tầng dưới đưa giao diện, tầng trên phải theo.</li>
             <li><strong>Cách mới:</strong> Tầng trên đưa yêu cầu, tầng dưới phải theo.</li>
           </ul>
-          <p style="margin-top:0.5em"><strong>Nguyên tắc Hollywood (Hollywood Principle):</strong> <em>"Đừng gọi chúng
+          <p style="margin-top:0.5em"><strong>Nguyên tắc Hollywood:</strong> <em>"Đừng gọi chúng
               tôi, chúng tôi sẽ gọi bạn"</em></p>
           <ul style="margin-top:0.4em">
             <li><strong>Ưu điểm:</strong> Đổi cơ chế bên dưới mà không phải sửa tầng chính sách.</li>
@@ -1307,8 +1278,8 @@ public:
         <section style="font-size:0.85em;">
           <h2>Vì sao cách 2 tốt hơn?</h2>
           <ul>
-            <li>Đổi SQL → chỉ sửa <code class="inline-code">SqlOrderRepository</code>.</li>
-            <li><code class="inline-code">OrderService</code> và <code class="inline-code">IOrderRepository</code> giữ
+            <li>Đổi SQL → chỉ sửa <span class="inline-code">SqlOrderRepository</span>.</li>
+            <li><span class="inline-code">OrderService</span> và <span class="inline-code">IOrderRepository</span> giữ
               nguyên.</li>
             <li>Tầng dưới đi theo giao diện của tầng trên.</li>
           </ul>
