@@ -234,103 +234,88 @@ void readData(DeviceType deviceType) {
         </section>
 
         <!-- Slide 9: image6 — SRP intro -->
-        <section style="font-size:0.85em;">
+        <section>
           <h2>Một lớp ôm nhiều việc?</h2>
           <img src="img/lec-06/image6.png" style="width:60%; display:block; margin:0 auto" />
 
-          <p style="margin-top:0.8em; color:#1b5e20; font-style:italic; line-height:1.5">
+          <p style="margin-top:0.8em; font-style:italic; line-height:1.5">
             “Chỉ vì bạn có thể làm điều đó, không có nghĩa là bạn nên làm!”
           </p>
 
         </section>
 
         <!-- Slide 10: Định nghĩa SRP -->
-        <section style="font-size:0.85em;">
-          <h2>Định nghĩa SRP</h2>
+        <section>
+          <h2>Nguyên lý Đơn Nhiệm (SRP)</h2>
           <div class="question-box">
-            <em>Mỗi lớp chỉ nên có <strong>một lý do để thay đổi</strong>.</em>
+            <div class="question-title">Quy tắc</div>
+            <em>Mỗi lớp chỉ nên <strong>làm một việc chính</strong>.</em>
           </div>
-          <p style="margin-top:0.5em"><em>Cách nói khác: một lớp chỉ nên gánh một trách nhiệm chính.</em></p>
         </section>
 
         <!-- Slide 11: Trách nhiệm là gì? -->
-        <section style="font-size:0.85em;">
+        <section>
           <h2>Trách nhiệm là gì?</h2>
           <ul>
-            <li>Một lớp có nhiều lý do để thay đổi → lớp đó có nhiều trách nhiệm.</li>
+            <li>Trách nhiệm là một nhóm việc cùng bản chất.</li>
+            <li>Tính lương là một việc.</li>
+            <li>Lưu dữ liệu là một việc khác.</li>
           </ul>
-          <pre style="margin-top:0.3em"><code class="language-cpp" data-trim>
-// Modem.h -- SRP Violation
-struct Modem {
-    virtual ~Modem() = default;
-    virtual void dial(std::string_view phone) = 0;
-    virtual void hangup() = 0;
-    virtual void send(char c) = 0;
-    virtual char recv() = 0;
-};
-          </code></pre>
-          <ul style="margin-top:0.4em">
-            <li><strong>TN 1:</strong> Quản lý kết nối với <code class="inline-code">dial</code>, <code
-                class="inline-code">hangup</code>.</li>
-            <li><strong>TN 2:</strong> Truyền tải dữ liệu với <code class="inline-code">send</code>, <code
-                class="inline-code">recv</code>.</li>
+        </section>
+
+        <!-- Slide 13: image8 — Employee example -->
+        <section style="font-size: .9em;">
+          <h2>Ví dụ: Employee</h2>
+
+          <ul style="margin-top:0.8em; padding-left:1.2em">
+            <li><code class="inline-code">Employee</code> đang ôm cả <code class="inline-code">calculatePay</code> và <code class="inline-code">store</code>.</li>
+            <li>Đó là nghiệp vụ và lưu trữ: hai việc khác nhau.</li>
+          </ul>
+
+          <img src="img/lec-06/image8.svg" style="width:65%; display:block; margin:0 auto 0.4em" />
+          <ul style="margin-top:0.4em; padding-left:1.2em">
+            <li><code class="inline-code">CalculatePay</code>: phần nghiệp vụ.</li>
+            <li><code class="inline-code">Store</code>: phần lưu trữ.</li>
+            <li>Gộp cả hai vào một lớp là ôm quá nhiều việc.</li>
           </ul>
         </section>
 
         <!-- Slide 12: image7 — Khi nào nên tách? -->
-        <section style="font-size:0.65em;">
+        <section style="font-size:0.8em;">
           <h2>Khi nào nên tách?</h2>
 
-          <div
-            style="display:grid; grid-template-columns: 1.2fr 1fr; gap: 1.2em; align-items: start; margin-top: 0.5em">
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 1.2em; align-items: start; margin-top: 0.5em">
 
             <div>
               <ul style="margin: 0; padding-left: 1.2em">
                 <li>
-                  <strong style="color:#2E7D32">NÊN TÁCH:</strong>
-                  Hai phần đổi độc lập.
-                  <br />→ Tách <code class="inline-code">Connection</code> và <code
-                    class="inline-code">DataChannel</code>.
+                  <strong>NÊN TÁCH:</strong>
+                  Một phần đổi, phần kia không phải đổi theo.
+                  <br />→ Tách 2 lớp <code class="inline-code">PayCalculator</code> và <code
+                    class="inline-code">EmployeeStore</code>.
                 </li>
                 <li style="margin-top:0.8em">
-                  <strong style="color:#E62727">CHƯA CẦN TÁCH:</strong>
-                  Nếu chưa thấy dấu hiệu thay đổi độc lập.
-                  <br />→ Chưa vội tách, tránh tăng độ phức tạp không cần thiết.
+                  <strong>CHƯA CẦN TÁCH:</strong>
+                  Nếu hai phần vẫn luôn sửa cùng nhau.
+                  <br />→ Chưa vội tách.
                 </li>
               </ul>
             </div>
 
-            <div style="display:flex; flex-direction:column; align-items:center">
-              <div style="text-align: center">
-                <img src="img/lec-06/image7.png"
-                  style="width:100%; border: 1px solid #ddd; border-radius: 8px; box-shadow: 3px 3px 10px rgba(0,0,0,0.1)" />
-              </div>
-
-              <p style="margin-top:1em; color:#856404; font-weight:500">Chỉ tách khi đã thấy dấu hiệu.</p>
+            <div style="border:1px solid #ccc; padding:0.8em 1em; border-radius:6px">
+              <p style="margin:0 0 0.5em 0; font-weight:700">Tự hỏi 2 điều:</p>
+              <ul style="margin:0; padding-left:1.2em">
+                <li>Đổi cách tính lương, có phải sửa phần lưu không?</li>
+                <li>Đổi cách lưu, có phải sửa phần tính lương không?</li>
+              </ul>
+              <p style="margin:0.8em 0 0 0; font-weight:500">Nếu không, nên tách.</p>
             </div>
 
           </div>
         </section>
 
-        <!-- Slide 13: image8 — Employee example -->
-        <section style="font-size:0.85em;">
-          <h2>Ví dụ: Employee</h2>
-
-          <ul style="margin-top:0.8em; color:#856404; padding-left:1.2em">
-            <li>Dễ nghĩ: <code class="inline-code">Employee</code> phải biết mọi thứ về chính nó.</li>
-            <li>Kết quả: gộp nghiệp vụ và lưu trữ vào cùng một lớp.</li>
-          </ul>
-
-          <img src="img/lec-06/image8.png" style="width:65%; display:block; margin:0 auto 0.4em" />
-          <ul style="margin-top:0.4em; padding-left:1.2em">
-            <li><code class="inline-code">CalculatePay</code>: quy tắc nghiệp vụ.</li>
-            <li><code class="inline-code">Store</code>: lưu trữ dữ liệu.</li>
-            <li>Hai phần đổi vì hai lý do khác nhau.</li>
-          </ul>
-        </section>
-
         <!-- Slide 13b: Giải pháp Employee — tách trách nhiệm -->
-        <section style="font-size:0.78em;">
+        <section style="font-size:0.9em;">
           <h2>Giải pháp: tách trách nhiệm</h2>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.7em; margin-top:0.3em">
             <div style="min-width:0">
@@ -338,8 +323,12 @@ struct Modem {
               <pre><code class="language-cpp" data-trim>
 class Employee {
 public:
-    Money calculatePay(); // TN 1: Nghiệp vụ
-    void store();         // TN 2: Lưu trữ
+    // TN 1: Nghiệp vụ
+    Money calculatePay();
+
+
+    // TN 2: Lưu trữ
+    void store();
 };
               </code></pre>
             </div>
@@ -365,7 +354,7 @@ public:
         </section>
 
         <!-- Slide 14: Vì sao SRP quan trọng? -->
-        <section style="font-size:0.85em;">
+        <section>
           <h2>Vì sao cần SRP?</h2>
           <ul>
             <li>Tổ chức mã rõ hơn.</li>
@@ -377,7 +366,7 @@ public:
         </section>
 
         <!-- Slide 15: Dấu hiệu vi phạm SRP -->
-        <section style="font-size:0.85em;">
+        <section>
           <h2>Dấu hiệu vi phạm SRP</h2>
           <p><em>SRP dễ hiểu nhưng khó làm đúng.</em></p>
           <ul>
@@ -385,27 +374,54 @@ public:
             <li>Tên cần chữ <strong>"AND"</strong>.</li>
             <li>Tên quá chung chung.</li>
             <li>Sửa một chỗ, hỏng chỗ khác.</li>
-            <li>Một lớp vừa nghiệp vụ, vừa kiểm tra dữ liệu, vừa I/O.</li>
+            <li>Một lớp vừa nghiệp vụ, kiểm tra dữ liệu, I/O.</li>
           </ul>
         </section>
 
-        <!-- Slide 15b: Câu hỏi thảo luận SRP -->
-        <section style="font-size:0.85em;">
-          <h2>🤔 Thảo luận</h2>
-          <p><strong>Câu hỏi:</strong> Lớp sau có vi phạm SRP không? Vì sao?</p>
+        <section>
+          <h2>Ví dụ: Lớp quá dài</h2>
+          <ul>
+            <li>Một lớp ôm quá nhiều việc.</li>
+          </ul>
+          <pre><code class="language-cpp" data-trim>
+class StudentService {
+public:
+    void validate();
+    void calculateScholarship();
+    void exportCsv();
+    void sendEmail();
+    void writeLog();
+};
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Ví dụ: Tên có chữ "AND"</h2>
+          <ul>
+            <li>Chỉ nhìn tên đã thấy hai việc.</li>
+          </ul>
+          <pre><code class="language-cpp" data-trim>
+class SaveAndSendReport {
+public:
+    void save(const Report& r);
+    void send(const Report& r);
+};
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Ví dụ: Nghiệp vụ + kiểm tra + I/O</h2>
+          <ul>
+            <li>Một lớp làm quá nhiều loại việc.</li>
+          </ul>
           <pre><code class="language-cpp" data-trim>
 class UserService {
 public:
-    User findById(int id);
-    void save(const User& u);
-    bool validateEmail(const std::string& email);
-    void sendWelcomeEmail(const User& u);
-    std::string generateReport() const;
+    bool validateEmail(std::string_view email);
+    void registerUser(const User& u);
+    void writeLog(const User& u);
 };
           </code></pre>
-          <p style="color:#666; margin-top:0.4em">
-            💡 <em>Gợi ý: có bao nhiêu lý do để lớp này thay đổi?</em>
-          </p>
         </section>
 
       </section>
@@ -1319,7 +1335,7 @@ public:
                 S — Single Responsibility (SRP)
               </div>
               <div style="padding:0.3em 0.7em; background:#e0f4f8; line-height:1.5">
-                Một lớp chỉ có một lý do để thay đổi.<br />
+                Một lớp chỉ làm một việc chính.<br />
                 <span style="color:#666">→ Phụ thuộc thấp, gắn kết cao</span>
               </div>
             </div>
