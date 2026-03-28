@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="430" viewBox="0 0 1400 430">
+  <defs>
+    <style>
+      .box { fill: #fff; stroke: #111; stroke-width: 5; }
+      .divider { stroke: #111; stroke-width: 5; }
+      .title { font-family: Arial, Helvetica, sans-serif; font-size: 62px; font-weight: 700; fill: #111; text-anchor: middle; }
+      .method { font-family: Arial, Helvetica, sans-serif; font-size: 58px; fill: #111; }
+      .arrow { stroke: #111; stroke-width: 5; fill: none; }
+    </style>
+  </defs>
+
+  <rect class="box" x="45" y="120" width="455" height="225"/>
+  <rect class="box" x="45" y="70" width="130" height="50"/>
+  <text class="title" x="272" y="220">Hệ lưu</text>
+  <text class="title" x="272" y="290">trữ</text>
+
+  <rect class="box" x="905" y="50" width="455" height="345"/>
+  <line class="divider" x1="905" y1="210" x2="1360" y2="210"/>
+  <text class="title" x="1132" y="145">Employee</text>
+  <text class="method" x="940" y="275">+ calculatePay</text>
+  <text class="method" x="940" y="345">+ store</text>
+
+  <line class="arrow" x1="905" y1="232" x2="505" y2="232"/>
+  <line class="arrow" x1="505" y1="232" x2="550" y2="214"/>
+  <line class="arrow" x1="505" y1="232" x2="550" y2="250"/>
+</svg>
