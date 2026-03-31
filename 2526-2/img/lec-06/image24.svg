@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="680" viewBox="0 0 1280 680">
+  <defs>
+    <style>
+      .box {
+        fill: #fff;
+        stroke: #111;
+        stroke-width: 5;
+      }
+      .title {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 34px;
+        font-weight: 700;
+        fill: #111;
+        text-anchor: middle;
+      }
+      .stereo {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 24px;
+        font-style: italic;
+        fill: #666;
+        text-anchor: middle;
+      }
+      .method {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 28px;
+        fill: #111;
+      }
+      .divider {
+        stroke: #111;
+        stroke-width: 4;
+      }
+      .realization {
+        stroke: #111;
+        stroke-width: 4;
+        stroke-dasharray: 12 10;
+        fill: none;
+      }
+      .triangle {
+        fill: #fff;
+        stroke: #111;
+        stroke-width: 4;
+      }
+    </style>
+  </defs>
+
+  <rect class="box" x="760" y="55" width="340" height="140"/>
+  <line class="divider" x1="760" y1="107" x2="1100" y2="107"/>
+  <text class="stereo" x="930" y="90">&lt;&lt;interface&gt;&gt;</text>
+  <text class="title" x="930" y="150">IPrinter</text>
+  <text class="method" x="805" y="180">+ print()</text>
+
+  <rect class="box" x="760" y="270" width="340" height="140"/>
+  <line class="divider" x1="760" y1="322" x2="1100" y2="322"/>
+  <text class="stereo" x="930" y="305">&lt;&lt;interface&gt;&gt;</text>
+  <text class="title" x="930" y="365">IScanner</text>
+  <text class="method" x="805" y="395">+ scan()</text>
+
+  <rect class="box" x="760" y="485" width="340" height="140"/>
+  <line class="divider" x1="760" y1="537" x2="1100" y2="537"/>
+  <text class="stereo" x="930" y="520">&lt;&lt;interface&gt;&gt;</text>
+  <text class="title" x="930" y="580">IFax</text>
+  <text class="method" x="805" y="610">+ fax()</text>
+
+  <rect class="box" x="120" y="95" width="360" height="120"/>
+  <text class="title" x="300" y="167">MiniPrinter</text>
+
+  <rect class="box" x="120" y="355" width="430" height="150"/>
+  <text class="title" x="335" y="438">AllInOnePrinter</text>
+
+  <line class="realization" x1="480" y1="155" x2="730" y2="155"/>
+  <polygon class="triangle" points="760,155 730,143 730,167"/>
+
+  <line class="realization" x1="550" y1="405" x2="730" y2="155"/>
+  <polygon class="triangle" points="760,155 730,143 730,167"/>
+
+  <line class="realization" x1="550" y1="430" x2="730" y2="370"/>
+  <polygon class="triangle" points="760,370 730,358 730,382"/>
+
+  <line class="realization" x1="550" y1="455" x2="730" y2="585"/>
+  <polygon class="triangle" points="760,585 730,573 730,597"/>
+</svg>
