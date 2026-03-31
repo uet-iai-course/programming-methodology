@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="563" viewBox="0 0 1220 563">
+  <defs>
+    <style>
+      .box {
+        fill: #fff;
+        stroke: #111;
+        stroke-width: 4;
+      }
+      .label {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 42px;
+        font-weight: 700;
+        fill: #111;
+        text-anchor: middle;
+      }
+      .arrow {
+        fill: none;
+        stroke: #111;
+        stroke-width: 4;
+        stroke-dasharray: 7 9;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+    </style>
+    <marker id="arrowhead" markerWidth="14" markerHeight="14" refX="11" refY="7" orient="auto" markerUnits="strokeWidth">
+      <path d="M 1 1 L 11 7 L 1 13" fill="none" stroke="#111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <rect class="box" x="42" y="48" width="331" height="164"/>
+  <text class="label" x="208" y="142">Policy Layer</text>
+
+  <rect class="box" x="445" y="209" width="334" height="163"/>
+  <text class="label" x="612" y="279">Mechanism</text>
+  <text class="label" x="612" y="330">Layer</text>
+
+  <rect class="box" x="849" y="366" width="333" height="164"/>
+  <text class="label" x="1015" y="460">Utility Layer</text>
+
+  <path class="arrow" d="M 374 130 H 612 V 206" marker-end="url(#arrowhead)"/>
+  <path class="arrow" d="M 780 289 H 1015 V 363" marker-end="url(#arrowhead)"/>
+</svg>
