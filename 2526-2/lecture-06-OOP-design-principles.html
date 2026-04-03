@@ -687,7 +687,7 @@ protected:
 class SmsDocument : public TextDocument {
 public:
     void addText(std::string_view text) override { // TĐK MẠNH HƠN → vi phạm LSP!
-        if (text.size() > 160) throw std::invalid_argument(“SMS too long”);
+        if (text.size() > 160) throw std::invalid_argument("SMS too long");
         content += text;
     }
 };
