@@ -26,8 +26,12 @@ Hai cách chạy dưới đây dùng hai cổng mặc định khác nhau theo c�
 
 1. Cài [Node.js](https://nodejs.org/) (phiên bản `>= 18` theo `package.json`).
 2. Trong thư mục `2526-2`, chạy `npm install` để cài dependencies nếu cần.
-3. Chạy `npm start` để khởi động server (port 8000).
-4. Mở trình duyệt và truy cập http://localhost:8000.
+3. Chạy lệnh sau từ thư mục `2526-2` để khởi động server với root là thư mục cha:
+   ```bash
+   npm start -- --root=.. --port=8000
+   ```
+   > **Lưu ý:** cần dùng `--root=..` vì `index.html` của học kì tham chiếu đến `../index-pages.css` (nằm ở thư mục cha). Nếu chạy `npm start` bình thường mà không có `--root=..`, CSS sẽ không load được.
+4. Mở trình duyệt và truy cập http://localhost:8000/2526-2/.
 
 ### Cách 2: Python (không cần cài thêm gì)
 
