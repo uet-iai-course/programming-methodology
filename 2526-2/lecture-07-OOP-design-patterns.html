@@ -667,7 +667,6 @@ public:
           <ul style="margin-top:1em;">
             <li>Xử lý luồng điều khiển giữa các đối tượng.</li>
             <li><strong>11 mẫu:</strong> Observer, Strategy, State, Command, Iterator, Template Method...</li>
-            <li><strong>Trong bài này:</strong> đi sâu 3 mẫu tiêu biểu, còn lại nhận mặt.</li>
           </ul>
         </section>
 
@@ -695,11 +694,9 @@ public:
             s->update(title);    // Thông báo tất cả Observer
     }
 };
-
 // Client:
 YoutubeChannel channel;
 UserA userA;  UserB userB;
-
 channel.subscribe(&userA);
 channel.subscribe(&userB);
 channel.uploadVideo("Review iPhone 15");
