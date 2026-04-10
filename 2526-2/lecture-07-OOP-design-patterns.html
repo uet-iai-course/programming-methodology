@@ -106,11 +106,11 @@
           <p style="margin-top:0.8em;"><strong>Kết luận:</strong> Không phải pattern — đây là mẹo tạm, không tổng quát và càng dùng càng khó bảo trì.</p>
         </section>
 
-        <section style="font-size: 0.8em;">
+        <section>
           <h2>Vì sao phải học pattern?</h2>
           <ul>
             <li><strong>Từ vựng chung:</strong> Nói “Observer” là cả nhóm hiểu.</li>
-            <li><strong>Tái sử dụng kinh nghiệm:</strong> Không phải nghĩ lại từ đầu.</li>
+            <li><strong>Tái sử dụng:</strong> Không phải nghĩ lại từ đầu.</li>
             <li><strong>Tránh bẫy:</strong> Bớt lặp lại sai lầm cũ.</li>
           </ul>
         </section>
@@ -238,9 +238,9 @@
           </ul>
         </section>
 
-        <section style="font-size: 0.9em;">
-          <h2>Pattern và SOLID</h2>
-          <table class="comparison-table" style="width:100%; margin-top:0.8em;">
+        <section style="font-size: 0.82em;">
+          <h2>Pattern và nguyên lý thiết kế</h2>
+          <table class="comparison-table" style="width:100%; margin-top:0.6em;">
             <thead>
               <tr>
                 <th>Nguyên lý</th>
@@ -257,16 +257,22 @@
                 <td>Strategy, Decorator, Observer</td>
               </tr>
               <tr>
+                <td><strong>LSP</strong></td>
+                <td>Template Method, Strategy</td>
+              </tr>
+              <tr>
+                <td><strong>ISP</strong></td>
+                <td>Facade, Adapter</td>
+              </tr>
+              <tr>
                 <td><strong>DIP</strong></td>
                 <td>Factory, Command, Strategy</td>
               </tr>
-              <tr>
-                <td><strong>Composition over Inheritance</strong></td>
-                <td>Decorator, Bridge, Composite, Flyweight</td>
-              </tr>
             </tbody>
           </table>
-          <p style="margin-top:0.8em; color:#555; font-size:0.9em;">SOLID là nguyên lý — pattern là cách triển khai.</p>
+          <p style="margin-top:0.6em; color:#555; font-size:0.9em;">
+            Ngoài SOLID, nguyên tắc <strong>"ưu tiên composition hơn inheritance"</strong> (GoF) cũng hiện rõ ở Decorator, Bridge, Composite, Flyweight.
+          </p>
         </section>
       </section>
 
@@ -288,7 +294,7 @@
             Tách biệt quá trình <strong>tạo đối tượng</strong> ra khỏi hệ thống sử dụng nó.
           </div>
           <ul style="margin-top:1em;">
-            <li>Tách việc tạo đối tượng khỏi nơi sử dụng.</li>
+            <li>Client không cần biết cụ thể lớp nào được tạo ra.</li>
             <li>Code không phụ thuộc cách tạo đối tượng.</li>
             <li><strong>5 mẫu:</strong> Singleton, Factory Method, Abstract Factory, Builder, Prototype.</li>
           </ul>
@@ -298,14 +304,14 @@
           <h2>Singleton: chỉ một instance dùng chung</h2>
           <ul>
             <li><strong>Ý chính:</strong> Chỉ có <strong>một instance</strong>.</li>
-            <li><strong>Khi gặp:</strong> logger, cache, cấu hình dùng chung.</li>
-            <li><strong>Lưu ý:</strong> Gần với biến toàn cục, khó test.</li>
+            <li><strong>Hay gặp:</strong> logger, cache, cấu hình dùng chung.</li>
+            <li><strong>Lưu ý:</strong> Gần với biến toàn cục, khó test. Trong code hiện đại, thường thay bằng <strong>Dependency Injection</strong> — truyền đối tượng dùng chung qua constructor.</li>
           </ul>
         </section>
 
-        <section style="font-size: 0.75em;">
+        <section style="font-size: 0.8em;">
           <h2>Mã ví dụ: Singleton</h2>
-          <p><span class="inline-code">constructor</span> để <span class="inline-code">private</span> để chặn việc tạo
+          <p><span class="inline-code">constructor</span> để <span class="inline-code">private</span>: chặn việc tạo
             trực tiếp từ bên ngoài.</p>
           <pre><code class="language-cpp" data-trim>
 class DatabaseConnection {
@@ -313,7 +319,6 @@ private:
     DatabaseConnection() {
         std::cout << "Kết nối tới Database...\n";
     }
-
 public:
     DatabaseConnection(const DatabaseConnection&) = delete;
     DatabaseConnection& operator=(const DatabaseConnection&) = delete;
@@ -323,58 +328,87 @@ public:
         return instance;
     }
 };
-
 // Client:
 auto& db1 = DatabaseConnection::getInstance();
 auto& db2 = DatabaseConnection::getInstance(); // Cùng đối tượng
           </code></pre>
         </section>
 
-        <section style="font-size: 0.78em;">
+        <section style="font-size: 0.8em;">
           <h2>Factory Method vs Abstract Factory</h2>
-          <table class="comparison-table" style="width:100%; margin-top:0.6em;">
+          <table class="comparison-table" style="width:100%; margin-top:0.8em;">
             <thead>
-              <tr>
-                <th>Factory Method</th>
-                <th>Abstract Factory</th>
-              </tr>
+              <tr><th></th><th>Factory Method</th><th>Abstract Factory</th></tr>
             </thead>
             <tbody>
               <tr>
-                <td>Tạo <strong>một sản phẩm</strong>.</td>
-                <td>Tạo <strong>cả họ sản phẩm</strong> tương thích nhau.</td>
+                <td><strong>Tạo gì?</strong></td>
+                <td><strong>Một</strong> sản phẩm</td>
+                <td><strong>Cả bộ</strong> sản phẩm tương thích</td>
               </tr>
               <tr>
-                <td><span class="inline-code">WinDialog</span> → <span class="inline-code">WinButton</span><br /><span class="inline-code">MacDialog</span> → <span class="inline-code">MacButton</span></td>
-                <td><span class="inline-code">WinFactory</span> → <span class="inline-code">WinButton</span> + <span class="inline-code">WinMenu</span><br /><span class="inline-code">MacFactory</span> → <span class="inline-code">MacButton</span> + <span class="inline-code">MacMenu</span></td>
+                <td><strong>Ai quyết định?</strong></td>
+                <td>Lớp con override phương thức</td>
+                <td>Factory object riêng</td>
+              </tr>
+              <tr>
+                <td><strong>Ví dụ</strong></td>
+                <td>Chi nhánh HN pha phin,<br/>chi nhánh SG pha sữa đá</td>
+                <td>Nội thất Modern → ghế + bàn Modern<br/>Nội thất Classic → ghế + bàn Classic</td>
               </tr>
             </tbody>
           </table>
-          <p style="margin-top:0.8em;"><strong>Chốt:</strong> Factory Method tạo một loại; Abstract Factory đảm bảo cả bộ tương thích.</p>
         </section>
 
-        <section style="font-size: 0.82em;">
-          <h2>Mã ví dụ: Abstract Factory</h2>
+        <section style="font-size: 0.75em;">
+          <h2>Mã ví dụ: Factory Method</h2>
+          <p>Lớp con quyết định pha loại cà phê nào — client chỉ gọi <span class="inline-code">serve()</span>.</p>
           <pre><code class="language-cpp" data-trim>
-class GUIFactory {
+class CoffeeShop {
 public:
-    virtual Button* createButton() = 0;
-    virtual Menu*   createMenu()   = 0;
-    virtual ~GUIFactory() = default;
+    virtual Coffee* brew() = 0;   // factory method
+    void serve() {
+        Coffee* c = brew();
+        c->prepare();
+        c->pour();
+    }
+    virtual ~CoffeeShop() = default;
+};
+class HanoiShop : public CoffeeShop {
+public:
+    Coffee* brew() override { return new CaPhePhin(); }
+};
+class SaigonShop : public CoffeeShop {
+public:
+    Coffee* brew() override { return new CaPheSuaDa(); }
+};
+// Client: shop->serve() — không cần biết pha kiểu gì
+          </code></pre>
+        </section>
+
+        <section style="font-size: 0.75em;">
+          <h2>Mã ví dụ: Abstract Factory</h2>
+          <p>Factory tạo <strong>cả bộ</strong> — ghế và bàn luôn cùng phong cách.</p>
+          <pre><code class="language-cpp" data-trim>
+class FurnitureFactory {
+public:
+    virtual Chair* createChair() = 0;
+    virtual Table* createTable() = 0;
+    virtual ~FurnitureFactory() = default;
 };
 
-class WinFactory : public GUIFactory {
+class ModernFactory : public FurnitureFactory {
 public:
-    Button* createButton() override { return new WinButton(); }
-    Menu*   createMenu()   override { return new WinMenu(); }
+    Chair* createChair() override { return new ModernChair(); }
+    Table* createTable() override { return new ModernTable(); }
 };
 
-class MacFactory : public GUIFactory {
+class ClassicFactory : public FurnitureFactory {
 public:
-    Button* createButton() override { return new MacButton(); }
-    Menu*   createMenu()   override { return new MacMenu(); }
+    Chair* createChair() override { return new ClassicChair(); }
+    Table* createTable() override { return new ClassicTable(); }
 };
-// Client chỉ dùng GUIFactory* — không biết đang chạy trên Windows hay Mac
+// Client dùng FurnitureFactory* — bộ sản phẩm luôn tương thích
           </code></pre>
         </section>
 
@@ -382,13 +416,13 @@ public:
           <h2>Builder: xây đối tượng phức tạp theo từng bước</h2>
           <ul>
             <li><strong>Ý chính:</strong> Xây sản phẩm phức tạp <strong>theo từng bước</strong>.</li>
-            <li><strong>Khi gặp:</strong> sản phẩm có nhiều phần tùy chọn.</li>
+            <li><strong>Hay gặp:</strong> sản phẩm có nhiều phần tùy chọn.</li>
             <li><strong>Ví dụ:</strong> tạo pizza với nhiều lựa chọn topping.</li>
             <li><strong>Lưu ý:</strong> Cùng quy trình xây dựng, tạo ra sản phẩm khác nhau tuỳ cấu hình.</li>
           </ul>
         </section>
 
-        <section style="font-size: 0.75em;">
+        <section>
           <h2>Mã ví dụ: Builder</h2>
           <p>Fluent interface: gọi nối tiếp theo từng bước.</p>
           <pre><code class="language-cpp" data-trim>
@@ -404,14 +438,26 @@ std::cout << myPizza.getDescription() << '\n';
           <p style="margin-top: 0.8em;"><strong>Lợi ích:</strong> tránh constructor quá dài.</p>
         </section>
 
+        <section style="font-size: 0.8em;">
+          <h2>Ví dụ: Một Sơ đồ Builder</h2>
+          <img src="img/lec-07/builder-pattern.png" alt="Builder UML"
+            style="width:70%; border-radius:8px; box-shadow:0 4px 8px rgba(0,0,0,0.1);" />
+        </section>
 
         <section style="font-size: 0.9em;">
           <h2>Prototype: tạo đối tượng mới bằng cách sao chép</h2>
           <ul>
             <li><strong>Ý chính:</strong> Tạo đối tượng mới bằng cách <strong>sao chép</strong> đối tượng có sẵn.</li>
-            <li><strong>Khi gặp:</strong> việc khởi tạo tốn kém; cần nhiều đối tượng giống nhau.</li>
+            <li><strong>Hay gặp:</strong> việc khởi tạo tốn kém; cần nhiều đối tượng giống nhau.</li>
             <li><strong>Ví dụ:</strong> Game sinh nhanh quái vật: <span class="inline-code">registry.get("orc").clone()</span>.</li>
           </ul>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Ví dụ: Một Sơ đồ Prototype</h2>
+          <img src="img/lec-07/prototype.png" alt="Prototype UML"
+            style="width:60%; border-radius:8px; box-shadow:0 4px 8px rgba(0,0,0,0.1);" />
+          <p style="margin-top:0.6em; color:#555; font-size:0.85em;">Client gọi <span class="inline-code">clone()</span> thay vì <span class="inline-code">new</span> — không cần biết lớp cụ thể.</p>
         </section>
       </section>
 
@@ -427,7 +473,7 @@ std::cout << myPizza.getDescription() << '\n';
         </section>
 
         <!-- REVISED: tighter -->
-        <section style="font-size: 0.95em;">
+        <section>
           <h2>Bản chất nhóm cấu trúc</h2>
           <div class="question-box">
             Cách <strong>lắp ráp</strong> các đối tượng thành cấu trúc lớn hơn.
@@ -438,7 +484,7 @@ std::cout << myPizza.getDescription() << '\n';
           </ul>
         </section>
 
-        <section style="font-size: 0.85em;">
+        <section>
           <h2>Các pattern bọc đối tượng</h2>
           <table class="comparison-table" style="width:100%;font-size:0.9em;">
             <thead>
@@ -468,28 +514,35 @@ std::cout << myPizza.getDescription() << '\n';
           </table>
         </section>
 
+        <section style="font-size: 0.9em;">
+          <h2>Adapter: chuyển đổi interface</h2>
+          <ul>
+            <li><strong>Ý chính:</strong> Bọc một đối tượng có interface <strong>không tương thích</strong>, biến nó thành interface mà client cần.</li>
+            <li><strong>Hay gặp:</strong> tích hợp thư viện cũ, API bên thứ ba, hệ thống legacy.</li>
+            <li><strong>Ví dụ:</strong> Ổ cắm 2 chấu cắm vào ổ 3 chấu — cần bộ chuyển.</li>
+            <li><strong>Cấu trúc:</strong> Adapter kế thừa interface mới, bên trong giữ đối tượng cũ và dịch lời gọi.</li>
+          </ul>
+        </section>
+
         <section style="font-size: 0.75em;">
           <h2>Mã ví dụ: Adapter</h2>
-          <p>Giúp hệ thống mới làm việc được với thành phần cũ.</p>
+          <p>Hệ thống mới cần JSON, thư viện cũ chỉ có XML — Adapter dịch giữa hai bên.</p>
           <pre><code class="language-cpp" data-trim>
 // 1. Hệ thống cũ trả về XML
 class OldLibrary {
 public:
     std::string getXmlData() const { return "<data>100</data>"; }
 };
-
 // 2. Hệ thống mới chỉ nhận JSON
 class NewInterface {
 public:
     virtual std::string getJsonData() const = 0;
     virtual ~NewInterface() = default;
 };
-
 // 3. Adapter: cắm "2 chấu" vào "3 chấu"
 class XmlToJsonAdapter : public NewInterface {
 private:
     OldLibrary oldLib;
-
 public:
     std::string getJsonData() const override {
         std::string xml = oldLib.getXmlData();
@@ -499,22 +552,60 @@ public:
           </code></pre>
         </section>
 
-        <section style="font-size: 0.75em;">
-          <h2>Mã ví dụ: Decorator</h2>
-          <p>Thêm chức năng bằng cách bọc đối tượng — không sửa lớp gốc, không tạo thêm lớp con.</p>
+        <section style="font-size: 0.9em;">
+          <h2>Decorator: thêm hành vi mà không sửa lớp gốc</h2>
+          <ul>
+            <li><strong>Ý chính:</strong> Bọc đối tượng bằng một lớp cùng interface — <strong>thêm hành vi</strong> mà không sửa lớp gốc, không tạo lớp con.</li>
+            <li><strong>Hay gặp:</strong> cần kết hợp nhiều tính năng tùy chọn linh hoạt.</li>
+            <li><strong>Ví dụ:</strong> Ly cà phê + sữa + trân châu — mỗi topping là một lớp bọc, cộng dồn giá.</li>
+            <li><strong>Khác Adapter:</strong> Adapter đổi interface, Decorator giữ nguyên interface.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Mã ví dụ: Decorator (client)</h2>
+          <p>Bọc lớp này lên lớp kia — mỗi lớp bọc thêm hành vi.</p>
           <pre><code class="language-cpp" data-trim>
 // Lõi: chỉ là Espresso thuần
-std::shared_ptr<Beverage> myDrink = std::make_shared<Espresso>();
-std::cout << myDrink->cost() << "k\n"; // 20k
+auto myDrink = make_shared&lt;Espresso&gt;();
+cout &lt;&lt; myDrink-&gt;cost() &lt;&lt; "k\n"; // 20k
 
-// Bọc thêm Sữa → MilkDecorator giữ tham chiếu đến lõi
-myDrink = std::make_shared<MilkDecorator>(myDrink);
-std::cout << myDrink->cost() << "k\n"; // 25k
+// Bọc thêm Sữa
+myDrink = make_shared&lt;MilkDecorator&gt;(myDrink);
+cout &lt;&lt; myDrink-&gt;cost() &lt;&lt; "k\n"; // 25k
 
-// Bọc thêm Trân châu → BobaDecorator bọc ngoài cùng
-myDrink = std::make_shared<BobaDecorator>(myDrink);
-std::cout << myDrink->cost() << "k\n"; // 30k
+// Bọc thêm Trân châu
+myDrink = make_shared&lt;BobaDecorator&gt;(myDrink);
+cout &lt;&lt; myDrink-&gt;cost() &lt;&lt; "k\n"; // 30k
 // Lõi Espresso không thay đổi; cost() được cộng dồn từ ngoài vào
+          </code></pre>
+        </section>
+
+        <section style="font-size: 0.72em;">
+          <h2>Cấu trúc lớp Decorator</h2>
+          <p>Decorator kế thừa cùng interface với đối tượng gốc, đồng thời giữ tham chiếu tới nó.</p>
+          <pre><code class="language-cpp" data-trim>
+class Beverage {
+public:
+    virtual int cost() const = 0;
+    virtual ~Beverage() = default;
+};
+class Espresso : public Beverage {
+public:
+    int cost() const override { return 20; }
+};
+// Decorator giữ tham chiếu tới Beverage bên trong
+class BeverageDecorator : public Beverage {
+protected:
+    shared_ptr&lt;Beverage&gt; inner;
+public:
+    BeverageDecorator(shared_ptr&lt;Beverage&gt; b) : inner(b) {}
+};
+class MilkDecorator : public BeverageDecorator {
+public:
+    using BeverageDecorator::BeverageDecorator;
+    int cost() const override { return inner-&gt;cost() + 5; }
+};
           </code></pre>
         </section>
 
@@ -522,7 +613,7 @@ std::cout << myDrink->cost() << "k\n"; // 30k
           <h2>Composite: phần tử đơn hay nhóm — cùng một giao diện</h2>
           <ul>
             <li><strong>Ý chính:</strong> Xử lý đối tượng đơn lẻ và tập hợp <strong>giống nhau</strong>.</li>
-            <li><strong>Khi gặp:</strong> cần thao tác giống nhau trên phần tử đơn và cả nhóm phần tử.</li>
+            <li><strong>Hay gặp:</strong> cần thao tác giống nhau trên phần tử đơn và cả nhóm phần tử.</li>
             <li><strong>Ví dụ:</strong> File và Folder.</li>
             <li><strong>Lưu ý:</strong> <span class="inline-code">getSize()</span> trên file trả về dung lượng file, còn trên folder trả về tổng dung lượng bên trong.</li>
           </ul>
@@ -532,19 +623,25 @@ std::cout << myDrink->cost() << "k\n"; // 30k
           <h2>Bridge: khi có hai chiều thay đổi độc lập</h2>
           <ul>
             <li><strong>Ý chính:</strong> Khi có 2 trục thay đổi độc lập, dùng composition thay kế thừa.</li>
-            <li><strong>Khi gặp:</strong> mỗi trục (abstraction và implementation) cần thay đổi riêng mà không ảnh hưởng nhau.</li>
+            <li><strong>Hay gặp:</strong> mỗi trục (abstraction và implementation) cần thay đổi riêng mà không ảnh hưởng nhau.</li>
             <li><strong>Ví dụ:</strong> Remote (Basic/Advanced) × TV (Sony/RCA).</li>
             <li><strong>Lưu ý:</strong> Kế thừa trực tiếp dễ làm số lớp tăng rất nhanh.</li>
             <li><strong>Giải pháp:</strong> Remote <em>chứa</em> TV.</li>
           </ul>
         </section>
 
+        <section>
+          <h2>Sơ đồ Bridge</h2>
+          <img src="img/lec-07/bridge.png" alt="Bridge UML"
+            style="width:80%; border-radius:8px; box-shadow:0 4px 8px rgba(0,0,0,0.1);" />
+          <p style="margin-top:0.6em; color:#555; font-size:0.85em;">Abstraction và Implementation thay đổi độc lập — nối nhau qua composition.</p>
+        </section>
 
         <section style="font-size: 0.9em;">
           <h2>Flyweight: dùng chung dữ liệu bất biến</h2>
           <ul>
             <li><strong>Ý chính:</strong> Dùng chung dữ liệu bất biến cho nhiều đối tượng.</li>
-            <li><strong>Khi gặp:</strong> số lượng đối tượng rất lớn, phần lớn dữ liệu giống nhau.</li>
+            <li><strong>Hay gặp:</strong> số lượng đối tượng rất lớn, phần lớn dữ liệu giống nhau.</li>
             <li><strong>Ví dụ:</strong> Vẽ 1.000 cây — dùng chung hình dáng/màu lá, chỉ khác tọa độ X, Y.</li>
           </ul>
         </section>
@@ -570,7 +667,7 @@ std::cout << myDrink->cost() << "k\n"; // 30k
           <ul style="margin-top:1em;">
             <li>Xử lý luồng điều khiển giữa các đối tượng.</li>
             <li><strong>11 mẫu:</strong> Observer, Strategy, State, Command, Iterator, Template Method...</li>
-            <li><strong>Trong bài này:</strong> đi sâu 4 mẫu tiêu biểu, còn lại nhận mặt.</li>
+            <li><strong>Trong bài này:</strong> đi sâu 3 mẫu tiêu biểu, còn lại nhận mặt.</li>
           </ul>
         </section>
 
@@ -579,7 +676,7 @@ std::cout << myDrink->cost() << "k\n"; // 30k
           <ul>
             <li><strong>Ý chính:</strong> Một đổi, nhiều nơi được báo.</li>
             <li><strong>Ví dụ:</strong> Kênh YouTube và người đăng ký.</li>
-            <li><strong>Khi gặp:</strong> UI event, pub/sub, dữ liệu thay đổi cần báo nhiều nơi.</li>
+            <li><strong>Hay gặp:</strong> UI event, pub/sub, dữ liệu thay đổi cần báo nhiều nơi.</li>
           </ul>
         </section>
 
@@ -589,7 +686,7 @@ std::cout << myDrink->cost() << "k\n"; // 30k
           <pre><code class="language-cpp" data-trim>
 class YoutubeChannel {           // Subject
 private:
-    std::vector<Subscriber*> subs;
+    std::vector&lt;Subscriber*&gt; subs;
 public:
     void subscribe(Subscriber* s) { subs.push_back(s); }
 
@@ -608,6 +705,26 @@ channel.subscribe(&userB);
 channel.uploadVideo("Review iPhone 15");
 // → userA.update() và userB.update() đều được gọi
           </code></pre>
+        </section>
+
+        <section style="font-size: 0.9em;">
+          <h2>Strategy: đổi thuật toán mà không sửa code gọi</h2>
+          <ul>
+            <li><strong>Ý chính:</strong> Đóng gói mỗi thuật toán thành một lớp riêng — client <strong>chọn và thay</strong> lúc chạy.</li>
+            <li><strong>Hay gặp:</strong> nhiều cách xử lý cùng một việc (thanh toán, sắp xếp, nén file...).</li>
+            <li><strong>Ví dụ:</strong> Giỏ hàng chấp nhận Momo, Visa, COD — mỗi cổng thanh toán là một strategy.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Strategy và OCP (bài 6)</h2>
+          <p>Nhớ bài 6: <span class="inline-code">DiscountCalculator</span> dùng <span class="inline-code">if/else</span> cho mỗi loại giảm giá — thêm loại mới phải sửa code cũ.</p>
+          <ul style="margin-top:0.5em">
+            <li><strong>Giải pháp bài 6:</strong> tách <span class="inline-code">IDiscount</span>, mỗi loại giảm giá là một lớp.</li>
+            <li><strong>Đó chính là Strategy</strong> — mỗi lớp <span class="inline-code">IDiscount</span> là một strategy.</li>
+            <li>Thêm loại mới = thêm lớp mới, không đụng code cũ → <strong>OCP</strong>.</li>
+            <li>Client phụ thuộc vào interface, không phụ thuộc implementation → <strong>DIP</strong>.</li>
+          </ul>
         </section>
 
         <section style="font-size: 0.82em;">
@@ -668,7 +785,7 @@ public:
           <h2>Command: đóng gói yêu cầu thành đối tượng</h2>
           <ul>
             <li><strong>Ý chính:</strong> Đóng gói <strong>yêu cầu</strong> thành một đối tượng.</li>
-            <li><strong>Khi gặp:</strong> cần xếp hàng, ghi log, hoặc hỗ trợ <strong>undo/redo</strong>.</li>
+            <li><strong>Hay gặp:</strong> cần xếp hàng, ghi log, hoặc hỗ trợ <strong>undo/redo</strong>.</li>
             <li><strong>Ví dụ:</strong> Giấy order trong quán ăn.</li>
           </ul>
         </section>
@@ -717,8 +834,15 @@ public:
           <ul>
             <li><strong>Ý chính:</strong> Nối các handler thành chuỗi; xử lý được thì dừng, không thì chuyển tiếp.</li>
             <li><strong>Ví dụ:</strong> Phân loại email — <span class="inline-code">SpamHandler → FanHandler → ComplaintHandler</span>.</li>
-            <li><strong>Khi gặp:</strong> nhiều bộ xử lý độc lập, không biết trước cái nào sẽ xử lý.</li>
+            <li><strong>Hay gặp:</strong> nhiều bộ xử lý độc lập, không biết trước cái nào sẽ xử lý.</li>
           </ul>
+        </section>
+
+        <section>
+          <h2>Sơ đồ Chain of Responsibility</h2>
+          <img src="img/lec-07/chain_of_resp.png" alt="Chain of Responsibility UML"
+            style="width:70%; border-radius:8px; box-shadow:0 4px 8px rgba(0,0,0,0.1);" />
+          <p style="margin-top:0.6em; color:#555; font-size:0.85em;">Mỗi handler xử lý hoặc chuyển tiếp — client không cần biết ai xử lý.</p>
         </section>
 
         <section style="font-size: 0.82em;">
@@ -751,6 +875,16 @@ public:
                 <td>Visitor</td>
                 <td>Thêm thao tác mới trên cấu trúc ổn định</td>
                 <td>Dễ làm lộ chi tiết bên trong</td>
+              </tr>
+              <tr>
+                <td>Iterator</td>
+                <td>Duyệt tập hợp mà không lộ cấu trúc bên trong</td>
+                <td>C++ STL dùng rộng rãi</td>
+              </tr>
+              <tr>
+                <td>Template Method</td>
+                <td>Khung thuật toán cố định, lớp con cài chi tiết</td>
+                <td>Giữ hợp đồng LSP giữa cha/con</td>
               </tr>
             </tbody>
           </table>
