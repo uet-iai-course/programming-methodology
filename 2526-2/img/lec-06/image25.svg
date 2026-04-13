@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="520" viewBox="0 0 1280 520">
+  <defs>
+    <style>
+      .box {
+        fill: #fff;
+        stroke: #111;
+        stroke-width: 5;
+      }
+      .divider {
+        stroke: #111;
+        stroke-width: 4;
+      }
+      .title {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 34px;
+        font-weight: 700;
+        fill: #111;
+        text-anchor: middle;
+      }
+      .method {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 28px;
+        fill: #111;
+      }
+      .label {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 28px;
+        font-weight: 700;
+        fill: #555;
+        text-anchor: middle;
+      }
+      .note {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 24px;
+        fill: #666;
+        text-anchor: middle;
+      }
+    </style>
+  </defs>
+
+  <text class="label" x="270" y="58">Trước</text>
+  <text class="note" x="270" y="86">1 lớp, 2 trách nhiệm</text>
+  <rect class="box" x="80" y="115" width="380" height="205"/>
+  <line class="divider" x1="80" y1="175" x2="460" y2="175"/>
+  <text class="title" x="270" y="157">Employee</text>
+  <text class="method" x="118" y="235">+ calculatePay()</text>
+  <text class="method" x="118" y="285">+ store()</text>
+
+  <text class="label" x="960" y="58">Sau</text>
+  <text class="note" x="960" y="86">mỗi lớp 1 trách nhiệm</text>
+  <rect class="box" x="760" y="120" width="360" height="110"/>
+  <line class="divider" x1="760" y1="175" x2="1120" y2="175"/>
+  <text class="title" x="940" y="160">Employee</text>
+
+  <rect class="box" x="620" y="320" width="270" height="120"/>
+  <line class="divider" x1="620" y1="375" x2="890" y2="375"/>
+  <text class="title" x="755" y="360">PayCalculator</text>
+  <text class="method" x="650" y="413">+ calcPay(e)</text>
+
+  <rect class="box" x="950" y="320" width="270" height="120"/>
+  <line class="divider" x1="950" y1="375" x2="1220" y2="375"/>
+  <text class="title" x="1085" y="360">EmployeeStore</text>
+  <text class="method" x="980" y="413">+ save(e)</text>
+
+</svg>

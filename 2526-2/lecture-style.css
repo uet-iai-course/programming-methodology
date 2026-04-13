@@ -3,31 +3,15 @@
 }
 
 .reveal .controls .controls-arrow {
-    color: #1E93AB;
+    color: #B15A2B;
 }
 
 .reveal .progress span {
-    background: #1E93AB;
+    background: #B15A2B;
 }
 
 .reveal .text-blue {
-    color: #1E93AB !important;
-}
-
-.reveal .text-purple {
-    color: #7B5EA7 !important;
-}
-
-.reveal .text-green {
-    color: #2E7D32 !important;
-}
-
-.reveal .text-orange {
-    color: #C2610F !important;
-}
-
-.reveal .text-teal {
-    color: #1E93AB !important;
+    color: #B15A2B !important;
 }
 
 .reveal .text-red {
@@ -43,11 +27,27 @@
 }
 
 .reveal .bg-light {
-    background-color: #F3F2EC !important;
+    background-color: #F7EFE6 !important;
+}
+
+.reveal .text-purple {
+    color: #7B5EA7 !important;
+}
+
+.reveal .text-green {
+    color: #2E7D32 !important;
+}
+
+.reveal .text-orange {
+    color: #C2610F !important;
+}
+
+.reveal .text-teal {
+    color: #B15A2B !important;
 }
 
 .reveal a {
-    color: #1E93AB;
+    color: #B15A2B;
 }
 
 .reveal ul,
@@ -81,8 +81,8 @@
 }
 
 .reveal .keyword {
-    color: #E62727;
-    font-weight: bold;
+    color: #2F3E7A;
+    font-weight: 700;
 }
 
 .reveal .inline-code {
@@ -94,6 +94,21 @@
     text-transform: none !important;
 }
 
+.reveal .slide-badge-row {
+    text-align: right;
+    margin: 0 0 0.35em;
+}
+
+.reveal .self-study-badge {
+    display: inline-block;
+    background: #90A4AE;
+    color: white;
+    font-size: 0.42em;
+    padding: 3px 10px;
+    border-radius: 16px;
+    font-weight: 600;
+}
+
 .reveal .fragment.blur {
     filter: blur(5px);
 }
@@ -103,19 +118,19 @@
 }
 
 .reveal .question-box {
-    border: 3px solid #1E93AB;
+    border: 3px solid #B15A2B;
     border-radius: 16px;
     padding: 0.75em;
     /* max-width: 700px; */
     margin: auto;
-    background: #F3F2EC;
+    background: #F7EFE6;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
 .reveal .question-title {
     /* font-size: 1.2em; */
     font-weight: bold;
-    color: #1E93AB;
+    color: #B15A2B;
     margin-bottom: 0.5em;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -139,8 +154,8 @@
 }
 
 .reveal .pipeline .stage {
-    background: #F3F2EC;
-    border: 2px solid #1E93AB;
+    background: #F7EFE6;
+    border: 2px solid #B15A2B;
     border-radius: 10px;
     padding: 0.5em;
     width: 140px;
@@ -150,7 +165,7 @@
 
 .reveal .pipeline .stage-title {
     font-weight: bold;
-    color: #1E93AB;
+    color: #B15A2B;
     margin-bottom: 0.5em;
 }
 
@@ -163,7 +178,7 @@
     display: flex;
     align-items: center;
     font-size: 1.5em;
-    color: #1E93AB;
+    color: #B15A2B;
 }
 
 .reveal .caption {
