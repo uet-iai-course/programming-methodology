@@ -40,6 +40,7 @@
               <li>Phân biệt được hàm thuần / không thuần.</li>
               <li>Viết được pipeline filter → map → reduce bằng lambda.</li>
               <li>Giải thích closure khác function pointer ở đâu.</li>
+              <li>Biết khi nào FP giúp code dễ test, dễ suy luận hơn.</li>
             </ul>
           </div>
         </section>
@@ -251,7 +252,8 @@ normalize(data);  // data = {11, 13, 14} — thứ tự khác nếu gọi ngư�
           <div style="margin-top: 15px;">
             <p style="font-size: 0.8em; color: #2a7ae2; font-weight: bold;">Minh bạch tham chiếu:</p>
             <p style="font-size: 0.75em; border-left: 4px solid #2a7ae2; padding-left: 15px;">
-              Có thể thay thế lời gọi hàm bằng giá trị kết quả mà không làm đổi nghĩa chương trình.
+              Có thể thay lời gọi hàm bằng kết quả mà không đổi nghĩa chương trình.
+              <br>Ví dụ: <span class="inline-code">square(5)</span> luôn thay được bằng <span class="inline-code">25</span>.
             </p>
           </div>
         </section>
@@ -664,12 +666,13 @@ int res = add5(10);         // 15
           <ol>
             <li>Hàm thuần khiết là gì? Cho ví dụ hàm thuần và hàm không thuần.</li>
             <li>Closure khác gì function pointer?</li>
-            <li><strong>Mini-exercise:</strong> Viết lại đoạn code dưới đây theo phong cách pipeline (filter → map → reduce):
+            <li><strong>Mini-exercise:</strong> Viết lại đoạn code dưới đây theo pipeline, chỉ ra rõ 3 bước filter, map, reduce:
               <pre style="margin-top: 0.3em;"><code class="language-cpp" data-trim style="font-size: 0.8em;">
 int total = 0;
 for (int x : nums)
     if (x % 2 == 0) total += x * x;
               </code></pre>
+              <em style="font-size: 0.8em; color: #555;">Gợi ý: filter giữ số chẵn → map bình phương → reduce cộng dồn.</em>
             </li>
           </ol>
         </section>
