@@ -65,7 +65,7 @@
             <div class="question-title">Định nghĩa</div>
             <p>
               Lập trình hàm (Functional Programming - FP) là mô hình lập trình xây dựng chương trình bằng cách
-              <strong>kết hợp các hàm</strong> và <strong>tránh thay đổi trạng thái</strong>.
+              <strong>kết hợp các hàm</strong> và <strong>hạn chế thay đổi trạng thái</strong>.
             </p>
           </div>
           <ul style="font-size: 0.85em;">
@@ -275,7 +275,8 @@
 
         <section style="font-size: 0.82em;">
           <h3>Ví dụ: xử lý danh sách điểm</h3>
-          <p>Bài toán: cho danh sách điểm, <strong>lấy điểm &ge; 60</strong>, rồi <strong>tính trung bình</strong>.</p>
+          <p>Bài toán: cho danh sách điểm, <strong>lấy điểm &ge; 60</strong>, rồi <strong>tính trung bình</strong>.
+            <span style="font-size: 0.75em; color: #999;">(mã giả theo phong cách FP)</span></p>
 
           <div style="display: flex; gap: 15px; margin-top: 10px;">
             <div style="flex: 1;">
@@ -486,7 +487,7 @@ std::sort(v.begin(), v.end(),
           </p>
         </section>
 
-        <section style="font-size: 0.8em;">
+        <section style="font-size: 0.75em;">
           <h2>Bao đóng (Closure)</h2>
           <div class="question-box">
             <div class="question-title">Ý chính</div>
@@ -526,6 +527,9 @@ isOver(120); // true
             style="background: #fff3e0; padding: 10px; border-radius: 8px; margin-top: 12px; font-size: 0.75em; font-weight: bold; color: #e65100; text-align: center;">
             Closure = Mã lệnh hàm + Môi trường (giá trị được capture)
           </div>
+          <p style="font-size: 0.7em; color: #555; margin-top: 8px; font-style: italic;">
+            Function pointer chỉ trỏ đến mã; closure mang theo cả dữ liệu đã capture.
+          </p>
         </section>
 
         <section style="font-size: 0.85em;">
@@ -557,8 +561,8 @@ int res = add5(10);         // 15
 
           <div
             style="margin-top: 15px; padding: 10px; border-left: 5px solid #2a7ae2; background: #e3f2fd; font-size: 0.75em;">
-            <strong>Currying</strong> = cách <em>biến đổi</em> hàm (nhiều tham số → chuỗi hàm 1 tham số).
-            <br><strong>Partial Application</strong> = cách <em>dùng</em> hàm đã curried để cố định bớt tham số.
+            <strong>Currying</strong> = cách <strong><em>biến đổi</em></strong> hàm (nhiều tham số → chuỗi hàm 1 tham số).
+            <br><strong>Partial Application</strong> = cách <strong><em>dùng</em></strong> hàm đã curried để cố định bớt tham số.
             <br><span class="inline-code">curried_add(5)</span> trả về hàm "cộng thêm 5" — đó là partial application.
           </div>
         </section>
@@ -591,7 +595,7 @@ int res = add5(10);         // 15
           </h1>
         </section>
         <section>
-          <h2>Ưu điểm của FP</h2>
+          <h2>FP mạnh ở đâu?</h2>
           <div style="font-size: 0.9em;">
             <ul>
               <li><strong>Dễ suy luận:</strong> Do tính minh bạch tham chiếu, ta có thể hiểu hàm mà không
@@ -606,7 +610,7 @@ int res = add5(10);         // 15
           </div>
         </section>
         <section style="font-size: 0.9em;">
-          <h2>Hạn chế và Thách thức</h2>
+          <h2>FP khó ở đâu?</h2>
           <ul>
             <li><strong>Hiệu năng:</strong> Việc sao chép dữ liệu để đảm bảo bất biến có thể gây tốn bộ nhớ — tuy nhiên
               các ngôn ngữ FP hiện đại dùng <em>Structural Sharing</em> để giảm thiểu chi phí này.</li>
