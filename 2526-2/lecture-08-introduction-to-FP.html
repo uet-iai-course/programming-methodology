@@ -168,7 +168,8 @@
             <tbody>
               <tr>
                 <td><strong>C++</strong></td>
-                <td>Lambda <code>[](int x){ return x*x; }</code>, <code>std::sort</code> với comparator, Ranges (C++20)</td>
+                <td>Lambda <code>[](int x){ return x*x; }</code>, <code>std::sort</code> với comparator, Ranges (C++20)
+                </td>
               </tr>
               <tr>
                 <td><strong>Python</strong></td>
@@ -176,11 +177,13 @@
               </tr>
               <tr>
                 <td><strong>JavaScript</strong></td>
-                <td><code>const</code>, arrow functions, <code>.map()</code>, <code>.filter()</code>, <code>.reduce()</code></td>
+                <td><code>const</code>, arrow functions, <code>.map()</code>, <code>.filter()</code>,
+                  <code>.reduce()</code></td>
               </tr>
             </tbody>
           </table>
-          <p class="fragment" style="margin-top: 0.8em; color: #2a7ae2; font-style: italic;">FP không chỉ có ở Haskell — nó đang ở trong code bạn viết hàng ngày.</p>
+          <p class="fragment" style="margin-top: 0.8em; color: #2a7ae2; font-style: italic;">FP không chỉ có ở Haskell —
+            nó đang ở trong code bạn viết hàng ngày.</p>
         </section>
       </section>
 
@@ -192,7 +195,7 @@
           </h1>
         </section>
 
-        <section style=”font-size: 0.9em;”>
+        <section style="font-size: 0.9em;">
           <h2>4 nguyên tắc cốt lõi</h2>
           <ol>
             <li><strong>Hàm thuần khiết</strong> — cùng đầu vào → cùng đầu ra, không side effect.</li>
@@ -200,7 +203,7 @@
             <li><strong>Hàm là giá trị</strong> — truyền vào, trả về, lưu trữ như dữ liệu.</li>
             <li><strong>Tổ hợp hàm</strong> — ghép hàm nhỏ thành xử lý lớn: <code>f(g(x))</code>.</li>
           </ol>
-          <p class=”fragment” style=”font-size: 0.8em; color: #555; margin-top: 0.8em; font-style: italic;”>
+          <p class="fragment" style="font-size: 0.8em; color: #555; margin-top: 0.8em; font-style: italic;">
             Các slide tiếp theo sẽ đi sâu từng nguyên tắc.
           </p>
         </section>
@@ -533,7 +536,8 @@ int res = add5(10);         // 15
             </div>
           </div>
 
-          <div style="margin-top: 15px; padding: 10px; border-left: 5px solid #2a7ae2; background: #e3f2fd; font-size: 0.75em;">
+          <div
+            style="margin-top: 15px; padding: 10px; border-left: 5px solid #2a7ae2; background: #e3f2fd; font-size: 0.75em;">
             <strong>Partial Application</strong> = cố định trước một phần tham số → tạo hàm chuyên biệt hơn.
             <br><code>curried_add(5)</code> trả về hàm "cộng thêm 5" — đó là partial application.
           </div>
@@ -598,7 +602,8 @@ int res = add5(10);         // 15
         <section style="font-size: 0.85em;">
           <h2>Tổng kết</h2>
           <ul>
-            <li>FP xây dựng chương trình bằng <strong>hàm thuần khiết</strong>, <strong>dữ liệu bất biến</strong> và <strong>tổ hợp hàm</strong>.</li>
+            <li>FP xây dựng chương trình bằng <strong>hàm thuần khiết</strong>, <strong>dữ liệu bất biến</strong> và
+              <strong>tổ hợp hàm</strong>.</li>
             <li>Lambda, Closure, Currying là công cụ cốt lõi — bắt nguồn từ Lambda Calculus.</li>
             <li>FP không thay thế OOP mà bổ sung cho nhau trong các ngôn ngữ đa mô hình hiện đại.</li>
           </ul>
