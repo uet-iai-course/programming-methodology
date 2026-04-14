@@ -89,11 +89,6 @@
               </thead>
               <tbody>
                 <tr>
-                  <td><strong>Mô hình gốc</strong></td>
-                  <td>Kiến trúc Von Neumann (Lệnh + Bộ nhớ)</td>
-                  <td>Phép tính Lambda</td>
-                </tr>
-                <tr>
                   <td><strong>Cơ chế chính</strong></td>
                   <td>Gán biến & thay đổi trạng thái</td>
                   <td>Đánh giá biểu thức</td>
@@ -104,7 +99,7 @@
                   <td>Ít phụ thuộc hơn khi hàm thuần</td>
                 </tr>
                 <tr>
-                  <td><strong> Side Effects</strong></td>
+                  <td><strong>Side Effects</strong></td>
                   <td>Phổ biến</td>
                   <td>Cố gắng cô lập</td>
                 </tr>
@@ -168,17 +163,17 @@
             <tbody>
               <tr>
                 <td><strong>C++</strong></td>
-                <td>Lambda <code>[](int x){ return x*x; }</code>, <code>std::sort</code> với comparator, Ranges (C++20)
+                <td>Lambda <span class="inline-code">[](int x){ return x*x; }</span>, <span class="inline-code">std::sort</span> với comparator, Ranges (C++20)
                 </td>
               </tr>
               <tr>
                 <td><strong>Python</strong></td>
-                <td><code>map()</code>, <code>filter()</code>, list comprehension, <code>lambda</code></td>
+                <td><span class="inline-code">map()</span>, <span class="inline-code">filter()</span>, list comprehension, <span class="inline-code">lambda</span></td>
               </tr>
               <tr>
                 <td><strong>JavaScript</strong></td>
-                <td><code>const</code>, arrow functions, <code>.map()</code>, <code>.filter()</code>,
-                  <code>.reduce()</code></td>
+                <td><span class="inline-code">const</span>, arrow functions, <span class="inline-code">.map()</span>, <span class="inline-code">.filter()</span>,
+                  <span class="inline-code">.reduce()</span></td>
               </tr>
             </tbody>
           </table>
@@ -198,10 +193,10 @@
         <section style="font-size: 0.9em;">
           <h2>4 nguyên tắc cốt lõi</h2>
           <ol>
-            <li><strong>Hàm thuần khiết</strong> — cùng đầu vào → cùng đầu ra, không side effect.</li>
+            <li><strong>Hàm thuần khiết</strong> — cùng đầu vào → cùng đầu ra, không gây tác dụng phụ.</li>
             <li><strong>Dữ liệu bất biến</strong> — không sửa, chỉ tạo mới.</li>
             <li><strong>Hàm là giá trị</strong> — truyền vào, trả về, lưu trữ như dữ liệu.</li>
-            <li><strong>Tổ hợp hàm</strong> — ghép hàm nhỏ thành xử lý lớn: <code>f(g(x))</code>.</li>
+            <li><strong>Tổ hợp hàm</strong> — ghép hàm nhỏ thành xử lý lớn: <span class="inline-code">f(g(x))</span>.</li>
           </ol>
           <p class="fragment" style="font-size: 0.8em; color: #555; margin-top: 0.8em; font-style: italic;">
             Các slide tiếp theo sẽ đi sâu từng nguyên tắc.
@@ -222,12 +217,12 @@
           <div style="display: flex; gap: 10px; margin-top: 15px; font-size: 0.7em;">
             <div style="flex: 1; background: #e8f5e9; padding: 10px; border-radius: 8px; font-size: 0.9em;">
               <strong style="color: #2e7d32;">✅ Pure:</strong><br>
-              <code>square(x) = x * x</code><br>
+              <span class="inline-code">square(x) = x * x</span><br>
               <small>(Chỉ tính toán và trả về giá trị)</small>
             </div>
             <div style="flex: 1; background: #ffebee; padding: 10px; border-radius: 8px; font-size: 0.9em;">
               <strong style="color: #c62828;">❌ Impure:</strong><br>
-              <code>square(x) { print(x); return x*x; }</code><br>
+              <span class="inline-code">square(x) { print(x); return x*x; }</span><br>
               <small>(Vừa tính vừa in ra màn hình/sửa biến global)</small>
             </div>
           </div>
@@ -274,56 +269,80 @@
           <ul style="font-size: 0.85em; margin-top: 15px;">
             <li><span class="keyword">Hàm bậc cao:</span> Nhận hàm khác làm tham số hoặc trả về một hàm mới.</li>
             <li><span class="keyword">Tổ hợp hàm:</span> Ghép các hàm nhỏ để tạo ra xử lý phức tạp
-              hơn, ví dụ: <code>f(g(x))</code>.</li>
+              hơn, ví dụ: <span class="inline-code">f(g(x))</span>.</li>
           </ul>
         </section>
 
-        <section>
-          <h3>Ví dụ hàm bậc cao</h3>
-          <p>Yêu cầu: Thực hiện hàm <code class="inline-code">f</code> hai lần trên giá trị
-            <code class="inline-code">x</code>.
-          </p>
+        <section style="font-size: 0.82em;">
+          <h3>Ví dụ: xử lý danh sách điểm</h3>
+          <p>Bài toán: cho danh sách điểm, <strong>lấy điểm &ge; 60</strong>, rồi <strong>tính trung bình</strong>.</p>
 
-          <div style="display: flex;">
+          <div style="display: flex; gap: 15px; margin-top: 10px;">
             <div style="flex: 1;">
-              <h4 style="font-size: 0.7em; color: #2a7ae2;">Cách 1: Cấu trúc truyền thống</h4>
-              <pre><code class="language-cpp" data-trim style="font-size: 0.75em; line-height: 1.3;">
-      // Dùng con trỏ hàm (Function Pointer)
-      int square(int x) {
-          return x * x;
-      }
-
-      int applyTwice(int (*f)(int), int x) {
-          return f(f(x));
-      }
-
-      // Gọi hàm:
-      int res = applyTwice(square, 3);
-      // (3*3)^2 = 81
+              <h4 style="font-size: 0.7em; color: #666;">Mệnh lệnh (vòng lặp + biến)</h4>
+              <pre><code class="language-cpp" data-trim style="font-size: 0.75em;">
+vector&lt;int&gt; scores = {85, 42, 91, 67, 53, 78};
+int sum = 0, count = 0;
+for (int s : scores) {
+    if (s >= 60) {      // lọc
+        sum += s;        // tích lũy
+        count++;
+    }
+}
+double avg = (double)sum / count;
               </code></pre>
             </div>
-
             <div style="flex: 1;">
-              <h4 style="font-size: 0.7em; color: #e27a2a;">Cách 2: Cấu trúc hiện đại</h4>
-              <pre><code class="language-cpp" data-trim style="font-size: 0.75em; line-height: 1.3;">
-      // Dùng Lambda và Generic
-      auto square = [](int x) {
-          return x * x;
-      };
+              <h4 style="font-size: 0.7em; color: #2a7ae2;">FP (hàm bậc cao)</h4>
+              <pre><code class="language-cpp" data-trim style="font-size: 0.75em;">
+vector&lt;int&gt; scores = {85, 42, 91, 67, 53, 78};
 
-      auto applyTwice = [](auto f, int x) {
-          return f(f(x));
-      };
+// Lọc → chỉ giữ >= 60
+auto passed = filter(scores,
+    [](int s) { return s >= 60; });
 
-      // Gọi hàm:
-      int res = applyTwice(square, 3);
-      // (3*3)^2 = 81
+// Tính tổng
+int sum = reduce(passed, 0,
+    [](int a, int b) { return a + b; });
+
+double avg = (double)sum / passed.size();
               </code></pre>
             </div>
           </div>
-          <p class="fragment" style="font-size: 0.6em; color: #666; margin-top: 10px;">
-            *Nhận xét: Cách 2 linh hoạt hơn nhờ khả năng tự suy luận kiểu (auto) và cú pháp ngắn gọn.
+          <p class="fragment" style="font-size: 0.7em; color: #2a7ae2; margin-top: 8px;">
+            Không biến tạm, không vòng lặp — chỉ ghép hàm lại với nhau.
           </p>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Tổng hợp: FP pipeline</h2>
+          <p>Cùng bài toán, nhìn qua lăng kính từng nguyên tắc:</p>
+          <table style="width: 100%; margin-top: 0.8em;">
+            <thead>
+              <tr>
+                <th>Nguyên tắc</th>
+                <th>Thể hiện trong ví dụ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Hàm thuần khiết</strong></td>
+                <td>Lambda <span class="inline-code">[](int s){ return s >= 60; }</span> — không đọc/ghi biến ngoài</td>
+              </tr>
+              <tr>
+                <td><strong>Dữ liệu bất biến</strong></td>
+                <td><span class="inline-code">scores</span> không bị sửa — <span class="inline-code">filter</span> tạo danh sách mới</td>
+              </tr>
+              <tr>
+                <td><strong>Hàm bậc cao</strong></td>
+                <td><span class="inline-code">filter</span> và <span class="inline-code">reduce</span> nhận lambda làm tham số</td>
+              </tr>
+              <tr>
+                <td><strong>Tổ hợp hàm</strong></td>
+                <td>Pipeline: <span class="inline-code">filter → reduce</span> — ghép các bước nhỏ</td>
+              </tr>
+            </tbody>
+          </table>
         </section>
       </section>
 
@@ -463,7 +482,7 @@ std::sort(v.begin(), v.end(),
     [](int a, int b) { return a > b; });
           </code></pre>
           <p class="fragment" style="font-size: 0.8em; color: #555; margin-top: 0.5em;">
-            Cú pháp C++: <code>[capture](params) { body }</code>
+            Cú pháp C++: <span class="inline-code">[capture](params) { body }</span>
           </p>
         </section>
 
@@ -538,8 +557,9 @@ int res = add5(10);         // 15
 
           <div
             style="margin-top: 15px; padding: 10px; border-left: 5px solid #2a7ae2; background: #e3f2fd; font-size: 0.75em;">
-            <strong>Partial Application</strong> = cố định trước một phần tham số → tạo hàm chuyên biệt hơn.
-            <br><code>curried_add(5)</code> trả về hàm "cộng thêm 5" — đó là partial application.
+            <strong>Currying</strong> = cách <em>biến đổi</em> hàm (nhiều tham số → chuỗi hàm 1 tham số).
+            <br><strong>Partial Application</strong> = cách <em>dùng</em> hàm đã curried để cố định bớt tham số.
+            <br><span class="inline-code">curried_add(5)</span> trả về hàm "cộng thêm 5" — đó là partial application.
           </div>
         </section>
 
@@ -610,7 +630,7 @@ int res = add5(10);         // 15
         </section>
 
         <section style="font-size: 0.9em;">
-          <h2>3 câu tự kiểm</h2>
+          <h2>3 câu tự kiểm tra</h2>
           <ol>
             <li>Hàm thuần khiết (pure function) là gì? Cho ví dụ hàm thuần và hàm không thuần.</li>
             <li>Vì sao tính bất biến (immutability) giúp dễ song song hóa?</li>
