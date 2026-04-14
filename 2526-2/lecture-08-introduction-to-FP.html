@@ -56,7 +56,7 @@
           </h1>
         </section>
 
-        <section style="font-size: 0.82em;">
+        <section style="font-size: 0.9em;">
           <h2>Từ OOP sang FP</h2>
           <p>Bài 5–7 ta xây dựng hệ thống bằng <strong>đối tượng, lớp, kế thừa</strong>.</p>
           <ul style="margin-top: 0.5em;">
@@ -64,17 +64,23 @@
             <li>FP tổ chức code quanh <strong>hàm</strong> và <strong>dữ liệu bất biến</strong>.</li>
             <li>Hai mô hình <em>không đối lập</em> — hầu hết ngôn ngữ hiện đại kết hợp cả hai.</li>
           </ul>
-          <div style="margin-top: 0.8em; background: #ffebee; padding: 10px; border-radius: 8px; font-size: 0.75em;">
-            <strong>Nỗi đau của trạng thái — ví dụ:</strong>
-            <pre style="margin: 0.4em 0 0.3em; box-shadow: none;"><code class="language-cpp" data-trim style="font-size: 0.85em;">
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Nỗi đau của trạng thái</h2>
+          <pre><code class="language-cpp" data-trim style="font-size: 0.8em;">
 vector&lt;int&gt; data = {3, 1, 4};
 void addBonus(vector&lt;int&gt;& v) { for(auto& x : v) x += 10; }
 void normalize(vector&lt;int&gt;& v) { sort(v.begin(), v.end()); }
+
 addBonus(data);   // data = {13, 11, 14}
 normalize(data);  // data = {11, 13, 14} — thứ tự khác nếu gọi ngược!
-            </code></pre>
+          </code></pre>
+          <p style="margin-top: 0.8em;">
             Hai hàm cùng sửa <span class="inline-code">data</span> → kết quả phụ thuộc thứ tự gọi → khó debug.
-            <br>FP giúp giảm điều này bằng cách <em>ưu tiên dữ liệu bất biến</em> và <em>cô lập side effects</em>.
+          </p>
+          <div style="background: #e3f2fd; padding: 10px; border-radius: 8px; margin-top: 0.5em;">
+            FP giúp giảm điều này bằng cách <em>ưu tiên dữ liệu bất biến</em> và <em>cô lập side effects</em>.
           </div>
         </section>
 
