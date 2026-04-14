@@ -34,6 +34,14 @@
             <li>Lambda, Closure và Currying</li>
             <li>Khi nào FP mạnh, khi nào FP khó</li>
           </ol>
+          <div class="fragment" style="margin-top: 1em; font-size: 0.8em; border-left: 4px solid #2a7ae2; padding-left: 15px;">
+            <strong>Hết buổi, bạn sẽ:</strong>
+            <ul style="margin-top: 0.3em;">
+              <li>Phân biệt được hàm thuần / không thuần.</li>
+              <li>Viết được pipeline filter → reduce bằng lambda.</li>
+              <li>Giải thích closure khác function pointer ở đâu.</li>
+            </ul>
+          </div>
         </section>
       </section>
 
@@ -126,10 +134,10 @@
             </div>
             <div style="flex: 1;" class="fragment">
               <p style="font-size: 0.7em;"><strong>FP (Tạo giá trị mới):</strong></p>
-              <pre><code class="language-haskell" data-trim>
-      let x = 10
-      let y = x + 5 -- x vẫn là 10
-      let z = y * 2 -- y vẫn là 15
+              <pre><code class="language-cpp" data-trim>
+      const int x = 10;
+      const int y = x + 5; // x vẫn là 10
+      const int z = y * 2; // y vẫn là 15
               </code></pre>
             </div>
           </div>
@@ -295,7 +303,8 @@ for (int s : scores) {
         count++;
     }
 }
-double avg = (double)sum / count;
+double avg = count > 0
+    ? (double)sum / count : 0;
               </code></pre>
             </div>
             <div style="flex: 1;">
@@ -311,12 +320,14 @@ auto passed = filter(scores,
 int sum = reduce(passed, 0,
     [](int a, int b) { return a + b; });
 
-double avg = (double)sum / passed.size();
+// Guard: nếu không ai >= 60?
+double avg = !passed.empty()
+    ? (double)sum / passed.size() : 0;
               </code></pre>
             </div>
           </div>
           <p class="fragment" style="font-size: 0.7em; color: #2a7ae2; margin-top: 8px;">
-            Không biến tạm, không vòng lặp — chỉ ghép hàm lại với nhau.
+            Ít biến tạm, ít vòng lặp — ưu tiên ghép hàm lại với nhau.
           </p>
         </section>
 
