@@ -103,6 +103,11 @@
                   <td>Phổ biến</td>
                   <td>Cố gắng cô lập</td>
                 </tr>
+                <tr>
+                  <td><strong>Hệ quả</strong></td>
+                  <td>Cần test kỹ vì phụ thuộc trạng thái</td>
+                  <td>Dễ test, dễ suy luận hơn</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -294,7 +299,7 @@ double avg = (double)sum / count;
               </code></pre>
             </div>
             <div style="flex: 1;">
-              <h4 style="font-size: 0.7em; color: #2a7ae2;">FP (hàm bậc cao)</h4>
+              <h4 style="font-size: 0.7em; color: #2a7ae2;">Pseudocode FP</h4>
               <pre><code class="language-cpp" data-trim style="font-size: 0.75em;">
 vector&lt;int&gt; scores = {85, 42, 91, 67, 53, 78};
 
@@ -344,6 +349,9 @@ double avg = (double)sum / passed.size();
               </tr>
             </tbody>
           </table>
+          <p style="font-size: 0.8em; color: #555; margin-top: 0.8em; font-style: italic;">
+            Đệ quy, lambda, closure, currying ở phần tiếp theo không phải ý mới — chúng là công cụ để hiện thực tư duy FP.
+          </p>
         </section>
       </section>
 
@@ -487,7 +495,7 @@ std::sort(v.begin(), v.end(),
           </p>
         </section>
 
-        <section style="font-size: 0.75em;">
+        <section style="font-size: 0.8em;">
           <h2>Bao đóng (Closure)</h2>
           <div class="question-box">
             <div class="question-title">Ý chính</div>
@@ -503,8 +511,7 @@ std::sort(v.begin(), v.end(),
 bool checker(int value, int threshold) {
     return value > threshold;
 }
-// Mỗi lần gọi đều phải truyền threshold
-checker(120, 100);
+checker(120, 100); // phải truyền threshold mỗi lần
 checker(50, 100);
               </code></pre>
             </div>
@@ -513,12 +520,10 @@ checker(50, 100);
               <h4 style="font-size: 0.7em; color: #1565c0;">Closure (Lambda Capture)</h4>
               <pre><code class="language-cpp" data-trim style="font-size: 0.75em;">
 int threshold = 100;
-// "Gói" threshold vào trong hàm
 auto isOver = [threshold](int value) {
     return value > threshold;
-};
-// Giờ chỉ cần 1 tham số
-isOver(120); // true
+}; // "Gói" threshold vào hàm
+isOver(120); // true — chỉ cần 1 tham số
               </code></pre>
             </div>
           </div>
