@@ -236,7 +236,7 @@
             <div style="flex: 1; background: #ffebee; padding: 10px; border-radius: 8px; font-size: 0.9em;">
               <strong style="color: #c62828;">❌ Impure:</strong><br>
               <span class="inline-code">square(x) { print(x); return x*x; }</span><br>
-              <small>(Vừa tính vừa in ra màn hình/sửa biến global)</small>
+              <small>In màn hình, đọc biến global, gọi <span class="inline-code">rand()</span>, lấy thời gian...</small>
             </div>
           </div>
 
@@ -288,7 +288,7 @@
 
         <section style="font-size: 0.82em;">
           <h3>Ví dụ: xử lý danh sách điểm</h3>
-          <p>Bài toán: cho danh sách điểm, <strong>lấy điểm &ge; 60</strong>, rồi <strong>tính trung bình</strong>.
+          <p>Bài toán: cho danh sách điểm, <strong>lấy điểm &ge; 60</strong>, <strong>quy về thang 10</strong>, rồi <strong>tính tổng</strong>.
             <span style="font-size: 0.75em; color: #999;">(mã giả theo phong cách FP, không phải cú pháp C++ cụ thể)</span></p>
 
           <div style="display: flex; gap: 15px; margin-top: 10px;">
@@ -296,15 +296,13 @@
               <h4 style="font-size: 0.7em; color: #666;">Mệnh lệnh (vòng lặp + biến)</h4>
               <pre><code class="language-cpp" data-trim style="font-size: 0.75em;">
 vector&lt;int&gt; scores = {85, 42, 91, 67, 53, 78};
-int sum = 0, count = 0;
+double total = 0;
 for (int s : scores) {
-    if (s >= 60) {      // lọc
-        sum += s;        // tích lũy
-        count++;
+    if (s >= 60) {        // lọc
+        total += s / 10.0; // quy thang 10
     }
 }
-double avg = count > 0
-    ? (double)sum / count : 0;
+// total = 8.5 + 9.1 + 6.7 + 7.8 = 32.1
               </code></pre>
             </div>
             <div style="flex: 1;">
@@ -312,17 +310,14 @@ double avg = count > 0
               <pre><code class="language-cpp" data-trim style="font-size: 0.75em;">
 vector&lt;int&gt; scores = {85, 42, 91, 67, 53, 78};
 
-// Lọc → chỉ giữ >= 60
 auto passed = filter(scores,
     [](int s) { return s >= 60; });
 
-// Tính tổng
-int sum = reduce(passed, 0,
-    [](int a, int b) { return a + b; });
+auto scaled = map(passed,
+    [](int s) { return s / 10.0; });
 
-// Guard: nếu không ai >= 60?
-double avg = !passed.empty()
-    ? (double)sum / passed.size() : 0;
+double total = reduce(scaled, 0.0,
+    [](double a, double b) { return a+b; });
               </code></pre>
             </div>
           </div>
@@ -344,19 +339,19 @@ double avg = !passed.empty()
             <tbody>
               <tr>
                 <td><strong>Hàm thuần khiết</strong></td>
-                <td>Lambda <span class="inline-code">[](int s){ return s >= 60; }</span> — không đọc/ghi biến ngoài</td>
+                <td>Mỗi lambda chỉ tính toán, không đọc/ghi biến ngoài</td>
               </tr>
               <tr>
                 <td><strong>Dữ liệu bất biến</strong></td>
-                <td><span class="inline-code">scores</span> không bị sửa — <span class="inline-code">filter</span> tạo danh sách mới</td>
+                <td><span class="inline-code">scores</span> không bị sửa — mỗi bước tạo dữ liệu mới</td>
               </tr>
               <tr>
                 <td><strong>Hàm bậc cao</strong></td>
-                <td><span class="inline-code">filter</span> và <span class="inline-code">reduce</span> nhận lambda làm tham số</td>
+                <td><span class="inline-code">filter</span>, <span class="inline-code">map</span>, <span class="inline-code">reduce</span> nhận lambda làm tham số</td>
               </tr>
               <tr>
                 <td><strong>Tổ hợp hàm</strong></td>
-                <td>Pipeline: <span class="inline-code">filter → reduce</span> — ghép các bước nhỏ</td>
+                <td>Pipeline: <span class="inline-code">filter → map → reduce</span></td>
               </tr>
             </tbody>
           </table>
@@ -620,7 +615,7 @@ int res = add5(10);         // 15
                 trường phức tạp.</li>
               <li><strong>Tính tái sử dụng:</strong> Hàm bậc cao và kết hợp hàm tạo ra các thành phần cực
                 kỳ linh hoạt.</li>
-              <li><strong>Song song hóa:</strong> Tính bất biến giúp tránh hoàn toàn xung đột dữ liệu giữa các luồng.
+              <li><strong>Song song hóa:</strong> Tính bất biến giúp giảm mạnh nguy cơ xung đột dữ liệu giữa các luồng.
               </li>
             </ul>
           </div>
@@ -639,22 +634,30 @@ int res = add5(10);         // 15
       </section>
 
       <section>
-        <section style="font-size: 0.85em;">
+        <section>
           <h2>Tổng kết</h2>
-          <ul>
-            <li>FP xây dựng chương trình bằng <strong>hàm thuần khiết</strong>, <strong>dữ liệu bất biến</strong> và
-              <strong>tổ hợp hàm</strong>.</li>
-            <li>Lambda, Closure, Currying là công cụ cốt lõi — bắt nguồn từ Lambda Calculus.</li>
-            <li>FP không thay thế OOP mà bổ sung cho nhau trong các ngôn ngữ đa mô hình hiện đại.</li>
-          </ul>
+          <ol style="font-size: 0.95em;">
+            <li>Ưu tiên <strong>hàm thuần</strong> — cùng input, cùng output.</li>
+            <li>Ưu tiên <strong>dữ liệu bất biến</strong> — không sửa, chỉ tạo mới.</li>
+            <li>Mô tả xử lý như <strong>chuỗi biến đổi dữ liệu</strong> — filter → map → reduce.</li>
+          </ol>
+          <p class="fragment" style="font-size: 0.8em; color: #555; margin-top: 1em; font-style: italic;">
+            FP không thay thế OOP — chúng bổ sung cho nhau trong ngôn ngữ hiện đại.
+          </p>
         </section>
 
         <section style="font-size: 0.9em;">
-          <h2>3 câu tự kiểm tra</h2>
+          <h2>Tự kiểm tra</h2>
           <ol>
-            <li>Hàm thuần khiết (pure function) là gì? Cho ví dụ hàm thuần và hàm không thuần.</li>
-            <li>Vì sao tính bất biến (immutability) giúp dễ song song hóa?</li>
-            <li>Closure khác gì một hàm thông thường hoặc function pointer?</li>
+            <li>Hàm thuần khiết là gì? Cho ví dụ hàm thuần và hàm không thuần.</li>
+            <li>Closure khác gì function pointer?</li>
+            <li><strong>Mini-exercise:</strong> Viết lại đoạn code dưới đây theo phong cách pipeline (filter → map → reduce):
+              <pre style="margin-top: 0.3em;"><code class="language-cpp" data-trim style="font-size: 0.8em;">
+int total = 0;
+for (int x : nums)
+    if (x % 2 == 0) total += x * x;
+              </code></pre>
+            </li>
           </ol>
         </section>
       </section>
