@@ -38,7 +38,7 @@
             <strong>Hết buổi, bạn sẽ:</strong>
             <ul style="margin-top: 0.3em;">
               <li>Phân biệt được hàm thuần / không thuần.</li>
-              <li>Viết được pipeline filter → reduce bằng lambda.</li>
+              <li>Viết được pipeline filter → map → reduce bằng lambda.</li>
               <li>Giải thích closure khác function pointer ở đâu.</li>
             </ul>
           </div>
@@ -71,7 +71,7 @@ addBonus(data);   // data = {13, 11, 14}
 normalize(data);  // data = {11, 13, 14} — thứ tự khác nếu gọi ngược!
             </code></pre>
             Hai hàm cùng sửa <span class="inline-code">data</span> → kết quả phụ thuộc thứ tự gọi → khó debug.
-            <br>FP giải quyết bằng cách <em>hạn chế thay đổi trạng thái</em>.
+            <br>FP giúp giảm điều này bằng cách <em>ưu tiên dữ liệu bất biến</em> và <em>cô lập side effects</em>.
           </div>
         </section>
 
@@ -289,8 +289,12 @@ normalize(data);  // data = {11, 13, 14} — thứ tự khác nếu gọi ngư�
           </div>
           <ul style="font-size: 0.85em; margin-top: 15px;">
             <li><span class="keyword">Hàm bậc cao:</span> Nhận hàm khác làm tham số hoặc trả về một hàm mới.</li>
-            <li><span class="keyword">Tổ hợp hàm:</span> Ghép các hàm nhỏ để tạo ra xử lý phức tạp
-              hơn, ví dụ: <span class="inline-code">f(g(x))</span>.</li>
+            <li><span class="keyword">Ví dụ quen thuộc:</span>
+              <span class="inline-code">sort(v, cmp)</span>,
+              <span class="inline-code">filter(xs, pred)</span>,
+              <span class="inline-code">map(xs, f)</span>,
+              <span class="inline-code">reduce(xs, init, op)</span>.</li>
+            <li><span class="keyword">Tổ hợp hàm:</span> Ghép các bước nhỏ thành pipeline: <span class="inline-code">filter → map → reduce</span>.</li>
           </ul>
         </section>
 
