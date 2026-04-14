@@ -84,21 +84,29 @@ normalize(data);  // data = {11, 13, 14} — thứ tự khác nếu gọi ngư�
           </div>
         </section>
 
-        <section style="font-size: 0.9em;">
+        <section style="font-size: 0.85em;">
           <h2>Lập trình hàm là gì?</h2>
           <div class="question-box">
             <div class="question-title">Định nghĩa</div>
             <p>
-              Lập trình hàm (Functional Programming - FP) là mô hình lập trình xây dựng chương trình bằng cách
-              <strong>kết hợp các hàm</strong> và <strong>hạn chế thay đổi trạng thái</strong>.
+              <strong>Lập trình hàm (FP)</strong> là cách tổ chức chương trình bằng cách
+              <strong>biến đổi dữ liệu qua các hàm</strong>.
             </p>
           </div>
-          <ul style="font-size: 0.85em;">
-            <li><span class="keyword">Biểu thức thay vì trạng thái:</span> Trong tư duy FP, ưu tiên biểu thức
-              và hạn chế thay đổi trạng thái.</li>
-            <li><span class="keyword">Minh bạch tham chiếu:</span> Có thể thay lời gọi hàm bằng giá trị trả về mà không
-              thay đổi hành vi chương trình.</li>
+          <p style="margin-top: 0.8em;">Trong tư duy FP, ta thường hỏi:</p>
+          <ul style="font-size: 0.9em;">
+            <li>Đầu vào là gì? Đầu ra là gì?</li>
+            <li>Dữ liệu đi qua những bước biến đổi nào?</li>
           </ul>
+          <p style="margin-top: 0.8em;">FP ưu tiên: <strong>hàm thuần khiết</strong>, <strong>dữ liệu bất biến</strong>,
+            <strong>tổ hợp hàm thành pipeline</strong>, và <strong>cô lập side effects</strong>.</p>
+          <div style="margin-top: 0.6em;">
+            <p style="font-size: 0.8em; color: #2a7ae2; font-weight: bold;">Minh bạch tham chiếu:</p>
+            <p style="font-size: 0.75em; border-left: 4px solid #2a7ae2; padding-left: 15px;">
+              Khi hàm là thuần khiết, ta có thể thay lời gọi bằng kết quả mà không đổi nghĩa chương trình.
+              <br>Ví dụ: <span class="inline-code">square(5)</span> luôn thay được bằng <span class="inline-code">25</span>.
+            </p>
+          </div>
         </section>
 
         <section>
@@ -284,10 +292,9 @@ normalize(data);  // data = {11, 13, 14} — thứ tự khác nếu gọi ngư�
               thay đổi.</p>
           </div>
 
-          <aside class="notes">
-            Lưu ý cho giảng viên: Các ngôn ngữ FP hiện đại sử dụng Structural Sharing (chia sẻ cấu trúc)
-            để tối ưu bộ nhớ thay vì sao chép toàn bộ dữ liệu. Nói miệng nếu có thời gian.
-          </aside>
+          <p style="font-size: 0.7em; color: #555; font-style: italic; margin-top: 10px;">
+            Về ý tưởng: tạo giá trị mới. Trong thực tế, nhiều ngôn ngữ có cách tối ưu để không sao chép toàn bộ.
+          </p>
         </section>
 
         <section>
@@ -344,7 +351,7 @@ double total = reduce(scaled, 0.0,
             </div>
           </div>
           <p class="fragment" style="font-size: 0.7em; color: #2a7ae2; margin-top: 8px;">
-            Ít biến tạm, ít vòng lặp — ưu tiên ghép hàm lại với nhau.
+            Thay vì điều khiển từng bước bằng cập nhật trạng thái, ta mô tả bài toán như chuỗi biến đổi dữ liệu.
           </p>
         </section>
 
@@ -528,7 +535,8 @@ std::sort(v.begin(), v.end(),
           <div class="question-box">
             <div class="question-title">Ý chính</div>
             <p>
-              <strong>Closure</strong> là lambda + <strong>các biến bên ngoài</strong> mà nó "bắt" (capture) lại.
+              <strong>Closure</strong> là một hàm đi kèm <strong>môi trường dữ liệu</strong> mà nó mang theo.
+              <br><span style="font-size: 0.85em; color: #555;">Trong C++, môi trường đó đến từ capture của lambda.</span>
             </p>
           </div>
 
