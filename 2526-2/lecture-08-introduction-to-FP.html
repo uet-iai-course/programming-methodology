@@ -70,11 +70,13 @@
           <h2>Nỗi đau của trạng thái</h2>
           <pre><code class="language-cpp" data-trim style="font-size: 0.8em;">
 vector&lt;int&gt; data = {3, 1, 4};
-void addBonus(vector&lt;int&gt;& v) { for(auto& x : v) x += 10; }
-void normalize(vector&lt;int&gt;& v) { sort(v.begin(), v.end()); }
+void addIndexBonus(vector&lt;int&gt;& v) {
+    for (int i = 0; i &lt; v.size(); i++) v[i] += i;
+}
+void sortAsc(vector&lt;int&gt;& v) { sort(v.begin(), v.end()); }
 
-addBonus(data);   // data = {13, 11, 14}
-normalize(data);  // data = {11, 13, 14} — thứ tự khác nếu gọi ngược!
+// addIndexBonus trước: {3,1,4} → {3,2,6} → sort → {2,3,6}
+// sortAsc trước:       {3,1,4} → {1,3,4} → +idx → {1,4,6}
           </code></pre>
           <p style="margin-top: 0.8em;">
             Hai hàm cùng sửa <span class="inline-code">data</span> → kết quả phụ thuộc thứ tự gọi → khó debug.
