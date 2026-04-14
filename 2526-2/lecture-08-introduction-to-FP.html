@@ -25,13 +25,26 @@
           <h3>Bài 8: Giới thiệu Lập trình hàm</h3>
           <p>Trường ĐH Công nghệ – Đại học Quốc gia Hà Nội</p>
         </section>
-
         <section>
           <h2>Nội dung</h2>
           <ol>
-            <li>Nội dung 1</li>
-            <li>Nội dung 2</li>
+            <li>Tổng quan về Lập trình hàm</li>
+            <li>Các nguyên lý cốt lõi</li>
+            <li>Đệ quy trong FP</li>
+            <li>Lambda, Closure và Currying</li>
+            <li>Khi nào FP mạnh, khi nào FP khó</li>
           </ol>
+        </section>
+
+        <section>
+          <h2>Mục tiêu buổi học</h2>
+          <p style="font-size: 0.9em;">Hết buổi, bạn sẽ:</p>
+          <ul style="font-size: 0.9em;">
+            <li>Phân biệt được hàm thuần / không thuần.</li>
+            <li>Viết được pipeline filter → map → reduce bằng lambda.</li>
+            <li>Giải thích closure khác function pointer ở đâu.</li>
+            <li>Biết khi nào FP giúp code dễ test, dễ suy luận hơn.</li>
+          </ul>
         </section>
       </section>
 
@@ -39,12 +52,167 @@
         <section>
           <h1>
             <span class="text-light">1.</span><br />
-            Nội dung 1
+            Tổng quan về lập trình hàm
           </h1>
         </section>
+
+        <section style="font-size: 0.9em;">
+          <h2>Từ OOP sang FP</h2>
+          <p>Bài 5–7 ta xây dựng hệ thống bằng <strong>đối tượng, lớp, kế thừa</strong>.</p>
+          <ul style="margin-top: 0.5em;">
+            <li>OOP tổ chức code quanh <strong>trạng thái</strong> và <strong>hành vi</strong> của đối tượng.</li>
+            <li>FP tổ chức code quanh <strong>hàm</strong> và <strong>dữ liệu bất biến</strong>.</li>
+            <li>Hai mô hình <em>không đối lập</em> — hầu hết ngôn ngữ hiện đại kết hợp cả hai.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Nỗi đau của trạng thái</h2>
+          <pre><code class="language-cpp" data-trim style="font-size: 0.8em;">
+vector&lt;int&gt; data = {3, 1, 4};
+void addIndexBonus(vector&lt;int&gt;& v) {
+    for (int i = 0; i &lt; v.size(); i++) v[i] += i;
+}
+void sortAsc(vector&lt;int&gt;& v) { sort(v.begin(), v.end()); }
+
+// addIndexBonus trước: {3,1,4} → {3,2,6} → sort → {2,3,6}
+// sortAsc trước:       {3,1,4} → {1,3,4} → +idx → {1,4,6}
+          </code></pre>
+          <p style="margin-top: 0.8em;">
+            Hai hàm cùng sửa <span class="inline-code">data</span> → kết quả phụ thuộc thứ tự gọi → khó debug.
+          </p>
+          <div style="background: #e3f2fd; padding: 10px; border-radius: 8px; margin-top: 0.5em;">
+            FP giúp giảm điều này bằng cách <em>ưu tiên dữ liệu bất biến</em> và <em>cô lập side effects</em>.
+          </div>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Lập trình hàm là gì?</h2>
+          <div class="question-box">
+            <div class="question-title">Định nghĩa</div>
+            <p>
+              <strong>Lập trình hàm (FP)</strong> là cách tổ chức chương trình bằng cách
+              <strong>biến đổi dữ liệu qua các hàm</strong>.
+            </p>
+          </div>
+          <p style="margin-top: 0.8em;">Trong tư duy FP, ta thường hỏi:</p>
+          <ul style="font-size: 0.9em;">
+            <li>Đầu vào là gì? Đầu ra là gì?</li>
+            <li>Dữ liệu đi qua những bước biến đổi nào?</li>
+          </ul>
+          <p style="margin-top: 0.8em;">FP ưu tiên: <strong>hàm thuần khiết</strong>, <strong>dữ liệu bất biến</strong>,
+            <strong>tổ hợp hàm thành pipeline</strong>, và <strong>cô lập side effects</strong>.</p>
+        </section>
+
         <section>
-          <h2>Nội dung chi tiết 1</h2>
-          <p>Chi tiết về nội dung 1...</p>
+          <h2>FP khác tư duy mệnh lệnh ở đâu?</h2>
+          <div style="font-size: 0.75em;">
+            <table style="width: 100%;">
+              <thead>
+                <tr>
+                  <th>Đặc điểm</th>
+                  <th>Lập trình mệnh lệnh</th>
+                  <th>Lập trình hàm (FP)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Cơ chế chính</strong></td>
+                  <td>Gán biến & thay đổi trạng thái</td>
+                  <td>Đánh giá biểu thức</td>
+                </tr>
+                <tr>
+                  <td><strong>Thứ tự thực hiện</strong></td>
+                  <td>Rất quan trọng</td>
+                  <td>Ít phụ thuộc hơn khi hàm thuần</td>
+                </tr>
+                <tr>
+                  <td><strong>Side Effects</strong></td>
+                  <td>Phổ biến</td>
+                  <td>Cố gắng cô lập</td>
+                </tr>
+                <tr>
+                  <td><strong>Hệ quả</strong></td>
+                  <td>Cần test kỹ vì phụ thuộc trạng thái</td>
+                  <td>Dễ test, dễ suy luận hơn</td>
+                </tr>
+              </tbody>
+            </table>
+            <p style="font-size: 0.8em; color: #999; margin-top: 0.5em; font-style: italic;">Đây là xu hướng chung, không phải ranh giới tuyệt đối.</p>
+          </div>
+        </section>
+
+        <section data-auto-animate>
+          <h2>Trạng thái và Bất biến</h2>
+          <div style="display: flex;font-size: 0.85em;">
+            <div style="flex: 1;">
+              <p style="font-size: 0.7em;"><strong>C++ (Cập nhật biến):</strong></p>
+              <pre><code class="language-cpp" data-trim>
+      int x=10;
+      x = x + 5; // Trạng thái x thay đổi
+      x = x * 2; // Giá trị cũ bị ghi đè
+              </code></pre>
+            </div>
+            <div style="flex: 1;" class="fragment">
+              <p style="font-size: 0.7em;"><strong>FP (Tạo giá trị mới):</strong></p>
+              <pre><code class="language-cpp" data-trim>
+      const int x = 10;
+      const int y = x + 5; // x vẫn là 10
+      const int z = y * 2; // y vẫn là 15
+              </code></pre>
+            </div>
+          </div>
+          <div style="background: #e3f2fd; padding: 10px; border-radius: 8px; margin-top: 20px; font-size: 0.7em;">
+            <strong>Trực quan:</strong>
+            Mệnh lệnh giống như ghi đè lên bảng phấn.
+            FP giống như chụp một loạt các bức ảnh, mỗi bức ảnh là một giá trị cố định.
+          </div>
+        </section>
+
+        <section>
+          <h2>Vì sao cần học FP?</h2>
+          <div style="font-size: 0.85em;">
+            <ul>
+              <li><span class="keyword">Dễ suy luận:</span> Không có biến ẩn thay đổi giá trị, mã nguồn trở nên minh
+                bạch.</li>
+              <li><span class="keyword">Dễ kiểm thử:</span> Hàm thuần khiết luôn cho cùng kết quả với cùng đầu vào,
+                không cần giả lập phức tạp.</li>
+              <li><span class="keyword">Dễ tái sử dụng:</span> Các hàm độc lập có thể lắp ghép như các khối Lego.</li>
+              <li><span class="keyword">Hiện đại:</span> Hầu hết các ngôn ngữ phổ biến (C++, Java, Python, JS) đều đang
+                bổ sung các tính năng FP mạnh mẽ.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Bạn đã dùng FP rồi!</h2>
+          <p>Những tính năng FP quen thuộc trong ngôn ngữ bạn đã biết:</p>
+          <table style="width: 100%; margin-top: 0.8em;">
+            <thead>
+              <tr>
+                <th>Ngôn ngữ</th>
+                <th>Tính năng FP bạn đã dùng</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>C++</strong></td>
+                <td>Lambda <span class="inline-code">[](int x){ return x*x; }</span>, <span class="inline-code">std::sort</span> với comparator, Ranges (C++20)
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Python</strong></td>
+                <td><span class="inline-code">map()</span>, <span class="inline-code">filter()</span>, list comprehension, <span class="inline-code">lambda</span></td>
+              </tr>
+              <tr>
+                <td><strong>JavaScript</strong></td>
+                <td><span class="inline-code">const</span>, arrow functions, <span class="inline-code">.map()</span>, <span class="inline-code">.filter()</span>,
+                  <span class="inline-code">.reduce()</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="fragment" style="margin-top: 0.8em; color: #2a7ae2; font-style: italic;">FP không chỉ có ở Haskell —
+            nó đang ở trong code bạn viết hàng ngày.</p>
         </section>
       </section>
 
@@ -52,12 +220,473 @@
         <section>
           <h1>
             <span class="text-light">2.</span><br />
-            Nội dung 2
+            Các nguyên lý cốt lõi
+          </h1>
+        </section>
+
+        <section style="font-size: 0.9em;">
+          <h2>4 nguyên tắc cốt lõi</h2>
+          <ol>
+            <li><strong>Hàm thuần khiết</strong> — cùng đầu vào → cùng đầu ra, không gây tác dụng phụ.</li>
+            <li><strong>Dữ liệu bất biến</strong> — không sửa, chỉ tạo mới.</li>
+            <li><strong>Hàm là giá trị</strong> — truyền vào, trả về, lưu trữ như dữ liệu.</li>
+            <li><strong>Tổ hợp hàm</strong> — ghép hàm nhỏ thành xử lý lớn: <span class="inline-code">f(g(x))</span>.</li>
+          </ol>
+          <p class="fragment" style="font-size: 0.8em; color: #555; margin-top: 0.8em; font-style: italic;">
+            Các slide tiếp theo sẽ đi sâu từng nguyên tắc.
+          </p>
+        </section>
+
+        <section style="font-size: 0.82em;">
+          <h2>Hàm thuần khiết</h2>
+          <div class="question-box">
+            <div class="question-title">Nguyên tắc vàng</div>
+            <ul style="font-size: 0.9em;">
+              <li><strong>Với cùng đầu vào, hàm luôn cho cùng đầu ra.</strong></li>
+              <li><strong>Không gây ra tác dụng phụ:</strong> Không gây thay đổi quan sát được ra bên ngoài.
+              </li>
+            </ul>
+          </div>
+
+          <div style="display: flex; gap: 10px; margin-top: 15px; font-size: 0.7em;">
+            <div style="flex: 1; background: #e8f5e9; padding: 10px; border-radius: 8px; font-size: 0.9em;">
+              <strong style="color: #2e7d32;">✅ Pure:</strong><br>
+              <span class="inline-code">square(x) = x * x</span><br>
+              <small>(Chỉ tính toán và trả về giá trị)</small>
+            </div>
+            <div style="flex: 1; background: #ffebee; padding: 10px; border-radius: 8px; font-size: 0.9em;">
+              <strong style="color: #c62828;">❌ Impure:</strong><br>
+              <span class="inline-code">square(x) { print(x); return x*x; }</span><br>
+              <small>In màn hình, đọc biến global, gọi <span class="inline-code">rand()</span>, lấy thời gian...</small>
+            </div>
+          </div>
+
+          <div style="margin-top: 15px;">
+            <p style="font-size: 0.8em; color: #2a7ae2; font-weight: bold;">Minh bạch tham chiếu:</p>
+            <p style="font-size: 0.75em; border-left: 4px solid #2a7ae2; padding-left: 15px;">
+              Có thể thay lời gọi hàm bằng kết quả mà không đổi nghĩa chương trình.
+              <br>Ví dụ: <span class="inline-code">square(5)</span> luôn thay được bằng <span class="inline-code">25</span>.
+            </p>
+          </div>
+        </section>
+
+        <section>
+          <h2>Tính bất biến</h2>
+          <ul style="font-size: 0.9em;">
+            <li><strong>Không sửa trực tiếp dữ liệu cũ:</strong> Một khi dữ liệu được tạo ra, nó không bao giờ thay đổi.
+            </li>
+            <li><strong>Tạo ra giá trị mới:</strong> Thay vì sửa trực tiếp, ta tạo ra giá trị mới phản ánh các thay đổi
+              cần thiết.</li>
+          </ul>
+
+          <div style="margin-top: 20px; text-align: center; font-size: 0.8em;">
+            <div
+              style="display: inline-block; background: #f5f5f5; padding: 10px; border-radius: 5px; font-family: monospace;">
+              Old: [1, 2, 3] <span style="color: #666;">--(add 4)--></span> New: [1, 2, 3, 4]
+            </div>
+            <p style="font-size: 0.7em; color: #666; margin-top: 5px;">Mảng cũ giữ nguyên, tạo mảng mới chứa giá trị
+              thay đổi.</p>
+          </div>
+
+          <p style="font-size: 0.7em; color: #555; font-style: italic; margin-top: 10px;">
+            Về ý tưởng: tạo giá trị mới. Trong thực tế, nhiều ngôn ngữ có cách tối ưu để không sao chép toàn bộ.
+          </p>
+        </section>
+
+        <section style="font-size: 0.9em;">
+          <h2>Hàm bậc cao</h2>
+          <div class="question-box">
+            <div class="question-title">Ý chính</div>
+            Trong FP, <strong>hàm được xem như một giá trị</strong> và có thể được truyền vào, trả về, hoặc lưu trữ như
+            dữ liệu thông thường.
+          </div>
+          <ul style="font-size: 0.85em; margin-top: 15px;">
+            <li><span class="keyword">Hàm bậc cao:</span> Nhận hàm khác làm tham số hoặc trả về một hàm mới.</li>
+            <li><span class="keyword">Ví dụ quen thuộc:</span>
+              <span class="inline-code">sort(v, cmp)</span>,
+              <span class="inline-code">filter(xs, pred)</span>,
+              <span class="inline-code">map(xs, f)</span>,
+              <span class="inline-code">reduce(xs, init, op)</span>.</li>
+            <li><span class="keyword">Tổ hợp hàm:</span> Ghép các bước nhỏ thành pipeline: <span class="inline-code">filter → map → reduce</span>.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.82em;">
+          <h3>Ví dụ: xử lý danh sách điểm</h3>
+          <p>Bài toán: cho danh sách điểm, <strong>lấy điểm &ge; 60</strong>, <strong>quy về thang 10</strong>, rồi <strong>tính tổng</strong>.
+            <span style="font-size: 0.75em; color: #999;">(mã giả theo phong cách FP, không phải cú pháp C++ cụ thể)</span></p>
+
+          <div style="display: flex; gap: 15px; margin-top: 10px;">
+            <div style="flex: 1;">
+              <h4 style="font-size: 0.7em; color: #666;">Mệnh lệnh (vòng lặp + biến)</h4>
+              <pre><code class="language-cpp" data-trim style="font-size: 0.75em;">
+vector&lt;int&gt; scores = {85, 42, 91, 67, 53, 78};
+double total = 0;
+for (int s : scores) {
+    if (s >= 60) {        // lọc
+        total += s / 10.0; // quy thang 10
+    }
+}
+// total = 8.5 + 9.1 + 6.7 + 7.8 = 32.1
+              </code></pre>
+            </div>
+            <div style="flex: 1;">
+              <h4 style="font-size: 0.7em; color: #2a7ae2;">Pseudocode FP</h4>
+              <pre><code class="language-cpp" data-trim style="font-size: 0.75em;">
+vector&lt;int&gt; scores = {85, 42, 91, 67, 53, 78};
+
+auto passed = filter(scores,
+    [](int s) { return s >= 60; });
+
+auto scaled = map(passed,
+    [](int s) { return s / 10.0; });
+
+double total = reduce(scaled, 0.0,
+    [](double a, double b) { return a+b; });
+              </code></pre>
+            </div>
+          </div>
+          <p class="fragment" style="font-size: 0.7em; color: #2a7ae2; margin-top: 8px;">
+            Thay vì điều khiển từng bước bằng cập nhật trạng thái, ta mô tả bài toán như chuỗi biến đổi dữ liệu.
+          </p>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Tổng hợp: FP pipeline</h2>
+          <p>Cùng bài toán, nhìn qua lăng kính từng nguyên tắc:</p>
+          <table style="width: 100%; margin-top: 0.8em;">
+            <thead>
+              <tr>
+                <th>Nguyên tắc</th>
+                <th>Thể hiện trong ví dụ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Hàm thuần khiết</strong></td>
+                <td>Mỗi lambda chỉ tính toán, không đọc/ghi biến ngoài</td>
+              </tr>
+              <tr>
+                <td><strong>Dữ liệu bất biến</strong></td>
+                <td><span class="inline-code">scores</span> không bị sửa — mỗi bước tạo dữ liệu mới</td>
+              </tr>
+              <tr>
+                <td><strong>Hàm bậc cao</strong></td>
+                <td><span class="inline-code">filter</span>, <span class="inline-code">map</span>, <span class="inline-code">reduce</span> nhận lambda làm tham số</td>
+              </tr>
+              <tr>
+                <td><strong>Tổ hợp hàm</strong></td>
+                <td>Pipeline: <span class="inline-code">filter → map → reduce</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="font-size: 0.8em; color: #555; margin-top: 0.8em; font-style: italic;">
+            Đệ quy, lambda, closure, currying ở phần tiếp theo không phải ý mới — chúng là công cụ để hiện thực tư duy FP.
+          </p>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">3.</span><br />
+            Đệ quy trong FP
+          </h1>
+        </section>
+
+        <section>
+          <h2>Đệ quy</h2>
+          <p style="font-size: 0.85em;">
+            Trong FP, đệ quy là một <strong>cơ chế quan trọng để biểu diễn lặp</strong> mà không cần cập nhật biến đếm
+            như trong vòng lặp truyền thống.
+          </p>
+          <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <div style="flex: 1;">
+              <h4 style="font-size: 0.7em; color: #666;">Lập trình mệnh lệnh: Vòng lặp</h4>
+              <pre><code class="language-cpp" data-trim style="font-size: 0.7em;">
+        int factorial(int n) {
+            int result = 1;
+            for(int i = 1; i <= n; i++)
+                result *= i; // Cập nhật biến
+            return result;
+        }
+              </code></pre>
+            </div>
+            <div style="flex: 1;" class="fragment">
+              <h4 style="font-size: 0.7em; color: #2a7ae2;">Lập trình hàm: Đệ quy</h4>
+              <pre><code class="language-cpp" data-trim style="font-size: 0.7em;">
+        int factorial(int n) {
+            // Không dùng biến đếm, không cập nhật
+            if (n <= 1) return 1;
+            return n * factorial(n - 1);
+        }
+              </code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Cấu trúc an toàn của đệ quy</h2>
+          <p style="margin-bottom: 30px;">
+            Để tránh lỗi tràn ngăn xếp hoặc vòng lặp vô hạn, một hàm đệ quy luôn
+            phải được xây dựng từ hai thành phần sống còn:
+          </p>
+
+          <div style="display: flex; gap: 20px; align-items: stretch;">
+            <div
+              style="flex: 1; border: 2px solid #2e7d32; border-radius: 15px; overflow: hidden; display: flex; flex-direction: column;">
+              <div style="background: #2e7d32; color: white; padding: 10px; font-weight: bold; text-align: center;">
+                1. Điểm dừng
+              </div>
+              <div style="padding: 5px; flex-grow: 1; font-size: 0.7em; background: rgba(46, 125, 50, 0.05);">
+                <p>Là trường hợp <strong>đơn giản nhất</strong> mà hàm có thể trả về kết quả ngay lập tức không cần
+                  tính toán thêm.</p>
+                <ul style="margin-top: 1px;">
+                  <li>Ngăn chặn đệ quy vô hạn.</li>
+                  <li>Thường nằm ở đầu hàm.</li>
+                </ul>
+                <pre style="margin-top: 1px; box-shadow: none;"><code class="language-cpp" data-trim>
+        if (n <= 1) return 1;
+                  </code></pre>
+              </div>
+            </div>
+
+            <div
+              style="flex: 1; border: 2px solid #1565c0; border-radius: 15px; overflow: hidden; display: flex; flex-direction: column;">
+              <div style="background: #1565c0; color: white; padding: 10px; font-weight: bold; text-align: center;">
+                2. Bước đệ quy
+              </div>
+              <div style="padding: 5px; flex-grow: 1; font-size: 0.7em; background: rgba(21, 101, 192, 0.05);">
+                <p>Là phần logic <strong>chia nhỏ</strong> bài toán lớn thành các bài toán con tương tự nhưng có kích
+                  thước nhỏ hơn.</p>
+                <ul style="margin-top: 1px;">
+                  <li>Gọi lại chính nó.</li>
+                  <li>Tiến dần về phía điểm dừng.</li>
+                </ul>
+                <pre style="margin-top: 1px; box-shadow: none;"><code class="language-cpp" data-trim>
+        return n * factorial(n - 1);
+                  </code></pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="fragment"
+            style="margin-top: 25px; padding: 10px; background: #fff3e0; border-left: 5px solid #ff9800; font-size: 0.7em; text-align: left;">
+            <strong>⚠️ Cảnh báo:</strong> Nếu thiếu <em>Điểm dừng</em> hoặc <em>Bước đệ quy</em> không tiến về điểm
+            dừng, chương trình sẽ gây treo hệ thống hoặc cạn kiệt bộ nhớ Stack.
+          </div>
+        </section>
+
+        <section style="font-size: 0.82em;">
+          <h2>Tối ưu hóa đệ quy <span style="font-size: 0.6em; color: #999; font-weight: normal;">(nâng cao)</span></h2>
+          <div class="question-box">
+            <div class="question-title">Đệ quy đuôi</div>
+            <p style="font-size: 0.8em;">Là trường hợp lời gọi đệ quy là <strong>hành động cuối cùng</strong> của hàm.
+              Trình biên dịch <em>có thể</em> tái sử dụng vùng nhớ Stack, giúp hiệu năng tương đương vòng lặp.</p>
+          </div>
+
+          <pre style="margin-top: 15px;"><code class="language-cpp" data-trim style="font-size: 0.7em;">
+// Biến tích lũy → lời gọi đệ quy là lệnh cuối
+int factorial(int n, int acc = 1) {
+    if (n <= 1) return acc;
+    return factorial(n - 1, n * acc); // Tail call
+}
+          </code></pre>
+          <p style="font-size: 0.7em; color: #e65100; margin-top: 10px;">
+            ⚠️ C++ không đảm bảo TCO theo chuẩn — phụ thuộc compiler (GCC/Clang thường hỗ trợ, MSVC không).
+            Haskell, Scheme đảm bảo TCO.
+          </p>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">4.</span><br />
+            Lambda, Closure và Currying
+          </h1>
+        </section>
+
+        <section style="font-size: 0.9em;">
+          <h2>Lambda: hàm ẩn danh</h2>
+          <p>Lambda là hàm <strong>không cần đặt tên</strong> — viết ngay tại chỗ dùng.</p>
+          <pre><code class="language-cpp" data-trim style="font-size: 0.8em;">
+// Hàm có tên
+int square(int x) { return x * x; }
+
+// Lambda — cùng logic, không cần tên
+auto square = [](int x) { return x * x; };
+
+// Dùng ngay mà không gán tên
+std::sort(v.begin(), v.end(),
+    [](int a, int b) { return a > b; });
+          </code></pre>
+          <p class="fragment" style="font-size: 0.8em; color: #555; margin-top: 0.5em;">
+            Cú pháp C++: <span class="inline-code">[capture](params) { body }</span>
+          </p>
+        </section>
+
+        <section style="font-size: 0.75em;">
+          <h2>Bao đóng (Closure)</h2>
+          <div class="question-box">
+            <div class="question-title">Ý chính</div>
+            <p>
+              <strong>Closure</strong> là một hàm đi kèm <strong>môi trường dữ liệu</strong> mà nó mang theo.
+              <br><span style="font-size: 0.85em; color: #555;">Trong C++, môi trường đó đến từ capture của lambda.</span>
+            </p>
+          </div>
+
+          <div style="display: flex; gap: 15px; margin-top: 10px;">
+            <div style="flex: 1; border: 1px solid #ccc; border-radius: 10px; background: #f5f5f5; padding: 10px;">
+              <h4 style="font-size: 0.7em; color: #666;">Hàm thông thường</h4>
+              <pre><code class="language-cpp" data-trim style="font-size: 0.75em;">
+bool checker(int value, int threshold) {
+    return value > threshold;
+}
+checker(120, 100); // phải truyền threshold mỗi lần
+checker(50, 100);
+              </code></pre>
+            </div>
+
+            <div style="flex: 1; border: 2px solid #2a7ae2; border-radius: 10px; background: #e3f2fd; padding: 10px;">
+              <h4 style="font-size: 0.7em; color: #1565c0;">Closure (Lambda Capture)</h4>
+              <pre><code class="language-cpp" data-trim style="font-size: 0.75em;">
+int threshold = 100;
+auto isOver = [threshold](int value) {
+    return value > threshold;
+}; // "Gói" threshold vào hàm
+isOver(120); // true — chỉ cần 1 tham số
+              </code></pre>
+            </div>
+          </div>
+
+          <div
+            style="background: #fff3e0; padding: 10px; border-radius: 8px; margin-top: 12px; font-size: 0.75em; font-weight: bold; color: #e65100; text-align: center;">
+            Closure = Hàm + dữ liệu đã capture
+          </div>
+          <p style="font-size: 0.7em; color: #555; margin-top: 8px; font-style: italic;">
+            Function pointer chỉ trỏ đến mã; closure mang theo cả dữ liệu đã capture.
+            <br><strong>Tại sao không truyền tham số luôn?</strong> Vì API như <span class="inline-code">filter</span>, <span class="inline-code">sort</span> chỉ nhận hàm 1 tham số — closure giúp "gói" dữ liệu thêm vào.
+          </p>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Currying và Partial Application</h2>
+          <p><strong>Currying:</strong> biến hàm nhiều tham số thành chuỗi hàm, mỗi hàm nhận 1 tham số.</p>
+
+          <div style="display: flex; gap: 15px; margin-top: 15px;">
+            <div style="flex: 1; border: 1px solid #ccc; border-radius: 10px; background: #f5f5f5; padding: 10px;">
+              <h4 style="font-size: 0.7em; color: #666;">Hàm thông thường</h4>
+              <pre><code class="language-cpp" data-trim style="font-size: 0.7em;">
+int add(int x, int y) {
+    return x + y;
+}
+int res = add(5, 10); // 15
+              </code></pre>
+            </div>
+
+            <div style="flex: 1; border: 2px solid #4caf50; border-radius: 10px; background: #f1f8e9; padding: 10px;">
+              <h4 style="font-size: 0.7em; color: #2e7d32;">Hàm đã Curried</h4>
+              <pre><code class="language-cpp" data-trim style="font-size: 0.7em;">
+auto curried_add = [](int x) {
+    return [x](int y) { return x + y; };
+};
+auto add5 = curried_add(5); // partial!
+int res = add5(10);         // 15
+              </code></pre>
+            </div>
+          </div>
+
+          <div
+            style="margin-top: 15px; padding: 10px; border-left: 5px solid #2a7ae2; background: #e3f2fd; font-size: 0.75em;">
+            <strong>Currying</strong> = cách <strong><em>biến đổi</em></strong> hàm (nhiều tham số → chuỗi hàm 1 tham số).
+            <br><strong>Partial Application</strong> = cách <strong><em>dùng</em></strong> hàm đã curried để cố định bớt tham số.
+            <br><span class="inline-code">curried_add(5)</span> trả về hàm "cộng thêm 5" — đó là partial application.
+          </div>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Gốc lý thuyết: Phép tính Lambda</h2>
+          <p>Mọi khái niệm trên đều bắt nguồn từ <strong>Lambda Calculus</strong> (Alonzo Church, 1936).</p>
+          <ul style="margin-top: 0.8em;">
+            <li><strong>$\lambda x.M$</strong> — định nghĩa hàm ẩn danh (tương đương lambda trong code).</li>
+            <li><strong>$E_1\ E_2$</strong> — áp dụng hàm lên đối số.</li>
+          </ul>
+          <div class="question-box" style="margin-top: 0.8em;">
+            <p style="text-align: center;">$\lambda x.\ x + y$</p>
+            <p style="font-size: 0.8em; text-align: center;">
+              $x$ = <span style="color: #2e7d32; font-weight: bold;">biến ràng buộc</span> (tham số),
+              $y$ = <span style="color: #c62828; font-weight: bold;">biến tự do</span> (cần capture → closure!)
+            </p>
+          </div>
+          <p style="font-size: 0.8em; color: #555; margin-top: 0.5em; font-style: italic;">
+            Lambda Calculus chứng minh: chỉ cần hàm là đủ để biểu diễn mọi tính toán.
+          </p>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">5.</span><br />
+            Khi nào FP mạnh, khi nào FP khó
           </h1>
         </section>
         <section>
-          <h2>Nội dung chi tiết 2</h2>
-          <p>Chi tiết về nội dung 2...</p>
+          <h2>FP mạnh ở đâu?</h2>
+          <div style="font-size: 0.9em;">
+            <ul>
+              <li><strong>Dễ suy luận:</strong> Do tính minh bạch tham chiếu, ta có thể hiểu hàm mà không
+                cần biết trạng thái toàn cục của hệ thống.</li>
+              <li><strong>Dễ kiểm thử:</strong> Các hàm thuần khiết độc lập hoàn toàn, không cần giả lập môi
+                trường phức tạp.</li>
+              <li><strong>Tính tái sử dụng:</strong> Hàm bậc cao và kết hợp hàm tạo ra các thành phần cực
+                kỳ linh hoạt.</li>
+              <li><strong>Song song hóa:</strong> Tính bất biến giúp giảm mạnh nguy cơ xung đột dữ liệu giữa các luồng.
+              </li>
+            </ul>
+          </div>
+        </section>
+        <section style="font-size: 0.9em;">
+          <h2>FP khó ở đâu?</h2>
+          <ul>
+            <li><strong>Hiệu năng:</strong> Việc sao chép dữ liệu để đảm bảo bất biến có thể gây tốn bộ nhớ — tuy nhiên
+              các ngôn ngữ FP hiện đại dùng <em>Structural Sharing</em> để giảm thiểu chi phí này.</li>
+            <li><strong>Độ dốc học tập:</strong> Yêu cầu lập trình viên từ bỏ các thói quen mệnh lệnh (vòng lặp, gán giá
+              trị) để chuyển sang tư duy hàm.</li>
+            <li><strong>Khi nào dùng:</strong> FP cực kỳ hiệu quả cho xử lý dữ liệu, trình biên dịch, hệ thống phân tán;
+              nhưng có thể không tối ưu cho lập trình hệ thống cấp thấp hoặc đồ họa hiệu năng cao.</li>
+          </ul>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h2>Tổng kết</h2>
+          <ol style="font-size: 0.95em;">
+            <li>Ưu tiên <strong>hàm thuần</strong> — cùng input, cùng output.</li>
+            <li>Ưu tiên <strong>dữ liệu bất biến</strong> — không sửa, chỉ tạo mới.</li>
+            <li>Mô tả xử lý như <strong>chuỗi biến đổi dữ liệu</strong> — filter → map → reduce.</li>
+          </ol>
+          <p class="fragment" style="font-size: 0.8em; color: #555; margin-top: 1em; font-style: italic;">
+            FP không thay thế OOP — chúng bổ sung cho nhau trong ngôn ngữ hiện đại.
+          </p>
+        </section>
+
+        <section style="font-size: 0.9em;">
+          <h2>Tự kiểm tra</h2>
+          <ol>
+            <li>Hàm thuần khiết là gì? Cho ví dụ hàm thuần và hàm không thuần.</li>
+            <li>Closure khác gì function pointer?</li>
+            <li><strong>Mini-exercise:</strong> Viết lại đoạn code dưới đây theo pipeline, chỉ ra rõ 3 bước filter, map, reduce:
+              <pre style="margin-top: 0.3em;"><code class="language-cpp" data-trim style="font-size: 0.8em;">
+int total = 0;
+for (int x : nums)
+    if (x % 2 == 0) total += x * x;
+              </code></pre>
+              <em style="font-size: 0.8em; color: #555;">Gợi ý: filter giữ số chẵn → map bình phương → reduce cộng dồn.</em>
+            </li>
+          </ol>
         </section>
       </section>
 
