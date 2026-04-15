@@ -220,12 +220,12 @@ void sortAsc(vector&lt;int&gt;& v) { sort(v.begin(), v.end()); }
         <section>
           <h1>
             <span class="text-light">2.</span><br />
-            Các nguyên lý cốt lõi
+            Các nguyên lý <br /> cốt lõi
           </h1>
         </section>
 
         <section style="font-size: 0.9em;">
-          <h2>4 nguyên tắc cốt lõi</h2>
+          <h2>4 nguyên lý cốt lõi</h2>
           <ol>
             <li><strong>Hàm thuần khiết</strong> — cùng đầu vào → cùng đầu ra, không gây tác dụng phụ.</li>
             <li><strong>Dữ liệu bất biến</strong> — không sửa, chỉ tạo mới.</li>
@@ -321,12 +321,14 @@ void sortAsc(vector&lt;int&gt;& v) { sort(v.begin(), v.end()); }
               <h4 style="font-size: 0.7em; color: #666;">Mệnh lệnh (vòng lặp + biến)</h4>
               <pre><code class="language-cpp" data-trim style="font-size: 0.75em;">
 vector&lt;int&gt; scores = {85, 42, 91, 67, 53, 78};
+
 double total = 0;
 for (int s : scores) {
     if (s >= 60) {        // lọc
         total += s / 10.0; // quy thang 10
     }
 }
+
 // total = 8.5 + 9.1 + 6.7 + 7.8 = 32.1
               </code></pre>
             </div>
@@ -418,6 +420,7 @@ double total = reduce(scaled, 0.0,
         int factorial(int n) {
             // Không dùng biến đếm, không cập nhật
             if (n <= 1) return 1;
+            
             return n * factorial(n - 1);
         }
               </code></pre>
@@ -485,7 +488,7 @@ double total = reduce(scaled, 0.0,
               Trình biên dịch <em>có thể</em> tái sử dụng vùng nhớ Stack, giúp hiệu năng tương đương vòng lặp.</p>
           </div>
 
-          <pre style="margin-top: 15px;"><code class="language-cpp" data-trim style="font-size: 0.7em;">
+          <pre style="margin-top: 15px;"><code class="language-cpp" data-trim>
 // Biến tích lũy → lời gọi đệ quy là lệnh cuối
 int factorial(int n, int acc = 1) {
     if (n <= 1) return acc;
@@ -507,10 +510,10 @@ int factorial(int n, int acc = 1) {
           </h1>
         </section>
 
-        <section style="font-size: 0.9em;">
+        <section>
           <h2>Lambda: hàm ẩn danh</h2>
           <p>Lambda là hàm <strong>không cần đặt tên</strong> — viết ngay tại chỗ dùng.</p>
-          <pre><code class="language-cpp" data-trim style="font-size: 0.8em;">
+          <pre><code class="language-cpp" data-trim>
 // Hàm có tên
 int square(int x) { return x * x; }
 
@@ -543,7 +546,7 @@ std::sort(v.begin(), v.end(),
 bool checker(int value, int threshold) {
     return value > threshold;
 }
-checker(120, 100); // phải truyền threshold mỗi lần
+checker(120, 100); // truyền threshold mỗi lần
 checker(50, 100);
               </code></pre>
             </div>
@@ -581,6 +584,7 @@ isOver(120); // true — chỉ cần 1 tham số
 int add(int x, int y) {
     return x + y;
 }
+
 int res = add(5, 10); // 15
               </code></pre>
             </div>
