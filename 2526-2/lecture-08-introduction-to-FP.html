@@ -360,7 +360,7 @@ auto scaled = map(passed,
     [](int s) { return s / 10.0; });
 
 double total = reduce(scaled, 0.0,
-    [](double a, double b) { return a+b; });
+    [](double acc, double s) { return acc + s; });
               </code></pre>
             </div>
           </div>
