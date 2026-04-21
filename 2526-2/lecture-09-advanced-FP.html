@@ -943,31 +943,33 @@ Id 2 = (Y F) 2
   <script src="plugin/highlight/highlight.js"></script>
   <script src="plugin/math/math.js"></script>
   <script>
-    // Custom highlight.js language cho pseudocode ML-style dùng trong bài giảng.
-    // hljs được expose qua RevealHighlight.hljs.
-    RevealHighlight.hljs.registerLanguage('mlpseudo', function (hljs) {
-      return {
-        name: 'ML Pseudo',
-        aliases: ['ml-pseudo'],
-        keywords: {
-          keyword: 'fun val lambda fn let in if then else case of nil',
-          literal: 'true false'
-        },
-        contains: [
-          hljs.COMMENT(/\(\*/, /\*\)/),
-          hljs.QUOTE_STRING_MODE,
-          hljs.C_NUMBER_MODE,
-          { className: 'operator', begin: /=>|->|::|\|/ }
-        ]
-      };
-    });
-
     Reveal.initialize({
       controlsLayout: "edges",
       slideNumber: true,
       hashOneBasedIndex: true,
       hash: true,
       plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX],
+      highlight: {
+        beforeHighlight: function (hljs) {
+          // Custom language cho pseudocode ML-style
+          hljs.registerLanguage('mlpseudo', function (hljs) {
+            return {
+              name: 'ML Pseudo',
+              aliases: ['ml-pseudo'],
+              keywords: {
+                keyword: 'fun val lambda fn let in if then else case of nil',
+                literal: 'true false'
+              },
+              contains: [
+                hljs.COMMENT(/\(\*/, /\*\)/),
+                hljs.QUOTE_STRING_MODE,
+                hljs.C_NUMBER_MODE,
+                { className: 'operator', begin: /=>|->|::|\|/ }
+              ]
+            };
+          });
+        }
+      }
     });
   </script>
 </body>
