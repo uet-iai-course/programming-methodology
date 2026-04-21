@@ -943,8 +943,9 @@ Id 2 = (Y F) 2
   <script src="plugin/highlight/highlight.js"></script>
   <script src="plugin/math/math.js"></script>
   <script>
-    // Custom highlight.js language cho pseudocode ML-style dùng trong bài giảng
-    hljs.registerLanguage('mlpseudo', function (hljs) {
+    // Custom highlight.js language cho pseudocode ML-style dùng trong bài giảng.
+    // hljs được expose qua RevealHighlight.hljs.
+    RevealHighlight.hljs.registerLanguage('mlpseudo', function (hljs) {
       return {
         name: 'ML Pseudo',
         aliases: ['ml-pseudo'],
