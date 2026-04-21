@@ -155,6 +155,23 @@ square 5    (* ra 25 *)
           </p>
         </section>
 
+        <section style="font-size: 0.9em;">
+          <h2>Quy ước: áp dụng gắn trái</h2>
+          <div class="question-box">
+            <p>Áp dụng hàm viết bằng cách <strong>đặt cạnh nhau</strong>, không cần ngoặc. Mặc định <strong>gắn trái</strong>:</p>
+            <p style="text-align: center; margin-top: 0.5em;">
+              <span class="inline-code">f a b c</span>  ≡  <span class="inline-code">((f a) b) c</span>
+            </p>
+          </div>
+          <p style="margin-top: 0.8em;">Ví dụ: <span class="inline-code">K (D (succ 0)) (r 2)</span> thực ra là:</p>
+          <pre><code class="language-mlpseudo" data-trim>
+((K (D (succ 0))) (r 2))
+          </code></pre>
+          <p style="margin-top: 0.5em; color: #555; font-size: 0.85em;">
+            Hệ quả: hàm nhiều tham số được xem như chuỗi hàm 1 tham số (currying tự nhiên).
+          </p>
+        </section>
+
         <section style="font-size: 0.82em;">
           <h2>Tính toán bằng viết lại</h2>
           <p>Tính toán trong FP = lặp đi lặp lại phép <strong>thay thế</strong> biểu thức.</p>
@@ -504,6 +521,23 @@ D (succ 0)
           </ul>
           <p style="margin-top: 0.8em; color: #e65100; font-size: 0.85em;">
             ⚠️ Cần <strong>thay thế tránh bắt biến</strong>: đổi tên biến ràng buộc nếu cần để tránh "bắt" biến tự do của $N$.
+          </p>
+        </section>
+
+        <section style="font-size: 0.9em;">
+          <h2>Tương đương β (β-equivalence)</h2>
+          <div class="question-box">
+            <p>Quy giản β <strong>không đối xứng</strong>: $M \to_\beta N$ không kéo theo $N \to_\beta M$.</p>
+            <p style="margin-top: 0.5em;">
+              <strong>Tương đương β</strong> ($=_\beta$) là bao đóng <em>phản xạ & bắc cầu</em> của $\to_\beta$:
+            </p>
+            <p style="text-align: center; margin-top: 0.3em; font-size: 1.05em;">
+              $M =_\beta N$ ⟺ có chuỗi quy giản nối $M$ với $N$ (hai chiều tuỳ ý).
+            </p>
+          </div>
+          <p style="margin-top: 0.8em;">Ví dụ: $(\lambda x.x)\ 5 =_\beta 5$ và $5 =_\beta (\lambda x.x)\ 5$.</p>
+          <p style="margin-top: 0.5em; color: #555; font-style: italic; font-size: 0.85em;">
+            $=_\beta$ dùng để nói "hai biểu thức biểu diễn <em>cùng một giá trị</em>" — ta sẽ gặp lại khi chứng minh $Y M =_\beta M(Y M)$.
           </p>
         </section>
 
