@@ -38,10 +38,10 @@
           </ol>
         </section>
 
-        <section>
+        <section style="font-size: 0.92em;">
           <h2>Mục tiêu buổi học</h2>
-          <p style="font-size: 0.9em;">Hết buổi, bạn sẽ:</p>
-          <ul style="font-size: 0.9em;">
+          <p>Hết buổi, bạn sẽ:</p>
+          <ul>
             <li>Xác định được <strong>biểu thức quy giản (redex)</strong> và thực hiện <strong>quy giản β</strong>.</li>
             <li>Phân biệt được 3 chiến lược tính toán: <strong>gọi theo giá trị / gọi theo tên / đánh giá lười</strong>.</li>
             <li>Hiểu định lý: <strong>gọi theo tên là mạnh nhất</strong> — biểu thức hội tụ với chiến lược này thì cũng hội tụ với mọi chiến lược khác.</li>
@@ -58,7 +58,7 @@
         <section>
           <h1>
             <span class="text-light">0.</span><br />
-            Tại sao FP quan trọng?
+            Tại sao FP <br /> quan trọng?
           </h1>
         </section>
 
@@ -109,7 +109,7 @@
         <section>
           <h1>
             <span class="text-light">1.</span><br />
-            Nền tảng: Trừu tượng hoá & Áp dụng
+            Nền tảng: Trừu tượng hoá <br /> & Áp dụng
           </h1>
         </section>
 
@@ -139,18 +139,18 @@ square 5    (* ra 25 *)
           </div>
         </section>
 
-        <section style="font-size: 0.9em;">
+        <section style="font-size: 0.82em;">
           <h2>Hai thành phần cơ bản</h2>
           <div class="question-box">
             <div class="question-title">FP chỉ cần 2 thứ</div>
             <ul>
               <li><strong>Trừu tượng hoá (abstraction)</strong> — định nghĩa hàm: <span class="inline-code">lambda x => expr</span>
-                <br><span style="font-size: 0.85em; color: #555;">Biểu thức <span class="inline-code">expr</span> được "trừu tượng hoá" khỏi giá trị cụ thể của <span class="inline-code">x</span>.</span></li>
+                <br><span style="color: #555;">Biểu thức <span class="inline-code">expr</span> được "trừu tượng hoá" khỏi giá trị cụ thể của <span class="inline-code">x</span>.</span></li>
               <li><strong>Áp dụng hàm (application)</strong> — gọi hàm: <span class="inline-code">f_expr a_expr</span>
-                <br><span style="font-size: 0.85em; color: #555;">Áp dụng hàm (ký hiệu bởi) <span class="inline-code">f_expr</span> lên đối số (ký hiệu bởi) <span class="inline-code">a_expr</span>.</span></li>
+                <br><span style="color: #555;">Áp dụng hàm <span class="inline-code">f_expr</span> lên đối số <span class="inline-code">a_expr</span>.</span></li>
             </ul>
           </div>
-          <p style="margin-top: 0.8em; font-style: italic; color: #2a7ae2;">
+          <p style="margin-top: 0.6em; font-style: italic; color: #2a7ae2;">
             Mọi chương trình FP thuần đều xây dựng từ 2 cơ chế này (+ vài hằng số và phép toán nguyên thuỷ).
           </p>
         </section>
@@ -264,8 +264,34 @@ length [1, 2, 3]
         <section>
           <h1>
             <span class="text-light">2.</span><br />
-            Chiến lược tính toán
+            Chiến lược <br /> tính toán
           </h1>
+        </section>
+
+        <section style="font-size: 0.9em;">
+          <h2>Câu hỏi trực giác</h2>
+          <div class="question-box">
+            <p style="text-align: center; font-size: 1.05em;">
+              Với biểu thức lồng nhau, máy tính rút gọn <strong>từ trong ra ngoài</strong> hay <strong>từ ngoài vào trong</strong>?
+            </p>
+          </div>
+          <p style="margin-top: 0.8em;">Ví dụ: với <span class="inline-code">K(x, y) = x</span> (bỏ <span class="inline-code">y</span>):</p>
+          <pre><code class="language-mlpseudo" data-trim>
+K(10, phép_tính_vô_hạn)
+          </code></pre>
+          <div style="display: flex; gap: 15px; margin-top: 0.8em;">
+            <div style="flex: 1; background: #ffebee; padding: 8px; border-radius: 8px; font-size: 0.85em;">
+              <strong style="color: #c62828;">Từ trong ra (by-value):</strong><br>
+              Tính <span class="inline-code">phép_tính_vô_hạn</span> trước → <strong>treo</strong>.
+            </div>
+            <div style="flex: 1; background: #e8f5e9; padding: 8px; border-radius: 8px; font-size: 0.85em;">
+              <strong style="color: #2e7d32;">Từ ngoài vào (by-name):</strong><br>
+              Áp dụng <span class="inline-code">K</span> ngay, bỏ <span class="inline-code">y</span> → <strong>ra 10</strong>.
+            </div>
+          </div>
+          <p style="margin-top: 0.6em; font-style: italic; color: #2a7ae2; font-size: 0.85em;">
+            Cùng biểu thức, khác chiến lược → kết quả có thể rất khác.
+          </p>
         </section>
 
         <section style="font-size: 0.85em;">
@@ -287,7 +313,7 @@ val v = K (D (succ 0)) (r 2);
           </p>
         </section>
 
-        <section style="font-size: 0.85em;">
+        <section style="font-size: 0.78em;">
           <h2>Chiến lược 1: Gọi theo giá trị</h2>
           <p><em>(Còn gọi: eager / đánh giá nôn nóng, applicative order, innermost, call-by-value)</em></p>
           <div class="question-box">
@@ -306,7 +332,7 @@ K (D (succ 0)) (r 2)
           <p style="color: #c62828; font-size: 0.9em;">❌ Không ra giá trị — không hội tụ.</p>
         </section>
 
-        <section style="font-size: 0.85em;">
+        <section style="font-size: 0.8em;">
           <h2>Chiến lược 2: Gọi theo tên</h2>
           <p><em>(Còn gọi: normal order, outermost, call-by-name)</em></p>
           <div class="question-box">
@@ -339,7 +365,7 @@ D (succ 0)
           </p>
         </section>
 
-        <section style="font-size: 0.85em;">
+        <section style="font-size: 0.7em;">
           <h2>Chiến lược 3: Đánh giá lười (call-by-need)</h2>
           <div class="question-box">
             <p><strong>Nguyên tắc:</strong> Giống gọi theo tên, nhưng <strong>nhớ kết quả</strong> lần đầu tính → các lần sau dùng lại.</p>
@@ -394,7 +420,7 @@ D (succ 0)
           </table>
         </section>
 
-        <section style="font-size: 0.85em;">
+        <section style="font-size: 0.75em;">
           <h2>Định lý: gọi theo tên mạnh nhất</h2>
           <div class="question-box">
             <div class="question-title">Phát biểu</div>
@@ -504,7 +530,7 @@ D (succ 0)
           </p>
         </section>
 
-        <section style="font-size: 0.9em;">
+        <section style="font-size: 0.82em;">
           <h2>Quy giản β: luật tính toán cốt lõi</h2>
           <div class="question-box">
             <p style="text-align: center; font-size: 1.1em;">
@@ -524,7 +550,7 @@ D (succ 0)
           </p>
         </section>
 
-        <section style="font-size: 0.9em;">
+        <section style="font-size: 0.8em;">
           <h2>Tương đương β (β-equivalence)</h2>
           <div class="question-box">
             <p>Quy giản β <strong>không đối xứng</strong>: $M \to_\beta N$ không kéo theo $N \to_\beta M$.</p>
@@ -607,14 +633,14 @@ D (succ 0)
         </section>
 
         <!-- ====== Ví dụ 4: cây AST + reduction ====== -->
-        <section style="font-size: 0.85em;">
+        <section style="font-size: 0.78em;">
           <h2>Ví dụ 4 — $\lambda x.(\lambda y.y)\ x \to \lambda x.x$</h2>
           <p>Biểu thức quy giản nằm <em>bên trong</em> trừu tượng hoá. Tính toán Lambda cho phép quy giản dưới lambda.</p>
           <div style="display: flex; justify-content: center; align-items: center; gap: 30px; margin-top: 0.5em;">
             <!-- Cây trước -->
             <div>
               <p style="text-align: center; font-size: 0.85em; margin-bottom: 0.3em;">Trước:</p>
-              <pre style="font-size: 0.9em; background: #fafafa; padding: 10px; box-shadow: none;"><code>     λx
+              <pre style="font-size: 0.85em; background: #fafafa; color: #333; padding: 10px; box-shadow: none; width: fit-content; margin: 0;"><code style="background: none; color: inherit;">     λx
       |
       @    ← BTQG
      / \
@@ -626,7 +652,7 @@ D (succ 0)
             <!-- Cây sau -->
             <div>
               <p style="text-align: center; font-size: 0.85em; margin-bottom: 0.3em;">Sau:</p>
-              <pre style="font-size: 0.9em; background: #fafafa; padding: 10px; box-shadow: none;"><code>     λx
+              <pre style="font-size: 0.85em; background: #fafafa; color: #333; padding: 10px; box-shadow: none; width: fit-content; margin: 0;"><code style="background: none; color: inherit;">     λx
       |
       x  (dạng chuẩn)</code></pre>
             </div>
@@ -636,7 +662,7 @@ D (succ 0)
           </p>
         </section>
 
-        <section style="font-size: 0.9em;">
+        <section style="font-size: 0.82em;">
           <h2>Dạng chuẩn (Normal Form)</h2>
           <div class="question-box">
             <p>Biểu thức <em>dạng chuẩn</em> là biểu thức <strong>không chứa biểu thức quy giản</strong> nào.</p>
@@ -685,7 +711,7 @@ D (succ 0)
           </div>
         </section>
 
-        <section style="font-size: 0.85em;">
+        <section style="font-size: 0.75em;">
           <h2>Ví dụ 5 — $\Omega$ tự sinh ra chính nó</h2>
           <p>Quy giản β: thay $x$ trong thân <span class="inline-code">x x</span> bằng $(\lambda x.x\ x)$ (cây bên phải):</p>
           <pre style="margin-top: 0.5em;"><code class="language-mlpseudo" data-trim>
@@ -714,7 +740,7 @@ D (succ 0)
           </p>
         </section>
 
-        <section style="font-size: 0.9em;">
+        <section style="font-size: 0.78em;">
           <h2>Tính hội lưu (Confluence)</h2>
           <p>Quy giản β <em>không xác định</em>: một biểu thức có thể có nhiều biểu thức quy giản, chọn cái nào cũng được.</p>
           <div class="question-box" style="margin-top: 0.8em;">
@@ -751,7 +777,7 @@ Z = lambda n => if n=0 then 0 else 1 + Z(n-1)
           </div>
         </section>
 
-        <section style="font-size: 0.9em;">
+        <section style="font-size: 0.82em;">
           <h2>Y-combinator</h2>
           <div class="question-box">
             <p style="text-align: center; font-size: 1.05em;">
@@ -821,36 +847,25 @@ Y M
 
         <section style="font-size: 0.85em;">
           <h2>Ví dụ 7 — Quy giản $Y M$</h2>
-          <p>Khi áp dụng $Y$ lên $M$ (bước 1), rồi tiếp tục β (bước 2) — cây tự sinh ra một lớp $M$ mới:</p>
-          <pre style="margin-top: 0.3em; font-size: 0.85em; background: #fafafa; box-shadow: none; padding: 10px;"><code>YM:
+          <p style="font-size: 0.95em;">Khi áp dụng $Y$ lên $M$, cây tự sinh ra một lớp $M$ mới:</p>
+          <pre style="margin-top: 0.3em; font-size: 0.7em; background: #fafafa; color: #333; box-shadow: none; padding: 10px; width: fit-content;"><code style="background: none; color: inherit;">YM  →β  (λx.M(xx))(λx.M(xx))  →β  M((λx.M(xx))(λx.M(xx)))  =  M(YM)</code></pre>
+          <div style="display: flex; justify-content: center; gap: 15px; margin-top: 0.5em;">
+            <pre style="font-size: 0.75em; background: #fafafa; color: #333; box-shadow: none; padding: 8px; width: fit-content; margin: 0;"><code style="background: none; color: inherit;">YM:
+    @
+   / \
+  Y   M</code></pre>
+            <div style="font-size: 1.5em; color: #2a7ae2; align-self: center;">→</div>
+            <pre style="font-size: 0.75em; background: #fafafa; color: #333; box-shadow: none; padding: 8px; width: fit-content; margin: 0;"><code style="background: none; color: inherit;">M(YM):
      @
     / \
-   Y   M
-
-→β (sau khi khai triển Y và quy giản):
-
-         @
-        / \
-       /   \
-      λx    λx
-      |      |      ← hai cây con λx.M(xx)
-     @(M)   @(M)
-
-→β (áp dụng trái lên phải):
-
-         @
-        / \
-       M   ┌───────┐
-           │ (λx.M(xx))(λx.M(xx)) │  ← chính là YM!
-           └───────┘
-
-= M (YM)</code></pre>
-          <p style="margin-top: 0.3em; color: #2a7ae2; font-style: italic; font-size: 0.9em;">
-            Ý chính: $YM$ "nhả" ra một $M$ bên trái, phần còn lại <em>lại chính là $YM$</em>. Mỗi bước quy giản là một lần "gọi đệ quy".
+   M   YM</code></pre>
+          </div>
+          <p style="margin-top: 0.5em; color: #2a7ae2; font-style: italic; font-size: 0.85em;">
+            Ý chính: $YM$ "nhả" ra một $M$ bên trái, phần còn lại <em>lại chính là $YM$</em> — mỗi bước là một lần "gọi đệ quy".
           </p>
         </section>
 
-        <section style="font-size: 0.85em;">
+        <section style="font-size: 0.7em;">
           <h2>Ví dụ: $Id = YF$ tính hàm identity trên số tự nhiên</h2>
           <p>Với $F = \lambda f.\lambda n.\ \text{if}\ n=0\ \text{then}\ 0\ \text{else}\ 1+f(n-1)$, định nghĩa $Id = YF$.</p>
           <pre style="margin-top: 0.5em; font-size: 0.9em;"><code>
@@ -871,7 +886,7 @@ Id 2 = (Y F) 2
           </p>
         </section>
 
-        <section style="font-size: 0.9em;">
+        <section style="font-size: 0.78em;">
           <h2>Y chỉ dùng được với gọi theo tên</h2>
           <div class="question-box">
             <p><strong>Vấn đề:</strong> Với gọi theo giá trị, khi tính $Y M$:</p>
