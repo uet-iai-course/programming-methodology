@@ -33,7 +33,7 @@
           <ol>
             <li>Nền tảng: Trừu tượng hoá, Áp dụng, luật β</li>
             <li>Chiến lược tính toán</li>
-            <li>Phép tính Lambda</li>
+            <li>Tính toán Lambda</li>
             <li>Vai trò của FP: Tính tin cậy</li>
           </ol>
         </section>
@@ -84,7 +84,7 @@
           </ul>
           <p class="fragment" style="margin-top: 1em; color: #2a7ae2; font-style: italic;">
             Câu hỏi hôm nay: <strong>vì sao FP có những tính chất đó?</strong>
-            <br>→ Đi sâu vào nền tảng: luật β, chiến lược tính toán, Phép tính Lambda.
+            <br>→ Đi sâu vào nền tảng: luật β, chiến lược tính toán, Tính toán Lambda.
           </p>
         </section>
 
@@ -94,10 +94,10 @@
             <li><strong>FP</strong> = biến đổi dữ liệu qua các hàm, ưu tiên bất biến + cô lập tác dụng phụ.</li>
             <li><strong>Hàm thuần khiết</strong>: cùng input → cùng output, không tác dụng phụ.</li>
             <li><strong>Hàm bậc cao</strong>: lambda, bao đóng, pipeline <span class="inline-code">filter → map → reduce</span>.</li>
-            <li>Phép tính Lambda đã nhắc qua: <strong>$\lambda x.M$</strong> (hàm ẩn danh), <strong>$f\ x$</strong> (áp dụng hàm).</li>
+            <li>Tính toán Lambda đã nhắc qua: <strong>$\lambda x.M$</strong> (hàm ẩn danh), <strong>$f\ x$</strong> (áp dụng hàm).</li>
           </ul>
           <p style="margin-top: 1em; color: #555; font-style: italic;">
-            Bài 9 đi sâu vào <strong>cơ chế bên dưới</strong>: quy giản β, chiến lược tính toán, và Phép tính Lambda.
+            Bài 9 đi sâu vào <strong>cơ chế bên dưới</strong>: quy giản β, chiến lược tính toán, và Tính toán Lambda.
           </p>
         </section>
       </section>
@@ -124,16 +124,16 @@
           <div style="display: flex; gap: 15px; margin-top: 1em; font-size: 0.85em;">
             <div style="flex: 1;">
               <strong>Định nghĩa hàm:</strong>
-              <pre><code class="language-ml" data-trim>
+              <pre><code data-trim data-noescape>
 fun square x = x * x;
-val square = lambda x => x * x;
+val square = <span style="color:#f92672;font-weight:bold">lambda</span> x =&gt; x * x;
               </code></pre>
             </div>
             <div style="flex: 1;">
               <strong>Áp dụng hàm:</strong>
-              <pre><code class="language-ml" data-trim>
+              <pre><code data-trim data-noescape>
 square 5    (* ra 25 *)
-(lambda x => x * x) 5
+(<span style="color:#f92672;font-weight:bold">lambda</span> x =&gt; x * x) 5
               </code></pre>
             </div>
           </div>
@@ -184,7 +184,7 @@ fact 3
                 <br><span class="inline-code">((lambda x => body) arg)</span>
               </li>
               <li><strong>Kết quả quy giản (Reductum)</strong>: kết quả thay thế — thay mỗi <span class="inline-code">x</span> trong <span class="inline-code">body</span> bằng <span class="inline-code">arg</span>.</li>
-              <li><strong>Luật β</strong>: <span class="inline-code">expr → expr1</span> — thay redex trong <span class="inline-code">expr</span> bằng reductum của nó.</li>
+              <li><strong>Luật β</strong>: <span class="inline-code">expr → expr1</span> — thay biểu thức quy giản trong <span class="inline-code">expr</span> bằng kết quả quy giản của nó.</li>
             </ul>
           </div>
           <div style="margin-top: 0.8em; background: #e3f2fd; padding: 10px; border-radius: 8px; font-size: 0.9em;">
@@ -220,8 +220,8 @@ fun Fibo 0 = 1
         </section>
 
         <section style="font-size: 0.85em;">
-          <h2>Khớp mẫu trên list</h2>
-          <p>Khớp mẫu mạnh nhất khi dùng với cấu trúc dữ liệu (list, tree...).</p>
+          <h2>Khớp mẫu trên danh sách</h2>
+          <p>Khớp mẫu mạnh nhất khi dùng với cấu trúc dữ liệu (danh sách, cây...).</p>
           <pre><code class="language-ml" data-trim>
 (* x::rest nghĩa là head = x, tail = rest *)
 fun length nil = 0
@@ -252,7 +252,7 @@ length [1, 2, 3]
         </section>
 
         <section style="font-size: 0.85em;">
-          <h2>Vấn đề: nhiều redex, chọn cái nào?</h2>
+          <h2>Vấn đề: nhiều biểu thức quy giản, chọn cái nào?</h2>
           <pre><code class="language-ml" data-trim>
 fun K x y = x;                 (* bỏ y *)
 fun r z = r(r(z));             (* đệ quy vô hạn *)
@@ -261,7 +261,7 @@ fun succ v = v+1;
 
 val v = K (D (succ 0)) (r 2);
           </code></pre>
-          <p style="margin-top: 0.5em;">Biểu thức <span class="inline-code">K (D (succ 0)) (r 2)</span> có <strong>4 redex</strong>:</p>
+          <p style="margin-top: 0.5em;">Biểu thức <span class="inline-code">K (D (succ 0)) (r 2)</span> có <strong>4 biểu thức quy giản</strong>:</p>
           <ul style="font-size: 0.9em;">
             <li><span class="inline-code">K (D (succ 0))</span>, <span class="inline-code">D (succ 0)</span>, <span class="inline-code">succ 0</span>, <span class="inline-code">r 2</span></li>
           </ul>
@@ -277,16 +277,16 @@ val v = K (D (succ 0)) (r 2);
             <p><strong>Nguyên tắc:</strong> Đánh giá <strong>đối số trước</strong> khi áp dụng hàm.</p>
           </div>
           <p style="margin-top: 0.8em;">Với <span class="inline-code">K (D (succ 0)) (r 2)</span>:</p>
-          <pre><code class="language-ml" data-trim>
+          <pre><code data-trim data-noescape>
 K (D (succ 0)) (r 2)
 → K (D 1) (r 2)             (* succ 0 → 1 *)
 → K 1 (r 2)                 (* D 1 → 1 *)
-→ (lambda y => 1) (r 2)     (* K 1 → lambda y => 1 *)
+→ (<span style="color:#f92672;font-weight:bold">lambda</span> y =&gt; 1) (r 2)     (* K 1 → <span style="color:#f92672;font-weight:bold">lambda</span> y =&gt; 1 *)
 (* phải đánh giá r 2 trước khi gọi! *)
-→ (lambda y => 1) (r (r 2))
+→ (<span style="color:#f92672;font-weight:bold">lambda</span> y =&gt; 1) (r (r 2))
 → ... (đệ quy vô hạn)
           </code></pre>
-          <p style="color: #c62828; font-size: 0.9em;">❌ Không ra giá trị — diverge.</p>
+          <p style="color: #c62828; font-size: 0.9em;">❌ Không ra giá trị — không hội tụ.</p>
         </section>
 
         <section style="font-size: 0.85em;">
@@ -295,9 +295,9 @@ K (D (succ 0)) (r 2)
           <div class="question-box">
             <p><strong>Nguyên tắc:</strong> Áp dụng hàm <strong>ngay</strong>, chưa cần đánh giá đối số.</p>
           </div>
-          <pre><code class="language-ml" data-trim>
+          <pre><code data-trim data-noescape>
 K (D (succ 0)) (r 2)
-→ (lambda y => D (succ 0)) (r 2)   (* áp dụng K ngay *)
+→ (<span style="color:#f92672;font-weight:bold">lambda</span> y =&gt; D (succ 0)) (r 2)   (* áp dụng K ngay *)
 → D (succ 0)                        (* bỏ y, không đánh giá r 2! *)
 → if (succ 0)=0 then 1 else (succ 0)
 → if 1=0 then 1 else (succ 0)
@@ -384,12 +384,12 @@ D (succ 0)
             <p>Cho <span class="inline-code">expr</span> là biểu thức đóng (mọi biến đều được ràng buộc).</p>
             <ul style="margin-top: 0.5em;">
               <li>Nếu <span class="inline-code">expr</span> cho giá trị nguyên thuỷ <span class="inline-code">val</span> bằng <strong>bất kỳ</strong> chiến lược nào → gọi theo tên cũng cho <span class="inline-code">val</span>.</li>
-              <li>Nếu <span class="inline-code">expr</span> <strong>diverge</strong> bằng gọi theo tên → cũng diverge bằng 2 chiến lược còn lại.</li>
+              <li>Nếu <span class="inline-code">expr</span> <strong>không hội tụ</strong> bằng gọi theo tên → cũng không hội tụ bằng 2 chiến lược còn lại.</li>
             </ul>
           </div>
           <p style="margin-top: 0.8em; color: #2a7ae2; font-style: italic;">
             Gọi theo tên "bắt được" mọi kết quả mà các chiến lược khác có thể cho ra.
-            <br>→ Ví dụ trước: gọi theo tên cho 1, gọi theo giá trị diverge. <em>Ngược lại không bao giờ xảy ra.</em>
+            <br>→ Ví dụ trước: gọi theo tên cho 1, gọi theo giá trị không hội tụ. <em>Ngược lại không bao giờ xảy ra.</em>
           </p>
         </section>
 
@@ -414,12 +414,12 @@ D (succ 0)
         <section>
           <h1>
             <span class="text-light">3.</span><br />
-            Phép tính Lambda
+            Tính toán Lambda
           </h1>
         </section>
 
         <section style="font-size: 0.9em;">
-          <h2>Phép tính Lambda là gì?</h2>
+          <h2>Tính toán Lambda là gì?</h2>
           <ul>
             <li>Hệ thống hình thức do <strong>Alonzo Church</strong> đề xuất (1930s).</li>
             <li>Mô hình tính toán <em>trước</em> máy Turing, chỉ dùng <strong>hàm</strong>.</li>
@@ -510,13 +510,13 @@ D (succ 0)
         <!-- ====== Ví dụ 3: cây AST + reduction ====== -->
         <section style="font-size: 0.85em;">
           <h2>Ví dụ 3 — Cây AST: $(\lambda x.x\ x)(\lambda y.y)$</h2>
-          <p>Redex là subtree <span class="inline-code">@</span> ngoài cùng — áp dụng $(\lambda x.x\ x)$ lên $(\lambda y.y)$.</p>
+          <p>Biểu thức quy giản là cây con <span class="inline-code">@</span> ngoài cùng — áp dụng $(\lambda x.x\ x)$ lên $(\lambda y.y)$.</p>
           <div style="display: flex; justify-content: center; margin-top: 0.5em;">
             <svg width="520" height="240" xmlns="http://www.w3.org/2000/svg" style="font-family: serif;">
               <!-- Root @ -->
               <circle cx="260" cy="30" r="18" fill="#ffebee" stroke="#c62828" stroke-width="2"/>
               <text x="260" y="36" text-anchor="middle" font-size="18" fill="#c62828">@</text>
-              <text x="260" y="15" text-anchor="middle" font-size="11" fill="#c62828">redex</text>
+              <text x="260" y="15" text-anchor="middle" font-size="11" fill="#c62828">BTQG</text>
               <!-- Left: λx -->
               <line x1="245" y1="45" x2="140" y2="85" stroke="#333"/>
               <text x="140" y="100" text-anchor="middle" font-size="18">λx</text>
@@ -535,7 +535,7 @@ D (succ 0)
               <text x="380" y="150" text-anchor="middle" font-size="16">y</text>
             </svg>
           </div>
-          <p style="font-size: 0.85em; color: #555; text-align: center;">Subtree trái: thân hàm <span class="inline-code">x x</span>. Subtree phải: đối số <span class="inline-code">λy.y</span>.</p>
+          <p style="font-size: 0.85em; color: #555; text-align: center;">Cây con trái: thân hàm <span class="inline-code">x x</span>. Cây con phải: đối số <span class="inline-code">λy.y</span>.</p>
         </section>
 
         <section style="font-size: 0.85em;">
@@ -568,21 +568,21 @@ D (succ 0)
             </svg>
           </div>
           <p style="font-size: 0.8em; color: #555; text-align: center; margin-top: 0.3em;">
-            Quy giản trên cây = "nhấc" subtree đối số và gắn vào chỗ có $x$ trong thân.
+            Quy giản trên cây = "nhấc" cây con đối số và gắn vào chỗ có $x$ trong thân.
           </p>
         </section>
 
         <!-- ====== Ví dụ 4: cây AST + reduction ====== -->
         <section style="font-size: 0.85em;">
           <h2>Ví dụ 4 — $\lambda x.(\lambda y.y)\ x \to \lambda x.x$</h2>
-          <p>Redex nằm <em>bên trong</em> abstraction. Phép tính Lambda cho phép quy giản dưới lambda.</p>
+          <p>Biểu thức quy giản nằm <em>bên trong</em> trừu tượng hoá. Tính toán Lambda cho phép quy giản dưới lambda.</p>
           <div style="display: flex; justify-content: center; align-items: center; gap: 30px; margin-top: 0.5em;">
             <!-- Cây trước -->
             <div>
               <p style="text-align: center; font-size: 0.85em; margin-bottom: 0.3em;">Trước:</p>
               <pre style="font-size: 0.9em; background: #fafafa; padding: 10px; box-shadow: none;"><code>     λx
       |
-      @    ← redex
+      @    ← BTQG
      / \
     λy   x
     |
@@ -598,19 +598,19 @@ D (succ 0)
             </div>
           </div>
           <p style="margin-top: 0.5em; color: #555; font-size: 0.85em;">
-            $(\lambda y.y)\ x$ quy giản thành $x$ (áp dụng identity). Subtree cha $\lambda x$ không đổi.
+            $(\lambda y.y)\ x$ quy giản thành $x$ (áp dụng identity). Cây con cha $\lambda x$ không đổi.
           </p>
         </section>
 
         <section style="font-size: 0.9em;">
           <h2>Dạng chuẩn (Normal Form)</h2>
           <div class="question-box">
-            <p>Biểu thức <em>dạng chuẩn</em> là biểu thức <strong>không chứa redex</strong> nào.</p>
+            <p>Biểu thức <em>dạng chuẩn</em> là biểu thức <strong>không chứa biểu thức quy giản</strong> nào.</p>
           </div>
           <p style="margin-top: 0.8em;">Ví dụ:</p>
           <ul style="font-size: 0.95em;">
-            <li>$\lambda x.\lambda y.x$ — dạng chuẩn (không có redex).</li>
-            <li>$\lambda x.(\lambda y.y)\ x$ — <strong>không</strong> là dạng chuẩn (có redex $(\lambda y.y)\ x$).</li>
+            <li>$\lambda x.\lambda y.x$ — dạng chuẩn (không có biểu thức quy giản).</li>
+            <li>$\lambda x.(\lambda y.y)\ x$ — <strong>không</strong> là dạng chuẩn (có biểu thức quy giản $(\lambda y.y)\ x$).</li>
             <li>$\lambda x.(\lambda y.y)\ x \to \lambda x.x$ — bây giờ là dạng chuẩn.</li>
           </ul>
           <p style="margin-top: 0.8em; color: #555; font-size: 0.85em;">
@@ -621,7 +621,7 @@ D (succ 0)
         <!-- ====== Ví dụ 5: cây AST Ω ====== -->
         <section style="font-size: 0.85em;">
           <h2>Ví dụ 5 — Cây AST của $\Omega$</h2>
-          <p>$\Omega = (\lambda x.x\ x)(\lambda x.x\ x)$ — hai subtree giống hệt nhau.</p>
+          <p>$\Omega = (\lambda x.x\ x)(\lambda x.x\ x)$ — hai cây con giống hệt nhau.</p>
           <div style="display: flex; justify-content: center; margin-top: 0.5em;">
             <svg width="500" height="240" xmlns="http://www.w3.org/2000/svg" style="font-family: serif;">
               <!-- Root @ -->
@@ -664,7 +664,7 @@ D (succ 0)
           <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 0.5em;">
             <div style="text-align: center;">
               <strong style="font-size: 0.9em;">Cây sau 1 bước β:</strong>
-              <pre style="font-size: 0.8em; background: #fafafa; padding: 8px; margin-top: 0.3em; box-shadow: none;"><code>        @ ← redex lần 2
+              <pre style="font-size: 0.8em; background: #fafafa; padding: 8px; margin-top: 0.3em; box-shadow: none;"><code>        @ ← BTQG lần 2
        / \
       λx   λx
       |    |
@@ -682,7 +682,7 @@ D (succ 0)
 
         <section style="font-size: 0.9em;">
           <h2>Tính hội lưu (Confluence)</h2>
-          <p>Quy giản β <em>không xác định</em>: một biểu thức có thể có nhiều redex, chọn cái nào cũng được.</p>
+          <p>Quy giản β <em>không xác định</em>: một biểu thức có thể có nhiều biểu thức quy giản, chọn cái nào cũng được.</p>
           <div class="question-box" style="margin-top: 0.8em;">
             <div class="question-title">Tính chất Hội lưu</div>
             <p>Nếu $M \to^* N_1$ và $M \to^* N_2$, thì luôn tồn tại $P$ sao cho
@@ -703,11 +703,11 @@ D (succ 0)
         </section>
 
         <section>
-          <h2 style="font-size: 0.9em;">Vấn đề đệ quy trong Phép tính Lambda</h2>
+          <h2 style="font-size: 0.9em;">Vấn đề đệ quy trong Tính toán Lambda</h2>
           <div style="font-size: 0.85em;">
-            <p>Phép tính Lambda <strong>không có tên toàn cục</strong>. Làm sao định nghĩa hàm đệ quy?</p>
-            <pre style="margin-top: 0.5em;"><code class="language-ml" data-trim>
-Z = lambda n => if n=0 then 0 else 1 + Z(n-1)
+            <p>Tính toán Lambda <strong>không có tên toàn cục</strong>. Làm sao định nghĩa hàm đệ quy?</p>
+            <pre style="margin-top: 0.5em;"><code data-trim data-noescape>
+Z = <span style="color:#f92672;font-weight:bold">lambda</span> n =&gt; if n=0 then 0 else 1 + Z(n-1)
             </code></pre>
             <p>Ký hiệu $Z$ ở cả hai vế — không phải định nghĩa, mà là <em>phương trình</em>!</p>
             <p style="margin-top: 0.5em; color: #2a7ae2; font-style: italic;">
@@ -739,7 +739,7 @@ Y M
         <!-- ====== Ví dụ 7: cây AST của Y ====== -->
         <section style="font-size: 0.85em;">
           <h2>Ví dụ 7 — Cây AST của $Y$</h2>
-          <p>$Y = \lambda f.(\lambda x.f(x\ x))(\lambda x.f(x\ x))$ — 2 subtree giống nhau dưới $\lambda f$.</p>
+          <p>$Y = \lambda f.(\lambda x.f(x\ x))(\lambda x.f(x\ x))$ — 2 cây con giống nhau dưới $\lambda f$.</p>
           <div style="display: flex; justify-content: center; margin-top: 0.5em;">
             <svg width="560" height="280" xmlns="http://www.w3.org/2000/svg" style="font-family: serif;">
               <!-- λf -->
@@ -781,7 +781,7 @@ Y M
             </svg>
           </div>
           <p style="font-size: 0.8em; color: #555; text-align: center;">
-            Tính "tự nhân đôi": khi quy giản, mỗi subtree $(\lambda x.f(xx))$ được thay vào chính chỗ $x$ trong chính nó.
+            Tính "tự nhân đôi": khi quy giản, mỗi cây con $(\lambda x.f(xx))$ được thay vào chính chỗ $x$ trong chính nó.
           </p>
         </section>
 
@@ -799,7 +799,7 @@ Y M
         / \
        /   \
       λx    λx
-      |      |      ← hai subtree λx.M(xx)
+      |      |      ← hai cây con λx.M(xx)
      @(M)   @(M)
 
 →β (áp dụng trái lên phải):
@@ -854,16 +854,16 @@ Id 2 = (Y F) 2
         </section>
 
         <section style="font-size: 0.9em;">
-          <h2>Sức mạnh của Phép tính Lambda</h2>
+          <h2>Sức mạnh của Tính toán Lambda</h2>
           <div class="question-box">
-            <p>Phép tính Lambda có <strong>tính đầy đủ Turing</strong>:</p>
+            <p>Tính toán Lambda có <strong>tính đầy đủ Turing</strong>:</p>
             <ul style="margin-top: 0.3em;">
               <li>Biểu diễn được mọi số tự nhiên (Church numerals).</li>
               <li>Với mỗi hàm tính được $f$, tồn tại λ-term $M_f$ tính $f$.</li>
             </ul>
           </div>
           <p style="margin-top: 0.8em;">
-            → Phép tính Lambda <strong>tương đương về khả năng biểu diễn</strong> với máy Turing.
+            → Tính toán Lambda <strong>tương đương về khả năng biểu diễn</strong> với máy Turing.
           </p>
           <p style="margin-top: 0.5em; color: #2a7ae2; font-style: italic;">
             Chỉ với 3 luật cú pháp + quy giản β, ta có thể biểu diễn <em>mọi tính toán</em> khả dĩ.
@@ -889,7 +889,7 @@ Id 2 = (Y F) 2
             <li>Bây giờ ta đã có công cụ để trả lời:</li>
             <li><strong>Tính minh bạch tham chiếu</strong> (định lý): cùng biểu thức → cùng giá trị → dễ suy luận.</li>
             <li><strong>Không tác dụng phụ</strong>: hàm chỉ phụ thuộc input → test độc lập, song song hoá an toàn.</li>
-            <li><strong>Có nền tảng toán học</strong> (Phép tính Lambda) → chứng minh được tính đúng đắn.</li>
+            <li><strong>Có nền tảng toán học</strong> (Tính toán Lambda) → chứng minh được tính đúng đắn.</li>
           </ul>
         </section>
 
@@ -914,9 +914,9 @@ Id 2 = (Y F) 2
           <h2>Tổng kết</h2>
           <ol style="font-size: 0.9em;">
             <li><strong>FP thuần</strong> xây dựng từ 2 cơ chế: trừu tượng hoá & áp dụng.</li>
-            <li>Tính toán = <strong>quy giản β</strong> (viết lại redex thành reductum).</li>
+            <li>Tính toán = <strong>quy giản β</strong> (viết lại biểu thức quy giản thành kết quả quy giản).</li>
             <li><strong>3 chiến lược tính toán</strong> — gọi theo tên mạnh nhất về khả năng hội tụ.</li>
-            <li><strong>Phép tính Lambda</strong> là nền tảng lý thuyết — đầy đủ Turing, hỗ trợ đệ quy qua điểm cố định (Y, H).</li>
+            <li><strong>Tính toán Lambda</strong> là nền tảng lý thuyết — đầy đủ Turing, hỗ trợ đệ quy qua điểm cố định (Y, H).</li>
             <li><strong>FP → tính tin cậy</strong>: minh bạch tham chiếu + chứng minh được tính đúng đắn.</li>
           </ol>
         </section>
@@ -924,9 +924,9 @@ Id 2 = (Y F) 2
         <section style="font-size: 0.9em;">
           <h2>Tự kiểm tra</h2>
           <ol>
-            <li>Tìm redex trong biểu thức $(\lambda x.\lambda y.x)\ (\lambda z.z)\ 5$ và thực hiện quy giản β đến dạng chuẩn.</li>
-            <li>Cho biểu thức <span class="inline-code">(lambda x => 1) (r 2)</span> với <span class="inline-code">r</span> diverge. Chiến lược nào cho giá trị 1, chiến lược nào diverge? Vì sao?</li>
-            <li>Y-combinator làm gì? Tại sao cần nó trong Phép tính Lambda?</li>
+            <li>Tìm biểu thức quy giản trong $(\lambda x.\lambda y.x)\ (\lambda z.z)\ 5$ và thực hiện quy giản β đến dạng chuẩn.</li>
+            <li>Cho biểu thức <span class="inline-code">(lambda x => 1) (r 2)</span> với <span class="inline-code">r</span> không hội tụ. Chiến lược nào cho giá trị 1, chiến lược nào không hội tụ? Vì sao?</li>
+            <li>Y-combinator làm gì? Tại sao cần nó trong Tính toán Lambda?</li>
             <li>Giải thích: vì sao "không có tác dụng phụ" giúp chương trình FP dễ chứng minh tính đúng đắn?</li>
           </ol>
         </section>
