@@ -955,16 +955,16 @@ Id 2 = (Y F) 2
           hljs.registerLanguage('mlpseudo', function (hljs) {
             return {
               name: 'ML Pseudo',
-              aliases: ['ml-pseudo'],
-              keywords: {
-                keyword: 'fun val lambda fn let in if then else case of nil',
-                literal: 'true false'
-              },
+              keywords: 'fun val lambda fn let in if then else case of nil true false',
               contains: [
-                hljs.COMMENT(/\(\*/, /\*\)/),
-                hljs.QUOTE_STRING_MODE,
-                hljs.C_NUMBER_MODE,
-                { className: 'operator', begin: /=>|->|::|\|/ }
+                {
+                  className: 'comment',
+                  begin: /\(\*/, end: /\*\)/
+                },
+                {
+                  className: 'number',
+                  begin: /\b\d+\b/
+                }
               ]
             };
           });
