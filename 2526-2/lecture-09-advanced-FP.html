@@ -124,16 +124,16 @@
           <div style="display: flex; gap: 15px; margin-top: 1em; font-size: 0.85em;">
             <div style="flex: 1;">
               <strong>Định nghĩa hàm:</strong>
-              <pre><code data-trim data-noescape>
+              <pre><code class="language-python" data-trim>
 fun square x = x * x;
-val square = <span style="color:#f92672;font-weight:bold">lambda</span> x =&gt; x * x;
+val square = lambda x => x * x;
               </code></pre>
             </div>
             <div style="flex: 1;">
               <strong>Áp dụng hàm:</strong>
-              <pre><code data-trim data-noescape>
+              <pre><code class="language-python" data-trim>
 square 5    (* ra 25 *)
-(<span style="color:#f92672;font-weight:bold">lambda</span> x =&gt; x * x) 5
+(lambda x => x * x) 5
               </code></pre>
             </div>
           </div>
@@ -277,13 +277,13 @@ val v = K (D (succ 0)) (r 2);
             <p><strong>Nguyên tắc:</strong> Đánh giá <strong>đối số trước</strong> khi áp dụng hàm.</p>
           </div>
           <p style="margin-top: 0.8em;">Với <span class="inline-code">K (D (succ 0)) (r 2)</span>:</p>
-          <pre><code data-trim data-noescape>
+          <pre><code class="language-python" data-trim>
 K (D (succ 0)) (r 2)
 → K (D 1) (r 2)             (* succ 0 → 1 *)
 → K 1 (r 2)                 (* D 1 → 1 *)
-→ (<span style="color:#f92672;font-weight:bold">lambda</span> y =&gt; 1) (r 2)     (* K 1 → <span style="color:#f92672;font-weight:bold">lambda</span> y =&gt; 1 *)
+→ (lambda y => 1) (r 2)     (* K 1 → lambda y => 1 *)
 (* phải đánh giá r 2 trước khi gọi! *)
-→ (<span style="color:#f92672;font-weight:bold">lambda</span> y =&gt; 1) (r (r 2))
+→ (lambda y => 1) (r (r 2))
 → ... (đệ quy vô hạn)
           </code></pre>
           <p style="color: #c62828; font-size: 0.9em;">❌ Không ra giá trị — không hội tụ.</p>
@@ -295,9 +295,9 @@ K (D (succ 0)) (r 2)
           <div class="question-box">
             <p><strong>Nguyên tắc:</strong> Áp dụng hàm <strong>ngay</strong>, chưa cần đánh giá đối số.</p>
           </div>
-          <pre><code data-trim data-noescape>
+          <pre><code class="language-python" data-trim>
 K (D (succ 0)) (r 2)
-→ (<span style="color:#f92672;font-weight:bold">lambda</span> y =&gt; D (succ 0)) (r 2)   (* áp dụng K ngay *)
+→ (lambda y => D (succ 0)) (r 2)   (* áp dụng K ngay *)
 → D (succ 0)                        (* bỏ y, không đánh giá r 2! *)
 → if (succ 0)=0 then 1 else (succ 0)
 → if 1=0 then 1 else (succ 0)
@@ -706,8 +706,8 @@ D (succ 0)
           <h2 style="font-size: 0.9em;">Vấn đề đệ quy trong Tính toán Lambda</h2>
           <div style="font-size: 0.85em;">
             <p>Tính toán Lambda <strong>không có tên toàn cục</strong>. Làm sao định nghĩa hàm đệ quy?</p>
-            <pre style="margin-top: 0.5em;"><code data-trim data-noescape>
-Z = <span style="color:#f92672;font-weight:bold">lambda</span> n =&gt; if n=0 then 0 else 1 + Z(n-1)
+            <pre style="margin-top: 0.5em;"><code class="language-python" data-trim>
+Z = lambda n => if n=0 then 0 else 1 + Z(n-1)
             </code></pre>
             <p>Ký hiệu $Z$ ở cả hai vế — không phải định nghĩa, mà là <em>phương trình</em>!</p>
             <p style="margin-top: 0.5em; color: #2a7ae2; font-style: italic;">
