@@ -124,14 +124,14 @@
           <div style="display: flex; gap: 15px; margin-top: 1em; font-size: 0.85em;">
             <div style="flex: 1;">
               <strong>Định nghĩa hàm:</strong>
-              <pre><code class="language-mlpseudopseudo" data-trim>
+              <pre><code class="language-mlpseudo" data-trim>
 fun square x = x * x;
 val square = lambda x => x * x;
               </code></pre>
             </div>
             <div style="flex: 1;">
               <strong>Áp dụng hàm:</strong>
-              <pre><code class="language-mlpseudopseudo" data-trim>
+              <pre><code class="language-mlpseudo" data-trim>
 square 5    (* ra 25 *)
 (lambda x => x * x) 5
               </code></pre>
@@ -277,7 +277,7 @@ val v = K (D (succ 0)) (r 2);
             <p><strong>Nguyên tắc:</strong> Đánh giá <strong>đối số trước</strong> khi áp dụng hàm.</p>
           </div>
           <p style="margin-top: 0.8em;">Với <span class="inline-code">K (D (succ 0)) (r 2)</span>:</p>
-          <pre><code class="language-mlpseudopseudo" data-trim>
+          <pre><code class="language-mlpseudo" data-trim>
 K (D (succ 0)) (r 2)
 → K (D 1) (r 2)             (* succ 0 → 1 *)
 → K 1 (r 2)                 (* D 1 → 1 *)
@@ -295,7 +295,7 @@ K (D (succ 0)) (r 2)
           <div class="question-box">
             <p><strong>Nguyên tắc:</strong> Áp dụng hàm <strong>ngay</strong>, chưa cần đánh giá đối số.</p>
           </div>
-          <pre><code class="language-mlpseudopseudo" data-trim>
+          <pre><code class="language-mlpseudo" data-trim>
 K (D (succ 0)) (r 2)
 → (lambda y => D (succ 0)) (r 2)   (* áp dụng K ngay *)
 → D (succ 0)                        (* bỏ y, không đánh giá r 2! *)
@@ -706,7 +706,7 @@ D (succ 0)
           <h2 style="font-size: 0.9em;">Vấn đề đệ quy trong Tính toán Lambda</h2>
           <div style="font-size: 0.85em;">
             <p>Tính toán Lambda <strong>không có tên toàn cục</strong>. Làm sao định nghĩa hàm đệ quy?</p>
-            <pre style="margin-top: 0.5em;"><code class="language-mlpseudopseudo" data-trim>
+            <pre style="margin-top: 0.5em;"><code class="language-mlpseudo" data-trim>
 Z = lambda n => if n=0 then 0 else 1 + Z(n-1)
             </code></pre>
             <p>Ký hiệu $Z$ ở cả hai vế — không phải định nghĩa, mà là <em>phương trình</em>!</p>
