@@ -124,14 +124,14 @@
           <div style="display: flex; gap: 15px; margin-top: 1em; font-size: 0.85em;">
             <div style="flex: 1;">
               <strong>Định nghĩa hàm:</strong>
-              <pre><code class="language-python" data-trim>
+              <pre><code class="language-mlpseudopseudo" data-trim>
 fun square x = x * x;
 val square = lambda x => x * x;
               </code></pre>
             </div>
             <div style="flex: 1;">
               <strong>Áp dụng hàm:</strong>
-              <pre><code class="language-python" data-trim>
+              <pre><code class="language-mlpseudopseudo" data-trim>
 square 5    (* ra 25 *)
 (lambda x => x * x) 5
               </code></pre>
@@ -158,7 +158,7 @@ square 5    (* ra 25 *)
         <section style="font-size: 0.82em;">
           <h2>Tính toán bằng viết lại</h2>
           <p>Tính toán trong FP = lặp đi lặp lại phép <strong>thay thế</strong> biểu thức.</p>
-          <pre><code class="language-ml" data-trim>
+          <pre><code class="language-mlpseudo" data-trim>
 fun fact n = if n=0 then 1 else n * fact(n-1);
 
 fact 3
@@ -198,7 +198,7 @@ fact 3
           <div style="display: flex; gap: 15px; margin-top: 0.8em;">
             <div style="flex: 1;">
               <strong style="color: #666;">Truyền thống (if/else):</strong>
-              <pre><code class="language-ml" data-trim>
+              <pre><code class="language-mlpseudo" data-trim>
 fun Fibo n =
   if n=0 then 1
   else if n=1 then 1
@@ -207,7 +207,7 @@ fun Fibo n =
             </div>
             <div style="flex: 1;">
               <strong style="color: #2a7ae2;">Khớp mẫu:</strong>
-              <pre><code class="language-ml" data-trim>
+              <pre><code class="language-mlpseudo" data-trim>
 fun Fibo 0 = 1
   | Fibo 1 = 1
   | Fibo n = Fibo(n-1) + Fibo(n-2);
@@ -222,7 +222,7 @@ fun Fibo 0 = 1
         <section style="font-size: 0.85em;">
           <h2>Khớp mẫu trên danh sách</h2>
           <p>Khớp mẫu mạnh nhất khi dùng với cấu trúc dữ liệu (danh sách, cây...).</p>
-          <pre><code class="language-ml" data-trim>
+          <pre><code class="language-mlpseudo" data-trim>
 (* x::rest nghĩa là head = x, tail = rest *)
 fun length nil = 0
   | length (x::rest) = 1 + length rest;
@@ -253,7 +253,7 @@ length [1, 2, 3]
 
         <section style="font-size: 0.85em;">
           <h2>Vấn đề: nhiều biểu thức quy giản, chọn cái nào?</h2>
-          <pre><code class="language-ml" data-trim>
+          <pre><code class="language-mlpseudo" data-trim>
 fun K x y = x;                 (* bỏ y *)
 fun r z = r(r(z));             (* đệ quy vô hạn *)
 fun D u = if u=0 then 1 else u;
@@ -277,7 +277,7 @@ val v = K (D (succ 0)) (r 2);
             <p><strong>Nguyên tắc:</strong> Đánh giá <strong>đối số trước</strong> khi áp dụng hàm.</p>
           </div>
           <p style="margin-top: 0.8em;">Với <span class="inline-code">K (D (succ 0)) (r 2)</span>:</p>
-          <pre><code class="language-python" data-trim>
+          <pre><code class="language-mlpseudopseudo" data-trim>
 K (D (succ 0)) (r 2)
 → K (D 1) (r 2)             (* succ 0 → 1 *)
 → K 1 (r 2)                 (* D 1 → 1 *)
@@ -295,7 +295,7 @@ K (D (succ 0)) (r 2)
           <div class="question-box">
             <p><strong>Nguyên tắc:</strong> Áp dụng hàm <strong>ngay</strong>, chưa cần đánh giá đối số.</p>
           </div>
-          <pre><code class="language-python" data-trim>
+          <pre><code class="language-mlpseudopseudo" data-trim>
 K (D (succ 0)) (r 2)
 → (lambda y => D (succ 0)) (r 2)   (* áp dụng K ngay *)
 → D (succ 0)                        (* bỏ y, không đánh giá r 2! *)
@@ -310,7 +310,7 @@ K (D (succ 0)) (r 2)
         <section style="font-size: 0.85em;">
           <h2>Vấn đề của gọi theo tên: lặp lại</h2>
           <p>Gọi theo tên <em>sao chép</em> đối số vào thân hàm — nếu đối số xuất hiện nhiều lần, nó bị đánh giá nhiều lần.</p>
-          <pre><code class="language-ml" data-trim>
+          <pre><code class="language-mlpseudo" data-trim>
 fun D u = if u=0 then 1 else u;   (* u xuất hiện 2 lần *)
 
 D (succ 0)
@@ -654,7 +654,7 @@ D (succ 0)
         <section style="font-size: 0.85em;">
           <h2>Ví dụ 5 — $\Omega$ tự sinh ra chính nó</h2>
           <p>Quy giản β: thay $x$ trong thân <span class="inline-code">x x</span> bằng $(\lambda x.x\ x)$ (cây bên phải):</p>
-          <pre style="margin-top: 0.5em;"><code class="language-ml" data-trim>
+          <pre style="margin-top: 0.5em;"><code class="language-mlpseudo" data-trim>
 Ω = (λx.x x)(λx.x x)
   → (x x)[(λx.x x)/x]
   = (λx.x x)(λx.x x)
@@ -706,7 +706,7 @@ D (succ 0)
           <h2 style="font-size: 0.9em;">Vấn đề đệ quy trong Tính toán Lambda</h2>
           <div style="font-size: 0.85em;">
             <p>Tính toán Lambda <strong>không có tên toàn cục</strong>. Làm sao định nghĩa hàm đệ quy?</p>
-            <pre style="margin-top: 0.5em;"><code class="language-python" data-trim>
+            <pre style="margin-top: 0.5em;"><code class="language-mlpseudopseudo" data-trim>
 Z = lambda n => if n=0 then 0 else 1 + Z(n-1)
             </code></pre>
             <p>Ký hiệu $Z$ ở cả hai vế — không phải định nghĩa, mà là <em>phương trình</em>!</p>
@@ -943,6 +943,24 @@ Id 2 = (Y F) 2
   <script src="plugin/highlight/highlight.js"></script>
   <script src="plugin/math/math.js"></script>
   <script>
+    // Custom highlight.js language cho pseudocode ML-style dùng trong bài giảng
+    hljs.registerLanguage('mlpseudo', function (hljs) {
+      return {
+        name: 'ML Pseudo',
+        aliases: ['ml-pseudo'],
+        keywords: {
+          keyword: 'fun val lambda fn let in if then else case of nil',
+          literal: 'true false'
+        },
+        contains: [
+          hljs.COMMENT(/\(\*/, /\*\)/),
+          hljs.QUOTE_STRING_MODE,
+          hljs.C_NUMBER_MODE,
+          { className: 'operator', begin: /=>|->|::|\|/ }
+        ]
+      };
+    });
+
     Reveal.initialize({
       controlsLayout: "edges",
       slideNumber: true,
