@@ -33,7 +33,7 @@
           <ol>
             <li>Nền tảng: Trừu tượng hoá, Áp dụng, luật β</li>
             <li>Chiến lược tính toán</li>
-            <li>Tính toán Lambda</li>
+            <li>Phép tính lambda</li>
             <li>Vai trò của FP: Tính tin cậy</li>
           </ol>
         </section>
@@ -80,11 +80,16 @@
           <ul>
             <li><strong>Không có tác dụng phụ</strong> — mỗi hàm chỉ phụ thuộc đầu vào.</li>
             <li><strong>Dữ liệu bất biến</strong> — không có trạng thái chia sẻ gây lỗi khó tái hiện.</li>
-            <li><strong>Có thể suy luận toán học</strong> về chương trình — chứng minh được tính đúng đắn.</li>
+            <li><strong>Có thể suy luận toán học</strong> về chương trình.</li>
           </ul>
-          <p class="fragment" style="margin-top: 1em; color: #2a7ae2; font-style: italic;">
-            Câu hỏi hôm nay: <strong>vì sao FP có những tính chất đó?</strong>
-            <br>→ Đi sâu vào nền tảng: luật β, chiến lược tính toán, Tính toán Lambda.
+          <div class="fragment" style="margin-top: 1em; background: #fff3e0; padding: 12px; border-radius: 8px; border-left: 5px solid #ff9800;">
+            <strong style="color: #e65100;">Câu hỏi xuyên suốt buổi học:</strong>
+            <p style="margin-top: 0.3em; font-style: italic; font-size: 1.05em;">
+              Vì sao FP cho phép ta <strong>suy luận chương trình như toán học</strong>?
+            </p>
+          </div>
+          <p class="fragment" style="margin-top: 0.6em; color: #555; font-size: 0.85em;">
+            → Trả lời qua 4 phần: luật β → chiến lược tính toán → Phép tính lambda → quay lại tính tin cậy.
           </p>
         </section>
 
@@ -94,10 +99,10 @@
             <li><strong>FP</strong> = biến đổi dữ liệu qua các hàm, ưu tiên bất biến + cô lập tác dụng phụ.</li>
             <li><strong>Hàm thuần khiết</strong>: cùng input → cùng output, không tác dụng phụ.</li>
             <li><strong>Hàm bậc cao</strong>: lambda, bao đóng, pipeline <span class="inline-code">filter → map → reduce</span>.</li>
-            <li>Tính toán Lambda đã nhắc qua: <strong>$\lambda x.M$</strong> (hàm ẩn danh), <strong>$f\ x$</strong> (áp dụng hàm).</li>
+            <li>Phép tính lambda đã nhắc qua: <strong>$\lambda x.M$</strong> (hàm ẩn danh), <strong>$f\ x$</strong> (áp dụng hàm).</li>
           </ul>
           <p style="margin-top: 1em; color: #555; font-style: italic;">
-            Bài 9 đi sâu vào <strong>cơ chế bên dưới</strong>: quy giản β, chiến lược tính toán, và Tính toán Lambda.
+            Bài 9 đi sâu vào <strong>cơ chế bên dưới</strong>: quy giản β, chiến lược tính toán, và Phép tính lambda.
           </p>
         </section>
       </section>
@@ -266,6 +271,22 @@ length [1, 2, 3]
             <span class="text-light">2.</span><br />
             Chiến lược <br /> tính toán
           </h1>
+        </section>
+
+        <section style="font-size: 0.78em;">
+          <h2>Nhìn lại và đi tiếp</h2>
+          <div style="background: #e8f5e9; padding: 10px; border-radius: 8px; border-left: 5px solid #2e7d32;">
+            <strong style="color: #2e7d32;">Ta vừa biết:</strong>
+            Chương trình = biểu thức; tính toán = <strong>viết lại redex</strong> bằng luật β.
+          </div>
+          <div style="margin-top: 0.6em; background: #ffebee; padding: 10px; border-radius: 8px; border-left: 5px solid #c62828;">
+            <strong style="color: #c62828;">Câu hỏi chưa giải được:</strong>
+            Một biểu thức có thể có <strong>nhiều redex</strong>. Chọn thứ tự khác nhau có cho kết quả khác nhau không? — <em>Biểu thức có "nghĩa" xác định không</em>?
+          </div>
+          <div style="margin-top: 0.6em; background: #e3f2fd; padding: 10px; border-radius: 8px; border-left: 5px solid #1565c0;">
+            <strong style="color: #1565c0;">Phần này trả lời:</strong>
+            So sánh 3 chiến lược + định lý khẳng định <em>"nghĩa" của biểu thức không phụ thuộc chiến lược</em> — cơ sở cho tính minh bạch tham chiếu.
+          </div>
         </section>
 
         <section style="font-size: 0.9em;">
@@ -457,12 +478,28 @@ D (succ 0)
         <section>
           <h1>
             <span class="text-light">3.</span><br />
-            Tính toán Lambda
+            Phép tính lambda
           </h1>
         </section>
 
+        <section style="font-size: 0.78em;">
+          <h2>Nhìn lại và đi tiếp</h2>
+          <div style="background: #e8f5e9; padding: 10px; border-radius: 8px; border-left: 5px solid #2e7d32;">
+            <strong style="color: #2e7d32;">Ta vừa biết:</strong>
+            Biểu thức có <strong>nghĩa xác định</strong> — đây chính là <em>tính minh bạch tham chiếu</em>, tiêu chí của FP thuần.
+          </div>
+          <div style="margin-top: 0.6em; background: #ffebee; padding: 10px; border-radius: 8px; border-left: 5px solid #c62828;">
+            <strong style="color: #c62828;">Câu hỏi chưa giải được:</strong>
+            "Nghĩa" đó được <strong>phát biểu chính xác</strong> trong hệ thống toán học nào? FP thuần có <em>đủ mạnh</em> để biểu diễn mọi tính toán không?
+          </div>
+          <div style="margin-top: 0.6em; background: #e3f2fd; padding: 10px; border-radius: 8px; border-left: 5px solid #1565c0;">
+            <strong style="color: #1565c0;">Phần này trả lời:</strong>
+            Lột bỏ hết cú pháp ngôn ngữ, giữ lại <strong>bộ khung tối thiểu</strong> để suy luận — đó là Phép tính lambda. Sau đó chứng minh nó Turing-complete.
+          </div>
+        </section>
+
         <section style="font-size: 0.9em;">
-          <h2>Tính toán Lambda là gì?</h2>
+          <h2>Phép tính lambda là gì?</h2>
           <ul>
             <li>Hệ thống hình thức do <strong>Alonzo Church</strong> đề xuất (1930s).</li>
             <li>Mô hình tính toán <em>trước</em> máy Turing, chỉ dùng <strong>hàm</strong>.</li>
@@ -635,7 +672,7 @@ D (succ 0)
         <!-- ====== Ví dụ 4: cây AST + reduction ====== -->
         <section style="font-size: 0.78em;">
           <h2>Ví dụ 4 — $\lambda x.(\lambda y.y)\ x \to \lambda x.x$</h2>
-          <p>Biểu thức quy giản nằm <em>bên trong</em> trừu tượng hoá. Tính toán Lambda cho phép quy giản dưới lambda.</p>
+          <p>Biểu thức quy giản nằm <em>bên trong</em> trừu tượng hoá. Phép tính lambda cho phép quy giản dưới lambda.</p>
           <div style="display: flex; justify-content: center; align-items: center; gap: 30px; margin-top: 0.5em;">
             <!-- Cây trước -->
             <div>
@@ -746,7 +783,7 @@ D (succ 0)
           </p>
         </section>
 
-        <section style="font-size: 0.78em;">
+        <section style="font-size: 0.68em;">
           <h2>Tính hội lưu (Confluence)</h2>
           <p>Quy giản β <em>không xác định</em>: một biểu thức có thể có nhiều biểu thức quy giản, chọn cái nào cũng được.</p>
           <div class="question-box" style="margin-top: 0.8em;">
@@ -768,10 +805,26 @@ D (succ 0)
           </p>
         </section>
 
+        <section style="font-size: 0.78em;">
+          <h2>Nhìn lại và đi tiếp</h2>
+          <div style="background: #e8f5e9; padding: 10px; border-radius: 8px; border-left: 5px solid #2e7d32;">
+            <strong style="color: #2e7d32;">Ta vừa biết:</strong>
+            Phép tính lambda với 3 luật + quy giản β + tính hội lưu → đủ để <strong>suy luận chính xác</strong> mọi biểu thức.
+          </div>
+          <div style="margin-top: 0.6em; background: #ffebee; padding: 10px; border-radius: 8px; border-left: 5px solid #c62828;">
+            <strong style="color: #c62828;">Câu hỏi chưa giải được:</strong>
+            λ-calculus <strong>không có tên toàn cục</strong>. Làm sao biểu diễn <em>đệ quy</em> — vốn cần hàm gọi lại chính mình <strong>bằng tên</strong>?
+          </div>
+          <div style="margin-top: 0.6em; background: #e3f2fd; padding: 10px; border-radius: 8px; border-left: 5px solid #1565c0;">
+            <strong style="color: #1565c0;">Phần này trả lời:</strong>
+            Tổ hợp Y — dựng đệ quy <em>chỉ từ hàm thuần</em>, không cần tên. Bằng chứng cuối: FP đủ mạnh cho mọi tính toán.
+          </div>
+        </section>
+
         <section>
-          <h2 style="font-size: 0.9em;">Vấn đề đệ quy trong Tính toán Lambda</h2>
+          <h2 style="font-size: 0.9em;">Vấn đề đệ quy trong Phép tính lambda</h2>
           <div style="font-size: 0.85em;">
-            <p>Tính toán Lambda <strong>không có tên toàn cục</strong>. Làm sao định nghĩa hàm đệ quy?</p>
+            <p>Phép tính lambda <strong>không có tên toàn cục</strong>. Làm sao định nghĩa hàm đệ quy?</p>
             <pre style="margin-top: 0.5em;"><code class="language-mlpseudo" data-trim>
 Z = lambda n => if n=0 then 0 else 1 + Z(n-1)
             </code></pre>
@@ -918,16 +971,16 @@ Id 2 = (Y F) 2
         </section>
 
         <section style="font-size: 0.9em;">
-          <h2>Sức mạnh của Tính toán Lambda</h2>
+          <h2>Sức mạnh của Phép tính lambda</h2>
           <div class="question-box">
-            <p>Tính toán Lambda có <strong>tính đầy đủ Turing</strong>:</p>
+            <p>Phép tính lambda có <strong>tính đầy đủ Turing</strong>:</p>
             <ul style="margin-top: 0.3em;">
               <li>Biểu diễn được mọi số tự nhiên (Church numerals).</li>
               <li>Với mỗi hàm tính được $f$, tồn tại λ-term $M_f$ tính $f$.</li>
             </ul>
           </div>
           <p style="margin-top: 0.8em;">
-            → Tính toán Lambda <strong>tương đương về khả năng biểu diễn</strong> với máy Turing.
+            → Phép tính lambda <strong>tương đương về khả năng biểu diễn</strong> với máy Turing.
           </p>
           <p style="margin-top: 0.5em; color: #2a7ae2; font-style: italic;">
             Chỉ với 3 luật cú pháp + quy giản β, ta có thể biểu diễn <em>mọi tính toán</em> khả dĩ.
@@ -946,16 +999,25 @@ Id 2 = (Y F) 2
           </h1>
         </section>
 
-        <section style="font-size: 0.9em;">
-          <h2>Quay lại AXD301</h2>
-          <p>Đầu bài đã đặt câu hỏi: vì sao hệ thống 1M LOC Erlang lại đạt độ tin cậy cao như vậy?</p>
-          <ul style="margin-top: 0.8em;">
-            <li>Bây giờ ta đã có công cụ để trả lời:</li>
-            <li><strong>Tính minh bạch tham chiếu</strong> (định lý): cùng biểu thức → cùng giá trị → dễ suy luận.</li>
-            <li><strong>Không tác dụng phụ</strong>: hàm chỉ phụ thuộc input → test độc lập, song song hoá an toàn.</li>
-            <li><strong>Có nền tảng toán học</strong> (Tính toán Lambda) → chứng minh được tính đúng đắn.</li>
+        <section style="font-size: 0.82em;">
+          <h2>Quay lại câu hỏi xuyên suốt</h2>
+          <div style="background: #fff3e0; padding: 10px; border-radius: 8px; border-left: 5px solid #ff9800; margin-bottom: 0.6em;">
+            <p style="font-style: italic; font-size: 1.05em; margin: 0;">
+              "Vì sao FP cho phép ta <strong>suy luận chương trình như toán học</strong>?"
+            </p>
+          </div>
+          <p style="margin: 0.3em 0;">Câu trả lời, xâu chuỗi từ đầu buổi:</p>
+          <ul>
+            <li><strong>Luật β</strong> → chương trình = chuỗi biểu thức được viết lại cơ học.</li>
+            <li><strong>Định lý gọi theo tên mạnh nhất</strong> → biểu thức có <em>nghĩa xác định</em> → <strong>minh bạch tham chiếu</strong>.</li>
+            <li><strong>Phép tính lambda</strong> → bộ khung toán học tối thiểu để suy luận.</li>
+            <li><strong>Tổ hợp Y</strong> → ngay cả đệ quy cũng dựng được từ hàm thuần.</li>
           </ul>
+          <p style="margin-top: 0.5em; color: #2a7ae2; font-style: italic;">
+            → AXD301 tin cậy không phải phép màu: nó là hệ quả của việc chương trình được <strong>xem như biểu thức toán học để suy luận</strong>.
+          </p>
         </section>
+
 
         <section style="font-size: 0.9em;">
           <h2>FP và chứng minh tính đúng đắn</h2>
@@ -980,7 +1042,7 @@ Id 2 = (Y F) 2
             <li><strong>FP thuần</strong> xây dựng từ 2 cơ chế: trừu tượng hoá & áp dụng.</li>
             <li>Tính toán = <strong>quy giản β</strong> (viết lại biểu thức quy giản thành kết quả quy giản).</li>
             <li><strong>3 chiến lược tính toán</strong> — gọi theo tên mạnh nhất về khả năng hội tụ.</li>
-            <li><strong>Tính toán Lambda</strong> là nền tảng lý thuyết — đầy đủ Turing, hỗ trợ đệ quy qua điểm cố định (Y, H).</li>
+            <li><strong>Phép tính lambda</strong> là nền tảng lý thuyết — đầy đủ Turing, hỗ trợ đệ quy qua điểm cố định (Y, H).</li>
             <li><strong>FP → tính tin cậy</strong>: minh bạch tham chiếu + chứng minh được tính đúng đắn.</li>
           </ol>
         </section>
@@ -990,7 +1052,7 @@ Id 2 = (Y F) 2
           <ol>
             <li>Tìm biểu thức quy giản trong $(\lambda x.\lambda y.x)\ (\lambda z.z)\ 5$ và thực hiện quy giản β đến dạng chuẩn.</li>
             <li>Cho biểu thức <span class="inline-code">(lambda x => 1) (r 2)</span> với <span class="inline-code">r</span> không hội tụ. Chiến lược nào cho giá trị 1, chiến lược nào không hội tụ? Vì sao?</li>
-            <li>Tổ hợp Y làm gì? Tại sao cần nó trong Tính toán Lambda?</li>
+            <li>Tổ hợp Y làm gì? Tại sao cần nó trong Phép tính lambda?</li>
             <li>Giải thích: vì sao "không có tác dụng phụ" giúp chương trình FP dễ chứng minh tính đúng đắn?</li>
           </ol>
         </section>
