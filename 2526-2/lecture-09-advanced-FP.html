@@ -45,7 +45,7 @@
             <li>Xác định được <strong>biểu thức quy giản (redex)</strong> và thực hiện <strong>quy giản β</strong>.</li>
             <li>Phân biệt được 3 chiến lược tính toán: <strong>gọi theo giá trị / gọi theo tên / đánh giá lười</strong>.</li>
             <li>Hiểu định lý: <strong>gọi theo tên là mạnh nhất</strong> — biểu thức hội tụ với chiến lược này thì cũng hội tụ với mọi chiến lược khác.</li>
-            <li>Giải thích được <strong>Y-combinator</strong> cho phép đệ quy không cần tên hàm.</li>
+            <li>Giải thích được <strong>Tổ hợp Y</strong> cho phép đệ quy không cần tên hàm.</li>
             <li>Liên hệ <strong>FP → tính tin cậy</strong> (ví dụ AXD301).</li>
           </ul>
         </section>
@@ -784,7 +784,7 @@ Z = lambda n => if n=0 then 0 else 1 + Z(n-1)
         </section>
 
         <section style="font-size: 0.82em;">
-          <h2>Y-combinator</h2>
+          <h2>Tổ hợp Y</h2>
           <div class="question-box">
             <p style="text-align: center; font-size: 1.05em;">
               $Y \stackrel{def}{=} \lambda f.(\lambda x.f(x\ x))(\lambda x.f(x\ x))$
@@ -907,7 +907,7 @@ Id 2 = (Y F) 2
             <p><strong>Vấn đề:</strong> Với gọi theo giá trị, khi tính $Y M$:</p>
             <p style="font-size: 0.85em; margin-top: 0.3em;">$Y M = (\lambda x.M(x\ x))(\lambda x.M(x\ x))$ → đối số $(\lambda x.M(x\ x))$ được đánh giá... và tiếp tục khai triển vô hạn trước khi $M$ được áp dụng.</p>
           </div>
-          <p style="margin-top: 0.8em;"><strong>H-combinator</strong> (Turing fixed-point operator) giải quyết cho gọi theo giá trị:</p>
+          <p style="margin-top: 0.8em;"><strong>Tổ hợp H</strong> (Turing fixed-point operator) giải quyết cho gọi theo giá trị:</p>
           <div style="text-align: center; margin-top: 0.5em;">
             $H \stackrel{def}{=} \lambda g.((\lambda f.f\ f)(\lambda f.g(\lambda x.f\ f\ x)))$
           </div>
@@ -990,7 +990,7 @@ Id 2 = (Y F) 2
           <ol>
             <li>Tìm biểu thức quy giản trong $(\lambda x.\lambda y.x)\ (\lambda z.z)\ 5$ và thực hiện quy giản β đến dạng chuẩn.</li>
             <li>Cho biểu thức <span class="inline-code">(lambda x => 1) (r 2)</span> với <span class="inline-code">r</span> không hội tụ. Chiến lược nào cho giá trị 1, chiến lược nào không hội tụ? Vì sao?</li>
-            <li>Y-combinator làm gì? Tại sao cần nó trong Tính toán Lambda?</li>
+            <li>Tổ hợp Y làm gì? Tại sao cần nó trong Tính toán Lambda?</li>
             <li>Giải thích: vì sao "không có tác dụng phụ" giúp chương trình FP dễ chứng minh tính đúng đắn?</li>
           </ol>
         </section>
