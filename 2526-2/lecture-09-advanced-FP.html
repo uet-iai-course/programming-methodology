@@ -60,7 +60,6 @@
       <section>
         <section>
           <h1>
-            <span class="text-light">0.</span><br />
             Tại sao FP <br /> quan trọng?
           </h1>
         </section>
@@ -157,7 +156,7 @@ square 5    (* ra 25 *)
           <div class="question-box">
             <div class="question-title">FP chỉ cần 2 thứ</div>
             <ul>
-              <li><strong>Trừu tượng hoá (abstraction)</strong> — định nghĩa hàm: <span class="inline-code">lambda x =>
+              <li><strong>Trừu tượng hoá (abstraction)</strong> — định nghĩa hàm: <br /> <span class="inline-code">lambda x =>
                   expr</span>
                 <br><span style="color: #555;">Biểu thức <span class="inline-code">expr</span> được "trừu tượng hoá"
                   khỏi giá trị cụ thể của <span class="inline-code">x</span>.</span>
@@ -965,7 +964,7 @@ Z = lambda n => if n=0 then 0 else 1 + Z(n-1)
             </code></pre>
             <p>Ký hiệu $Z$ ở cả hai vế — không phải định nghĩa, mà là <em>phương trình</em>!</p>
             <p style="margin-top: 0.5em; color: #2a7ae2; font-style: italic;">
-              Ta cần tìm một \(\lambda\)-term $g$ thoả $g =_\beta F(g)$, với $F = \lambda f.\lambda n.\ \text{if}\ n=0\
+              Ta cần tìm một biểu thức lambda $g$ thoả $g =_\beta F(g)$, với $F = \lambda f.\lambda n.\ \text{if}\ n=0\
               \text{then}\ 0\ \text{else}\ 1 + f(n-1)$.
             </p>
             <p style="margin-top: 0.5em;">Một $g$ thoả $g =_\beta F(g)$ được gọi là <strong>điểm cố định (fixed
@@ -980,7 +979,7 @@ Z = lambda n => if n=0 then 0 else 1 + Z(n-1)
               $Y \stackrel{def}{=} \lambda f.(\lambda x.f(x\ x))(\lambda x.f(x\ x))$
             </p>
           </div>
-          <p style="margin-top: 0.8em;">Áp dụng $Y$ lên bất kỳ \(\lambda\)-term $M$:</p>
+          <p style="margin-top: 0.8em;">Áp dụng $Y$ lên bất kỳ biểu thức lambda $M$:</p>
           <pre
             style="margin-top: 0.3em; font-size: 0.85em; background: #fafafa; color: #333; box-shadow: none; padding: 10px; width: fit-content;"><code style="background: none; color: inherit;" data-trim>
 Y M
@@ -1077,7 +1076,7 @@ M(YM):
         </section>
 
         <section style="font-size: 0.75em;">
-          <h2>Ví dụ: tính hàm identity trên số tự nhiên</h2>
+          <h2>Ví dụ tối giản: dựng hàm id(n)=n bằng Y</h2>
           <p>Với $F = \lambda f.\lambda n.\ \text{if}\ n=0\ \text{then}\ 0\ \text{else}\ 1+f(n-1)$, định nghĩa $Id =
             YF$.</p>
           <pre><code data-trim>
@@ -1122,7 +1121,7 @@ Id 2 = (Y F) 2
             <p>Phép tính lambda có <strong>tính đầy đủ Turing</strong>:</p>
             <ul style="margin-top: 0.3em;">
               <li>Biểu diễn được mọi số tự nhiên (Church numerals).</li>
-              <li>Với mỗi hàm tính được $f$, tồn tại \(\lambda\)-term $M_f$ tính $f$.</li>
+              <li>Với mỗi hàm tính được $f$, tồn tại biểu thức lambda $M_f$ tính $f$.</li>
             </ul>
           </div>
           <p style="margin-top: 0.8em;">
