@@ -388,7 +388,7 @@ K (D (succ 0)) (r 2)
           <h2>Chiến lược 2: Gọi theo tên</h2>
           <p><em>(Còn gọi: normal order, outermost, call-by-name)</em></p>
           <div class="question-box">
-            <p><strong>Nguyên tắc:</strong> Áp dụng hàm <strong>ngay</strong>, chưa cần đánh giá đối số.</p>
+            <p><strong>Nguyên tắc:</strong> Áp dụng hàm <strong>ngay</strong>, chưa cần tính toán đối số.</p>
           </div>
           <pre><code class="language-mlpseudo" data-trim>
 K (D (succ 0)) (r 2)
@@ -475,36 +475,44 @@ D (succ 0)
           </table>
         </section>
 
-        <section style="font-size: 0.75em;">
+        <section style="font-size: 0.72em;">
           <h2>Định lý: gọi theo tên là mạnh nhất</h2>
           <div class="question-box">
-            <div class="question-title">Phát biểu</div>
-            <p>Cho <span class="inline-code">expr</span> là biểu thức đóng (mọi biến đều được ràng buộc).</p>
-            <ul style="margin-top: 0.5em;">
-              <li>Nếu <span class="inline-code">expr</span> cho giá trị nguyên thuỷ <span class="inline-code">val</span>
-                bằng <strong>bất kỳ</strong> chiến lược nào → gọi theo tên cũng cho <span
-                  class="inline-code">val</span>.</li>
-              <li>Nếu <span class="inline-code">expr</span> <strong>không hội tụ</strong> bằng gọi theo tên → cũng không
-                hội tụ bằng 2 chiến lược còn lại.</li>
+            <div class="question-title">Phát biểu (PLPP — Định lý 11.1)</div>
+            <p>Cho <span class="inline-code">expr</span> là biểu thức đóng có <strong>kiểu nguyên thuỷ</strong>.</p>
+            <ul style="margin-top: 0.4em;">
+              <li><strong>Khả năng hội tụ mạnh nhất</strong>: nếu <em>tồn tại</em> một chiến lược cho
+                <span class="inline-code">expr</span> giá trị <span class="inline-code">val</span>,
+                thì gọi theo tên cũng hội tụ về <strong>cùng</strong> giá trị <span class="inline-code">val</span>.
+              </li>
+              <li><strong>Hệ quả</strong>: gọi theo tên không hội tụ ⟹ mọi chiến lược khác cũng không hội tụ.</li>
             </ul>
+            <p style="margin-top: 0.5em; font-size: 0.9em; color: #555;">
+              (Tính <em>duy nhất</em> của <span class="inline-code">val</span> được bảo đảm nhờ
+              <strong>tính hội lưu</strong> của quy giản \(\beta\) — sẽ thấy ở §3.)
+            </p>
           </div>
-          <p style="margin-top: 0.8em; color: #2a7ae2; font-style: italic;">
+          <p style="margin-top: 0.6em; color: #2a7ae2; font-style: italic;">
             Gọi theo tên "bắt được" mọi kết quả mà các chiến lược khác có thể cho ra.
-            <br>→ Ví dụ trước: gọi theo tên cho 1, gọi theo giá trị không hội tụ. <em>Ngược lại không bao giờ xảy
-              ra.</em>
+            Ví dụ trước: gọi theo tên cho 1, gọi theo giá trị không hội tụ. <em>Ngược lại không bao giờ xảy ra.</em>
           </p>
         </section>
 
-        <section style="font-size: 0.85em;">
+        <section style="font-size: 0.72em;">
           <h2>Ý nghĩa định lý</h2>
-          <ul>
-            <li><strong>Không có trạng thái</strong> → đánh giá một biểu thức nhiều lần <em>luôn cho cùng giá trị</em>.
-            </li>
-            <li>Tính chất này gọi là <strong>tính minh bạch tham chiếu</strong> — tiêu chí của ngôn ngữ FP thuần.</li>
-            <li>Nhờ đó, đánh giá lười <em>đúng đắn</em>: nhớ lại kết quả vẫn là kết quả gốc.</li>
+          <div
+            style="background: #e8f5e9; padding: 10px 14px; border-radius: 8px; border-left: 5px solid #2e7d32;">
+            <strong style="color: #2e7d32;">Từ định lý →</strong>
+            Kết quả đánh giá chỉ phụ thuộc <strong>biểu thức</strong>, không phụ thuộc chiến lược hay thứ tự tính toán.
+            Cộng thêm <em>không có tác dụng phụ</em> (hàm thuần khiết) → biểu thức có <strong>nghĩa xác định</strong>.
+          </div>
+          <ul style="margin-top: 0.8em;">
+            <li>Đây chính là <strong>tính minh bạch tham chiếu (referential transparency)</strong> — tiêu chí cốt lõi của ngôn ngữ FP thuần.</li>
+            <li>Đánh giá một biểu thức nhiều lần <em>luôn cho cùng giá trị</em> → có thể thay thế <span class="inline-code">expr</span> bằng <span class="inline-code">val</span> ở mọi nơi.</li>
+            <li>Nhờ đó, <strong>đánh giá lười đúng đắn</strong>: nhớ lại (memoize) kết quả vẫn là kết quả gốc.</li>
           </ul>
           <div
-            style="margin-top: 1em; background: #fff3e0; padding: 10px; border-radius: 8px; font-size: 0.85em; border-left: 4px solid #ff9800;">
+            style="margin-top: 0.8em; background: #fff3e0; padding: 10px; border-radius: 8px; font-size: 0.88em; border-left: 4px solid #ff9800;">
             <strong>Nhưng sao gọi theo giá trị vẫn phổ biến?</strong>
             <br>Hiệu quả cài đặt trên kiến trúc truyền thống; phù hợp với ngôn ngữ có tác dụng phụ. Haskell lười vì
             <em>thuần khiết</em>.
