@@ -903,23 +903,141 @@ tong.fetch_add(1LL * x * x);
           </div>
         </section>
 
+        <!-- Tiến hoá AI coding tools -->
+        <section style="font-size: 0.78em;">
+          <h2>Tiến hoá AI coding tools</h2>
+          <p style="color: #555;">Mỗi nấc thang = thêm 1 capability mới, không thay thế cái trước.</p>
+          <table style="width: 100%; border-collapse: collapse; margin-top: 0.4em;">
+            <thead>
+              <tr style="background: #f5f5f5;">
+                <th style="padding: 8px; text-align: left;">Thời kì</th>
+                <th style="padding: 8px; text-align: left;">Công cụ</th>
+                <th style="padding: 8px; text-align: left;">Khả năng</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: 6px;">1980s</td>
+                <td style="padding: 6px;">Tab autocomplete</td>
+                <td style="padding: 6px;">Hoàn thành tên biến/hàm theo từ điển.</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px;">2000s</td>
+                <td style="padding: 6px;">IntelliSense (VS, IntelliJ)</td>
+                <td style="padding: 6px;">Gợi ý theo kiểu (type inference) + signature.</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px;">2021</td>
+                <td style="padding: 6px;">GitHub Copilot</td>
+                <td style="padding: 6px;">Sinh khối code thống kê từ LLM, theo ngữ cảnh file hiện tại.</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px;">2022</td>
+                <td style="padding: 6px;">ChatGPT (đối thoại)</td>
+                <td style="padding: 6px;">Hỏi đáp về code, giải thích, sinh đoạn dài theo yêu cầu.</td>
+              </tr>
+              <tr style="background: #fff3e0;">
+                <td style="padding: 6px;"><strong>2024-2025</strong></td>
+                <td style="padding: 6px;"><strong>Agent</strong> (Claude Code, Cursor, Windsurf)</td>
+                <td style="padding: 6px;"><strong>Tự đọc/sửa nhiều file, chạy lệnh, debug, lặp lại đến khi xong.</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- Agent + Tool use -->
         <section style="font-size: 0.8em;">
+          <h2>Agent + Tool use</h2>
+          <div style="display: flex; gap: 20px; align-items: center;">
+            <div style="flex: 1.1;">
+              <p>AI agent = LLM + <strong>vòng lặp</strong> + bộ <strong>công cụ</strong>:</p>
+              <ol style="margin-top: 0.3em;">
+                <li>Nhận task từ người dùng.</li>
+                <li>Quyết định <strong>gọi tool</strong> nào (Read, Edit, Bash, Grep, WebFetch…).</li>
+                <li>Đọc kết quả tool.</li>
+                <li>Quyết định: gọi tool tiếp, hay đã xong → trả lời người dùng.</li>
+              </ol>
+              <div class="question-box" style="margin-top: 0.5em; font-size: 0.95em;">
+                <p>Agent <strong>không chỉ generate code</strong> — có thể tự test, tự fix lỗi compile, tự đọc tài liệu thư viện, tự tạo branch + PR.</p>
+              </div>
+            </div>
+            <div style="flex: 0.9; display: flex; justify-content: center;">
+              <svg width="280" height="280" xmlns="http://www.w3.org/2000/svg" style="font-family: serif;">
+                <defs>
+                  <marker id="aArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#333"/>
+                  </marker>
+                </defs>
+                <!-- Task -->
+                <rect x="80" y="10" width="120" height="40" rx="6" fill="#fff3e0" stroke="#ef6c00" stroke-width="2"/>
+                <text x="140" y="35" text-anchor="middle" font-size="14" fill="#e65100">Task từ user</text>
+                <line x1="140" y1="50" x2="140" y2="78" stroke="#333" marker-end="url(#aArrow)"/>
+                <!-- LLM -->
+                <rect x="80" y="80" width="120" height="48" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
+                <text x="140" y="100" text-anchor="middle" font-size="14" fill="#0d47a1">LLM (Claude/</text>
+                <text x="140" y="118" text-anchor="middle" font-size="14" fill="#0d47a1">GPT/Gemini)</text>
+                <line x1="200" y1="104" x2="240" y2="104" stroke="#333" marker-end="url(#aArrow)"/>
+                <!-- Tools -->
+                <rect x="220" y="80" width="60" height="48" rx="6" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2"/>
+                <text x="250" y="104" text-anchor="middle" font-size="13" fill="#4a148c">Tools</text>
+                <text x="250" y="119" text-anchor="middle" font-size="10" fill="#666">Read/Bash…</text>
+                <!-- Tool result back -->
+                <line x1="240" y1="128" x2="240" y2="155" stroke="#333"/>
+                <line x1="240" y1="155" x2="140" y2="155" stroke="#333"/>
+                <line x1="140" y1="155" x2="140" y2="135" stroke="#333" marker-end="url(#aArrow)"/>
+                <text x="195" y="150" text-anchor="middle" font-size="10" fill="#666">kết quả</text>
+                <!-- Done? -->
+                <line x1="140" y1="128" x2="140" y2="178" stroke="#333" stroke-dasharray="4,3"/>
+                <polygon points="140,180 120,210 160,210" fill="#fff" stroke="#2e7d32" stroke-width="2"/>
+                <text x="140" y="200" text-anchor="middle" font-size="11" fill="#2e7d32">xong?</text>
+                <!-- Output -->
+                <line x1="140" y1="210" x2="140" y2="234" stroke="#333" marker-end="url(#aArrow)"/>
+                <rect x="80" y="236" width="120" height="36" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+                <text x="140" y="259" text-anchor="middle" font-size="14" fill="#1b5e20">Trả lời user</text>
+                <!-- Loop back -->
+                <path d="M 120 195 Q 30 195, 30 100 Q 30 70, 80 95" fill="none" stroke="#c62828" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#aArrow)"/>
+                <text x="20" y="155" font-size="10" fill="#c62828">lặp</text>
+              </svg>
+            </div>
+          </div>
+        </section>
+
+        <!-- Context engineering -->
+        <section style="font-size: 0.8em;">
+          <h2>Context engineering — kỹ năng cốt lõi</h2>
+          <p style="color: #555;">Viết yêu cầu rõ là <strong>~70% chất lượng kết quả</strong>. AI mạnh, nhưng nó không đoán được điều bạn không nói.</p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 0.5em;">
+            <div style="background: #ffebee; padding: 10px 14px; border-radius: 8px; border-left: 4px solid #c62828;">
+              <strong style="color: #c62828;">❌ Mơ hồ</strong>
+              <p style="margin-top: 0.3em; font-size: 0.95em;">"Sửa code cho tốt hơn."</p>
+              <p style="margin-top: 0.3em; font-size: 0.9em; color: #666;">"Viết hàm parse CSV."</p>
+              <p style="margin-top: 0.3em; font-size: 0.85em; color: #888;">→ AI đoán → kết quả không khớp ý.</p>
+            </div>
+            <div style="background: #e8f5e9; padding: 10px 14px; border-radius: 8px; border-left: 4px solid #2e7d32;">
+              <strong style="color: #2e7d32;">✓ Có context</strong>
+              <p style="margin-top: 0.3em; font-size: 0.95em;">"Sửa hàm <span class="inline-code">parseCSV</span> ở <span class="inline-code">utils/csv.js</span>: hỗ trợ dấu nháy kép, escape, dòng rỗng. Phải pass test ở <span class="inline-code">tests/csv.test.js</span>. Không đổi API public."</p>
+            </div>
+          </div>
+          <p style="margin-top: 0.6em; font-size: 0.95em;"><strong>4 yếu tố tốt</strong>: file paths cụ thể · examples (input/output) · constraints (test/style) · what NOT to do.</p>
+        </section>
+
+        <section style="font-size: 0.74em;">
           <h2>Ví dụ 1: Điều chỉnh API trên nhiều file</h2>
-          <div style="display: flex; gap: 24px;">
+          <div style="display: flex; gap: 20px;">
             <div style="flex: 1;">
-              <h3 style="font-size: 0.9em;">Nếu làm tay</h3>
-              <ul>
-                <li>Tìm mọi chỗ gọi hàm cũ.</li>
+              <strong>Làm tay</strong>
+              <ul style="margin-top: 0.2em;">
+                <li>Grep mọi chỗ gọi hàm cũ.</li>
                 <li>Sửa import, đối số, kiểu trả về.</li>
                 <li>Dễ sót file, dễ sửa không đều.</li>
               </ul>
             </div>
             <div style="flex: 1;">
-              <h3 style="font-size: 0.9em;">Nếu dùng AI</h3>
-              <ul>
-                <li>Mô tả mẫu thay đổi một lần.</li>
-                <li>AI sửa đồng loạt nhiều file.</li>
-                <li>Người đọc lại và chạy test.</li>
+              <strong>Dùng AI agent</strong>
+              <ul style="margin-top: 0.2em;">
+                <li>Mô tả mẫu thay đổi 1 lần.</li>
+                <li>AI tự đọc tất cả file, sửa đồng loạt, chạy test.</li>
+                <li>Người review diff, chạy lại test, merge.</li>
               </ul>
             </div>
           </div>
@@ -973,9 +1091,35 @@ def tinh_giam_gia(gia, ty_le):
             </div>
           </div>
           <div class="question-box" style="margin-top: 0.8em;">
-            <div class="question-title">Câu hỏi</div>
-            <p>Nếu AI sinh ra mã “có vẻ đúng”, bước nào giúp ta phát hiện lỗi nhanh nhất: đọc lại, chạy test, hay triển khai luôn?</p>
+            <div class="question-title">Câu hỏi mở</div>
+            <p>AI gợi ý <strong>3 phương án khác nhau</strong> cho cùng 1 bug — bạn dựa vào tiêu chí nào để chọn? (đơn giản, ít tác dụng phụ, dễ test, gần với code hiện tại?)</p>
           </div>
+        </section>
+
+        <!-- Công cụ thực tế 2026 -->
+        <section style="font-size: 0.78em;">
+          <h2>Công cụ thực tế (2026)</h2>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div class="question-box">
+              <div class="question-title">GitHub Copilot</div>
+              <p>Auto-completion trong IDE. Mạnh ở <strong>gợi ý dòng/khối ngắn</strong> theo ngữ cảnh file. Phổ biến nhất cho VS Code, JetBrains.</p>
+            </div>
+            <div class="question-box">
+              <div class="question-title">Cursor / Windsurf</div>
+              <p>IDE riêng (fork VS Code) tích hợp <strong>chat trên codebase</strong>. Mạnh ở refactor multi-file, có chế độ agent tự động.</p>
+            </div>
+            <div class="question-box">
+              <div class="question-title">Claude Code</div>
+              <p>Agent CLI của Anthropic. Mạnh ở <strong>task dài, đa file, agentic</strong>: tự đọc, sửa, test, commit, tạo PR. Dùng tools cơ bản như Bash, Edit, Grep.</p>
+            </div>
+            <div class="question-box">
+              <div class="question-title">Cline / Aider</div>
+              <p>Open-source agent. Linh hoạt, gắn được với nhiều LLM (Claude, GPT, local). Mạnh ở <strong>tuỳ biến workflow</strong>.</p>
+            </div>
+          </div>
+          <p style="margin-top: 0.5em; font-style: italic; color: #555; text-align: center;">
+            Quy luật chung: chọn công cụ <strong>phù hợp loại task</strong> + người vẫn là <em>review cuối cùng</em>.
+          </p>
         </section>
 
         <section style="font-size: 0.82em;">
