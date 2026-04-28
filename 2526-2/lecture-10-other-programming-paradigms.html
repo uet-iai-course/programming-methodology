@@ -93,23 +93,50 @@
           </ul>
         </section>
 
+        <section style="font-size: 0.82em;">
+          <h2>Khái niệm vị từ</h2>
+          <div class="question-box">
+            <div class="question-title">Vị từ là gì?</div>
+            <p><strong>Vị từ</strong> (predicate) mô tả một <strong>quan hệ</strong> hoặc một <strong>tính chất đúng/sai</strong>.</p>
+          </div>
+          <div style="display: flex; gap: 24px; margin-top: 0.8em;">
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Ví dụ</h3>
+              <ul>
+                <li><span class="inline-code">cha(an, binh)</span></li>
+                <li><span class="inline-code">ong(X, Y)</span></li>
+                <li><span class="inline-code">sudoku(Bang)</span></li>
+              </ul>
+            </div>
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Cách hiểu</h3>
+              <ul>
+                <li><span class="inline-code">cha/2</span>: quan hệ cha-con.</li>
+                <li><span class="inline-code">ong/2</span>: quan hệ ông-cháu.</li>
+                <li><span class="inline-code">sudoku/1</span>: bàn cờ hợp lệ hay không.</li>
+              </ul>
+            </div>
+          </div>
+          <p class="caption">Khác với hàm thường trả về một giá trị, vị từ trả lời câu hỏi: quan hệ này có đúng không?</p>
+        </section>
+
         <section style="font-size: 0.8em;">
           <h2>Ba thành phần cốt lõi</h2>
           <div style="display: flex; font-size: 0.7em; gap: 16px; margin-top: 0.8em;">
             <div class="question-box" style="flex: 1;">
               <div class="question-title">Sự kiện</div>
-              <p>Điều đã biết.</p>
+              <p>Điều đã biết là đúng.</p>
               <p class="inline-code">cha(an, binh).</p>
               <p class="inline-code">cha(binh, cuong).</p>
             </div>
             <div class="question-box" style="flex: 1;">
               <div class="question-title">Luật</div>
-              <p>Điều suy ra.</p>
+              <p>Điều suy ra là đúng nếu các điều kiện đúng.</p>
               <p class="inline-code">ong(X, Y) :- cha(X, Z), cha(Z, Y).</p>
             </div>
             <div class="question-box" style="flex: 1;">
               <div class="question-title">Truy vấn</div>
-              <p>Điều muốn hỏi.</p>
+              <p>Điều muốn hỏi là đúng hay sai.</p>
               <p class="inline-code">?- ong(an, ?).</p>
             </div>
           </div>
@@ -167,6 +194,216 @@ Y = cuong
           </div>
         </section>
 
+        <section style="font-size: 0.72em;">
+          <h2>Ví dụ: Sudoku</h2>
+          <div style="display: flex; gap: 24px; align-items: flex-start;">
+            <div style="flex: 1.2;">
+              <table style="border-collapse: collapse; margin: 0 auto; font-size: 0.9em;">
+                <tbody>
+                  <tr>
+                    <td style="width: 34px; height: 34px; text-align: center; border: 2px solid #333;">5</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 2px solid #333; border-bottom: 1px solid #999; border-left: 1px solid #999; border-right: 1px solid #999;">3</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 2px solid #333; border-bottom: 1px solid #999; border-left: 1px solid #999; border-right: 2px solid #333;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 2px solid #333; border-bottom: 1px solid #999; border-left: 2px solid #333; border-right: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 2px solid #333; border-bottom: 1px solid #999; border-left: 1px solid #999; border-right: 1px solid #999;">7</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 2px solid #333; border-bottom: 1px solid #999; border-left: 1px solid #999; border-right: 2px solid #333;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 2px solid #333; border-bottom: 1px solid #999; border-left: 2px solid #333; border-right: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 2px solid #333; border-bottom: 1px solid #999; border-left: 1px solid #999; border-right: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border: 2px solid #333;">.</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 1px solid #999; border-bottom: 1px solid #999;">6</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 1px solid #999; border-bottom: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 1px solid #999; border-bottom: 1px solid #999;">1</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">9</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 1px solid #999; border-bottom: 1px solid #999;">5</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 1px solid #999; border-bottom: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 1px solid #999; border-bottom: 1px solid #999;">.</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 1px solid #999; border-bottom: 2px solid #333;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 1px solid #999;">9</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 2px solid #333;">8</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 2px solid #333; border-right: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 2px solid #333;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 2px solid #333; border-right: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 1px solid #999;">6</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 2px solid #333;">.</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 2px solid #333; border-bottom: 1px solid #999;">8</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 2px solid #333; border-bottom: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 2px solid #333; border-bottom: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">6</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 2px solid #333; border-bottom: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 2px solid #333; border-bottom: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 2px solid #333; border-bottom: 1px solid #999;">3</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 1px solid #999; border-bottom: 1px solid #999;">4</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 1px solid #999; border-bottom: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 1px solid #999; border-bottom: 1px solid #999;">8</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999; background: #fff3cd; font-weight: bold;">?</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 1px solid #999; border-bottom: 1px solid #999;">3</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 1px solid #999; border-bottom: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 1px solid #999; border-bottom: 1px solid #999;">1</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 1px solid #999; border-bottom: 2px solid #333;">7</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 2px solid #333;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 2px solid #333; border-right: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 1px solid #999;">2</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 2px solid #333;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 2px solid #333; border-right: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 2px solid #333;">6</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 2px solid #333; border-bottom: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">6</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 2px solid #333; border-bottom: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 2px solid #333; border-bottom: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 2px solid #333; border-bottom: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 2px solid #333; border-bottom: 1px solid #999;">2</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">8</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 2px solid #333; border-bottom: 1px solid #999;">.</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 1px solid #999; border-bottom: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 1px solid #999; border-bottom: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 1px solid #999; border-bottom: 1px solid #999;">4</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">1</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 1px solid #999; border-bottom: 1px solid #999;">9</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 1px solid #999; border-bottom: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 1px solid #999; border-bottom: 1px solid #999;">5</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 34px; height: 34px; text-align: center; border: 2px solid #333;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 2px solid #333;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 2px solid #333; border-right: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 1px solid #999;">8</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 2px solid #333;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 2px solid #333; border-right: 1px solid #999;">.</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 1px solid #999;">7</td>
+                    <td style="width: 34px; height: 34px; text-align: center; border: 2px solid #333;">9</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="flex: 0.9;">
+              <div class="question-box">
+                <ul>
+                  <li>Ô <strong>?</strong> ở giữa có thể là số nào?</li>
+                  <li>Hàng này đã có những số nào?</li>
+                  <li>Cột này loại được số nào?</li>
+                  <li>Khối 3x3 ở giữa còn thiếu gì?</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Ví dụ: Sudoku</h2>
+          <div style="display: flex; gap: 24px;">
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Nếu làm kiểu quen thuộc</h3>
+              <ul>
+                <li>Thử số vào từng ô.</li>
+                <li>Kiểm tra hàng, cột, khối.</li>
+                <li>Sai thì quay lui thủ công.</li>
+                <li>Mã dài, dễ rối.</li>
+              </ul>
+            </div>
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Nếu làm kiểu logic</h3>
+              <ul>
+                <li>Khai báo miền giá trị 1..9.</li>
+                <li>Mỗi hàng đều khác nhau.</li>
+                <li>Mỗi cột đều khác nhau.</li>
+                <li>Mỗi khối 3x3 đều khác nhau.</li>
+              </ul>
+            </div>
+          </div>
+          <p class="caption">Điểm chính: ta mô tả ràng buộc, không tự viết chiến lược thử từng ô.</p>
+        </section>
+
+        <section style="font-size: 0.72em;">
+          <h2>Sudoku dưới góc nhìn logic</h2>
+          <div style="display: flex; gap: 20px;">
+            <div style="flex: 1;">
+              <pre><code class="language-prolog" data-trim>
+sudoku(Bang) :-
+  length(Bang, 9),
+  maplist(same_length(Bang), Bang),
+  append(Bang, CacO),
+  CacO ins 1..9,
+  maplist(all_distinct, Bang),
+  transpose(Bang, Cot),
+  maplist(all_distinct, Cot),
+  Bang = [A, B, C, D, E, F, G, H, I],
+  khoi(A, B, C),
+  khoi(D, E, F),
+  khoi(G, H, I).
+
+khoi([], [], []).
+khoi([X1,X2,X3|T1], [Y1,Y2,Y3|T2], [Z1,Z2,Z3|T3]) :-
+  all_distinct([X1,X2,X3,Y1,Y2,Y3,Z1,Z2,Z3]),
+  khoi(T1, T2, T3).
+              </code></pre>
+            </div>
+            <div style="flex: 1;">
+              <ul>
+                <li><span class="keyword">Bang</span>: toàn bộ bàn cờ.</li>
+                <li><span class="keyword">CacO ins 1..9</span>: mỗi ô nhận số hợp lệ.</li>
+                <li><span class="keyword">all_distinct</span>: không trùng trong hàng, cột.</li>
+                <li><span class="keyword">khoi/3</span>: ràng buộc cho từng khối 3x3.</li>
+                <li>Máy tự thu hẹp miền và tìm nghiệm.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="question-box" style="margin-top: 0.8em;">
+            <div class="question-title">Điểm cốt lõi</div>
+            <p>Cùng một bài toán, lập trình logic biến bài toán <strong>tìm kiếm</strong> thành bài toán <strong>mô hình hóa ràng buộc</strong>.</p>
+          </div>
+        </section>
+
+        <section style="font-size: 0.82em;">
+          <h2>Ứng dụng thực tế</h2>
+          <div style="display: flex; gap: 24px;">
+            <div style="flex: 1;">
+              <ul>
+                <li><strong>Xếp lịch</strong>: lịch học, lịch thi, lịch trực.</li>
+                <li><strong>Phân công tài nguyên</strong>: phòng, máy, người, ca làm.</li>
+                <li><strong>Hệ chuyên gia</strong>: suy luận từ tập luật.</li>
+              </ul>
+            </div>
+            <div style="flex: 1;">
+              <ul>
+                <li><strong>Truy vấn tri thức</strong>: quan hệ, phụ thuộc, luật nghiệp vụ.</li>
+                <li><strong>Lập kế hoạch</strong>: tìm chuỗi hành động thỏa điều kiện.</li>
+                <li><strong>Kiểm tra tính hợp lệ</strong>: cấu hình, quy tắc, ràng buộc.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="question-box" style="margin-top: 0.8em;">
+            <div class="question-title">Điểm chung của các bài toán này</div>
+            <p>Nhiều <strong>ràng buộc</strong>, nhiều <strong>khả năng thử</strong>, và cần trả lời câu hỏi <strong>"có nghiệm nào thỏa mãn không?"</strong></p>
+          </div>
+        </section>
+
         <section style="font-size: 0.86em;">
           <h2>Khi nào lập trình logic mạnh?</h2>
           <ul>
@@ -177,7 +414,7 @@ Y = cuong
           </ul>
           <div class="question-box" style="margin-top: 0.8em;">
             <div class="question-title">Dấu hiệu nhận biết</div>
-            <p>Câu hỏi kiểu: <strong>"Có tồn tại lời giải nào?"</strong></p>
+            <p>Câu hỏi kiểu: <strong>"Có nghiệm nào thỏa mãn không?"</strong></p>
           </div>
         </section>
 
@@ -296,31 +533,156 @@ Y = cuong
           </div>
         </section>
 
+        <section style="font-size: 0.78em;">
+          <h2>Các khái niệm đồng bộ quan trọng</h2>
+          <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+            <div class="question-box" style="flex: 1; min-width: 210px;">
+              <div class="question-title">Atomic</div>
+              <p>Một thao tác rất nhỏ, không bị chen ngang.</p>
+              <p>Hợp với biến đếm, cờ trạng thái.</p>
+            </div>
+            <div class="question-box" style="flex: 1; min-width: 210px;">
+              <div class="question-title">Mutex / Lock</div>
+              <p>Cho đúng một luồng vào vùng tới hạn.</p>
+              <p>Dùng khi nhiều lệnh phải đi cùng nhau.</p>
+            </div>
+            <div class="question-box" style="flex: 1; min-width: 210px;">
+              <div class="question-title">Semaphore</div>
+              <p>Cho phép tối đa <span class="inline-code">k</span> luồng cùng vào.</p>
+              <p>Hợp với tài nguyên có số chỗ hữu hạn.</p>
+            </div>
+            <div class="question-box" style="flex: 1; min-width: 210px;">
+              <div class="question-title">Barrier</div>
+              <p>Mọi luồng phải tới cùng một mốc rồi mới đi tiếp.</p>
+              <p>Hợp với thuật toán làm theo từng pha.</p>
+            </div>
+          </div>
+        </section>
+
         <section style="font-size: 0.8em;">
-          <h2>Ví dụ chia bài toán</h2>
+          <h2>Khi nào dùng công cụ nào?</h2>
           <div style="display: flex; gap: 24px;">
             <div style="flex: 1;">
-              <h3 style="font-size: 0.9em;">Trước</h3>
+              <ul>
+                <li><strong>Atomic</strong>: tăng giảm biến đếm, đặt cờ.</li>
+                <li><strong>Mutex</strong>: bảo vệ cấu trúc dữ liệu dùng chung.</li>
+                <li><strong>Semaphore</strong>: giới hạn số kết nối, số tác vụ.</li>
+                <li><strong>Barrier</strong>: đồng bộ cuối mỗi vòng hoặc mỗi bước.</li>
+              </ul>
+            </div>
+            <!-- <div style="flex: 1;">
+              <div class="question-box">
+                <div class="question-title">Hỏi lớp học</div>
+                <ul>
+                  <li>Một biến đếm số yêu cầu đã xử lý: dùng gì?</li>
+                  <li>Một hàng đợi dùng chung: dùng gì?</li>
+                  <li>Một bể chỉ có 3 kết nối cơ sở dữ liệu: dùng gì?</li>
+                </ul>
+              </div>
+            </div> -->
+          </div>
+        </section>
+
+
+        <section style="font-size: 0.8em;">
+          <h2>Ví dụ 1: Tính tổng trên dữ liệu lớn</h2>
+          <div style="display: flex; gap: 24px;">
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Tuần tự</h3>
               <pre><code class="language-python" data-trim>
 tong = 0
 for x in data:
     tong += x * x
               </code></pre>
-            </div>
-            <div style="flex: 1;">
-              <h3 style="font-size: 0.9em;">Sau</h3>
-              <pre><code class="language-python" data-trim>
-chia data -> 4 phần
-mỗi lõi tính 1 phần
-cuối cùng cộng lại
-              </code></pre>
+              <ul>
+                <li>Một lõi làm tất cả.</li>
+                <li>Mọi phần tử đi qua cùng một biến <span class="inline-code">tong</span>.</li>
+              </ul>
             </div>
           </div>
-          <p class="caption">Ý tưởng: tách việc độc lập, gom kết quả sau.</p>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Ví dụ 1: Tính tổng trên dữ liệu lớn</h2>
+          <div style="display: flex; gap: 24px;">
+            
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Song song</h3>
+              <pre><code class="language-cpp" data-trim>
+std::vector&lt;long long&gt; tong_tam(4, 0);
+std::vector&lt;std::thread&gt; luong;
+
+for (int i = 0; i < 4; ++i) {
+  luong.emplace_back([&, i] {
+    size_t l = i * data.size() / 4;
+    size_t r = (i + 1) * data.size() / 4;
+    for (size_t j = l; j < r; ++j)
+      tong_tam[i] += 1LL * data[j] * data[j];
+  });
+}
+
+for (auto& t : luong) t.join();
+long long tong = tong_tam[0] + tong_tam[1] + tong_tam[2] + tong_tam[3];
+</code></pre>
+              <ul>
+                <li>4 luồng, 4 tổng tạm.</li>
+                <li>Ghép kết quả sau khi <span class="inline-code">join()</span>.</li>
+                <li>Cuối cùng mới <strong>gộp kết quả</strong>.</li>
+              </ul>
+            </div>
+          </div>
+          <p class="caption">Đây là mẫu kinh điển của <strong>quy tụ kết quả</strong> (reduction): chia việc độc lập, rồi gộp lại.</p>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Ví dụ 2: Làm mờ ảnh</h2>
+          <div style="display: flex; gap: 24px;">
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Ý tưởng</h3>
+              <ul>
+                <li>Mỗi điểm ảnh mới lấy trung bình từ vùng lân cận.</li>
+                <li>Nhiều điểm ảnh có thể tính cùng lúc.</li>
+                <li>Rất hợp với chia theo hàng hoặc theo khối.</li>
+              </ul>
+            </div>
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Điều thú vị</h3>
+              <ul>
+                <li>Mỗi ô đầu ra gần như độc lập.</li>
+                <li>Dễ chạy nhanh trên CPU nhiều lõi hoặc GPU.</li>
+                <li>Nhưng vẫn phải chú ý biên ảnh và bộ nhớ.</li>
+              </ul>
+            </div>
+          </div>
+          <p class="caption">Đây là kiểu <strong>song song dữ liệu</strong>: cùng một phép tính, áp lên rất nhiều phần tử.</p>
+        </section>
+
+        <section style="font-size: 0.82em;">
+          <h2>Ứng dụng thực tế</h2>
+          <div style="display: flex; gap: 24px;">
+            <div style="flex: 1;">
+              <ul>
+                <li><strong>Xử lý ảnh, video</strong>: làm mờ, phát hiện cạnh, mã hóa.</li>
+                <li><strong>Khoa học dữ liệu</strong>: thống kê trên tập dữ liệu lớn.</li>
+                <li><strong>Mô phỏng</strong>: thời tiết, vật lý, sinh học.</li>
+              </ul>
+            </div>
+            <div style="flex: 1;">
+              <ul>
+                <li><strong>Máy chủ</strong>: xử lý nhiều yêu cầu cùng lúc.</li>
+                <li><strong>Huấn luyện AI</strong>: nhân ma trận, tối ưu trên GPU.</li>
+                <li><strong>Trò chơi</strong>: đồ họa, âm thanh, vật lý.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="question-box" style="margin-top: 0.8em;">
+            <div class="question-title">Dấu hiệu nhận biết</div>
+            <p>Có nhiều phần việc <strong>giống nhau</strong> hoặc <strong>ít phụ thuộc nhau</strong>, và mục tiêu là <strong>nhanh hơn</strong> hoặc <strong>xử lý được nhiều hơn</strong>.</p>
+          </div>
         </section>
 
         <section style="font-size: 0.86em;">
-          <h2>Khi nào song song giúp?</h2>
+          <h2>Khi nào song song tốt?</h2>
           <div style="display: flex; gap: 24px;">
             <div style="flex: 1;">
               <h3 style="font-size: 0.9em;">Thường có ích</h3>
@@ -351,8 +713,8 @@ cuối cùng cộng lại
             <li>Đo đạc trước khi kết luận.</li>
           </ul>
           <div class="question-box" style="margin-top: 0.8em;">
-            <div class="question-title">Mẹo nhớ</div>
-            <p>Càng ít tranh chấp, chương trình càng dễ sống.</p>
+            <div class="question-title">Điểm cốt lõi</div>
+            <p>Càng ít tranh chấp, chương trình song song càng tốt.</p>
           </div>
         </section>
       </section>
@@ -428,26 +790,102 @@ cuối cùng cộng lại
         </section>
 
         <section style="font-size: 0.8em;">
-          <h2>Ví dụ: trước và sau khi có AI</h2>
+          <h2>Ví dụ 1: Điều chỉnh API trên nhiều file</h2>
           <div style="display: flex; gap: 24px;">
             <div style="flex: 1;">
-              <h3 style="font-size: 0.9em;">Không dùng AI</h3>
+              <h3 style="font-size: 0.9em;">Nếu làm tay</h3>
               <ul>
-                <li>Tự đọc tài liệu.</li>
-                <li>Tự viết bản nháp đầu.</li>
-                <li>Tự nghĩ test từ đầu.</li>
+                <li>Tìm mọi chỗ gọi hàm cũ.</li>
+                <li>Sửa import, đối số, kiểu trả về.</li>
+                <li>Dễ sót file, dễ sửa không đều.</li>
               </ul>
             </div>
             <div style="flex: 1;">
-              <h3 style="font-size: 0.9em;">Có dùng AI</h3>
+              <h3 style="font-size: 0.9em;">Nếu dùng AI</h3>
               <ul>
-                <li>Xin khung lời giải.</li>
-                <li>Xin ví dụ đầu vào ra.</li>
-                <li>Xin danh sách lỗi dễ gặp.</li>
+                <li>Mô tả mẫu thay đổi một lần.</li>
+                <li>AI sửa đồng loạt nhiều file.</li>
+                <li>Người đọc lại và chạy test.</li>
               </ul>
             </div>
           </div>
-          <p class="caption">Nhanh hơn ở bước khởi động, không miễn bước kiểm chứng.</p>
+          <div class="question-box" style="margin-top: 0.8em;">
+            <div class="question-title">Điểm cốt lõi</div>
+            <p>AI đặc biệt hữu ích với các thay đổi <strong>lặp lại nhưng phân tán rộng trong codebase</strong>.</p>
+          </div>
+        </section>
+
+        <section style="font-size: 0.78em;">
+          <h2>Ví dụ 2: Bổ sung kiểm thử cho ca biên</h2>
+          <div style="display: flex; gap: 24px;">
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Một hàm tưởng như ổn</h3>
+              <pre><code class="language-python" data-trim>
+def tinh_giam_gia(gia, ty_le):
+    return gia * (1 - ty_le)
+              </code></pre>
+            </div>
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Câu hỏi AI nên gợi ra</h3>
+              <ul>
+                <li><span class="inline-code">gia = 0</span> thì sao?</li>
+                <li><span class="inline-code">ty_le = 1</span> thì sao?</li>
+                <li><span class="inline-code">ty_le &lt; 0</span> hoặc <span class="inline-code">&gt; 1</span> thì sao?</li>
+                <li>Dữ liệu rỗng hoặc sai kiểu thì sao?</li>
+              </ul>
+            </div>
+          </div>
+          <p class="caption">AI không chỉ viết mã nhanh, mà còn giỏi gợi ra các <strong>trường hợp biên</strong> mà con người dễ quên.</p>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Vai trò của người lập trình</h2>
+          <div style="display: flex; gap: 24px;">
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">AI làm tốt</h3>
+              <ul>
+                <li>Viết khung ban đầu.</li>
+                <li>Đề xuất test, tài liệu, refactor.</li>
+                <li>Tìm mẫu lặp trong mã nguồn.</li>
+              </ul>
+            </div>
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Con người vẫn phải làm</h3>
+              <ul>
+                <li>Đặt yêu cầu đúng.</li>
+                <li>Kiểm tra logic và bảo mật.</li>
+                <li>Quyết định chấp nhận hay bác bỏ.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="question-box" style="margin-top: 0.8em;">
+            <div class="question-title">Câu hỏi</div>
+            <p>Nếu AI sinh ra mã “có vẻ đúng”, bước nào giúp ta phát hiện lỗi nhanh nhất: đọc lại, chạy test, hay triển khai luôn?</p>
+          </div>
+        </section>
+
+        <section style="font-size: 0.82em;">
+          <h2>Ứng dụng thực tế</h2>
+          <div style="display: flex; gap: 24px;">
+            <div style="flex: 1;">
+              <ul>
+                <li><strong>Sinh khung tính năng</strong>: route, lớp, biểu mẫu, tài liệu.</li>
+                <li><strong>Di trú mã</strong>: đổi API, đổi kiểu dữ liệu, tách module.</li>
+                <li><strong>Viết kiểm thử</strong>: ca biên, ca lỗi, dữ liệu bất thường.</li>
+              </ul>
+            </div>
+            <div style="flex: 1;">
+              <ul>
+                <li><strong>Đọc codebase</strong>: truy vết luồng dữ liệu, tóm tắt module.</li>
+                <li><strong>Hỗ trợ sửa lỗi</strong>: tìm nơi nghi vấn, gợi ý nguyên nhân.</li>
+                <li><strong>Học công nghệ mới</strong>: ví dụ thư viện, mẫu dùng nhanh.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="question-box" style="margin-top: 0.8em;">
+            <div class="question-title">Dấu hiệu nhận biết</div>
+            <p>Công việc có nhiều phần <strong>lặp lại</strong>, cần <strong>bản nháp nhanh</strong>, hoặc cần <strong>khám phá phương án</strong> trước khi con người duyệt kỹ.</p>
+          </div>
         </section>
 
         <section style="font-size: 0.86em;">
