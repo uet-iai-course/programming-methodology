@@ -512,116 +512,221 @@ sudoku(Bang) :-
           </div>
         </section>
 
-        <section style="font-size: 0.84em;">
-          <h2>Các rủi ro kinh điển</h2>
-          <div style="display: flex; gap: 16px; margin-top: 0.8em;">
-            <div class="question-box" style="flex: 1;">
-              <div class="question-title">Tranh chấp</div>
-              <p>Cùng sửa một biến.</p>
-              <p>(race condition)</p>
-            </div>
-            <div class="question-box" style="flex: 1;">
-              <div class="question-title">Khóa chết</div>
-              <p>Chờ nhau mãi mãi.</p>
-              <p>(deadlock)</p>
-            </div>
-            <div class="question-box" style="flex: 1;">
-              <div class="question-title">Bỏ đói</div>
-              <p>Có việc không được chạy.</p>
-              <p>(starvation)</p>
-            </div>
-          </div>
-        </section>
-
         <section style="font-size: 0.78em;">
+          <h2>Các rủi ro kinh điển — ví dụ đèn giao thông</h2>
+          <p style="font-style: italic; color: #555; margin-bottom: 0.5em;">
+            Liên tưởng: thread = xe, biến chia sẻ = đường đi.
+          </p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;">
+            <div style="background: #ffebee; padding: 10px; border-radius: 8px; border-left: 4px solid #c62828;">
+              <strong style="color: #c62828;">Tranh chấp (race condition)</strong>
+              <div style="margin-top: 0.4em; text-align: center;">🚗💥🚙</div>
+              <p style="font-size: 0.92em; margin-top: 0.3em;">
+                Ngã tư <em>không có đèn</em> — 4 xe vào cùng lúc → đâm.
+              </p>
+              <p style="font-size: 0.85em; color: #555; margin-top: 0.2em;">
+                Code: 4 thread cùng <span class="inline-code">tong += x</span> không khoá → kết quả sai.
+              </p>
+            </div>
+            <div style="background: #fff3e0; padding: 10px; border-radius: 8px; border-left: 4px solid #ef6c00;">
+              <strong style="color: #e65100;">Khoá chết (deadlock)</strong>
+              <div style="margin-top: 0.4em; text-align: center;">🚗 ↔ 🚙</div>
+              <p style="font-size: 0.92em; margin-top: 0.3em;">
+                2 xe ngược chiều trên đường hẹp — không ai nhường, kẹt mãi.
+              </p>
+              <p style="font-size: 0.85em; color: #555; margin-top: 0.2em;">
+                Code: thread A giữ khoá X chờ Y, thread B giữ Y chờ X.
+              </p>
+            </div>
+            <div style="background: #fff9c4; padding: 10px; border-radius: 8px; border-left: 4px solid #f9a825;">
+              <strong style="color: #f57f17;">Bỏ đói (starvation)</strong>
+              <div style="margin-top: 0.4em; text-align: center;">🚙 ⏸ 🚗🚛</div>
+              <p style="font-size: 0.92em; margin-top: 0.3em;">
+                Xe nhỏ luôn nhường xe to → không bao giờ qua được.
+              </p>
+              <p style="font-size: 0.85em; color: #555; margin-top: 0.2em;">
+                Code: thread ưu tiên thấp luôn bị thread ưu tiên cao chiếm CPU/khoá.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section style="font-size: 0.8em;">
           <h2>Các khái niệm đồng bộ quan trọng</h2>
-          <div style="display: flex; gap: 16px; flex-wrap: wrap;">
-            <div class="question-box" style="flex: 1; min-width: 210px;">
-              <div class="question-title">Atomic</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div class="question-box">
+              <div class="question-title">Thao tác nguyên tử (atomic)</div>
               <p>Một thao tác rất nhỏ, không bị chen ngang.</p>
-              <p>Hợp với biến đếm, cờ trạng thái.</p>
+              <p style="font-size: 0.9em; color: #555;">Hợp với biến đếm, cờ trạng thái.</p>
             </div>
-            <div class="question-box" style="flex: 1; min-width: 210px;">
-              <div class="question-title">Mutex / Lock</div>
+            <div class="question-box">
+              <div class="question-title">Khoá loại trừ (mutex / lock)</div>
               <p>Cho đúng một luồng vào vùng tới hạn.</p>
-              <p>Dùng khi nhiều lệnh phải đi cùng nhau.</p>
+              <p style="font-size: 0.9em; color: #555;">Dùng khi nhiều lệnh phải đi cùng nhau.</p>
             </div>
-            <div class="question-box" style="flex: 1; min-width: 210px;">
-              <div class="question-title">Semaphore</div>
+            <div class="question-box">
+              <div class="question-title">Cờ hiệu (semaphore)</div>
               <p>Cho phép tối đa <span class="inline-code">k</span> luồng cùng vào.</p>
-              <p>Hợp với tài nguyên có số chỗ hữu hạn.</p>
+              <p style="font-size: 0.9em; color: #555;">Hợp với tài nguyên có số chỗ hữu hạn.</p>
             </div>
-            <div class="question-box" style="flex: 1; min-width: 210px;">
-              <div class="question-title">Barrier</div>
+            <div class="question-box">
+              <div class="question-title">Rào đồng bộ (barrier)</div>
               <p>Mọi luồng phải tới cùng một mốc rồi mới đi tiếp.</p>
-              <p>Hợp với thuật toán làm theo từng pha.</p>
+              <p style="font-size: 0.9em; color: #555;">Hợp với thuật toán làm theo từng pha.</p>
             </div>
           </div>
         </section>
 
-        <section style="font-size: 0.8em;">
+        <section style="font-size: 0.85em;">
           <h2>Khi nào dùng công cụ nào?</h2>
-          <div style="display: flex; gap: 24px;">
-            <div style="flex: 1;">
-              <ul>
-                <li><strong>Atomic</strong>: tăng giảm biến đếm, đặt cờ.</li>
-                <li><strong>Mutex</strong>: bảo vệ cấu trúc dữ liệu dùng chung.</li>
-                <li><strong>Semaphore</strong>: giới hạn số kết nối, số tác vụ.</li>
-                <li><strong>Barrier</strong>: đồng bộ cuối mỗi vòng hoặc mỗi bước.</li>
-              </ul>
-            </div>
-          </div>
+          <ul>
+            <li><strong>Thao tác nguyên tử</strong>: tăng giảm biến đếm, đặt cờ trạng thái.</li>
+            <li><strong>Khoá loại trừ</strong>: bảo vệ cấu trúc dữ liệu dùng chung (list, hash map…).</li>
+            <li><strong>Cờ hiệu</strong>: giới hạn số kết nối, số tác vụ (ví dụ: bể 3 connection DB).</li>
+            <li><strong>Rào đồng bộ</strong>: đồng bộ cuối mỗi vòng (ví dụ: thuật toán pha — lưu cờ tổng sau mỗi bước).</li>
+          </ul>
+          <p style="margin-top: 0.6em; font-style: italic; color: #555;">
+            Quy tắc chung: chọn công cụ <strong>nhẹ nhất</strong> đủ giải quyết vấn đề.
+          </p>
         </section>
 
 
-        <section style="font-size: 0.8em;">
-          <h2>Ví dụ 1: Tính tổng trên dữ liệu lớn</h2>
-          <div style="display: flex; gap: 24px;">
+        <section style="font-size: 0.7em;">
+          <h2>Ví dụ 1: Tính tổng bình phương trên dữ liệu lớn</h2>
+          <div style="display: flex; gap: 18px;">
             <div style="flex: 1;">
-              <h3 style="font-size: 0.9em;">Tuần tự</h3>
-              <pre><code class="language-python" data-trim>
-tong = 0
-for x in data:
-    tong += x * x
+              <strong>Tuần tự</strong>
+              <pre><code class="language-cpp" data-trim>
+long long tong = 0;
+for (auto x : data)
+  tong += 1LL * x * x;
               </code></pre>
-              <ul>
+              <ul style="margin-top: 0.3em; font-size: 0.95em;">
                 <li>Một lõi làm tất cả.</li>
-                <li>Mọi phần tử đi qua cùng một biến <span class="inline-code">tong</span>.</li>
+                <li>Mọi phần tử đi qua cùng biến <span class="inline-code">tong</span>.</li>
               </ul>
             </div>
-          </div>
-        </section>
-
-        <section style="font-size: 0.8em;">
-          <h2>Ví dụ 1: Tính tổng trên dữ liệu lớn</h2>
-          <div style="display: flex; gap: 24px;">
-            
-            <div style="flex: 1;">
-              <h3 style="font-size: 0.9em;">Song song</h3>
+            <div style="flex: 1.4;">
+              <strong>Song song (chia + gộp)</strong>
               <pre><code class="language-cpp" data-trim>
 std::vector&lt;long long&gt; tong_tam(4, 0);
 std::vector&lt;std::thread&gt; luong;
-
-for (int i = 0; i < 4; ++i) {
-  luong.emplace_back([&, i] {
+for (int i = 0; i &lt; 4; ++i) {
+  luong.emplace_back([&amp;, i] {
     size_t l = i * data.size() / 4;
     size_t r = (i + 1) * data.size() / 4;
-    for (size_t j = l; j < r; ++j)
+    for (size_t j = l; j &lt; r; ++j)
       tong_tam[i] += 1LL * data[j] * data[j];
   });
 }
-
-for (auto& t : luong) t.join();
-long long tong = tong_tam[0] + tong_tam[1] + tong_tam[2] + tong_tam[3];
-</code></pre>
-              <ul>
-                <li>4 luồng, 4 tổng tạm.</li>
-                <li>Ghép kết quả sau khi <span class="inline-code">join()</span>.</li>
-                <li>Cuối cùng mới <strong>gộp kết quả</strong>.</li>
-              </ul>
+for (auto&amp; t : luong) t.join();
+long long tong = tong_tam[0] + tong_tam[1]
+               + tong_tam[2] + tong_tam[3];
+              </code></pre>
+              <p style="margin-top: 0.3em; font-size: 0.95em;">
+                4 luồng, 4 tổng tạm, gộp sau khi <span class="inline-code">join()</span> → <strong>không tranh chấp</strong>.
+              </p>
             </div>
           </div>
-          <p class="caption">Đây là mẫu kinh điển của <strong>quy tụ kết quả</strong> (reduction): chia việc độc lập, rồi gộp lại.</p>
+          <p style="margin-top: 0.4em; text-align: center; font-style: italic; color: #555;">
+            Mẫu kinh điển <strong>quy tụ kết quả</strong> (reduction): chia việc độc lập, gộp lại.
+          </p>
+        </section>
+
+        <!-- Race condition concrete -->
+        <section style="font-size: 0.72em;">
+          <h2>Race condition: cùng biến không khoá</h2>
+          <div style="display: flex; gap: 18px;">
+            <div style="flex: 1; background: #ffebee; padding: 10px; border-radius: 8px; border-left: 4px solid #c62828;">
+              <strong style="color: #c62828;">SAI ❌ — race condition</strong>
+              <pre style="margin-top: 0.3em;"><code class="language-cpp" data-trim>
+long long tong = 0;  // chia sẻ
+for (int i = 0; i &lt; 4; ++i) {
+  luong.emplace_back([&amp;, i] {
+    for (...)
+      tong += 1LL * data[j] * data[j];
+    // ↑ đọc-cộng-ghi không nguyên tử
+  });
+}
+              </code></pre>
+              <p style="font-size: 0.9em; margin-top: 0.3em;">
+                Kết quả <em>không xác định</em> — mỗi lần chạy mỗi khác.
+              </p>
+            </div>
+            <div style="flex: 1; background: #e8f5e9; padding: 10px; border-radius: 8px; border-left: 4px solid #2e7d32;">
+              <strong style="color: #2e7d32;">ĐÚNG ✓ — std::atomic</strong>
+              <pre style="margin-top: 0.3em;"><code class="language-cpp" data-trim>
+std::atomic&lt;long long&gt; tong{0};
+// trong thread:
+tong.fetch_add(1LL * x * x);
+
+// HOẶC: std::mutex mtx;
+// std::lock_guard lock(mtx);
+// tong += 1LL * x * x;
+              </code></pre>
+              <p style="font-size: 0.9em; margin-top: 0.3em;">
+                Hoặc tốt hơn: chia tổng tạm như slide trước → <strong>không cần khoá</strong>.
+              </p>
+            </div>
+          </div>
+          <p style="margin-top: 0.5em; text-align: center; color: #555; font-style: italic;">
+            Càng <strong>ít chia sẻ</strong>, càng <strong>ít tranh chấp</strong> → song song càng đúng và càng nhanh.
+          </p>
+        </section>
+
+        <!-- Amdahl's law -->
+        <section style="font-size: 0.78em;">
+          <h2>Định luật Amdahl: giới hạn của song song</h2>
+          <div style="display: flex; gap: 20px; align-items: center;">
+            <div style="flex: 1;">
+              <div class="question-box">
+                <p style="text-align: center; font-size: 1.1em;">
+                  $\text{speedup} = \dfrac{1}{s + \dfrac{p}{n}}$
+                </p>
+                <p style="font-size: 0.9em; margin-top: 0.3em;">
+                  Với $s$ = tỷ lệ phần <strong>tuần tự</strong> (không song song được), $p = 1 - s$, $n$ = số lõi.
+                </p>
+              </div>
+              <ul style="margin-top: 0.5em;">
+                <li>Nếu $s = 5\%$ → speedup tối đa $= 1/0.05 = 20\times$ (dù có vô số lõi).</li>
+                <li>Nếu $s = 25\%$ → tối đa chỉ $4\times$.</li>
+                <li>Phần tuần tự còn lại là <strong>cổ chai</strong>.</li>
+              </ul>
+            </div>
+            <div style="flex: 1; display: flex; justify-content: center;">
+              <svg width="320" height="240" xmlns="http://www.w3.org/2000/svg" style="font-family: serif;">
+                <!-- axes -->
+                <line x1="40" y1="200" x2="300" y2="200" stroke="#333" stroke-width="1.5"/>
+                <line x1="40" y1="200" x2="40" y2="20" stroke="#333" stroke-width="1.5"/>
+                <text x="170" y="230" text-anchor="middle" font-size="13" fill="#555">Số lõi $n$</text>
+                <text x="15" y="110" text-anchor="middle" font-size="13" fill="#555" transform="rotate(-90 15 110)">Speedup</text>
+                <!-- tick labels -->
+                <text x="40" y="216" text-anchor="middle" font-size="10">1</text>
+                <text x="170" y="216" text-anchor="middle" font-size="10">8</text>
+                <text x="300" y="216" text-anchor="middle" font-size="10">16</text>
+                <text x="34" y="204" text-anchor="end" font-size="10">0</text>
+                <text x="34" y="160" text-anchor="end" font-size="10">5</text>
+                <text x="34" y="120" text-anchor="end" font-size="10">10</text>
+                <text x="34" y="80" text-anchor="end" font-size="10">15</text>
+                <text x="34" y="40" text-anchor="end" font-size="10">20</text>
+                <!-- s=5% curve: speedup = 1/(0.05 + 0.95/n) -->
+                <path d="M 40,200 L 56,168 L 73,144 L 89,127 L 105,114 L 122,104 L 138,96 L 154,90 L 170,84 L 187,80 L 203,76 L 219,72 L 235,69 L 252,66 L 268,64 L 284,62 L 300,60"
+                      stroke="#2e7d32" stroke-width="2" fill="none"/>
+                <text x="305" y="60" font-size="11" fill="#2e7d32">$s=5\%$</text>
+                <!-- s=10% curve -->
+                <path d="M 40,200 L 56,176 L 73,160 L 89,148 L 105,140 L 122,134 L 138,128 L 154,124 L 170,121 L 187,118 L 203,116 L 219,114 L 235,113 L 252,111 L 268,110 L 284,109 L 300,108"
+                      stroke="#1565c0" stroke-width="2" fill="none"/>
+                <text x="305" y="110" font-size="11" fill="#1565c0">$s=10\%$</text>
+                <!-- s=25% curve -->
+                <path d="M 40,200 L 56,188 L 73,180 L 89,174 L 105,170 L 122,167 L 138,165 L 154,163 L 170,162 L 187,161 L 203,160 L 219,159 L 235,159 L 252,158 L 268,158 L 284,157 L 300,157"
+                      stroke="#c62828" stroke-width="2" fill="none"/>
+                <text x="305" y="157" font-size="11" fill="#c62828">$s=25\%$</text>
+              </svg>
+            </div>
+          </div>
+          <p style="margin-top: 0.4em; text-align: center; font-style: italic; color: #555;">
+            → Song song <strong>không miễn phí</strong>: muốn tăng nữa, phải giảm phần tuần tự.
+          </p>
         </section>
 
         <section style="font-size: 0.8em;">
