@@ -27,23 +27,23 @@
         </section>
 
         <!-- Hook: AlphaGo -->
-        <section style="font-size: 0.82em;">
+        <section style="font-size: 0.75em;">
           <h2>AlphaGo đánh bại Lee Sedol (2016)</h2>
           <ul>
-            <li><strong>Cờ Vây</strong>: \(\sim 10^{170}\) trạng thái — nhiều hơn số nguyên tử trong vũ trụ quan sát được.</li>
+            <li><strong>Cờ Vây</strong>: \(\sim 10^{170}\) trạng thái — nhiều hơn số nguyên tử trong vũ trụ.</li>
             <li>Máy tính cổ điển <strong>không thể duyệt hết</strong> — không có công thức "đi tìm nước hay nhất".</li>
-            <li>AlphaGo (DeepMind, 2016) thắng <strong>Lee Sedol 4-1</strong> — kì thủ huyền thoại.</li>
+            <li>AlphaGo (DeepMind, 2016) thắng kì thủ huyền thoại <strong>Lee Sedol 4-1</strong>.</li>
           </ul>
           <div style="margin-top: 0.8em; background: #e3f2fd; padding: 12px; border-radius: 8px; font-size: 0.9em;">
-            <strong>AlphaGo dùng 3 paradigm cùng lúc:</strong>
+            <strong>AlphaGo dùng 3 mẫu hình cùng lúc:</strong>
             <ul style="margin-top: 0.3em;">
-              <li><strong>Logic</strong> — luật cờ formalized + Monte Carlo Tree Search</li>
-              <li><strong>Song song</strong> — 1920 CPU + 280 GPU train neural network</li>
-              <li><strong>AI</strong> — deep neural net học từ 30M ván người chơi</li>
+              <li><strong>Logic</strong> — luật cờ chuẩn hoá + tìm kiếm cây Monte Carlo</li>
+              <li><strong>Song song</strong> — 1920 CPU + 280 GPU huấn luyện mạng nơ-ron</li>
+              <li><strong>AI</strong> — mạng nơ-ron sâu học từ 30 triệu ván do người chơi</li>
             </ul>
           </div>
           <p style="margin-top: 0.6em; font-style: italic; color: #555;">
-            Một mình paradigm nào cũng <strong>không đủ</strong>. Đây là buổi học về cách kết hợp.
+            Một mẫu hình đứng một mình là <strong>không đủ</strong>. Đây là buổi học về cách kết hợp.
           </p>
         </section>
 
@@ -52,20 +52,20 @@
           <h2>Câu hỏi xuyên suốt buổi học</h2>
           <p>Bài 8-9 cho ta <strong>FP</strong> và <em>minh bạch tham chiếu</em> — chương trình suy luận như toán học.</p>
           <p>Nhưng FP một mình không giải được mọi bài. Vậy:</p>
-          <div class="fragment" style="margin-top: 0.8em; background: #fff3e0; padding: 14px; border-radius: 8px; border-left: 5px solid #ff9800;">
+          <div style="margin-top: 0.8em; background: #fff3e0; padding: 14px; border-radius: 8px; border-left: 5px solid #ff9800;">
             <strong style="color: #e65100;">Câu hỏi xuyên suốt:</strong>
             <p style="margin-top: 0.3em; font-style: italic; font-size: 1.05em;">
-              AlphaGo, AlphaFold, ChatGPT, Claude Code — những đột phá hiện đại — được xây từ những paradigm nào, vì sao chúng <strong>không đủ một mình</strong>?
+              AlphaGo, AlphaFold, ChatGPT, Claude Code — những đột phá hiện đại — được xây từ những mẫu hình nào, vì sao chúng <strong>không đủ khi đứng một mình</strong>?
             </p>
           </div>
-          <p class="fragment" style="margin-top: 0.6em; color: #555; font-size: 0.9em;">
-            → Trả lời qua 3 paradigm: <strong>Lập trình logic</strong> → <strong>Lập trình song song</strong> → <strong>Lập trình bằng AI</strong> → quay lại AlphaGo ở tổng kết.
+          <p style="margin-top: 0.6em; color: #555; font-size: 0.9em;">
+            → Trả lời qua 3 mẫu hình: <strong>Lập trình logic</strong> → <strong>Lập trình song song</strong> → <strong>Lập trình bằng AI</strong> → quay lại AlphaGo ở tổng kết.
           </p>
         </section>
 
         <section>
           <h2>Nội dung</h2>
-          <ol style="font-size: 0.9em;">
+          <ol>
             <li>Lập trình logic <span style="color: #888;">— "điều gì đúng?"</span></li>
             <li>Lập trình song song <span style="color: #888;">— "làm sao chạy cùng lúc?"</span></li>
             <li>Lập trình bằng AI <span style="color: #888;">— "cộng tác với công cụ thế nào?"</span></li>
@@ -76,10 +76,10 @@
         <section style="font-size: 0.85em;">
           <h2>Mục tiêu buổi học</h2>
           <ul>
-            <li>Nhận ra <strong>3 góc nhìn lập trình</strong> khác nhau, ngoài imperative và FP đã học.</li>
-            <li>Hiểu ý tưởng cốt lõi + cơ chế của từng paradigm.</li>
-            <li>Biết bài toán nào hợp với paradigm nào, lợi ích và đánh đổi.</li>
-            <li>Liên hệ: <strong>AlphaGo dùng paradigm nào ở đâu</strong>, vì sao kết hợp lại mạnh hơn.</li>
+            <li>Nhận ra <strong>3 góc nhìn lập trình</strong> khác nhau, ngoài lập trình mệnh lệnh và lập trình hàm đã học.</li>
+            <li>Hiểu ý tưởng cốt lõi + cơ chế của từng mẫu hình.</li>
+            <li>Biết bài toán nào hợp với mẫu hình nào, lợi ích và đánh đổi.</li>
+            <li>Liên hệ: <strong>AlphaGo dùng mẫu hình nào ở đâu</strong>, vì sao kết hợp lại mạnh hơn.</li>
             <li>Hiểu xu hướng AI coding 2026 (agent, tool use, context engineering).</li>
           </ul>
         </section>
@@ -841,6 +841,35 @@ tong.fetch_add(1LL * x * x);
             Lập trình bằng AI
           </h1>
           <p>Không chỉ viết mã.<br />Còn là cộng tác với công cụ.</p>
+        </section>
+
+        <!-- Hook: AI lập trình đã là hiện trạng -->
+        <section style="font-size: 0.78em;">
+          <h2>AI lập trình đã là hiện trạng — không phải tương lai</h2>
+          <div style="background: #fff3e0; padding: 14px 18px; border-radius: 8px; border-left: 5px solid #ff9800;">
+            <strong style="color: #e65100; font-size: 1.1em;">~75% mã lập trình mới của Google do AI viết</strong>
+            <p style="margin-top: 0.4em;">
+              <em>Sundar Pichai (Q3/2024 earnings call)</em>: <strong>"hơn 25%"</strong> mã mới của Google được sinh bởi AI, kỹ sư review trước khi merge.
+              <br>Tỷ lệ này tăng nhanh: ~10% (2023) → 25% (Q3/2024) → tiếp tục tăng theo các báo cáo 2025.
+            </p>
+            <p style="margin-top: 0.3em; font-size: 0.88em; color: #555;">
+              Nguồn: <a href="https://vnexpress.net/75-ma-lap-trinh-moi-cua-google-do-ai-viet-5066205.html" style="color: #1565c0;">VnExpress — "75% mã lập trình mới của Google do AI viết"</a>
+            </p>
+          </div>
+          <div style="margin-top: 0.8em; display: flex; gap: 16px;">
+            <div style="flex: 1; background: #e3f2fd; padding: 10px 14px; border-radius: 8px; border-left: 4px solid #1565c0;">
+              <strong style="color: #0d47a1;">Bài học cho sinh viên 2026</strong>
+              <ul style="margin-top: 0.3em; font-size: 0.95em;">
+                <li>AI coding <strong>không phải lựa chọn</strong> — là kỹ năng mặc định.</li>
+                <li>Vai trò người lập trình <strong>chuyển dịch</strong>: ít gõ phím, nhiều review/quyết định/định hướng.</li>
+                <li>Cần học cách <strong>cộng tác hiệu quả</strong> với AI: prompt, tool use, context.</li>
+              </ul>
+            </div>
+            <div style="flex: 0.85; background: #f3e5f5; padding: 10px 14px; border-radius: 8px; border-left: 4px solid #7b1fa2;">
+              <strong style="color: #4a148c;">Câu hỏi cho phần này</strong>
+              <p style="margin-top: 0.3em; font-size: 0.95em;">Vì sao Google làm được? Cần kỹ năng gì để làm việc với AI agent? Khi nào nên tin AI, khi nào phải nghi ngờ?</p>
+            </div>
+          </div>
         </section>
 
         <section style="font-size: 0.88em;">
