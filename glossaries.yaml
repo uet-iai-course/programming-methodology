@@ -1,0 +1,247 @@
+# glossaries.yaml — Bảng thuật ngữ chuẩn cho slide PPLT
+#
+# Quy tắc dùng:
+#   - Mặc định: tiếng Việt trước, tiếng Anh trong ngoặc nếu cần (vd "thao tác nguyên tử (atomic)").
+#   - "keep_en: true" → giữ nguyên tiếng Anh có chủ đích, không Việt hoá.
+#   - "note" → ghi chú khi dùng (vd cách viết hoa, chữ thường, alias…).
+#   - Khi cùng 1 thuật ngữ có nhiều cách dịch, ghi rõ trong "vi" và "note".
+#
+# File này được SLIDE_STYLE_GUIDE.md tham chiếu.
+
+sections:
+
+  - title: Mẫu hình lập trình (chung)
+    terms:
+      - en: programming paradigm
+        vi: mẫu hình lập trình
+        note: paradigm → mẫu hình
+      - en: imperative programming
+        vi: lập trình mệnh lệnh
+      - en: declarative programming
+        vi: lập trình khai báo
+      - en: functional programming (FP)
+        vi: lập trình hàm (FP)
+      - en: object-oriented programming (OOP)
+        vi: lập trình hướng đối tượng (OOP)
+      - en: logic programming
+        vi: lập trình logic
+      - en: parallel programming
+        vi: lập trình song song
+      - en: concurrent programming
+        vi: lập trình đồng thời
+      - en: reactive programming
+        vi: lập trình phản ứng
+      - en: event-driven
+        vi: hướng sự kiện
+      - en: dataflow / stream
+        vi: luồng dữ liệu
+      - en: aspect-oriented (AOP)
+        vi: hướng khía cạnh
+      - en: quantum programming
+        vi: lập trình lượng tử
+      - en: message passing / actor model
+        vi: truyền thông điệp / mô hình Actor
+
+  - title: Lập trình hàm (FP)
+    terms:
+      - en: lambda calculus
+        vi: phép tính lambda
+        note: chữ thường lambda
+      - en: referential transparency
+        vi: minh bạch tham chiếu
+      - en: Y / H combinator
+        vi: Tổ hợp Y / Tổ hợp H
+        note: viết hoa T
+      - en: pure function
+        vi: hàm thuần khiết
+      - en: higher-order function
+        vi: hàm bậc cao
+      - en: closure
+        vi: bao đóng
+      - en: beta-reduction
+        vi: quy giản beta
+        note: "`\\(\\beta\\)` trong prose, `beta` trong heading"
+      - en: alpha-equivalence
+        vi: tương đương alpha
+      - en: confluence
+        vi: tính hội lưu
+      - en: normal form
+        vi: dạng chuẩn
+      - en: call-by-value / name / need
+        vi: gọi theo giá trị / tên / lười
+
+  - title: Lập trình logic
+    terms:
+      - en: predicate
+        vi: vị từ
+      - en: unification
+        vi: hợp nhất
+      - en: backtracking
+        vi: quay lui
+      - en: facts / rules / queries
+        vi: sự kiện / luật / truy vấn
+      - en: constraint propagation
+        vi: lan truyền ràng buộc
+      - en: finite domain
+        vi: miền hữu hạn
+
+  - title: Lập trình song song
+    terms:
+      - en: concurrent
+        vi: đồng thời
+      - en: parallel
+        vi: song song
+      - en: atomic
+        vi: thao tác nguyên tử
+      - en: mutex / lock
+        vi: khoá loại trừ
+      - en: semaphore
+        vi: cờ hiệu
+      - en: barrier
+        vi: rào đồng bộ
+      - en: race condition
+        vi: tranh chấp
+      - en: deadlock
+        vi: khoá chết
+      - en: starvation
+        vi: bỏ đói
+      - en: shared memory
+        vi: bộ nhớ chia sẻ
+      - en: message passing
+        vi: truyền thông điệp
+      - en: reduction (parallel)
+        vi: quy tụ kết quả
+      - en: Amdahl's law
+        vi: định luật Amdahl
+      - en: thread
+        vi: luồng
+      - en: fault tolerance
+        vi: chịu lỗi
+      - en: assembly
+        vi: mã hợp ngữ
+      - en: pthread, OpenMP, MPI
+        keep_en: true
+        note: tên công nghệ — giữ nguyên
+
+  - title: OOP
+    terms:
+      - en: inheritance
+        vi: kế thừa
+      - en: polymorphism
+        vi: đa hình
+      - en: encapsulation
+        vi: đóng gói
+      - en: abstraction
+        vi: trừu tượng hoá
+      - en: design pattern
+        vi: mẫu thiết kế
+
+  - title: Lập trình bằng AI
+    terms:
+      - en: prompt
+        vi: yêu cầu
+        note: hoặc giữ "prompt"
+      - en: agent
+        keep_en: true
+      - en: tool use
+        vi: sử dụng công cụ
+      - en: context engineering
+        keep_en: true
+        note: kỹ năng viết yêu cầu rõ
+      - en: context
+        vi: ngữ cảnh
+      - en: edge case
+        vi: ca biên
+      - en: hallucination
+        vi: bịa
+        note: hoặc giữ "hallucination"
+      - en: auto-completion
+        vi: tự hoàn thành
+      - en: signature
+        vi: chữ kí hàm
+      - en: examples (in/out)
+        vi: ví dụ (vào/ra)
+      - en: constraints
+        vi: ràng buộc
+      - en: what NOT to do
+        vi: điều không nên làm
+      - en: file path
+        vi: đường dẫn file
+      - en: spec
+        vi: đặc tả (spec)
+      - en: naming convention
+        vi: quy ước đặt tên
+      - en: prototype (verb)
+        vi: dựng nguyên mẫu
+      - en: fork (verb, repo)
+        vi: rẽ nhánh
+      - en: open-source
+        vi: mã nguồn mở
+      - en: chat (on codebase)
+        vi: trò chuyện
+      - en: agentic
+        vi: có tính agent
+      - en: capability (AI tool)
+        vi: khả năng
+      - en: Tab autocomplete
+        vi: tự hoàn thành dòng
+
+  - title: Quy trình phát triển / công cụ
+    terms:
+      - en: developer / engineer
+        vi: lập trình viên / kĩ sư
+      - en: task
+        vi: công việc / việc
+      - en: workflow
+        vi: quy trình / luồng công việc
+      - en: review (verb / noun)
+        vi: duyệt / xét duyệt
+      - en: debug
+        vi: gỡ lỗi
+      - en: compile error
+        vi: lỗi biên dịch
+      - en: refactor
+        vi: tái cấu trúc
+      - en: migration (code)
+        vi: di trú
+      - en: generate code
+        vi: sinh code
+      - en: bug
+        vi: lỗi
+      - en: diff
+        keep_en: true
+        note: ngắn gọn, sinh viên đã quen
+      - en: commit / merge / PR
+        keep_en: true
+        note: tên thao tác git
+      - en: connection / DB
+        vi: kết nối / CSDL
+      - en: list / hash map (data structures)
+        vi: danh sách / bảng băm
+
+# Tên công nghệ giữ nguyên (không Việt hoá):
+keep_en_technologies:
+  - pthread
+  - OpenMP
+  - MPI
+  - Spark
+  - MapReduce
+  - Flink
+  - Akka
+  - Erlang
+  - Q#
+  - Qiskit
+  - GitHub
+  - VS Code
+  - JetBrains
+  - Cursor
+  - Claude Code
+  - Windsurf
+  - Cline
+  - Aider
+  - RxJS
+  - RxJava
+  - SwiftUI
+  - Node.js
+  - Spring AOP
+  - AspectJ
