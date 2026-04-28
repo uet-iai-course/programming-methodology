@@ -139,7 +139,9 @@
           </div>
           <div style="display: flex; gap: 20px; margin-top: 0.6em;">
             <div style="flex: 1;">
-              <strong>Ví dụ</strong>
+              <div>
+                <strong>Ví dụ</strong>
+              </div>
               <ul style="margin-top: 0.2em;">
                 <li><span class="inline-code">cha(an, binh)</span></li>
                 <li><span class="inline-code">ong(X, Y)</span></li>
@@ -147,7 +149,9 @@
               </ul>
             </div>
             <div style="flex: 1.2;">
-              <strong>Cách hiểu</strong>
+              <div>
+                <strong>Cách hiểu</strong>
+              </div>
               <ul style="margin-top: 0.2em;">
                 <li><span class="inline-code">cha/2</span>: quan hệ cha-con.</li>
                 <li><span class="inline-code">ong/2</span>: quan hệ ông-cháu.</li>
@@ -160,26 +164,43 @@
           </p>
         </section>
 
-        <section style="font-size: 0.8em;">
+        <section style="font-size: 0.78em;">
           <h2>Ba thành phần cốt lõi</h2>
-          <div style="display: flex; font-size: 0.7em; gap: 16px; margin-top: 0.8em;">
-            <div class="question-box" style="flex: 1;">
-              <div class="question-title">Sự kiện</div>
-              <p>Điều đã biết là đúng.</p>
-              <p><span class="inline-code">cha(an, binh).</span></p>
-              <p><span class="inline-code">cha(binh, cuong).</span></p>
+          <div style="display: flex; gap: 20px; margin-top: 0.4em;">
+            <div style="flex: 1.05;">
+              <pre><code class="language-prolog" data-trim>
+% --- Sự kiện: điều đã biết là đúng ---
+cha(an, binh).
+cha(binh, cuong).
+
+% --- Luật: điều suy ra nếu điều kiện đúng ---
+ong(X, Y) :-
+  cha(X, Z),
+  cha(Z, Y).
+
+% --- Truy vấn: điều muốn hỏi ---
+?- ong(an, Y).
+   Y = cuong.    % ← kết quả
+              </code></pre>
             </div>
-            <div class="question-box" style="flex: 1;">
-              <div class="question-title">Luật</div>
-              <p>Điều suy ra là đúng nếu các điều kiện đúng.</p>
-              <p><span class="inline-code">ong(X, Y) :- cha(X, Z), cha(Z, Y).</span></p>
-            </div>
-            <div class="question-box" style="flex: 1;">
-              <div class="question-title">Truy vấn</div>
-              <p>Điều muốn hỏi là đúng hay sai.</p>
-              <p><span class="inline-code">?- ong(an, ?).</span></p>
+            <div style="flex: 0.95;">
+              <div class="fragment" style="background: #e8f5e9; padding: 8px 12px; border-radius: 6px; border-left: 4px solid #2e7d32;">
+                <strong style="color: #2e7d32;">① Sự kiện (facts)</strong>
+                <p style="margin-top: 0.2em; font-size: 0.95em;">Điều ta <em>khẳng định</em> là đúng. Mô tả "thế giới" cho Prolog biết.</p>
+              </div>
+              <div class="fragment" style="margin-top: 0.5em; background: #e3f2fd; padding: 8px 12px; border-radius: 6px; border-left: 4px solid #1565c0;">
+                <strong style="color: #1565c0;">② Luật (rules)</strong>
+                <p style="margin-top: 0.2em; font-size: 0.95em;">Điều <em>suy ra</em> được nếu các điều kiện ở vế phải đều đúng. Mô tả quan hệ.</p>
+              </div>
+              <div class="fragment" style="margin-top: 0.5em; background: #fff3e0; padding: 8px 12px; border-radius: 6px; border-left: 4px solid #ef6c00;">
+                <strong style="color: #e65100;">③ Truy vấn (query)</strong>
+                <p style="margin-top: 0.2em; font-size: 0.95em;">Câu hỏi cho Prolog: <em>"có giá trị Y nào để mệnh đề này đúng?"</em>. Prolog tự suy diễn ra <span class="inline-code">Y = cuong</span>.</p>
+              </div>
             </div>
           </div>
+          <p class="fragment" style="margin-top: 0.5em; text-align: center; font-style: italic; color: #555;">
+            Một chương trình Prolog hoàn chỉnh = <strong>sự kiện + luật + truy vấn</strong>.
+          </p>
         </section>
 
         <section style="font-size: 0.85em;">
