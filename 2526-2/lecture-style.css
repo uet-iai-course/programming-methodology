@@ -109,6 +109,16 @@
     font-weight: 600;
 }
 
+.reveal .advanced-badge {
+    display: inline-block;
+    background: #7B5EA7;
+    color: white;
+    font-size: 0.42em;
+    padding: 3px 10px;
+    border-radius: 16px;
+    font-weight: 600;
+}
+
 .reveal .fragment.blur {
     filter: blur(5px);
 }
@@ -252,4 +262,11 @@
 .reveal .sudoku-grid td.highlight {
     background: #fff3cd;
     font-weight: bold;
+}
+
+/* Modifier: large grid (more readable on projector) */
+.reveal .sudoku-grid--lg td {
+    width: 46px;
+    height: 46px;
+    font-size: 1.15em;
 }
