@@ -26,23 +26,61 @@
           <p>Trường ĐH Công nghệ – Đại học Quốc gia Hà Nội</p>
         </section>
 
+        <!-- Hook: AlphaGo -->
+        <section style="font-size: 0.82em;">
+          <h2>AlphaGo đánh bại Lee Sedol (2016)</h2>
+          <ul>
+            <li><strong>Cờ Vây</strong>: \(\sim 10^{170}\) trạng thái — nhiều hơn số nguyên tử trong vũ trụ quan sát được.</li>
+            <li>Máy tính cổ điển <strong>không thể duyệt hết</strong> — không có công thức "đi tìm nước hay nhất".</li>
+            <li>AlphaGo (DeepMind, 2016) thắng <strong>Lee Sedol 4-1</strong> — kì thủ huyền thoại.</li>
+          </ul>
+          <div style="margin-top: 0.8em; background: #e3f2fd; padding: 12px; border-radius: 8px; font-size: 0.9em;">
+            <strong>AlphaGo dùng 3 paradigm cùng lúc:</strong>
+            <ul style="margin-top: 0.3em;">
+              <li><strong>Logic</strong> — luật cờ formalized + Monte Carlo Tree Search</li>
+              <li><strong>Song song</strong> — 1920 CPU + 280 GPU train neural network</li>
+              <li><strong>AI</strong> — deep neural net học từ 30M ván người chơi</li>
+            </ul>
+          </div>
+          <p style="margin-top: 0.6em; font-style: italic; color: #555;">
+            Một mình paradigm nào cũng <strong>không đủ</strong>. Đây là buổi học về cách kết hợp.
+          </p>
+        </section>
+
+        <!-- Câu hỏi xuyên buổi -->
+        <section style="font-size: 0.85em;">
+          <h2>Câu hỏi xuyên suốt buổi học</h2>
+          <p>Bài 8-9 cho ta <strong>FP</strong> và <em>minh bạch tham chiếu</em> — chương trình suy luận như toán học.</p>
+          <p>Nhưng FP một mình không giải được mọi bài. Vậy:</p>
+          <div class="fragment" style="margin-top: 0.8em; background: #fff3e0; padding: 14px; border-radius: 8px; border-left: 5px solid #ff9800;">
+            <strong style="color: #e65100;">Câu hỏi xuyên suốt:</strong>
+            <p style="margin-top: 0.3em; font-style: italic; font-size: 1.05em;">
+              AlphaGo, AlphaFold, ChatGPT, Claude Code — những đột phá hiện đại — được xây từ những paradigm nào, vì sao chúng <strong>không đủ một mình</strong>?
+            </p>
+          </div>
+          <p class="fragment" style="margin-top: 0.6em; color: #555; font-size: 0.9em;">
+            → Trả lời qua 3 paradigm: <strong>Lập trình logic</strong> → <strong>Lập trình song song</strong> → <strong>Lập trình bằng AI</strong> → quay lại AlphaGo ở tổng kết.
+          </p>
+        </section>
+
         <section>
           <h2>Nội dung</h2>
           <ol style="font-size: 0.9em;">
-            <li>Lập trình logic</li>
-            <li>Lập trình song song</li>
-            <li>Lập trình bằng AI</li>
-            <li>Tổng kết</li>
+            <li>Lập trình logic <span style="color: #888;">— "điều gì đúng?"</span></li>
+            <li>Lập trình song song <span style="color: #888;">— "làm sao chạy cùng lúc?"</span></li>
+            <li>Lập trình bằng AI <span style="color: #888;">— "cộng tác với công cụ thế nào?"</span></li>
+            <li>Tổng kết <span style="color: #888;">— quay lại AlphaGo</span></li>
           </ol>
         </section>
 
-        <section style="font-size: 0.9em;">
+        <section style="font-size: 0.85em;">
           <h2>Mục tiêu buổi học</h2>
           <ul>
-            <li>Nhận ra 3 góc nhìn lập trình khác nhau.</li>
-            <li>Hiểu ý tưởng cốt lõi của từng cách tiếp cận.</li>
-            <li>Biết bài toán nào hợp với cách nào.</li>
-            <li>Thấy rõ lợi ích và đánh đổi.</li>
+            <li>Nhận ra <strong>3 góc nhìn lập trình</strong> khác nhau, ngoài imperative và FP đã học.</li>
+            <li>Hiểu ý tưởng cốt lõi + cơ chế của từng paradigm.</li>
+            <li>Biết bài toán nào hợp với paradigm nào, lợi ích và đánh đổi.</li>
+            <li>Liên hệ: <strong>AlphaGo dùng paradigm nào ở đâu</strong>, vì sao kết hợp lại mạnh hơn.</li>
+            <li>Hiểu xu hướng AI coding 2026 (agent, tool use, context engineering).</li>
           </ul>
         </section>
       </section>
@@ -351,6 +389,25 @@ khoi([X1,X2,X3|T1], [Y1,Y2,Y3|T2], [Z1,Z2,Z3|T3]) :-
         </section>
       </section>
 
+      <!-- Bridge 1 → 2 -->
+      <section>
+        <section style="font-size: 0.78em;">
+          <h2>Nhìn lại và đi tiếp</h2>
+          <div style="background: #e8f5e9; padding: 10px; border-radius: 8px; border-left: 5px solid #2e7d32;">
+            <strong style="color: #2e7d32;">Ta vừa biết:</strong>
+            Lập trình logic = mô tả <strong>luật + ràng buộc</strong>, máy tự suy diễn (unification + backtracking).
+          </div>
+          <div style="margin-top: 0.6em; background: #ffebee; padding: 10px; border-radius: 8px; border-left: 5px solid #c62828;">
+            <strong style="color: #c62828;">Câu hỏi chưa giải được:</strong>
+            Suy diễn từng bước <strong>một lõi</strong>. Khi dữ liệu cực lớn (ảnh, video, ma trận), hoặc nhiều khả năng cần thử cùng lúc — đợi đến bao giờ?
+          </div>
+          <div style="margin-top: 0.6em; background: #e3f2fd; padding: 10px; border-radius: 8px; border-left: 5px solid #1565c0;">
+            <strong style="color: #1565c0;">Phần này trả lời:</strong>
+            <strong>Lập trình song song</strong> — chia việc cho nhiều lõi/máy, chạy cùng lúc. Đây là cách AlphaGo train được neural net từ 30M ván cờ.
+          </div>
+        </section>
+      </section>
+
       <!-- Phần 2 -->
       <section>
         <section>
@@ -619,6 +676,25 @@ long long tong = tong_tam[0] + tong_tam[1] + tong_tam[2] + tong_tam[3];
         </section>
       </section>
 
+      <!-- Bridge 2 → 3 -->
+      <section>
+        <section style="font-size: 0.78em;">
+          <h2>Nhìn lại và đi tiếp</h2>
+          <div style="background: #e8f5e9; padding: 10px; border-radius: 8px; border-left: 5px solid #2e7d32;">
+            <strong style="color: #2e7d32;">Ta vừa biết:</strong>
+            Lập trình song song = chia bài toán cho nhiều lõi → tăng tốc. Hiệu quả khi <strong>có công thức rõ</strong> + dữ liệu chia được.
+          </div>
+          <div style="margin-top: 0.6em; background: #ffebee; padding: 10px; border-radius: 8px; border-left: 5px solid #c62828;">
+            <strong style="color: #c62828;">Câu hỏi chưa giải được:</strong>
+            Có những bài <strong>không có công thức</strong>: nhận dạng mặt người, dịch tiếng Anh sang tiếng Việt, đánh giá nước cờ Vây. Ta chỉ có <em>dữ liệu</em>.
+          </div>
+          <div style="margin-top: 0.6em; background: #e3f2fd; padding: 10px; border-radius: 8px; border-left: 5px solid #1565c0;">
+            <strong style="color: #1565c0;">Phần này trả lời:</strong>
+            <strong>Lập trình bằng AI</strong> — học từ dữ liệu thay vì viết quy tắc. Cộng tác với AI ở mức code: agent, tool use, context engineering.
+          </div>
+        </section>
+      </section>
+
       <!-- Phần 3 -->
       <section>
         <section>
@@ -833,6 +909,25 @@ def tinh_giam_gia(gia, ty_le):
         </section>
       </section>
 
+      <!-- Bridge 3 → Tổng kết -->
+      <section>
+        <section style="font-size: 0.78em;">
+          <h2>Nhìn lại và đi tiếp</h2>
+          <div style="background: #e8f5e9; padding: 10px; border-radius: 8px; border-left: 5px solid #2e7d32;">
+            <strong style="color: #2e7d32;">Ta vừa biết:</strong>
+            Lập trình bằng AI = cộng tác với công cụ. AI tăng tốc viết bản đầu, tìm ca biên — nhưng <strong>không tự ra quyết định</strong>.
+          </div>
+          <div style="margin-top: 0.6em; background: #ffebee; padding: 10px; border-radius: 8px; border-left: 5px solid #c62828;">
+            <strong style="color: #c62828;">Câu hỏi chưa giải được:</strong>
+            3 paradigm: Logic, Song song, AI. Mỗi cái mạnh ở đâu? Có loại trừ nhau không? Một hệ thống thực kết hợp chúng thế nào?
+          </div>
+          <div style="margin-top: 0.6em; background: #e3f2fd; padding: 10px; border-radius: 8px; border-left: 5px solid #1565c0;">
+            <strong style="color: #1565c0;">Phần này trả lời:</strong>
+            Quay lại <strong>AlphaGo</strong> — thấy 3 paradigm khớp vào nhau. Tiến hoá đến AlphaFold → ChatGPT → Claude Code 2026.
+          </div>
+        </section>
+      </section>
+
       <!-- Kết thúc -->
       <section>
         <section>
@@ -841,6 +936,84 @@ def tinh_giam_gia(gia, ty_le):
             Tổng kết
           </h1>
           <p>Ba bài toán.<br />Ba góc nhìn.<br />Không loại trừ nhau.</p>
+        </section>
+
+        <!-- Quay lại AlphaGo -->
+        <section style="font-size: 0.8em;">
+          <h2>Quay lại AlphaGo</h2>
+          <p>3 paradigm khớp vào AlphaGo:</p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 0.6em;">
+            <div style="background: #f3e5f5; padding: 10px; border-radius: 8px; border-left: 4px solid #7b1fa2;">
+              <strong style="color: #4a148c;">Logic</strong>
+              <p style="margin-top: 0.2em; font-size: 0.95em;">MCTS (Monte Carlo Tree Search) + luật cờ formalized → suy diễn nước đi.</p>
+            </div>
+            <div style="background: #e1f5fe; padding: 10px; border-radius: 8px; border-left: 4px solid #0277bd;">
+              <strong style="color: #01579b;">Song song</strong>
+              <p style="margin-top: 0.2em; font-size: 0.95em;">1920 CPU + 280 GPU train neural network từ 30M ván người.</p>
+            </div>
+            <div style="background: #fff9c4; padding: 10px; border-radius: 8px; border-left: 4px solid #f9a825;">
+              <strong style="color: #f57f17;">AI</strong>
+              <p style="margin-top: 0.2em; font-size: 0.95em;">Policy + value network — học đánh giá cục diện thay vì duyệt hết.</p>
+            </div>
+          </div>
+          <p style="margin-top: 0.8em; font-style: italic; color: #555;">
+            Bỏ bất kì paradigm nào — AlphaGo thua. <strong>Kết hợp mới đủ.</strong>
+          </p>
+        </section>
+
+        <!-- Tiến hoá breakthrough -->
+        <section style="font-size: 0.78em;">
+          <h2>Tiến hoá: từ AlphaGo đến Claude Code</h2>
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="background: #f5f5f5;">
+                <th style="padding: 8px; text-align: left;">Năm</th>
+                <th style="padding: 8px; text-align: left;">Đột phá</th>
+                <th style="padding: 8px; text-align: left;">Kết hợp paradigm</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: 6px;">2016</td>
+                <td style="padding: 6px;"><strong>AlphaGo</strong> — Cờ Vây</td>
+                <td style="padding: 6px;">Logic (MCTS) + Song song + AI (CNN policy/value)</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px;">2020</td>
+                <td style="padding: 6px;"><strong>AlphaFold</strong> — gấp protein</td>
+                <td style="padding: 6px;">Song song (TPU) + AI (transformer) + ràng buộc vật lý</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px;">2022</td>
+                <td style="padding: 6px;"><strong>ChatGPT</strong> — đối thoại</td>
+                <td style="padding: 6px;">Song song (LLM training) + AI (RLHF) + tool use đầu tiên</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px;">2024</td>
+                <td style="padding: 6px;"><strong>Claude Code / Cursor</strong></td>
+                <td style="padding: 6px;">Agent loop + tool use + reasoning + lập trình thực tế</td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="margin-top: 0.8em; color: #555;">
+            Mỗi đột phá = thêm 1 cách kết hợp mới. Sinh viên 2026 sẽ làm việc với <strong>tất cả 3 paradigm</strong>.
+          </p>
+        </section>
+
+        <!-- Quay lại câu hỏi xuyên suốt -->
+        <section style="font-size: 0.82em;">
+          <h2>Quay lại câu hỏi xuyên suốt</h2>
+          <div style="background: #fff3e0; padding: 12px; border-radius: 8px; border-left: 5px solid #ff9800; font-style: italic;">
+            "AlphaGo, AlphaFold, ChatGPT, Claude Code được xây từ những paradigm nào, vì sao chúng <strong>không đủ một mình</strong>?"
+          </div>
+          <ul style="margin-top: 0.8em;">
+            <li><strong>Logic</strong> → cho ta khả năng <em>suy diễn từ luật + ràng buộc</em>, nhưng một lõi → chậm với dữ liệu lớn.</li>
+            <li><strong>Song song</strong> → tăng tốc tuyến tính trong giới hạn Amdahl, nhưng cần <em>công thức</em> rõ.</li>
+            <li><strong>AI</strong> → học khi không có công thức, nhưng <em>không tự chịu trách nhiệm</em> → cần con người duyệt.</li>
+          </ul>
+          <p style="margin-top: 0.8em; font-weight: bold; color: #e65100;">
+            → Lập trình tương lai = chọn đúng paradigm cho từng phần bài toán + kết hợp khéo léo.
+          </p>
         </section>
 
         <section style="font-size: 0.76em;">
