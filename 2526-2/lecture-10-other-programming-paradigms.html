@@ -1328,14 +1328,44 @@ def tinh_giam_gia(gia, ty_le):
           </table>
         </section>
 
-        <section style="font-size: 0.84em;">
+        <section style="font-size: 0.82em;">
           <h2>Tự kiểm tra</h2>
           <ol>
-            <li>Khi nào nên mô tả bài toán bằng luật thay vì bằng từng bước?</li>
-            <li>Vì sao chương trình song song khó kiểm thử hơn chương trình tuần tự?</li>
+            <li>Khi nào nên mô tả bài toán bằng <strong>luật + ràng buộc</strong> thay vì viết từng bước?</li>
+            <li>Vì sao chương trình song song <strong>khó kiểm thử</strong> hơn chương trình tuần tự?</li>
+            <li>Định luật Amdahl nói gì về giới hạn tăng tốc khi tăng số lõi?</li>
             <li>AI giúp nhanh hơn ở bước nào, và bước nào vẫn phải do người chịu trách nhiệm?</li>
-            <li>Một hệ thống thực tế có thể kết hợp cả 3 cách tiếp cận ra sao?</li>
+            <li>"Context engineering" là gì, vì sao là kỹ năng cốt lõi 2026?</li>
+            <li>Một hệ thống thực tế (ví dụ: AlphaGo, ChatGPT) <strong>kết hợp 3 paradigm</strong> ra sao?</li>
           </ol>
+        </section>
+
+        <!-- Bài tập mở rộng -->
+        <section style="font-size: 0.7em;">
+          <h2>Bài tập mở rộng</h2>
+          <p style="font-style: italic; color: #666; margin-top: -0.3em;">
+            Một bài cho mỗi paradigm — áp dụng vào tình huống cụ thể.
+          </p>
+
+          <div style="background: #f3e5f5; padding: 8px 12px; border-radius: 6px; margin-bottom: 0.4em; border-left: 4px solid #7b1fa2;">
+            <strong style="color: #4a148c;">A. Lập trình logic (Prolog)</strong>
+            Cho sự kiện <span class="inline-code">parent(an, binh).</span>, <span class="inline-code">parent(binh, cuong).</span>, <span class="inline-code">parent(cuong, dung).</span>.
+            Định nghĩa vị từ <span class="inline-code">is_grandparent(X, Y)</span>. Truy vấn <span class="inline-code">?- is_grandparent(X, dung).</span> trả về ai? <span class="inline-code">?- is_grandparent(an, X).</span>?
+          </div>
+
+          <div style="background: #e1f5fe; padding: 8px 12px; border-radius: 6px; margin-bottom: 0.4em; border-left: 4px solid #0277bd;">
+            <strong style="color: #01579b;">B. Lập trình song song (C++)</strong>
+            Cho code C++ tính tổng dùng 4 thread không lock — tất cả cùng cộng vào biến <span class="inline-code">long long tong</span>.
+            (a) Vì sao kết quả <em>không xác định</em>? Cụ thể "race" xảy ra ở vị trí nào trong assembly?
+            (b) Liệt kê <strong>2 cách sửa</strong> (atomic, mutex, hoặc tổng tạm) — cách nào nhanh hơn, vì sao?
+          </div>
+
+          <div style="background: #fff9c4; padding: 8px 12px; border-radius: 6px; border-left: 4px solid #f9a825;">
+            <strong style="color: #f57f17;">C. Lập trình bằng AI</strong>
+            Cho task: "viết hàm <span class="inline-code">parseCSV(text)</span> trong JavaScript".
+            (a) Viết một <strong>prompt tốt</strong> (file path, examples I/O, constraints, what-not-to-do).
+            (b) Liệt kê <strong>3 ca biên</strong> AI có thể bỏ sót mà bạn cần verify.
+          </div>
         </section>
       </section>
 
