@@ -126,18 +126,18 @@
             <div class="question-box" style="flex: 1;">
               <div class="question-title">Sự kiện</div>
               <p>Điều đã biết là đúng.</p>
-              <p class="inline-code">cha(an, binh).</p>
-              <p class="inline-code">cha(binh, cuong).</p>
+              <p><span class="inline-code">cha(an, binh).</span></p>
+              <p><span class="inline-code">cha(binh, cuong).</span></p>
             </div>
             <div class="question-box" style="flex: 1;">
               <div class="question-title">Luật</div>
               <p>Điều suy ra là đúng nếu các điều kiện đúng.</p>
-              <p class="inline-code">ong(X, Y) :- cha(X, Z), cha(Z, Y).</p>
+              <p><span class="inline-code">ong(X, Y) :- cha(X, Z), cha(Z, Y).</span></p>
             </div>
             <div class="question-box" style="flex: 1;">
               <div class="question-title">Truy vấn</div>
               <p>Điều muốn hỏi là đúng hay sai.</p>
-              <p class="inline-code">?- ong(an, ?).</p>
+              <p><span class="inline-code">?- ong(an, ?).</span></p>
             </div>
           </div>
         </section>
@@ -194,111 +194,21 @@ Y = cuong
           </div>
         </section>
 
-        <section style="font-size: 0.72em;">
+        <section style="font-size: 0.78em;">
           <h2>Ví dụ: Sudoku</h2>
           <div style="display: flex; gap: 24px; align-items: flex-start;">
             <div style="flex: 1.2;">
-              <table style="border-collapse: collapse; margin: 0 auto; font-size: 0.9em;">
+              <table class="sudoku-grid">
                 <tbody>
-                  <tr>
-                    <td style="width: 34px; height: 34px; text-align: center; border: 2px solid #333;">5</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 2px solid #333; border-bottom: 1px solid #999; border-left: 1px solid #999; border-right: 1px solid #999;">3</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 2px solid #333; border-bottom: 1px solid #999; border-left: 1px solid #999; border-right: 2px solid #333;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 2px solid #333; border-bottom: 1px solid #999; border-left: 2px solid #333; border-right: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 2px solid #333; border-bottom: 1px solid #999; border-left: 1px solid #999; border-right: 1px solid #999;">7</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 2px solid #333; border-bottom: 1px solid #999; border-left: 1px solid #999; border-right: 2px solid #333;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 2px solid #333; border-bottom: 1px solid #999; border-left: 2px solid #333; border-right: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 2px solid #333; border-bottom: 1px solid #999; border-left: 1px solid #999; border-right: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border: 2px solid #333;">.</td>
-                  </tr>
-                  <tr>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 1px solid #999; border-bottom: 1px solid #999;">6</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 1px solid #999; border-bottom: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 1px solid #999; border-bottom: 1px solid #999;">1</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">9</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 1px solid #999; border-bottom: 1px solid #999;">5</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 1px solid #999; border-bottom: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 1px solid #999; border-bottom: 1px solid #999;">.</td>
-                  </tr>
-                  <tr>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 1px solid #999; border-bottom: 2px solid #333;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 1px solid #999;">9</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 2px solid #333;">8</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 2px solid #333; border-right: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 2px solid #333;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 2px solid #333; border-right: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 1px solid #999;">6</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 2px solid #333;">.</td>
-                  </tr>
-                  <tr>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 2px solid #333; border-bottom: 1px solid #999;">8</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 2px solid #333; border-bottom: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 2px solid #333; border-bottom: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">6</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 2px solid #333; border-bottom: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 2px solid #333; border-bottom: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 2px solid #333; border-bottom: 1px solid #999;">3</td>
-                  </tr>
-                  <tr>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 1px solid #999; border-bottom: 1px solid #999;">4</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 1px solid #999; border-bottom: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 1px solid #999; border-bottom: 1px solid #999;">8</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999; background: #fff3cd; font-weight: bold;">?</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 1px solid #999; border-bottom: 1px solid #999;">3</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 1px solid #999; border-bottom: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 1px solid #999; border-bottom: 1px solid #999;">1</td>
-                  </tr>
-                  <tr>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 1px solid #999; border-bottom: 2px solid #333;">7</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 2px solid #333;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 2px solid #333; border-right: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 1px solid #999;">2</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 2px solid #333;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 2px solid #333; border-right: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 2px solid #333;">6</td>
-                  </tr>
-                  <tr>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 2px solid #333; border-bottom: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">6</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 2px solid #333; border-bottom: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 2px solid #333; border-bottom: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 2px solid #333; border-bottom: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 2px solid #333; border-bottom: 1px solid #999;">2</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">8</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 2px solid #333; border-bottom: 1px solid #999;">.</td>
-                  </tr>
-                  <tr>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 1px solid #999; border-bottom: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 1px solid #999; border-bottom: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 1px solid #999; border-bottom: 1px solid #999;">4</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">1</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 1px solid #999; border-bottom: 1px solid #999;">9</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 2px solid #333; border-right: 1px solid #999; border-top: 1px solid #999; border-bottom: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-left: 1px solid #999; border-right: 2px solid #333; border-top: 1px solid #999; border-bottom: 1px solid #999;">5</td>
-                  </tr>
-                  <tr>
-                    <td style="width: 34px; height: 34px; text-align: center; border: 2px solid #333;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 2px solid #333;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 2px solid #333; border-right: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 1px solid #999;">8</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 2px solid #333;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 2px solid #333; border-right: 1px solid #999;">.</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border-top: 1px solid #999; border-bottom: 2px solid #333; border-left: 1px solid #999; border-right: 1px solid #999;">7</td>
-                    <td style="width: 34px; height: 34px; text-align: center; border: 2px solid #333;">9</td>
-                  </tr>
+                  <tr><td>5</td><td>3</td><td>.</td><td>.</td><td>7</td><td>.</td><td>.</td><td>.</td><td>.</td></tr>
+                  <tr><td>6</td><td>.</td><td>.</td><td>1</td><td>9</td><td>5</td><td>.</td><td>.</td><td>.</td></tr>
+                  <tr><td>.</td><td>9</td><td>8</td><td>.</td><td>.</td><td>.</td><td>.</td><td>6</td><td>.</td></tr>
+                  <tr><td>8</td><td>.</td><td>.</td><td>.</td><td>6</td><td>.</td><td>.</td><td>.</td><td>3</td></tr>
+                  <tr><td>4</td><td>.</td><td>.</td><td>8</td><td class="highlight">?</td><td>3</td><td>.</td><td>.</td><td>1</td></tr>
+                  <tr><td>7</td><td>.</td><td>.</td><td>.</td><td>2</td><td>.</td><td>.</td><td>.</td><td>6</td></tr>
+                  <tr><td>.</td><td>6</td><td>.</td><td>.</td><td>.</td><td>.</td><td>2</td><td>8</td><td>.</td></tr>
+                  <tr><td>.</td><td>.</td><td>.</td><td>4</td><td>1</td><td>9</td><td>.</td><td>.</td><td>5</td></tr>
+                  <tr><td>.</td><td>.</td><td>.</td><td>.</td><td>8</td><td>.</td><td>.</td><td>7</td><td>9</td></tr>
                 </tbody>
               </table>
             </div>
@@ -570,16 +480,6 @@ khoi([X1,X2,X3|T1], [Y1,Y2,Y3|T2], [Z1,Z2,Z3|T3]) :-
                 <li><strong>Barrier</strong>: đồng bộ cuối mỗi vòng hoặc mỗi bước.</li>
               </ul>
             </div>
-            <!-- <div style="flex: 1;">
-              <div class="question-box">
-                <div class="question-title">Hỏi lớp học</div>
-                <ul>
-                  <li>Một biến đếm số yêu cầu đã xử lý: dùng gì?</li>
-                  <li>Một hàng đợi dùng chung: dùng gì?</li>
-                  <li>Một bể chỉ có 3 kết nối cơ sở dữ liệu: dùng gì?</li>
-                </ul>
-              </div>
-            </div> -->
           </div>
         </section>
 
@@ -1001,6 +901,27 @@ def tinh_giam_gia(gia, ty_le):
       hashOneBasedIndex: true,
       hash: true,
       plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX],
+      highlight: {
+        beforeHighlight: function (hljs) {
+          // Đăng ký ngôn ngữ Prolog (CLP-friendly) cho highlight.js
+          if (!hljs.getLanguage('prolog')) {
+            hljs.registerLanguage('prolog', function () {
+              return {
+                name: 'Prolog',
+                keywords: 'is_list length append member maplist transpose all_distinct ins',
+                contains: [
+                  { className: 'comment', begin: /%/, end: /$/ },
+                  { className: 'comment', begin: /\/\*/, end: /\*\// },
+                  { className: 'string', begin: /"/, end: /"/ },
+                  { className: 'number', begin: /\b\d+\b/ },
+                  { className: 'symbol', begin: /\b[A-Z_][a-zA-Z0-9_]*/ },
+                  { className: 'meta', begin: /:-|\?-/ }
+                ]
+              };
+            });
+          }
+        }
+      }
     });
   </script>
 </body>

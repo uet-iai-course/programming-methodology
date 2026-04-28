@@ -223,3 +223,33 @@
 .reveal pre code.no-line-numbers .hljs-ln-numbers {
     display: none !important;
 }
+
+/* ============================================
+   Sudoku grid (lec10) — 9x9 with thick 3x3 borders
+   ============================================ */
+.reveal .sudoku-grid {
+    border-collapse: collapse;
+    margin: 0 auto;
+    font-size: 0.9em;
+    font-family: var(--font-sans, sans-serif);
+}
+
+.reveal .sudoku-grid td {
+    width: 34px;
+    height: 34px;
+    text-align: center;
+    border: 1px solid #999;
+    padding: 0;
+}
+
+.reveal .sudoku-grid tr:first-child td       { border-top: 2px solid #333; }
+.reveal .sudoku-grid tr:nth-child(3n) td     { border-bottom: 2px solid #333; }
+.reveal .sudoku-grid tr:last-child td        { border-bottom: 2px solid #333; }
+.reveal .sudoku-grid td:first-child          { border-left: 2px solid #333; }
+.reveal .sudoku-grid td:nth-child(3n)        { border-right: 2px solid #333; }
+.reveal .sudoku-grid td:last-child           { border-right: 2px solid #333; }
+
+.reveal .sudoku-grid td.highlight {
+    background: #fff3cd;
+    font-weight: bold;
+}
