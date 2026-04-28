@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Bài 10: Tổng hợp các mẫu hình lập trình</title>
+  <title>Bài 10: Các mẫu hình lập trình khác</title>
 
   <link rel="stylesheet" href="revealjs/dist/reset.css" />
   <link rel="stylesheet" href="revealjs/dist/reveal.css" />
@@ -13,56 +13,541 @@
   <link rel="stylesheet" href="lecture-style.css" />
 </head>
 
-
 <body>
   <div class="reveal">
     <div class="slides">
 
-      <!-- Trang bìa -->
+      <!-- Mở đầu -->
       <section>
         <section>
           <h1>Phương pháp luận lập trình</h1>
-          <h3>Bài 10: Tổng hợp các mẫu hình lập trình</h3>
+          <h3>Bài 10: Các mẫu hình lập trình khác</h3>
+          <p>Lập trình logic. Lập trình song song. Lập trình bằng AI.</p>
           <p>Trường ĐH Công nghệ – Đại học Quốc gia Hà Nội</p>
         </section>
 
         <section>
           <h2>Nội dung</h2>
-          <ol>
-            <li>Nội dung 1</li>
-            <li>Nội dung 2</li>
+          <ol style="font-size: 0.9em;">
+            <li>Lập trình logic</li>
+            <li>Lập trình song song</li>
+            <li>Lập trình bằng AI</li>
+            <li>Tổng kết</li>
           </ol>
+        </section>
+
+        <section style="font-size: 0.9em;">
+          <h2>Mục tiêu buổi học</h2>
+          <ul>
+            <li>Nhận ra 3 góc nhìn lập trình khác nhau.</li>
+            <li>Hiểu ý tưởng cốt lõi của từng cách tiếp cận.</li>
+            <li>Biết bài toán nào hợp với cách nào.</li>
+            <li>Thấy rõ lợi ích và đánh đổi.</li>
+          </ul>
         </section>
       </section>
 
+      <!-- Phần 1 -->
       <section>
         <section>
           <h1>
             <span class="text-light">1.</span><br />
-            Nội dung 1
+            Lập trình logic
           </h1>
+          <p>Mô tả điều đúng.<br />Máy tự suy diễn.</p>
         </section>
-        <section>
-          <h2>Nội dung chi tiết 1</h2>
-          <p>Chi tiết về nội dung 1...</p>
+
+        <section style="font-size: 0.85em;">
+          <h2>Vì sao cần một cách nhìn khác?</h2>
+          <div style="display: flex; gap: 24px;">
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Cách quen thuộc</h3>
+              <ul>
+                <li>Viết từng bước.</li>
+                <li>Tự điều khiển luồng chạy.</li>
+                <li>Tự thử các khả năng.</li>
+              </ul>
+            </div>
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Bài toán khó</h3>
+              <ul>
+                <li>Tìm lời giải thỏa ràng buộc.</li>
+                <li>Hỏi đáp trên tri thức.</li>
+                <li>Suy từ dữ kiện ra kết luận.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section style="font-size: 0.9em;">
+          <h2>Lập trình logic là gì?</h2>
+          <div class="question-box">
+            <div class="question-title">Ý tưởng chính</div>
+            <p><strong>Khai báo</strong> (declarative) bài toán.</p>
+            <p>Nói <strong>cái gì đúng</strong>, không nói hết <strong>cách làm</strong>.</p>
+          </div>
+          <ul style="margin-top: 0.8em;">
+            <li>Chương trình là tập tri thức.</li>
+            <li>Tính toán là suy diễn.</li>
+            <li>Ngôn ngữ tiêu biểu: Prolog.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Ba thành phần cốt lõi</h2>
+          <div style="display: flex; font-size: 0.7em; gap: 16px; margin-top: 0.8em;">
+            <div class="question-box" style="flex: 1;">
+              <div class="question-title">Sự kiện</div>
+              <p>Điều đã biết.</p>
+              <p class="inline-code">cha(an, binh).</p>
+              <p class="inline-code">cha(binh, cuong).</p>
+            </div>
+            <div class="question-box" style="flex: 1;">
+              <div class="question-title">Luật</div>
+              <p>Điều suy ra.</p>
+              <p class="inline-code">ong(X, Y) :- cha(X, Z), cha(Z, Y).</p>
+            </div>
+            <div class="question-box" style="flex: 1;">
+              <div class="question-title">Truy vấn</div>
+              <p>Điều muốn hỏi.</p>
+              <p class="inline-code">?- ong(an, ?).</p>
+            </div>
+          </div>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>Cơ chế suy diễn</h2>
+          <div style="display: flex; gap: 24px;">
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Hợp nhất (unification)</h3>
+              <ul>
+                <li>Khớp mẫu.</li>
+                <li>Tìm biến phù hợp.</li>
+                <li>Nối truy vấn với luật.</li>
+              </ul>
+            </div>
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Quay lui (backtracking)</h3>
+              <ul>
+                <li>Thử một nhánh.</li>
+                <li>Sai thì quay lại.</li>
+                <li>Tìm tiếp nhánh khác.</li>
+              </ul>
+            </div>
+          </div>
+          <p class="caption">Một phần giống giải mê cung bằng thử và lùi.</p>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Ví dụ nhỏ với Prolog</h2>
+          <div style="display: flex; gap: 20px;">
+            <div style="flex: 1;">
+              <pre><code class="language-prolog" data-trim>
+cha(an, binh).
+cha(binh, cuong).
+
+ong(X, Y) :-
+  cha(X, Z),
+  cha(Z, Y).
+              </code></pre>
+            </div>
+            <div style="flex: 1;">
+              <pre><code class="language-prolog" data-trim>
+?- ong(an, Y).
+
+Z = binh
+Y = cuong
+              </code></pre>
+              <ul>
+                <li>Không viết vòng lặp.</li>
+                <li>Không tự duyệt cây tìm kiếm.</li>
+                <li>Máy tự suy luận.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section style="font-size: 0.86em;">
+          <h2>Khi nào lập trình logic mạnh?</h2>
+          <ul>
+            <li>Hệ chuyên gia.</li>
+            <li>Bài toán ràng buộc.</li>
+            <li>Truy vấn quan hệ.</li>
+            <li>Suy diễn tri thức.</li>
+          </ul>
+          <div class="question-box" style="margin-top: 0.8em;">
+            <div class="question-title">Dấu hiệu nhận biết</div>
+            <p>Câu hỏi kiểu: <strong>"Có tồn tại lời giải nào?"</strong></p>
+          </div>
+        </section>
+
+        <section style="font-size: 0.84em;">
+          <h2>Hạn chế và đánh đổi</h2>
+          <div style="display: flex; gap: 24px;">
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Điểm mạnh</h3>
+              <ul>
+                <li>Gần với suy luận.</li>
+                <li>Mã ngắn.</li>
+                <li>Dễ biểu diễn luật.</li>
+              </ul>
+            </div>
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Điểm khó</h3>
+              <ul>
+                <li>Hiệu năng khó đoán.</li>
+                <li>Khó gỡ lỗi với người mới.</li>
+                <li>Không hợp mọi bài toán.</li>
+              </ul>
+            </div>
+          </div>
         </section>
       </section>
 
+      <!-- Phần 2 -->
       <section>
         <section>
           <h1>
             <span class="text-light">2.</span><br />
-            Nội dung 2
+            Lập trình song song
           </h1>
+          <p>Nhiều việc.<br />Nhiều lõi.<br />Nhiều rủi ro.</p>
         </section>
+
+        <section style="font-size: 0.86em;">
+          <h2>Vì sao cần song song?</h2>
+          <div style="display: flex; gap: 24px;">
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Nếu chỉ tuần tự</h3>
+              <ul>
+                <li>Một lõi làm tất cả.</li>
+                <li>Chờ lâu hơn.</li>
+                <li>Lãng phí phần cứng.</li>
+              </ul>
+            </div>
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Nếu biết song song</h3>
+              <ul>
+                <li>Chia việc thành phần nhỏ.</li>
+                <li>Chạy cùng lúc.</li>
+                <li>Tăng tốc hoặc tăng thông lượng.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section style="font-size: 0.88em;">
+          <h2>Song song và đồng thời</h2>
+          <div style="display: flex; gap: 24px;">
+            <div class="question-box" style="flex: 1;">
+              <div class="question-title">Đồng thời</div>
+              <p>Nhiều việc chồng lấn theo thời gian.</p>
+              <p>Có thể chưa chạy thật cùng lúc.</p>
+            </div>
+            <div class="question-box" style="flex: 1;">
+              <div class="question-title">Song song</div>
+              <p>Nhiều việc chạy thật cùng lúc.</p>
+              <p>Cần nhiều tài nguyên xử lý.</p>
+            </div>
+          </div>
+          <p class="caption">Đồng thời là cách tổ chức. Song song là cách thực thi.</p>
+        </section>
+
+        <section style="font-size: 0.84em;">
+          <h2>Hai mô hình phổ biến</h2>
+          <div style="display: flex; gap: 24px;">
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Bộ nhớ chia sẻ</h3>
+              <ul>
+                <li>Nhiều luồng.</li>
+                <li>Cùng nhìn một dữ liệu.</li>
+                <li>Cần khóa đồng bộ.</li>
+              </ul>
+            </div>
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Truyền thông điệp</h3>
+              <ul>
+                <li>Nhiều tiến trình.</li>
+                <li>Gửi nhận thông điệp.</li>
+                <li>Ít chia sẻ trực tiếp.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section style="font-size: 0.84em;">
+          <h2>Các rủi ro kinh điển</h2>
+          <div style="display: flex; gap: 16px; margin-top: 0.8em;">
+            <div class="question-box" style="flex: 1;">
+              <div class="question-title">Tranh chấp</div>
+              <p>Cùng sửa một biến.</p>
+              <p>(race condition)</p>
+            </div>
+            <div class="question-box" style="flex: 1;">
+              <div class="question-title">Khóa chết</div>
+              <p>Chờ nhau mãi mãi.</p>
+              <p>(deadlock)</p>
+            </div>
+            <div class="question-box" style="flex: 1;">
+              <div class="question-title">Bỏ đói</div>
+              <p>Có việc không được chạy.</p>
+              <p>(starvation)</p>
+            </div>
+          </div>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Ví dụ chia bài toán</h2>
+          <div style="display: flex; gap: 24px;">
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Trước</h3>
+              <pre><code class="language-python" data-trim>
+tong = 0
+for x in data:
+    tong += x * x
+              </code></pre>
+            </div>
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Sau</h3>
+              <pre><code class="language-python" data-trim>
+chia data -> 4 phần
+mỗi lõi tính 1 phần
+cuối cùng cộng lại
+              </code></pre>
+            </div>
+          </div>
+          <p class="caption">Ý tưởng: tách việc độc lập, gom kết quả sau.</p>
+        </section>
+
+        <section style="font-size: 0.86em;">
+          <h2>Khi nào song song giúp?</h2>
+          <div style="display: flex; gap: 24px;">
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Thường có ích</h3>
+              <ul>
+                <li>Tác vụ lớn.</li>
+                <li>Ít phụ thuộc nhau.</li>
+                <li>Dữ liệu chia được.</li>
+              </ul>
+            </div>
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Thường kém hiệu quả</h3>
+              <ul>
+                <li>Việc quá nhỏ.</li>
+                <li>Đồng bộ quá nhiều.</li>
+                <li>Phần tuần tự còn lớn.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section style="font-size: 0.86em;">
+          <h2>Nguyên tắc thiết kế cơ bản</h2>
+          <ul>
+            <li>Giảm chia sẻ trạng thái.</li>
+            <li>Đồng bộ ở điểm rõ ràng.</li>
+            <li>Ưu tiên dữ liệu bất biến.</li>
+            <li>Đúng trước, nhanh sau.</li>
+            <li>Đo đạc trước khi kết luận.</li>
+          </ul>
+          <div class="question-box" style="margin-top: 0.8em;">
+            <div class="question-title">Mẹo nhớ</div>
+            <p>Càng ít tranh chấp, chương trình càng dễ sống.</p>
+          </div>
+        </section>
+      </section>
+
+      <!-- Phần 3 -->
+      <section>
         <section>
-          <h2>Nội dung chi tiết 2</h2>
-          <p>Chi tiết về nội dung 2...</p>
+          <h1>
+            <span class="text-light">3.</span><br />
+            Lập trình bằng AI
+          </h1>
+          <p>Không chỉ viết mã.<br />Còn là cộng tác với công cụ.</p>
+        </section>
+
+        <section style="font-size: 0.88em;">
+          <h2>Lập trình bằng AI là gì?</h2>
+          <div class="question-box">
+            <div class="question-title">Ý tưởng chính</div>
+            <p>Dùng <strong>trí tuệ nhân tạo</strong> (artificial intelligence) để hỗ trợ tạo, sửa, giải thích, kiểm tra mã.</p>
+          </div>
+          <ul style="margin-top: 0.8em;">
+            <li>AI không tự chịu trách nhiệm.</li>
+            <li>Lập trình viên vẫn quyết định cuối cùng.</li>
+            <li>Đây là cách làm việc mới, không phải phép màu.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.85em;">
+          <h2>AI hỗ trợ bước nào?</h2>
+          <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+            <div class="question-box" style="flex: 1; min-width: 180px;">
+              <div class="question-title">Hiểu yêu cầu</div>
+              <p>Tóm tắt đề bài.</p>
+            </div>
+            <div class="question-box" style="flex: 1; min-width: 180px;">
+              <div class="question-title">Viết mã</div>
+              <p>Sinh khung ban đầu.</p>
+            </div>
+            <div class="question-box" style="flex: 1; min-width: 180px;">
+              <div class="question-title">Kiểm thử</div>
+              <p>Gợi ý ca kiểm thử.</p>
+            </div>
+            <div class="question-box" style="flex: 1; min-width: 180px;">
+              <div class="question-title">Giải thích</div>
+              <p>Đọc mã nhanh hơn.</p>
+            </div>
+          </div>
+        </section>
+
+        <section style="font-size: 0.82em;">
+          <h2>Quy trình làm việc với AI</h2>
+          <div class="pipeline">
+            <div class="stage">
+              <div class="stage-title">1. Giao việc</div>
+              <div class="stage-desc">Nói rõ mục tiêu</div>
+            </div>
+            <div class="arrow">→</div>
+            <div class="stage">
+              <div class="stage-title">2. Nhận gợi ý</div>
+              <div class="stage-desc">Mã, ý tưởng, test</div>
+            </div>
+            <div class="arrow">→</div>
+            <div class="stage">
+              <div class="stage-title">3. Kiểm tra</div>
+              <div class="stage-desc">Đọc lại, chạy thử</div>
+            </div>
+            <div class="arrow">→</div>
+            <div class="stage">
+              <div class="stage-title">4. Chỉnh tiếp</div>
+              <div class="stage-desc">Lặp vòng mới</div>
+            </div>
+          </div>
+        </section>
+
+        <section style="font-size: 0.8em;">
+          <h2>Ví dụ: trước và sau khi có AI</h2>
+          <div style="display: flex; gap: 24px;">
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Không dùng AI</h3>
+              <ul>
+                <li>Tự đọc tài liệu.</li>
+                <li>Tự viết bản nháp đầu.</li>
+                <li>Tự nghĩ test từ đầu.</li>
+              </ul>
+            </div>
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Có dùng AI</h3>
+              <ul>
+                <li>Xin khung lời giải.</li>
+                <li>Xin ví dụ đầu vào ra.</li>
+                <li>Xin danh sách lỗi dễ gặp.</li>
+              </ul>
+            </div>
+          </div>
+          <p class="caption">Nhanh hơn ở bước khởi động, không miễn bước kiểm chứng.</p>
+        </section>
+
+        <section style="font-size: 0.86em;">
+          <h2>Lợi ích</h2>
+          <ul>
+            <li>Tăng tốc viết bản đầu.</li>
+            <li>Gợi ý nhiều phương án.</li>
+            <li>Hỗ trợ học công nghệ mới.</li>
+            <li>Giảm việc lặp lại.</li>
+            <li>Giúp đọc mã cũ nhanh hơn.</li>
+          </ul>
+        </section>
+
+        <section style="font-size: 0.84em;">
+          <h2>Rủi ro và giới hạn</h2>
+          <div style="display: flex; gap: 24px;">
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Rủi ro kỹ thuật</h3>
+              <ul>
+                <li>Bịa hàm, bịa thư viện.</li>
+                <li>Sai logic tinh vi.</li>
+                <li>Thiếu xử lý biên.</li>
+              </ul>
+            </div>
+            <div style="flex: 1;">
+              <h3 style="font-size: 0.9em;">Rủi ro con người</h3>
+              <ul>
+                <li>Tin quá nhanh.</li>
+                <li>Lười đọc lại.</li>
+                <li>Phụ thuộc công cụ.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section style="font-size: 0.84em;">
+          <h2>Nguyên tắc dùng AI có trách nhiệm</h2>
+          <ol>
+            <li>Viết yêu cầu rõ.</li>
+            <li>Luôn đọc lại mã.</li>
+            <li>Luôn chạy kiểm thử.</li>
+            <li>Không đưa dữ liệu nhạy cảm bừa bãi.</li>
+            <li>Xem AI là trợ lý, không là người duyệt cuối.</li>
+          </ol>
+        </section>
+      </section>
+
+      <!-- Kết thúc -->
+      <section>
+        <section>
+          <h1>
+            <span class="text-light">4.</span><br />
+            Tổng kết
+          </h1>
+          <p>Ba bài toán.<br />Ba góc nhìn.<br />Không loại trừ nhau.</p>
+        </section>
+
+        <section style="font-size: 0.76em;">
+          <h2>So sánh nhanh 3 cách tiếp cận</h2>
+          <table style="width: 100%;">
+            <thead>
+              <tr>
+                <th>Cách tiếp cận</th>
+                <th>Mạnh ở đâu</th>
+                <th>Câu hỏi điển hình</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Logic</strong></td>
+                <td>Suy diễn, ràng buộc</td>
+                <td>"Điều gì đúng?"</td>
+              </tr>
+              <tr>
+                <td><strong>Song song</strong></td>
+                <td>Tăng tốc, tăng tải</td>
+                <td>"Làm sao chạy cùng lúc?"</td>
+              </tr>
+              <tr>
+                <td><strong>AI</strong></td>
+                <td>Hỗ trợ quy trình</td>
+                <td>"Dùng công cụ thế nào cho đúng?"</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section style="font-size: 0.84em;">
+          <h2>Tự kiểm tra</h2>
+          <ol>
+            <li>Khi nào nên mô tả bài toán bằng luật thay vì bằng từng bước?</li>
+            <li>Vì sao chương trình song song khó kiểm thử hơn chương trình tuần tự?</li>
+            <li>AI giúp nhanh hơn ở bước nào, và bước nào vẫn phải do người chịu trách nhiệm?</li>
+            <li>Một hệ thống thực tế có thể kết hợp cả 3 cách tiếp cận ra sao?</li>
+          </ol>
         </section>
       </section>
 
       <div class="footer">
-        Phương pháp luận lập trình (Học kỳ 2 2025-2026) §10: Tổng hợp các mẫu hình lập trình
+        Phương pháp luận lập trình (Học kỳ 2 2025-2026) §10: Các mẫu hình lập trình khác
       </div>
     </div>
   </div>
