@@ -234,6 +234,21 @@
     display: none !important;
 }
 
+/* Line numbers (when data-line-numbers): tránh wrap số 2 chữ số */
+.reveal pre code .hljs-ln-numbers,
+.reveal pre code .hljs-ln-numbers .hljs-ln-n {
+    white-space: nowrap !important;
+    text-align: right;
+    padding-right: 8px;
+    min-width: 1.6em;
+    color: #888;
+    user-select: none;
+}
+
+.reveal pre code .hljs-ln-line {
+    vertical-align: top;
+}
+
 /* ============================================
    Sudoku grid (lec10) — 9x9 with thick 3x3 borders
    ============================================ */
